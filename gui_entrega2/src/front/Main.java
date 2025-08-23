@@ -23,6 +23,7 @@ public class Main {
 	private AltaUsuario frmAltaUsuario;
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
+	private RegistroEdicion frmRegistroEdicion;
 
 	/**
 	 * Launch the application.
@@ -98,6 +99,15 @@ public class Main {
 		
 		JMenuItem mntmRegistro = new JMenuItem("Registro");
 		mnEdicion.add(mntmRegistro);
+		frmRegistroEdicion = new RegistroEdicion();
+		frmMain.getContentPane().add(frmRegistroEdicion);
+		frmRegistroEdicion.setVisible(false);
+		mntmRegistro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmRegistroEdicion.setVisible(true);
+				frmRegistroEdicion.toFront();
+			}
+		});
 		
 		JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
 		mnEdicion.add(mntmConsultaEdicion);

@@ -1,6 +1,7 @@
 package front;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -36,6 +37,9 @@ public class AltaUsuario extends JInternalFrame {
 	private JLabel lblDescripcion;
 	private JTextField textWeb;
 	private JLabel lblWeb;
+	
+	private JButton btnAceptar;
+	private JButton btnCancelar;
 
 	public AltaUsuario() {
 		setTitle("Alta de Usuario");
@@ -134,6 +138,18 @@ public class AltaUsuario extends JInternalFrame {
 		textWeb.setBounds(150, 189, 200, 20);
 		getContentPane().add(textWeb);
 		
+		btnAceptar = new JButton("Aceptar");
+		btnAceptar.setBounds(150, 220, 89, 23);
+		getContentPane().add(btnAceptar);
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(261, 220, 89, 23);
+		getContentPane().add(btnCancelar);
+		btnCancelar.addActionListener(e -> {
+			this.setVisible(false);
+			limpiarFormulario();
+		});
+		
 		verFormAsistente(true);
 		verFormOrganizador(false);
 		
@@ -169,5 +185,19 @@ public class AltaUsuario extends JInternalFrame {
 			lblWeb.setVisible(false);
 			textWeb.setVisible(false);
 		}
+	}
+	
+	private void limpiarFormulario() {
+		txtNickname.setText("");
+		txtNombre.setText("");
+		txtEmail.setText("");
+		txtApellido.setText("");
+		fechaNacimiento.setText("");
+		cmBxInstitucion.setSelectedIndex(0);
+		txtDescripcion.setText("");
+		textWeb.setText("");
+		btnAsistente.setSelected(true);
+		verFormAsistente(true);
+		verFormOrganizador(false);
 	}
 }
