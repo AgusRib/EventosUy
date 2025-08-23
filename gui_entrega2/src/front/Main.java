@@ -22,6 +22,7 @@ public class Main {
 	
 	private AltaUsuario frmAltaUsuario;
 	private ModificarDatosUsuario frmModificarDatosUsuario;
+	private ConsultaEdicionDeEvento frmConsultaEdicion;
 
 	/**
 	 * Launch the application.
@@ -44,7 +45,7 @@ public class Main {
 		frmMain.setTitle("Main");
 		
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmMain.setBounds(100, 100, 450, 300);
+		frmMain.setBounds(100, 100, 720, 480);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmMain.setJMenuBar(menuBar);
@@ -69,6 +70,7 @@ public class Main {
 		mntmAltaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmAltaUsuario.setVisible(true);
+				frmAltaUsuario.toFront();
 			}
 		});
 		
@@ -88,8 +90,8 @@ public class Main {
 		JMenu mnEvento = new JMenu("Evento");
 		mnFuncionalidades.add(mnEvento);
 		
-		JMenuItem mntmConsulta_1 = new JMenuItem("Consulta");
-		mnEvento.add(mntmConsulta_1);
+		JMenuItem mntmConsultaEvento = new JMenuItem("Consulta");
+		mnEvento.add(mntmConsultaEvento);
 		
 		JMenu mnEdicion = new JMenu("Edicion");
 		mnFuncionalidades.add(mnEdicion);
@@ -97,20 +99,29 @@ public class Main {
 		JMenuItem mntmRegistro = new JMenuItem("Registro");
 		mnEdicion.add(mntmRegistro);
 		
-		JMenuItem mntmConsulta = new JMenuItem("Consulta");
-		mnEdicion.add(mntmConsulta);
+		JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
+		mnEdicion.add(mntmConsultaEdicion);
+		frmConsultaEdicion = new ConsultaEdicionDeEvento();
+		frmMain.getContentPane().add(frmConsultaEdicion);
+		frmConsultaEdicion.setVisible(false);
+		mntmConsultaEdicion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmConsultaEdicion.setVisible(true);
+				frmConsultaEdicion.toFront();
+			}
+		});
 		
 		JMenu mnPatrocinio = new JMenu("Patrocinio");
 		mnFuncionalidades.add(mnPatrocinio);
 		
-		JMenuItem mntmConsulta_3 = new JMenuItem("Consulta");
-		mnPatrocinio.add(mntmConsulta_3);
+		JMenuItem mntmConsultaPatrocinio = new JMenuItem("Consulta");
+		mnPatrocinio.add(mntmConsultaPatrocinio);
 		
 		JMenu mnTipoRegistro = new JMenu("Tipo Registro");
 		mnFuncionalidades.add(mnTipoRegistro);
 		
-		JMenuItem mntmConsulta_2 = new JMenuItem("Consulta");
-		mnTipoRegistro.add(mntmConsulta_2);
+		JMenuItem mntmConsultaTipoReg = new JMenuItem("Consulta");
+		mnTipoRegistro.add(mntmConsultaTipoReg);
 		frmMain.getContentPane().setLayout(null);
 	}
 
