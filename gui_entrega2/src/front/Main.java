@@ -12,6 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class Main {
 
@@ -37,9 +39,6 @@ public class Main {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Main() {
 		frmMain = new JFrame();
 		frmMain.setTitle("Main");
@@ -82,6 +81,7 @@ public class Main {
 		mntmModificarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmModificarDatosUsuario.setVisible(true);
+				frmModificarDatosUsuario.toFront();
 			}
 		});
 		
