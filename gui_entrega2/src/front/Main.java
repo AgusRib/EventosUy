@@ -19,6 +19,7 @@ public class Main extends JFrame {
 	private JPanel contentPane;
 	
 	private AltaUsuario frmAltaUsuario;
+	private ModificarDatosUsuario frmModificarDatosUsuario;
 
 	/**
 	 * Launch the application.
@@ -72,6 +73,14 @@ public class Main extends JFrame {
 		
 		JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 		mnUsuario.add(mntmModificarDatos);
+		frmModificarDatosUsuario = new ModificarDatosUsuario();
+		this.getContentPane().add(frmModificarDatosUsuario);
+		frmModificarDatosUsuario.setVisible(false);
+		mntmModificarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmModificarDatosUsuario.setVisible(true);
+			}
+		});
 		
 		JMenu mnEvento = new JMenu("Evento");
 		mnFuncionalidades.add(mnEvento);
