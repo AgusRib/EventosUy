@@ -13,10 +13,10 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Main extends JFrame {
+public class Main {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JFrame frmMain;
 	
 	private AltaUsuario frmAltaUsuario;
 
@@ -28,7 +28,7 @@ public class Main extends JFrame {
 			public void run() {
 				try {
 					Main frame = new Main();
-					frame.setVisible(true);
+					frame.frmMain.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -40,11 +40,14 @@ public class Main extends JFrame {
 	 * Create the frame.
 	 */
 	public Main() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		frmMain = new JFrame();
+		frmMain.setTitle("Main");
+		
+		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMain.setBounds(100, 100, 450, 300);
 		
 		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+		frmMain.setJMenuBar(menuBar);
 		
 		JMenu mnSistema = new JMenu("Sistema");
 		menuBar.add(mnSistema);
@@ -61,7 +64,7 @@ public class Main extends JFrame {
 		JMenuItem mntmAltaUsuario = new JMenuItem("Alta Usuario");
 		mnUsuario.add(mntmAltaUsuario);
 		frmAltaUsuario = new AltaUsuario();
-		this.getContentPane().add(frmAltaUsuario);
+		frmMain.getContentPane().add(frmAltaUsuario);
 		frmAltaUsuario.setVisible(false);
 		mntmAltaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,10 +102,7 @@ public class Main extends JFrame {
 		
 		JMenuItem mntmConsulta_2 = new JMenuItem("Consulta");
 		mnTipoRegistro.add(mntmConsulta_2);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-
+		frmMain.getContentPane().setLayout(null);
 	}
 
 }
