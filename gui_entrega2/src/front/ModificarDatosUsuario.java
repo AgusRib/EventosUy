@@ -1,9 +1,6 @@
 package front;
 
-import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -21,7 +18,8 @@ public class ModificarDatosUsuario extends JInternalFrame {
 	private JTextField txtFieldApellidoUsuario;
 
 	public ModificarDatosUsuario() {
-		setBounds(100, 100, 200, 200);
+		setTitle("Modificar datos de Usuario");
+		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		setClosable(true);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
