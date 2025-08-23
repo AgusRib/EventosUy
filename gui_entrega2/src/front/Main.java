@@ -17,6 +17,8 @@ public class Main extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	
+	private AltaUsuario frmAltaUsuario;
 
 	/**
 	 * Launch the application.
@@ -58,6 +60,15 @@ public class Main extends JFrame {
 		
 		JMenuItem mntmAltaUsuario = new JMenuItem("Alta Usuario");
 		mnUsuario.add(mntmAltaUsuario);
+		frmAltaUsuario = new AltaUsuario();
+		this.getContentPane().add(frmAltaUsuario);
+		frmAltaUsuario.setVisible(false);
+		mntmAltaUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmAltaUsuario.setVisible(true);
+			}
+		});
+		
 		
 		JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 		mnUsuario.add(mntmModificarDatos);
@@ -90,7 +101,6 @@ public class Main extends JFrame {
 		mnTipoRegistro.add(mntmConsulta_2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 
 	}
