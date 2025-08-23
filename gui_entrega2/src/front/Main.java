@@ -77,7 +77,7 @@ public class Main {
 		JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 		mnUsuario.add(mntmModificarDatos);
 		frmModificarDatosUsuario = new ModificarDatosUsuario();
-		this.getContentPane().add(frmModificarDatosUsuario);
+		frmMain.getContentPane().add(frmModificarDatosUsuario);
 		frmModificarDatosUsuario.setVisible(false);
 		mntmModificarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

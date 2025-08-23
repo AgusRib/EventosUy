@@ -71,7 +71,7 @@ public class AltaUsuario extends JInternalFrame {
 
 		btnAsistente = new JRadioButton("Asistente");
 		btnAsistente.setBounds(120, 101, 100, 23);
-		btnAsistente.setSelected(false);
+		btnAsistente.setSelected(true);
 		btnAsistente.addActionListener(e -> {
 			verFormAsistente(btnAsistente.isSelected());
 			verFormOrganizador(false);
@@ -80,7 +80,7 @@ public class AltaUsuario extends JInternalFrame {
 		
 		btnOrganizador = new JRadioButton("Organizador");
 		btnOrganizador.setBounds(220, 101, 100, 23);
-		btnOrganizador.setSelected(true);
+		btnOrganizador.setSelected(false);
 		btnOrganizador.addActionListener(e -> {
 			verFormOrganizador(btnOrganizador.isSelected());
 			verFormAsistente(false);
