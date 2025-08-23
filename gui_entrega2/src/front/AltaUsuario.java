@@ -46,7 +46,7 @@ public class AltaUsuario extends JInternalFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		txtNickname = new JTextField();
-		txtNickname.setBounds(120, 8, 200, 20);
+		txtNickname.setBounds(150, 8, 200, 20);
 		getContentPane().add(txtNickname);
 		
 		lblNickname = new JLabel("Nickname:");
@@ -54,7 +54,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(lblNickname);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(120, 39, 200, 20);
+		txtNombre.setBounds(150, 39, 200, 20);
 		getContentPane().add(txtNombre);
 		
 		lblNombre = new JLabel("Nombre:");
@@ -62,7 +62,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(lblNombre);
 		
 		txtEmail = new JTextField();
-		txtEmail.setBounds(120, 70, 200, 20);
+		txtEmail.setBounds(150, 70, 200, 20);
 		getContentPane().add(txtEmail);
 		
 		lblEmail = new JLabel("Email:");
@@ -70,7 +70,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(lblEmail);
 
 		btnAsistente = new JRadioButton("Asistente");
-		btnAsistente.setBounds(120, 101, 100, 23);
+		btnAsistente.setBounds(150, 97, 100, 23);
 		btnAsistente.setSelected(true);
 		btnAsistente.addActionListener(e -> {
 			verFormAsistente(btnAsistente.isSelected());
@@ -79,7 +79,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(btnAsistente);
 		
 		btnOrganizador = new JRadioButton("Organizador");
-		btnOrganizador.setBounds(220, 101, 100, 23);
+		btnOrganizador.setBounds(250, 97, 100, 23);
 		btnOrganizador.setSelected(false);
 		btnOrganizador.addActionListener(e -> {
 			verFormOrganizador(btnOrganizador.isSelected());
@@ -95,52 +95,47 @@ public class AltaUsuario extends JInternalFrame {
 		lblApellido = new JLabel("Apellido:");
 		lblApellido.setBounds(10, 130, 100, 14);
 		getContentPane().add(lblApellido);
-		lblApellido.setVisible(false);
 		
 		txtApellido = new JTextField();
-		txtApellido.setBounds(120, 127, 200, 20);
+		txtApellido.setBounds(150, 127, 200, 20);
 		getContentPane().add(txtApellido);
 		
 		lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
 		lblFechaNacimiento.setBounds(10, 161, 150, 14);
 		getContentPane().add(lblFechaNacimiento);
-		lblFechaNacimiento.setVisible(false);
 		
 		fechaNacimiento = new JTextField();
-		fechaNacimiento.setBounds(130, 158, 200, 20);
+		fechaNacimiento.setBounds(150, 158, 200, 20);
 		getContentPane().add(fechaNacimiento);
 		
 		
 		textInstitucion = new JLabel("Institucion:");
 		textInstitucion.setBounds(10, 192, 100, 14);
 		getContentPane().add(textInstitucion);
-		textInstitucion.setVisible(false);
 		
 		cmBxInstitucion = new JComboBox<String>();
-		cmBxInstitucion.setBounds(120, 189, 200, 20);
-		cmBxInstitucion.setVisible(false);
+		cmBxInstitucion.setBounds(150, 189, 200, 20);
 		getContentPane().add(cmBxInstitucion);
 		
 		
 		lblDescripcion = new JLabel("Descripcion:");
 		lblDescripcion.setBounds(10, 130, 100, 14);
 		getContentPane().add(lblDescripcion);
-		lblDescripcion.setVisible(true);
 		
 		txtDescripcion = new JTextField();
-		txtDescripcion.setBounds(120, 127, 200, 51);
+		txtDescripcion.setBounds(150, 127, 200, 51);
 		getContentPane().add(txtDescripcion);
-		txtDescripcion.setVisible(true);
 		
 		lblWeb = new JLabel("Web:");
 		lblWeb.setBounds(10, 192, 100, 14);
 		getContentPane().add(lblWeb);
-		lblWeb.setVisible(true);
 		
 		textWeb = new JTextField();
-		textWeb.setBounds(120, 189, 200, 20);
+		textWeb.setBounds(150, 189, 200, 20);
 		getContentPane().add(textWeb);
-		textWeb.setVisible(true);
+		
+		verFormAsistente(true);
+		verFormOrganizador(false);
 		
 	}
 	
@@ -175,5 +170,4 @@ public class AltaUsuario extends JInternalFrame {
 			textWeb.setVisible(false);
 		}
 	}
-	
 }

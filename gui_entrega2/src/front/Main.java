@@ -70,6 +70,7 @@ public class Main {
 		mntmAltaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmAltaUsuario.setVisible(true);
+				frmAltaUsuario.toFront();
 			}
 		});
 		
@@ -82,6 +83,7 @@ public class Main {
 		mntmModificarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmModificarDatosUsuario.setVisible(true);
+				frmModificarDatosUsuario.toFront();
 			}
 		});
 		

@@ -35,7 +35,7 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		lblUsuario.setBounds(12, 12, 76, 17);
 		getContentPane().add(lblUsuario);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox();
 		comboBox.setBounds(90, 7, 124, 26);
 		getContentPane().add(comboBox);
 		
