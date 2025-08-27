@@ -45,15 +45,16 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo) {
-		// TODO Auto-generated method stub
-
+	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo) throws Exception{
+		
+		
 	}
 
 	@Override
 	public DTDetalleEvento verDetalleEvento(String nombreEvento) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		
 	}
 	
 	
