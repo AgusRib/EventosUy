@@ -17,7 +17,7 @@ public class ControllerEvento implements IControllerEvento{
 	@Override
 	public Set<String> listarEdiciones(String nombreEvento) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
