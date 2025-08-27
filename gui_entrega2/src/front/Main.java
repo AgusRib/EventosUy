@@ -24,7 +24,7 @@ public class Main {
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
-
+	private ConsultaDeEvento frmConsultaDeEvento;
 	/**
 	 * Launch the application.
 	 */
@@ -93,7 +93,15 @@ public class Main {
 		
 		JMenuItem mntmConsultaEvento = new JMenuItem("Consulta");
 		mnEvento.add(mntmConsultaEvento);
-		
+		frmConsultaDeEvento = new ConsultaDeEvento();
+		frmMain.getContentPane().add(frmConsultaDeEvento);
+		frmConsultaDeEvento.setVisible(false);
+		mntmConsultaEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmConsultaDeEvento.setVisible(true);
+				frmConsultaDeEvento.toFront();
+			}
+		});
 		JMenu mnEdicion = new JMenu("Edicion");
 		mnFuncionalidades.add(mnEdicion);
 		
