@@ -47,6 +47,8 @@ public class Main {
 	public Main() {
 		frmMain = new JFrame();
 		frmMain.setTitle("Main");
+
+		ICU = Factory.getInstance().getControllerUsuario();
 		
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMain.setBounds(100, 100, 720, 480);
@@ -68,7 +70,7 @@ public class Main {
 		
 		JMenuItem mntmAltaUsuario = new JMenuItem("Alta Usuario");
 		mnUsuario.add(mntmAltaUsuario);
-		frmAltaUsuario = new AltaUsuario();
+		frmAltaUsuario = new AltaUsuario(ICU);
 		frmMain.getContentPane().add(frmAltaUsuario);
 		frmAltaUsuario.setVisible(false);
 		mntmAltaUsuario.addActionListener(new ActionListener() {

@@ -1,16 +1,10 @@
 package front;
 
-<<<<<<< HEAD
-import javax.swing.JInternalFrame;
-
-public class RegistroEdicion extends JInternalFrame {
-=======
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 
 public class RegistroEdicion extends JInternalFrame {
 	

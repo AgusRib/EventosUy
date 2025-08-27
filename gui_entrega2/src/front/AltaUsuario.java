@@ -1,6 +1,7 @@
 package front;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -13,6 +14,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import logica.IControllerUsuario;
+import logica.Institucion;
+import logica.ManejadorInstitucion;
+
 
 public class AltaUsuario extends JInternalFrame {
 	
@@ -32,8 +36,8 @@ public class AltaUsuario extends JInternalFrame {
 	// Componentes para el caso en el que sea asistente
 	private JTextField txtApellido;
 	private JLabel lblApellido;
-	private JTextField fechaNacimiento;
-	private JLabel lblFechaNacimiento;
+	private JTextField txtFechaNac;
+	private JLabel lbltxtFechaNac;
 	private JLabel lblFormatoFecha;
 	private JLabel txtInstitucion;
 	private JComboBox<String> cmBxInstitucion;
@@ -52,6 +56,8 @@ public class AltaUsuario extends JInternalFrame {
 	public AltaUsuario(IControllerUsuario icu) {
 		
 		controllerUsr = icu;
+		
+		ManejadorInstitucion.getInstance().agregarInstitucion(new Institucion("Instituto prueba", "descripcion prueba", "url prueba")); 
 		
 		setTitle("Alta de Usuario");
 		setClosable(true);
@@ -115,13 +121,13 @@ public class AltaUsuario extends JInternalFrame {
 		txtApellido.setBounds(150, 127, 200, 20);
 		getContentPane().add(txtApellido);
 		
-		lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
-		lblFechaNacimiento.setBounds(10, 161, 150, 14);
-		getContentPane().add(lblFechaNacimiento);
+		lbltxtFechaNac = new JLabel("Fecha de Nacimiento:");
+		lbltxtFechaNac.setBounds(10, 161, 150, 14);
+		getContentPane().add(lbltxtFechaNac);
 		
-		fechaNacimiento = new JTextField();
-		fechaNacimiento.setBounds(150, 158, 200, 20);
-		getContentPane().add(fechaNacimiento);
+		txtFechaNac = new JTextField();
+		txtFechaNac.setBounds(150, 158, 200, 20);
+		getContentPane().add(txtFechaNac);
 		
 		// Etiqueta de ayuda para el formato de fecha
         lblFormatoFecha = new JLabel("Formato: yyyy-MM-dd");
@@ -134,6 +140,11 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(txtInstitucion);
 		
 		cmBxInstitucion = new JComboBox<String>();
+		cmBxInstitucion.addItem("-- Seleccione una institucion ---");
+		for (String inst : ManejadorInstitucion.getInstance().obtenerInstituciones()) {
+			cmBxInstitucion.addItem(inst);
+		}
+		
 		cmBxInstitucion.setBounds(150, 205, 200, 20);
 		getContentPane().add(cmBxInstitucion);
 		
@@ -159,18 +170,23 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(btnAceptar);
 		btnAceptar.addActionListener(a -> {
 			try {
-				System.out.println("asdas");
 				if (btnOrganizador.isSelected()) {
 					controllerUsr.ingresarOrganizador(txtNickname.getText(), txtNombre.getText(), 
 							txtEmail.getText(), txtDescripcion.getText(), txtWeb.getText());
 				} else {
 					controllerUsr.ingresarAsistente(txtNickname.getText(), txtNombre.getText(), 
-							txtEmail.getText(), txtApellido.getText(), LocalDate.of(1, 1, 1)); //luego de implementado el ingresar la fecha se debe eliminar la importacion de LocalDate
+							txtEmail.getText(), txtApellido.getText(), LocalDate.parse(txtFechaNac.getText())); 
+					if (cmBxInstitucion.getSelectedIndex() > 0) {
+						controllerUsr.agregarAsistente(txtNickname.getText(), (String) cmBxInstitucion.getSelectedItem());
+					}
 				}
                 JOptionPane.showMessageDialog(this, "El Usuario se ha registrado con éxito", "Alta de Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
                 limpiarFormulario();
 			} catch (Exception e) {
+				if (e instanceof DateTimeParseException) {
+					JOptionPane.showMessageDialog(this, "El formato de la fecha es incorrecto", "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
+				} else
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
 			}
 		});
@@ -192,16 +208,16 @@ public class AltaUsuario extends JInternalFrame {
 		if (b) {
 			lblApellido.setVisible(true);
 			txtApellido.setVisible(true);
-			lblFechaNacimiento.setVisible(true);
-			fechaNacimiento.setVisible(true);
+			lbltxtFechaNac.setVisible(true);
+			txtFechaNac.setVisible(true);
 			cmBxInstitucion.setVisible(true);
 			txtInstitucion.setVisible(true);
 			lblFormatoFecha.setVisible(true);
 		} else {
 			lblApellido.setVisible(false);
 			txtApellido.setVisible(false);
-			lblFechaNacimiento.setVisible(false);
-			fechaNacimiento.setVisible(false);
+			lbltxtFechaNac.setVisible(false);
+			txtFechaNac.setVisible(false);
 			cmBxInstitucion.setVisible(false);
 			txtInstitucion.setVisible(false);
 			lblFormatoFecha.setVisible(false);
@@ -227,8 +243,9 @@ public class AltaUsuario extends JInternalFrame {
 		txtNombre.setText("");
 		txtEmail.setText("");
 		txtApellido.setText("");
-		fechaNacimiento.setText("");
+		txtFechaNac.setText("");
 		txtDescripcion.setText("");
+		cmBxInstitucion.setSelectedIndex(0);
 		txtWeb.setText("");
 		btnAsistente.setSelected(true);
 		verFormAsistente(true);
