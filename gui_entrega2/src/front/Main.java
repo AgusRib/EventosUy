@@ -5,6 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import logica.Factory;
+import logica.IControllerUsuario;
+
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -24,6 +28,8 @@ public class Main {
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
+	
+	private IControllerUsuario ICU;
 
 	/**
 	 * Launch the application.
@@ -42,6 +48,9 @@ public class Main {
 	}
 
 	public Main() {
+		
+		ICU = Factory.getInstance().getControllerUsuario();
+		
 		frmMain = new JFrame();
 		frmMain.setTitle("Main");
 		
@@ -65,7 +74,7 @@ public class Main {
 		
 		JMenuItem mntmAltaUsuario = new JMenuItem("Alta Usuario");
 		mnUsuario.add(mntmAltaUsuario);
-		frmAltaUsuario = new AltaUsuario();
+		frmAltaUsuario = new AltaUsuario(ICU);
 		frmMain.getContentPane().add(frmAltaUsuario);
 		frmAltaUsuario.setVisible(false);
 		mntmAltaUsuario.addActionListener(new ActionListener() {
