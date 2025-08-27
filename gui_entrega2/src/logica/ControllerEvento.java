@@ -8,7 +8,9 @@ public class ControllerEvento implements IControllerEvento{
 	public Set<String> listarEventos() {
 		manejadorEvento mE = manejadorEvento.getInstance();
 		eventos = mE.obtenerEventos();
-		for 
+		for (evento e : eventos) {
+			
+		}
 		return null;
 	}
 
