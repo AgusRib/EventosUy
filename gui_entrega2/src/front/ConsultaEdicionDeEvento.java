@@ -1,9 +1,7 @@
 package front;
 
-import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultCellEditor;
-import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,10 +11,13 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.ListSelectionModel;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,26 +34,27 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     private static final String PLACEHOLDER_REG_TIPO = "— Seleccione tipo —";
     private static final String PLACEHOLDER_PAT_TIPO = "— Seleccione nivel —";
 
-    private JTable tblDetallesDeEdicion;
-    private JTable tblDetalleDeRegistro;
-    private JTable tblDetalleDePatrocinio;
+    private JComboBox<String> cbxListadoDeEdiciones;
+    private JComboBox<String> cbxListadoDeEventos;
 
-    private JComboBox<String> cbListadoDeEventos;
-    private JComboBox<String> cbListadoDeEdiciones;
-
-    // JCombos para desplegar los detalles correspondntes en las tablas
+    // JCombos para embebidos en tabla
     private JComboBox<String> editorTiposRegCombo;  // col 7
     private JComboBox<String> editorTiposPatCombo;  // col 8
 
-    // ScrollPanes para ocultar o mostrar
-    private JScrollPane spReg;
-    private JScrollPane spPat;
-
-    // Datos que s cargn en memoria
+    // Datos en memoria
     private final Map<String, List<String>> edicionesPorEvento = new LinkedHashMap<>();
     private final Map<String, Object[]> detalleEdicionPorNombre = new HashMap<>();
     private final Map<String, List<Object[]>> registrosPorEdicion = new HashMap<>();
     private final Map<String, List<Object[]>> patrociniosPorEdicion = new HashMap<>();
+
+    // Tablas
+    private JTable tblDetallesDeEdicion;
+    private JTable tblDetalleDeRegistro;
+    private JTable tblDetalleDePatrocinio;
+
+    // ScrollPanes para ocultar/mostrar
+    private JScrollPane spReg;
+    private JScrollPane spPat;
 
     public ConsultaEdicionDeEvento() {
         setTitle("Consulta edición de evento");
@@ -61,30 +63,37 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
-        setBounds(30, 30, 900, 640);
-        setLayout(new BorderLayout());
+        setBounds(30, 30, 627, 365);
 
-        // Contenedor principal scrolleable
-        JPanel content = new JPanel();
-        content.setLayout(new javax.swing.BoxLayout(content, javax.swing.BoxLayout.Y_AXIS));
-        content.setBorder(new EmptyBorder(10, 10, 10, 10));
-        add(new JScrollPane(content), BorderLayout.CENTER);
+        getContentPane().setLayout(new BorderLayout());
 
-        // Evenos
-        content.add(label("Listado de eventos"));
-        cbListadoDeEventos = new JComboBox<>();
-        content.add(wrap(cbListadoDeEventos));
+        // Contenedor principal (Swing puro)
+        JPanel content = new JPanel(new GridBagLayout());
+        content.setBorder(new EmptyBorder(8, 10, 10, 10));
+        getContentPane().add(content, BorderLayout.CENTER);
 
-        // Edi
-        content.add(spacer(8));
-        content.add(label("Listado de ediciones"));
-        cbListadoDeEdiciones = new JComboBox<>();
-        cbListadoDeEdiciones.setEnabled(false);
-        content.add(wrap(cbListadoDeEdiciones));
+        int y = 0;
 
-        // Tbls con detalles de edciion
-        content.add(spacer(12));
-        content.add(label("Detalles de edición"));
+        // Eventos: label + combo
+        JLabel lblEventos = new JLabel("Listado de eventos");
+        content.add(lblEventos, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+
+        cbxListadoDeEventos = new JComboBox<>();
+        cbxListadoDeEventos.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        content.add(cbxListadoDeEventos, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+
+        // Ediciones: label + combo
+        JLabel lblEdiciones = new JLabel("Listado de Ediciones");
+        content.add(lblEdiciones, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+
+        cbxListadoDeEdiciones = new JComboBox<>();
+        cbxListadoDeEdiciones.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        content.add(cbxListadoDeEdiciones, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+
+        // Tabla de detalles de edición
+        JLabel lblDetallesEd = new JLabel("Detalles de edición");
+        content.add(lblDetallesEd, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+
         tblDetallesDeEdicion = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Nombre", "Sigla", "Fecha inicio", "Fecha fin", "Ciudad", "País",
@@ -92,13 +101,18 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         ) {
             @Override public boolean isCellEditable(int r, int c) { return c == 7 || c == 8; }
         });
+        configurarTablaBasica(tblDetallesDeEdicion);
+        JScrollPane spDetEd = new JScrollPane(tblDetallesDeEdicion);
+        spDetEd.setPreferredSize(new Dimension(860, 170));
+        content.add(spDetEd, gbc(0, y++, 1, 1, 1, 1, GridBagConstraints.BOTH));
 
-        // JCombo en TRegistros en JTable de ediciones
+        // Editor combo en columna "Tipo de registros"
         editorTiposRegCombo = new JComboBox<>();
+        editorTiposRegCombo.setToolTipText("Elegí un tipo de registro");
         editorTiposRegCombo.addActionListener(e -> {
             if (tblDetallesDeEdicion.isEditing()) tblDetallesDeEdicion.getCellEditor().stopCellEditing();
             String tipo = (String) editorTiposRegCombo.getSelectedItem();
-            String edicion = (String) cbListadoDeEdiciones.getSelectedItem();
+            String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
             if (tipo == null || PLACEHOLDER_REG_TIPO.equals(tipo)) {
                 limpiarRegistros();
                 spReg.setVisible(false);
@@ -106,18 +120,19 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 actualizarRegistrosParaTipo(edicion, tipo);
                 spReg.setVisible(true);
             }
-            spReg.getParent().revalidate();
-            spReg.getParent().repaint();
+            content.revalidate();
+            content.repaint();
         });
-        TableColumn tipoRegCol = tblDetallesDeEdicion.getColumnModel().getColumn(7);
-        tipoRegCol.setCellEditor(new DefaultCellEditor(editorTiposRegCombo));
+        TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(7);
+        colTipoReg.setCellEditor(new DefaultCellEditor(editorTiposRegCombo));
 
-        // JCombo en patrocinios en JTable de ediciones
+        // Editor combo en columna "Patrocinios"
         editorTiposPatCombo = new JComboBox<>();
+        editorTiposPatCombo.setToolTipText("Elegí un nivel de patrocinio");
         editorTiposPatCombo.addActionListener(e -> {
             if (tblDetallesDeEdicion.isEditing()) tblDetallesDeEdicion.getCellEditor().stopCellEditing();
             String nivel = (String) editorTiposPatCombo.getSelectedItem();
-            String edicion = (String) cbListadoDeEdiciones.getSelectedItem();
+            String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
             if (nivel == null || PLACEHOLDER_PAT_TIPO.equals(nivel)) {
                 limpiarPatrocinios();
                 spPat.setVisible(false);
@@ -125,70 +140,73 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 actualizarPatrociniosParaNivel(edicion, nivel);
                 spPat.setVisible(true);
             }
-            spPat.getParent().revalidate();
-            spPat.getParent().repaint();
+            content.revalidate();
+            content.repaint();
         });
-        TableColumn patCol = tblDetallesDeEdicion.getColumnModel().getColumn(8);
-        patCol.setCellEditor(new DefaultCellEditor(editorTiposPatCombo));
+        TableColumn colPat = tblDetallesDeEdicion.getColumnModel().getColumn(8);
+        colPat.setCellEditor(new DefaultCellEditor(editorTiposPatCombo));
 
-        JScrollPane spDetEd = new JScrollPane(tblDetallesDeEdicion);
-        spDetEd.setPreferredSize(new Dimension(860, 170));
-        content.add(spDetEd);
+        // Registros
+        JLabel lblReg = new JLabel("Ver detalles del registro");
+        content.add(lblReg, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
 
-        // JTable de registros (se muestra alseleccionar el tipo de registro)
-        content.add(spacer(12));
-        content.add(label("Ver detalles del registro"));
         tblDetalleDeRegistro = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Nombre", "Descripción", "Costo", "Cupo"}
         ) { @Override public boolean isCellEditable(int r, int c) { return false; }});
+        configurarTablaBasica(tblDetalleDeRegistro);
         spReg = new JScrollPane(tblDetalleDeRegistro);
-        spReg.setPreferredSize(new Dimension(860, 170));
         spReg.setVisible(false);
-        content.add(spReg);
+        content.add(spReg, gbc(0, y++, 1, 1, 1, 1, GridBagConstraints.BOTH));
 
-        // JTable de patrocinios (se muestra alseleccionar el patrocinio)
-        content.add(spacer(12));
-        content.add(label("Ver detalle del patrocinio"));
+        // Patrocinios
+        JLabel lblPat = new JLabel("Ver detalle del patrocinio");
+        content.add(lblPat, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
+
         tblDetalleDePatrocinio = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Fecha", "Monto", "Código", "Nivel Patrocinio"}
         ) { @Override public boolean isCellEditable(int r, int c) { return false; }});
+        configurarTablaBasica(tblDetalleDePatrocinio);
         spPat = new JScrollPane(tblDetalleDePatrocinio);
-        spPat.setPreferredSize(new Dimension(860, 170));
         spPat.setVisible(false);
-        content.add(spPat);
+        content.add(spPat, gbc(0, y++, 1, 1, 1, 1, GridBagConstraints.BOTH));
 
-        // Datos cargados y el listener para caudno se cambie de evento
+        // Datos demo + listeners
         cargarDatosDemo();
         alCambiarEvento();
 
-        if (cbListadoDeEventos.getItemCount() > 0) cbListadoDeEventos.setSelectedIndex(0);
+        if (cbxListadoDeEventos.getItemCount() > 0) cbxListadoDeEventos.setSelectedIndex(0);
     }
 
-    /* ---------- helpers UI ---------- */
-    private JLabel label(String txt) {
-        JLabel l = new JLabel(txt);
-        l.setAlignmentX(Component.LEFT_ALIGNMENT);
-        return l;
+    private static GridBagConstraints gbc(int x, int y, int w, int h, double wx, double wy, int fill) {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = x; c.gridy = y;
+        c.gridwidth = w; c.gridheight = h;
+        c.weightx = wx; c.weighty = wy;
+        c.fill = fill;
+        c.insets = new Insets(3, 0, 3, 0);
+        c.anchor = GridBagConstraints.LINE_START;
+        return c;
     }
-    private Component spacer(int h) { return Box.createVerticalStrut(h); }
-    private JPanel wrap(JComponent c) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setOpaque(false);
-        p.setAlignmentX(Component.LEFT_ALIGNMENT);
-        p.add(c, BorderLayout.CENTER);
-        return p;
+
+    private void configurarTablaBasica(JTable t) {
+        t.setFillsViewportHeight(true);
+        t.setRowHeight(22);
+        t.setAutoCreateRowSorter(true);
+        t.getTableHeader().setReorderingAllowed(false);
+        t.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+        t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     /* ---------- listeners ---------- */
     private void alCambiarEvento() {
-        cbListadoDeEventos.addActionListener(e -> {
-            String evento = (String) cbListadoDeEventos.getSelectedItem();
+        cbxListadoDeEventos.addActionListener(e -> {
+            String evento = (String) cbxListadoDeEventos.getSelectedItem();
             actualizarEdicionesPara(evento);
         });
-        cbListadoDeEdiciones.addActionListener(e -> {
-            String edicion = (String) cbListadoDeEdiciones.getSelectedItem();
+        cbxListadoDeEdiciones.addActionListener(e -> {
+            String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
             actualizarTablasParaEdicion(edicion);
         });
     }
@@ -197,8 +215,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         List<String> eds = edicionesPorEvento.getOrDefault(evento, Collections.emptyList());
         for (String ed : eds) model.addElement(ed);
-        cbListadoDeEdiciones.setModel(model);
-        cbListadoDeEdiciones.setEnabled(!eds.isEmpty());
+        cbxListadoDeEdiciones.setModel(model);
+        cbxListadoDeEdiciones.setEnabled(!eds.isEmpty());
 
         limpiarTablas();
         prepararEditorTipoRegistros(null);
@@ -206,7 +224,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         spReg.setVisible(false);
         spPat.setVisible(false);
 
-        if (!eds.isEmpty()) cbListadoDeEdiciones.setSelectedIndex(0);
+        if (!eds.isEmpty()) cbxListadoDeEdiciones.setSelectedIndex(0);
     }
 
     private void actualizarTablasParaEdicion(String edicion) {
@@ -219,23 +237,19 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
             return;
         }
 
-        // Detalles (1 fila)
         DefaultTableModel detModel = (DefaultTableModel) tblDetallesDeEdicion.getModel();
         detModel.setRowCount(0);
         Object[] fila = detalleEdicionPorNombre.get(edicion);
         if (fila != null) detModel.addRow(fila);
 
-        // Placeholders en col 7 y 8
         if (detModel.getRowCount() > 0) {
             detModel.setValueAt(PLACEHOLDER_REG_TIPO, 0, 7);
             detModel.setValueAt(PLACEHOLDER_PAT_TIPO, 0, 8);
         }
 
-        // Preparar combos de ambas columnas según la edición
         prepararEditorTipoRegistros(edicion);
         prepararEditorTipoPatrocinios(edicion);
 
-        // Limpiar/ocultar tablas dependientes
         limpiarRegistros();  spReg.setVisible(false);
         limpiarPatrocinios(); spPat.setVisible(false);
     }
@@ -297,13 +311,9 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         limpiarRegistros();
         limpiarPatrocinios();
     }
-    
 
-    /**
-     * Para las capturas nomás, datos en memoria cargador por elchatg (gracias chatgpt por existir)
-     */
+    // --------- Datos de demostración ----------
     private void cargarDatosDemo() {
-        // Eventos y ediciones
         edicionesPorEvento.put("Jornadas de Informática",
                 Arrays.asList("JI 2025 - Montevideo", "JI 2024 - Salto", "JI 2023 - Online"));
         edicionesPorEvento.put("ExpoTech",
@@ -313,9 +323,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 
         DefaultComboBoxModel<String> evModel = new DefaultComboBoxModel<>();
         for (String ev : edicionesPorEvento.keySet()) evModel.addElement(ev);
-        cbListadoDeEventos.setModel(evModel);
+        cbxListadoDeEventos.setModel(evModel);
 
-        // Detalle por edición
         detalleEdicionPorNombre.put("JI 2025 - Montevideo", new Object[]{
                 "Jornadas de Informática", "JI25", "2025-09-10", "2025-09-12",
                 "Montevideo", "Uruguay", "FING", "General/Estudiante", "Oro, Plata, Bronce"
@@ -341,7 +350,6 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 "Buenos Aires", "Argentina", "Data Org", "General/Estudiante", "Platino, Oro"
         });
 
-        // Registros por edición (tipado explícito <Object[]>)
         registrosPorEdicion.put("JI 2025 - Montevideo", Arrays.<Object[]>asList(
                 new Object[]{"General", "Acceso completo", 1200, 300},
                 new Object[]{"Estudiante", "Acceso completo (50% off)", 600, 500}
@@ -365,7 +373,6 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 new Object[]{"Estudiante", "Charlas + Networking (40% off)", 1200, 300}
         ));
 
-        // Patrocinios por edición
         patrociniosPorEdicion.put("JI 2025 - Montevideo", Arrays.<Object[]>asList(
                 new Object[]{"2025-07-01", 5000, "SP-001", "Oro"},
                 new Object[]{"2025-07-15", 2500, "SP-002", "Plata"}

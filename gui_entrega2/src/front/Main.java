@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import logica.Factory;
+import logica.IControllerUsuario;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -23,7 +25,9 @@ public class Main {
 	private AltaUsuario frmAltaUsuario;
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
-
+	private RegistroEdicion frmRegistroEdicion;
+	private ConsultaDeEvento frmConsultaDeEvento;
+	private IControllerUsuario ICU;
 	/**
 	 * Launch the application.
 	 */
@@ -92,12 +96,29 @@ public class Main {
 		
 		JMenuItem mntmConsultaEvento = new JMenuItem("Consulta");
 		mnEvento.add(mntmConsultaEvento);
-		
+		frmConsultaDeEvento = new ConsultaDeEvento();
+		frmMain.getContentPane().add(frmConsultaDeEvento);
+		frmConsultaDeEvento.setVisible(false);
+		mntmConsultaEvento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmConsultaDeEvento.setVisible(true);
+				frmConsultaDeEvento.toFront();
+			}
+		});
 		JMenu mnEdicion = new JMenu("Edicion");
 		mnFuncionalidades.add(mnEdicion);
 		
 		JMenuItem mntmRegistro = new JMenuItem("Registro");
 		mnEdicion.add(mntmRegistro);
+		frmRegistroEdicion = new RegistroEdicion();
+		frmMain.getContentPane().add(frmRegistroEdicion);
+		frmRegistroEdicion.setVisible(false);
+		mntmRegistro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmRegistroEdicion.setVisible(true);
+				frmRegistroEdicion.toFront();
+			}
+		});
 		
 		JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
 		mnEdicion.add(mntmConsultaEdicion);
