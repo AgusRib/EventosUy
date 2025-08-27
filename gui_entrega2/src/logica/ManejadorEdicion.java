@@ -17,5 +17,8 @@ public class ManejadorEdicion {
 		return instance;
 	}
 	
+	public boolean existeEdicion(String nickname) {
+		return colEdiciones.containsKey(nickname);
+	}
 	
 }
