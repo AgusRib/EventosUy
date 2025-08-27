@@ -6,7 +6,7 @@ public class ControllerEvento implements IControllerEvento{
 	
 	@Override
 	public Set<String> listarEventos() {
-		manejadorEvento mE = manejadorEvento.getInstance();
+		ManejadorEvento mE = ManejadorEvento.getInstance();
 		eventos = mE.obtenerEventos();
 		for (evento e : eventos) {
 			
@@ -16,8 +16,15 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public Set<String> listarEdiciones(String nombreEvento) {
-		// TODO Auto-generated method stub
+		// falta implementar ManejadorEvento
+		ManejadorEvento h_evento = ManejadorEvento.getInstance();
+		Evento ev = h_evento.getEvento(nombreEvento);
 		
+		Set<String> ediciones;
+		for (Edicion ed : ev.getEdiciones()) {
+			ediciones.add(ed.getNombre());
+		}
+		return ediciones;
 	}
 
 	@Override
@@ -45,9 +52,17 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo) throws Exception{
+	public void altaTipoDeRegistro(String nombreEdi, String nombre, String desc, Float costo, int cupo) throws Exception{
 		
+		ManejadorEdicion h_edicion = ManejadorEdicion.getInstance();
+		Edicion ed = h_edicion.encontrarEdicion(nombreEdi);
 		
+		if(!ed.existeTipoRegistro(nombre)) {
+			ed.crearTRegistro(nombre,desc,costo,cupo);
+		} else {
+			throw new Exception("Ya existe un tipo registro con este nombre");
+		}
+	
 	}
 
 	@Override
