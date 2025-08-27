@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import logica.Factory;
+import logica.IControllerUsuario;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -25,6 +27,7 @@ public class Main {
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
 	private ConsultaDeEvento frmConsultaDeEvento;
+	private IControllerUsuario ICU;
 	/**
 	 * Launch the application.
 	 */
