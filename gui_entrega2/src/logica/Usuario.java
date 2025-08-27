@@ -24,10 +24,11 @@ public abstract class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Usuario(String nickname, String nombre, String email) {
 		this.nickname = nickname;
 		this.nombre = nombre;
 		this.email = email;
 	}
+
 }

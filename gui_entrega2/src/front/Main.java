@@ -23,6 +23,7 @@ public class Main {
 	private JFrame frmMain;
 	
 	private AltaUsuario frmAltaUsuario;
+	private ConsultaUsuario frmConsultaUsuario;
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
@@ -80,6 +81,18 @@ public class Main {
 			}
 		});
 		
+		JMenuItem mntmConsultaUsuario = new JMenuItem("Consulta Usuario");
+		mnUsuario.add(mntmConsultaUsuario);
+		frmConsultaUsuario = new ConsultaUsuario(ICU);
+		frmMain.getContentPane().add(frmConsultaUsuario);
+		frmConsultaUsuario.setVisible(false);
+		mntmConsultaUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmConsultaUsuario.refrescar();
+				frmConsultaUsuario.setVisible(true);
+				frmConsultaUsuario.toFront();
+			}
+		});
 		
 		JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 		mnUsuario.add(mntmModificarDatos);

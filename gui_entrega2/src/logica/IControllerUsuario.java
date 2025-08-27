@@ -20,6 +20,14 @@ public interface IControllerUsuario {
 	
 	public void editarDatos(String nickname, String nombre, 
 			String descripcion, String URL, String apellido, LocalDate fechaNac);
+
+	public DataUsuario infoUsuario(String nickname);
+
+	public Set<String> listarRegistrosAEventos(String nickname);
+
+	public Set<String> listarEdicionesOrganizadas(String nickname);
+
+
 	
 
 }

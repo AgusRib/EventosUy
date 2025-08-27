@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -22,6 +23,10 @@ public class ManejadorEvento{
 	
 	public HashMap<String,Evento> obtenerEventos() {
 		return eventos;
+	}
+	
+	public HashSet<String> obtenerNombresEventos() {
+		return new HashSet<String>(eventos.keySet());
 	}
 	
 	public Evento obtenerEvento(String nombreEvento) {

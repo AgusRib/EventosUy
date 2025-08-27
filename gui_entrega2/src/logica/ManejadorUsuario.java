@@ -46,4 +46,12 @@ public class ManejadorUsuario {
 		return (Organizador) usuarios.get(nickname);
 	}
 	
+	public Usuario obtenerUsuario(String nickname) {
+		return usuarios.get(nickname);
+	}
+	
+	public HashSet<String> obtenerUsuarios() {
+		return new HashSet<String>(usuarios.keySet());
+	}
+	
 }
