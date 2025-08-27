@@ -56,6 +56,18 @@ public class ControllerEvento implements IControllerEvento{
 		return null;
 	}
 	
+	@Override
+	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion) {
+		//TODO zangano
+		manejadorEvento mE = manejadorEvento.getInstance();
+		Evento ev = mE.getEvento(nombreEvento);
+		Edicion edi = ev.find(nombreEdicion);
+		
+		return edi.obtenerTipoReg()
+		
+	}
+	
+	
 	
 	
 }

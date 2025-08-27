@@ -1,5 +1,6 @@
 package logica;
 import java.util.Set;
+import DTTipoRegistro.java
 
 public interface IControllerEvento{
 	public Set<String> listarEventos();
@@ -9,5 +10,6 @@ public interface IControllerEvento{
 	public DTEdicion mostrarDetallesEdicion(String nombreEdi);
 	public DTTRegistro verDetalleTRegistro(String nombreEdi,String nomTRegistro);
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo);
-	public DTDetalleEvento verDetalleEvento(String nombreEvento);)
+	public DTDetalleEvento verDetalleEvento(String nombreEvento);
+	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion)
 	}
