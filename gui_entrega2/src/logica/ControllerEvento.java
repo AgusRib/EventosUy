@@ -11,7 +11,7 @@ public class ControllerEvento implements IControllerEvento{
 		for (evento e : eventos) {
 			
 		}
-		return null;
+		
 	}
 
 	@Override
