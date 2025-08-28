@@ -311,6 +311,12 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         limpiarRegistros();
         limpiarPatrocinios();
     }
+    public void invocacionDesdeConsultaDeEvento(String edicion,String evento){
+    	cbxListadoDeEventos.setSelectedItem(evento);
+    	actualizarEdicionesPara(evento);
+		cbxListadoDeEdiciones.setSelectedItem(edicion);
+		actualizarTablasParaEdicion(edicion);
+    }
 
     // --------- Datos de demostración ----------
     private void cargarDatosDemo() {

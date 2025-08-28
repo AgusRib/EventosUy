@@ -16,11 +16,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.JDesktopPane;
 
 public class Main {
 
 	private static final long serialVersionUID = 1L;
 	private JFrame frmMain;
+	private JDesktopPane desktopPane;  // Añadir como variable de clase
 	
 	private AltaUsuario frmAltaUsuario;
 	private ConsultaUsuario frmConsultaUsuario;
@@ -44,6 +46,7 @@ public class Main {
 			}
 		});
 	}
+	
 
 	public Main() {
 		frmMain = new JFrame();
@@ -54,6 +57,12 @@ public class Main {
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMain.setBounds(100, 100, 720, 480);
 		
+		// Crear el JDesktopPane primero
+		desktopPane = new JDesktopPane();
+		frmMain.setContentPane(desktopPane);
+		
+	
+	
 		JMenuBar menuBar = new JMenuBar();
 		frmMain.setJMenuBar(menuBar);
 		
@@ -72,7 +81,7 @@ public class Main {
 		JMenuItem mntmAltaUsuario = new JMenuItem("Alta Usuario");
 		mnUsuario.add(mntmAltaUsuario);
 		frmAltaUsuario = new AltaUsuario(ICU);
-		frmMain.getContentPane().add(frmAltaUsuario);
+		desktopPane.add(frmAltaUsuario);
 		frmAltaUsuario.setVisible(false);
 		mntmAltaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -84,7 +93,7 @@ public class Main {
 		JMenuItem mntmConsultaUsuario = new JMenuItem("Consulta Usuario");
 		mnUsuario.add(mntmConsultaUsuario);
 		frmConsultaUsuario = new ConsultaUsuario(ICU);
-		frmMain.getContentPane().add(frmConsultaUsuario);
+		desktopPane.add(frmConsultaUsuario);
 		frmConsultaUsuario.setVisible(false);
 		mntmConsultaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +106,7 @@ public class Main {
 		JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 		mnUsuario.add(mntmModificarDatos);
 		frmModificarDatosUsuario = new ModificarDatosUsuario();
-		frmMain.getContentPane().add(frmModificarDatosUsuario);
+		desktopPane.add(frmModificarDatosUsuario);
 		frmModificarDatosUsuario.setVisible(false);
 		mntmModificarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +121,7 @@ public class Main {
 		JMenuItem mntmConsultaEvento = new JMenuItem("Consulta");
 		mnEvento.add(mntmConsultaEvento);
 		frmConsultaDeEvento = new ConsultaDeEvento();
-		frmMain.getContentPane().add(frmConsultaDeEvento);
+		desktopPane.add(frmConsultaDeEvento);
 		frmConsultaDeEvento.setVisible(false);
 		mntmConsultaEvento.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,7 +135,7 @@ public class Main {
 		JMenuItem mntmRegistro = new JMenuItem("Registro");
 		mnEdicion.add(mntmRegistro);
 		frmRegistroEdicion = new RegistroEdicion();
-		frmMain.getContentPane().add(frmRegistroEdicion);
+		desktopPane.add(frmRegistroEdicion);
 		frmRegistroEdicion.setVisible(false);
 		mntmRegistro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,7 +147,7 @@ public class Main {
 		JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
 		mnEdicion.add(mntmConsultaEdicion);
 		frmConsultaEdicion = new ConsultaEdicionDeEvento();
-		frmMain.getContentPane().add(frmConsultaEdicion);
+		desktopPane.add(frmConsultaEdicion);
 		frmConsultaEdicion.setVisible(false);
 		mntmConsultaEdicion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,7 +167,5 @@ public class Main {
 		
 		JMenuItem mntmConsultaTipoReg = new JMenuItem("Consulta");
 		mnTipoRegistro.add(mntmConsultaTipoReg);
-		frmMain.getContentPane().setLayout(null);
-	}
-
-}
+	
+}}
