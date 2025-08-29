@@ -16,10 +16,11 @@ import java.util.LinkedHashSet;
 
 @SuppressWarnings("serial")
 public class ConsultaDeEvento extends JInternalFrame {
-
+    private static ConsultaDeEvento instance = null;
 	// Java
-	private static final String PLACEHOLDER_PAT_TIPO = "— Seleccione nivel —";
-    private static final String PLACEHOLDER_REG_TIPO = "— Seleccione tipo —";
+	
+    private static final String PLACEHOLDER_EVENTO = "Seleccionar evento";
+    private static final String PLACEHOLDER_EDICION = "Seleccionar edición";
     private JComboBox<String> cbxListadoDeEventos;
     private JComboBox<String> cbxListadoDeEdiciones;
 
@@ -35,19 +36,14 @@ public class ConsultaDeEvento extends JInternalFrame {
     private DefaultListModel<String> modeloCategorias = new DefaultListModel<>();
     private JList<String> listCategorias = new JList<>(modeloCategorias);
     
-    // JCombos para embebidos en tabla
-    private JComboBox<String> editorTiposRegCombo;  // col 7
-    private JComboBox<String> editorTiposPatCombo;  // col 8
-    private JScrollPane spPat;
-    private JScrollPane spReg;
-    
+   
     // Datos
     private final Map<String, String[]> detalleEventoPorNombre = new LinkedHashMap<>();
     private final Map<String, List<String>> categoriasPorEvento = new LinkedHashMap<>();
     private final Map<String, List<String>> edicionesPorEvento = new LinkedHashMap<>();
     private final Map<String, Object[]> detalleEdicionPorNombre = new LinkedHashMap<>();
-    private final Map<String, List<Object[]>> registrosPorEdicion = new HashMap<>();
-    private final Map<String, List<Object[]>> patrociniosPorEdicion = new HashMap<>();
+
+
     public ConsultaDeEvento() {
         setTitle("Consulta de evento");
         setClosable(true);
@@ -124,6 +120,7 @@ public class ConsultaDeEvento extends JInternalFrame {
         content.add(lblEdiciones, gbc(0, y++, 2, 1, 1, 0, GridBagConstraints.HORIZONTAL));
 
         cbxListadoDeEdiciones = new JComboBox<>();
+        cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
         cbxListadoDeEdiciones.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         content.add(cbxListadoDeEdiciones, gbc(0, y++, 2, 1, 1, 0, GridBagConstraints.HORIZONTAL));
 
@@ -132,13 +129,19 @@ public class ConsultaDeEvento extends JInternalFrame {
 
         // Cargar datos demo
         cargarDatosDemo();
+        cbxListadoDeEventos.removeAllItems();
+        cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
+        for (String ev : detalleEventoPorNombre.keySet()) cbxListadoDeEventos.addItem(ev);
 
         // Listeners
         cbxListadoDeEventos.addActionListener(e -> actualizarEventoSeleccionado());
         cbxListadoDeEdiciones.addActionListener(e -> {
         	String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
         	String evento = (String) cbxListadoDeEventos.getSelectedItem();
-            llamarAConsultaEdicion(edicion,evento);
+        	System.out.println(edicion);
+            if (edicion!=null && !edicion.equals(PLACEHOLDER_EDICION)) {
+        		llamarAConsultaEdicion(edicion,evento);
+            }
         });
 
         if (cbxListadoDeEventos.getItemCount() > 0) cbxListadoDeEventos.setSelectedIndex(0);
@@ -146,7 +149,7 @@ public class ConsultaDeEvento extends JInternalFrame {
 
     private void actualizarEventoSeleccionado() {
         String evento = (String) cbxListadoDeEventos.getSelectedItem();
-        if (evento != null) {
+        if (evento != null && !evento.equals(PLACEHOLDER_EVENTO)) {
             // Labels de Nombre y Sigla
             String[] fila = detalleEventoPorNombre.get(evento);
             if (fila != null) {
@@ -167,20 +170,25 @@ public class ConsultaDeEvento extends JInternalFrame {
 
             // Combo de ediciones
             cbxListadoDeEdiciones.removeAllItems();
+            cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
             List<String> eds = edicionesPorEvento.get(evento);
             if (eds != null) {
                 for (String ed : eds) cbxListadoDeEdiciones.addItem(ed);
                 if (!eds.isEmpty()) cbxListadoDeEdiciones.setSelectedIndex(0);
             }
+        } else {
+            cbxListadoDeEdiciones.removeAllItems();
+            cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
         }
     }
+
     private void actualizarEdicionesPara(String evento) {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        model.addElement(PLACEHOLDER_EDICION);
         List<String> eds = edicionesPorEvento.getOrDefault(evento, Collections.emptyList());
         for (String ed : eds) model.addElement(ed);
         cbxListadoDeEdiciones.setModel(model);
         cbxListadoDeEdiciones.setEnabled(!eds.isEmpty());
-
         if (!eds.isEmpty()) cbxListadoDeEdiciones.setSelectedIndex(0);
     }
 
@@ -190,10 +198,9 @@ public class ConsultaDeEvento extends JInternalFrame {
     
     
     private void llamarAConsultaEdicion(String edicion, String evento) {
-        ConsultaEdicionDeEvento frmConsultaEdicionDeEvento = new ConsultaEdicionDeEvento();
+        ConsultaEdicionDeEvento frmConsultaEdicionDeEvento = ConsultaEdicionDeEvento.getInstance();
         JDesktopPane desktop = getDesktopPane();
         if (desktop != null) {
-			desktop.add(frmConsultaEdicionDeEvento);
 			setVisible(false);
 			frmConsultaEdicionDeEvento.invocacionDesdeConsultaDeEvento(edicion, evento);
 			frmConsultaEdicionDeEvento.setVisible(true);
@@ -212,7 +219,12 @@ public class ConsultaDeEvento extends JInternalFrame {
         c.anchor = GridBagConstraints.LINE_START;
         return c;
     }
- 
+    public static ConsultaDeEvento getInstance() {
+    	 if (instance == null) {
+			 instance = new ConsultaDeEvento();
+		 }
+		 return instance;
+    }
     private void cargarDatosDemo() {
         // --- Eventos ---
         detalleEventoPorNombre.put("Jornadas de Informática", new String[]{"Jornadas de Informática", "JI25", "Evento anual de informática."});
@@ -249,9 +261,6 @@ public class ConsultaDeEvento extends JInternalFrame {
             "DataConf", "DC25", "2025-08-20", "2025-08-22", "Buenos Aires", "Argentina", "Data Org", "— Seleccione tipo —", "— Seleccione nivel —"
         });
 
-        // --- Cargar combo de eventos ---
-        cbxListadoDeEventos.removeAllItems();
-        for (String ev : detalleEventoPorNombre.keySet()) cbxListadoDeEventos.addItem(ev);
     }
 
 
