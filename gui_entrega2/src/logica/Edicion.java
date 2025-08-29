@@ -98,6 +98,28 @@ public class Edicion {
 	}
 
 
+	public DTDetalleEdicion devolverDT() {
+		Set<String> nombresTiposRegistros = new LinkedHashSet<>();
+		for (TipoRegistro tr : this.tiposRegistro) {
+			if (tr != null && tr.getNombre() != null) {
+	            nombresTiposRegistros.add(tr.getNombre());
+	        }
+		}
+		Set<String> nombresInstituciones = new LinkedHashSet<>(patrociniosPorInstitucion.keySet());
+		return new DTDetalleEdicion(
+				this.nombre,
+				this.sigla,
+				this.fechaInicio,
+				this.fechaFin,
+				this.fechaAlta,
+				this.ciudad,
+				this.pais,
+				nombresTiposRegistros,
+				nombresInstituciones
+		);
+	}
+
+
 
 	
 	

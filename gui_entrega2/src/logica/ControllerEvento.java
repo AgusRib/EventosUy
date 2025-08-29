@@ -34,9 +34,10 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public DTEdicion mostrarDetallesEdicion(String nombreEdi) {
-		// TODO Auto-generated method stub
-		return null;
+	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
+		return ed.devolverDT();
 	}
 
 	@Override
