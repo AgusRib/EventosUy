@@ -10,6 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -91,6 +92,13 @@ public class AltaTipoRegistro extends JInternalFrame {
 		ventana.add(filaNuevoTipoRegistro);
 		
 		
+		JPanel filaNombre = new JPanel();
+		filaNombre.setLayout(new FlowLayout(FlowLayout.LEFT));
+		lbl_nombre = new JLabel("Nombre: ");
+		filaNombre.add(lbl_nombre);
+		filaNombre.add(tf_nombre);
+		ventana.add(filaNombre);
+		
 		JPanel filaDescripcion = new JPanel();
 		filaDescripcion.setLayout(new FlowLayout(FlowLayout.LEFT));
 		lbl_descripcion = new JLabel("Descripcion: ");
@@ -140,21 +148,42 @@ public class AltaTipoRegistro extends JInternalFrame {
 		            float costo = Float.parseFloat(tf_costo.getText());
 		            int cupo = Integer.parseInt(tf_cupo.getText());
 		            
-		        
-		            ice.altaTipoDeRegistro(edi, nombre, descripcion, costo, cupo);
-		        } catch (NumberFormatException ex) {
+		            // Verificar si el tipo de registro ya existe en la edición
+		            Edicion edicion = ManejadorEdicion.getInstance().encontrarEdicion(edi);
+		            if (edicion != null && edicion.existeTipoRegistro(nombre)) {
+		                throw new excepciones.TipoRegistroExistenteExcepcion(
+		                    "El tipo de registro '" + nombre + "' ya existe en la edición '" + edi);
+		            }
 
-		            System.out.println("Error: Formato de número inválido en costo o cupo");
-		        }catch (Exception ex) {
-		            System.out.println("Error: " + ex.getMessage());
+		            ice.altaTipoDeRegistro(edi, nombre, descripcion, costo, cupo);
+		            JOptionPane.showMessageDialog(this, "El tipo de registro se ha registrado con éxito", "Alta de Tipo Registro",
+	                        JOptionPane.INFORMATION_MESSAGE);
+		            limpiarFormulario();
+		            
+		        } catch (excepciones.TipoRegistroExistenteExcepcion ex) {
+		        	JOptionPane.showMessageDialog(this, ex.getMessage(),"Alta de Tipo Registro", JOptionPane.ERROR_MESSAGE);
+		            tf_nombre.setText("");
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
 		        }
 		    }
 		});
 
 		btn_cancelar.addActionListener(e -> {
 		    setVisible(false);
+		    limpiarFormulario();
 		});
 
+		
+	}
+
+	private void limpiarFormulario() {
+		seleccionarEvento.setSelectedIndex(-1);
+		seleccionarEdicion.setSelectedIndex(-1);
+		tf_nombre.setText("");
+		tf_descripcion.setText("");
+		tf_costo.setText("");
+		tf_cupo.setText("");
 		
 	}
 

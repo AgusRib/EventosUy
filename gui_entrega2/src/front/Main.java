@@ -1,21 +1,17 @@
 package front;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import logica.Factory;
-import logica.IControllerUsuario;
-import java.awt.BorderLayout;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+
+import logica.Factory;
+import logica.IControllerEvento;
+import logica.IControllerUsuario;
 
 public class Main {
 
@@ -27,7 +23,10 @@ public class Main {
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
 	private ConsultaDeEvento frmConsultaDeEvento;
+	private AltaTipoRegistro frmAltaTipoRegistro;
+	
 	private IControllerUsuario ICU;
+	private IControllerEvento ICE;
 	/**
 	 * Launch the application.
 	 */
@@ -159,6 +158,15 @@ public class Main {
 			//Sub menus TipoRegistro
 			JMenuItem mntmAltaTipoRegistro = new JMenuItem("Alta");
 			mnTipoRegistro.add(mntmAltaTipoRegistro);
+			frmAltaTipoRegistro = new AltaTipoRegistro(ICE);
+			frmMain.getContentPane().add(frmAltaTipoRegistro);
+			frmAltaTipoRegistro.setVisible(false);
+			mntmAltaTipoRegistro.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frmAltaTipoRegistro.setVisible(true);
+					frmAltaTipoRegistro.toFront();
+				}
+			});
 			
 			JMenuItem mntmConsultaTipoReg = new JMenuItem("Consulta");
 			mnTipoRegistro.add(mntmConsultaTipoReg);
