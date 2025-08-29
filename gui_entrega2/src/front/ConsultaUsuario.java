@@ -19,6 +19,8 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 
 //TODO: Implementar mensaje de usuarios no existentes
@@ -33,6 +35,7 @@ public class ConsultaUsuario extends JInternalFrame {
 	private JTextField txtNombre;
 	private JTextField txtEmail;
 	private JLabel lblAsociaciones;
+	private JScrollPane scrollPane_1;
 	
 	@SuppressWarnings({ "serial", "unchecked" })
 	public ConsultaUsuario(IControllerUsuario ICU) {
@@ -51,12 +54,12 @@ public class ConsultaUsuario extends JInternalFrame {
 		panelDetallesUsr = new JPanel();
 		panelDetallesUsr.setBounds(133, 11, 291, 248);
 		getContentPane().add(panelDetallesUsr);
-		panelDetallesUsr.setVisible(false);
+		panelDetallesUsr.setVisible(true);
 		GridBagLayout gbl_panelDetallesUsr = new GridBagLayout();
-		gbl_panelDetallesUsr.columnWidths = new int[]{142, 287, 0};
-		gbl_panelDetallesUsr.rowHeights = new int[]{14, 0, 20, 162, 0};
-		gbl_panelDetallesUsr.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelDetallesUsr.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelDetallesUsr.columnWidths = new int[]{92, 138, 0};
+		gbl_panelDetallesUsr.rowHeights = new int[]{14, 0, 20, 162, 0, 0};
+		gbl_panelDetallesUsr.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelDetallesUsr.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		panelDetallesUsr.setLayout(gbl_panelDetallesUsr);
 		
 		JLabel lblDetalles = new JLabel("Detalles del Usuario");
@@ -116,24 +119,26 @@ public class ConsultaUsuario extends JInternalFrame {
 		GridBagConstraints gbc_lblAsociaciones = new GridBagConstraints();
 		gbc_lblAsociaciones.anchor = GridBagConstraints.NORTH;
 		gbc_lblAsociaciones.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblAsociaciones.insets = new Insets(0, 0, 0, 5);
+		gbc_lblAsociaciones.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAsociaciones.gridx = 0;
 		gbc_lblAsociaciones.gridy = 3;
 		panelDetallesUsr.add(lblAsociaciones, gbc_lblAsociaciones);
 		
+		scrollPane_1 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_1.gridx = 1;
+		gbc_scrollPane_1.gridy = 3;
+		panelDetallesUsr.add(scrollPane_1, gbc_scrollPane_1);
+		
 		listAsociaciones = new JList<String>();
-
-		listAsociaciones.setBorder(new LineBorder(new Color(0, 0, 0)));
-		GridBagConstraints gbc_listAsociaciones = new GridBagConstraints();
-		gbc_listAsociaciones.fill = GridBagConstraints.BOTH;
-		gbc_listAsociaciones.gridx = 1;
-		gbc_listAsociaciones.gridy = 3;
-		panelDetallesUsr.add(listAsociaciones, gbc_listAsociaciones);	
+		scrollPane_1.setViewportView(listAsociaciones);
 		
 		listUsuarios = new JList<String>();
-		listUsuarios.setBounds(10, 11, 113, 248);
-		getContentPane().add(listUsuarios);
-		listUsuarios.setBorder(new LineBorder(new Color(0, 0, 0)));
+		JScrollPane scrollPane = new JScrollPane(listUsuarios);
+		scrollPane.setBounds(10, 11, 113, 248);
+		getContentPane().add(scrollPane);
 		listUsuarios.setVisible(true);
 		listUsuarios.setEnabled(true);
 		listUsuarios.addListSelectionListener(e -> {
@@ -159,7 +164,7 @@ public class ConsultaUsuario extends JInternalFrame {
 	private void detallesUsuario() {
 		String selected = listUsuarios.getSelectedValue();
 		if (selected == null) {
-			panelDetallesUsr.setVisible(false);
+			
 			return;
 		}
 		panelDetallesUsr.setVisible(true);

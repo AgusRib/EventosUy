@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import logica.CargaDatos;
 import logica.Factory;
 import logica.IControllerUsuario;
 import java.awt.BorderLayout;
@@ -71,6 +73,21 @@ public class Main {
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mnSistema.add(mntmSalir);
+		
+		JMenuItem mntmCargarDatos = new JMenuItem("Cargar Datos");
+		mnSistema.add(mntmCargarDatos);
+		mntmCargarDatos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CargaDatos carga = new CargaDatos();
+				try {
+					carga.cargarDatos();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		
 		JMenu mnFuncionalidades = new JMenu("Funcionalidades");
 		menuBar.add(mnFuncionalidades);

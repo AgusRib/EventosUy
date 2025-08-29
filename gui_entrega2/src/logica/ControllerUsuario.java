@@ -5,6 +5,7 @@ import java.util.Set;
 
 import logica.DataUsuario.TipoUsuario;
 
+//TODO: implementar excepciones para manejar campos vacíos en las altas salvo la web de organizador ya que es opcional
 public class ControllerUsuario implements IControllerUsuario {
 
 	@Override
