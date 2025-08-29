@@ -1,8 +1,9 @@
 package logica;
 
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.time.LocalDate;
 
 
 
@@ -10,15 +11,16 @@ import java.util.Set;
 public class Evento{
 	private String nombre;
 	private String sigla;
-	private Date fechaAlta;
+	private LocalDate fechaAlta;
 	private String descripcion;
 	//private SortedSet(Edicion*) ediciones; ??
-	private final Set<Edicion> ediciones;
-	private final Set<Categoria> categorias;
+	private final HashSet<Edicion> ediciones;
+	private final HashSet<Categoria> categorias;
 
-	public Evento(String nombre, Date fecha, String descripcion) {
+	public Evento(String nombre,String sigla, LocalDate fecha, String descripcion) {
 		this.nombre = nombre;
 		this.fechaAlta = fecha;
+		this.sigla = sigla;
 		this.descripcion = descripcion;
 		//this.ediciones = NULL; ??
 		this.categorias = new HashSet<>();
@@ -29,7 +31,7 @@ public class Evento{
 		return nombre;
 	}
 
-	public Date getfechaAlta() {
+	public LocalDate getfechaAlta() {
 		return fechaAlta;
 	}
 
@@ -64,8 +66,16 @@ public class Evento{
 	
 	public void agregarEdicion(Edicion nueva) {
 		if (nueva == null) throw new IllegalArgumentException("Edición vacía");
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		if (getEdicion(nueva.getNombre()) != null) throw new IllegalArgumentException("Ya existe una edición con ese nombre");
 		ediciones.add(nueva);
+	}
+	
+	public void agregarCategoria(Categoria cat) {
+		if (cat == null) throw new IllegalArgumentException("Categoría vacía");
+		
+		if (this.categorias.contains(cat)) throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
+		categorias.add(cat);
 	}
 	
 	public HashSet<String> getEdiciones() {

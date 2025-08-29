@@ -3,15 +3,16 @@ package logica;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.time.LocalDate;
 
 public class DTDetalleEvento {
 	private String nombre;
 	private String sigla;
-	private Date fechaAlta;
+	private LocalDate fechaAlta;
 	private String descripcion;
 	private HashSet<String>  categorias;
 	private HashSet<String> ediciones;
-	public DTDetalleEvento(String nombre,String sigla, Date fecha, String descripcion, HashSet<String> categorias,
+	public DTDetalleEvento(String nombre,String sigla, LocalDate fecha, String descripcion, HashSet<String> categorias,
 			HashSet<String> hashSet) {
 		super();
 		this.nombre = nombre;
