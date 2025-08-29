@@ -35,10 +35,11 @@ public class TipoRegistro {
 		return !(this.cupo == 0);
 	}
 	
-	DTTipoRegistro infoTipoRegistro() {
+	public DTTipoRegistro infoTipoRegistro() {
 		
 		DTTipoRegistro dt = new DTTipoRegistro(nombre, descripcion, costo, cupo);
 		return dt;
 		
 	}
+	
 }

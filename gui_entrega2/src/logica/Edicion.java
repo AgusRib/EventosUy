@@ -118,6 +118,15 @@ public class Edicion {
 				nombresInstituciones
 		);
 	}
+	
+	public TipoRegistro getTipoRegistro(String nomTRegistro) {
+		for (TipoRegistro tipoReg : this.tiposRegistro) {
+			if (nomTRegistro.equals(tipoReg.getNombre())) {
+				return tipoReg;
+			}
+		}
+		return null;
+	}
 
 
 

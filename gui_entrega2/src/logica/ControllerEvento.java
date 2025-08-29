@@ -41,9 +41,11 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public DTTRegistro verDetalleTRegistro(String nombreEdi, String nomTRegistro) {
-		// TODO Auto-generated method stub
-		return null;
+	public DTTipoRegistro verDetalleTRegistro(String nombreEdi, String nomTRegistro) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		TipoRegistro reg = edi.getTipoRegistro(nomTRegistro);
+		return reg.infoTipoRegistro();
 	}
 
 	@Override
