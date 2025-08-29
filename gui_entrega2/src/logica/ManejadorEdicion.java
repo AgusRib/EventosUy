@@ -17,5 +17,9 @@ public class ManejadorEdicion {
 		return instance;
 	}
 	
+	public Edicion encontrarEdicion(String nombreEdi) {
+		return (Edicion) colEdiciones.get(nombreEdi);
+	}
+	
 	
 }
