@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 //TODO: Implementar llamado a ventana de consulta de edicion al hacer doble click en una edicion
 //TODO: Implementar llamado a ventana de consulta de registro al hacer doble click en un registro
 public class ConsultaUsuario extends JInternalFrame {
-	
+	private static ConsultaUsuario instance = null;
 	private IControllerUsuario controllerUsr;
 	private JPanel panelDetallesUsr;
 	private JList<String> listUsuarios;
@@ -179,4 +179,20 @@ public class ConsultaUsuario extends JInternalFrame {
 			listAsociaciones.setListData(controllerUsr.listarEdicionesOrganizadas(selected).toArray(new String[0]));
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+	
+	public static ConsultaUsuario getInstance(IControllerUsuario ICU) {
+		if (instance == null) {
+			instance = new ConsultaUsuario(ICU);
+		}
+		return instance;
+	}
+	
+	
+	
+	
+	
+}
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git

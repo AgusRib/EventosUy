@@ -19,7 +19,7 @@ import logica.ManejadorInstitucion;
 
 
 public class AltaUsuario extends JInternalFrame {
-	
+	private static AltaUsuario instance = null;
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtEmail;
@@ -278,4 +278,9 @@ public class AltaUsuario extends JInternalFrame {
 		}
 		
 	}
-}
+	public static AltaUsuario getInstance(IControllerUsuario icu) {
+		if (instance == null) {
+			instance = new AltaUsuario(icu);
+		}
+		return instance;
+}}

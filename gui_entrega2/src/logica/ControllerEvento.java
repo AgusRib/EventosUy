@@ -17,6 +17,9 @@ public class ControllerEvento implements IControllerEvento{
 	public HashSet<String> listarEdiciones(String nombreEvento) {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		Evento ev = mE.obtenerEvento(nombreEvento);
+		if (ev == null) {
+			return new HashSet<>(); // Return empty set if event not found
+		}
 		return ev.getEdiciones();
 	}
 
@@ -37,7 +40,10 @@ public class ControllerEvento implements IControllerEvento{
 	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
-		return ed.devolverDT();
+		DTDetalleEdicion dtEdi = ed.devolverDT();
+		Organizador org = ManejadorUsuario.getInstance().buscarOrganizadorDeEdicion(nombreEdi);
+		dtEdi.setOrganizador(org != null ? org.getNombre() : null);
+		return dtEdi;
 	}
 
 	@Override

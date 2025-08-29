@@ -11,6 +11,10 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import logica.IControllerEvento;
+import logica.ManejadorEvento;
+
 import javax.swing.ListSelectionModel;
 
 import java.awt.BorderLayout;
@@ -28,9 +32,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
+
+
 @SuppressWarnings("serial")
 public class ConsultaEdicionDeEvento extends JInternalFrame {
+	private static ConsultaEdicionDeEvento instance = null;
+	public static interface AbrirRegistros {
+	    void open(String evento, String edicion, logica.DTTipoRegistro registro);
+	}
+	public static interface AbrirPatrocinios {
+	    void open(String evento, String edicion, String nivel, java.util.List<logica.DTPatrocinio> patrociniosDelNivel);
+	}
 
+	
+	
+	
     private static final String PLACEHOLDER_REG_TIPO = "— Seleccione tipo —";
     private static final String PLACEHOLDER_PAT_TIPO = "— Seleccione nivel —";
 
@@ -41,22 +58,26 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     private JComboBox<String> editorTiposRegCombo;  // col 7
     private JComboBox<String> editorTiposPatCombo;  // col 8
 
-    // Datos en memoria
-    private final Map<String, List<String>> edicionesPorEvento = new LinkedHashMap<>();
-    private final Map<String, Object[]> detalleEdicionPorNombre = new HashMap<>();
-    private final Map<String, List<Object[]>> registrosPorEdicion = new HashMap<>();
-    private final Map<String, List<Object[]>> patrociniosPorEdicion = new HashMap<>();
 
     // Tablas
     private JTable tblDetallesDeEdicion;
     private JTable tblDetalleDeRegistro;
     private JTable tblDetalleDePatrocinio;
 
-    // ScrollPanes para ocultar/mostrar
-    private JScrollPane spReg;
-    private JScrollPane spPat;
+    
+    //Lógica
+    private IControllerEvento controllerEvento;
+    
+    //Para abrir jInternlFrames de patrocinios y registros con tablas
+    private AbrirRegistros onOpenTipoRegistro;
+    private AbrirPatrocinios onOpenPatrocinio;
 
-    public ConsultaEdicionDeEvento() {
+    public void setOnOpenTipoRegistro(AbrirRegistros opener) { this.onOpenTipoRegistro = opener; }
+    public void setOnOpenPatrocinio(AbrirPatrocinios opener) { this.onOpenPatrocinio = opener; }
+
+    public ConsultaEdicionDeEvento(IControllerEvento ice) {
+    	controllerEvento = ice;
+    	
         setTitle("Consulta edición de evento");
         setClosable(true);
         setIconifiable(true);
@@ -111,18 +132,27 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         editorTiposRegCombo.setToolTipText("Elegí un tipo de registro");
         editorTiposRegCombo.addActionListener(e -> {
             if (tblDetallesDeEdicion.isEditing()) tblDetallesDeEdicion.getCellEditor().stopCellEditing();
+
             String tipo = (String) editorTiposRegCombo.getSelectedItem();
+            String evento = (String) cbxListadoDeEventos.getSelectedItem();
             String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
+
             if (tipo == null || PLACEHOLDER_REG_TIPO.equals(tipo)) {
-                limpiarRegistros();
-                spReg.setVisible(false);
-            } else {
-                actualizarRegistrosParaTipo(edicion, tipo);
-                spReg.setVisible(true);
+                return;
             }
-            content.revalidate();
-            content.repaint();
+
+            try {
+                logica.DTTipoRegistro dto = controllerEvento.verDetalleTRegistro(edicion, tipo);
+                if (dto != null && onOpenTipoRegistro != null) {
+                    onOpenTipoRegistro.open(evento, edicion, dto);
+                } else {
+                    
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
+
         TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(7);
         colTipoReg.setCellEditor(new DefaultCellEditor(editorTiposRegCombo));
 
@@ -131,53 +161,44 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         editorTiposPatCombo.setToolTipText("Elegí un nivel de patrocinio");
         editorTiposPatCombo.addActionListener(e -> {
             if (tblDetallesDeEdicion.isEditing()) tblDetallesDeEdicion.getCellEditor().stopCellEditing();
+
             String nivel = (String) editorTiposPatCombo.getSelectedItem();
+            String evento = (String) cbxListadoDeEventos.getSelectedItem();
             String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
+
             if (nivel == null || PLACEHOLDER_PAT_TIPO.equals(nivel)) {
-                limpiarPatrocinios();
-                spPat.setVisible(false);
-            } else {
-                actualizarPatrociniosParaNivel(edicion, nivel);
-                spPat.setVisible(true);
+                return;
             }
-            content.revalidate();
-            content.repaint();
+
+            try {
+                java.util.List<logica.DTPatrocinio> lista = new java.util.ArrayList<>();
+                for (String inst : controllerEvento.listarPatrocinios(edicion)) {
+                    logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
+                    if (p != null && p.getNivelPatrocinio().name().equalsIgnoreCase(nivel)) {
+                        lista.add(p);
+                    }
+                }
+                if (onOpenPatrocinio != null) {
+                    onOpenPatrocinio.open(evento, edicion, nivel, lista);
+                } else {
+
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
+
         TableColumn colPat = tblDetallesDeEdicion.getColumnModel().getColumn(8);
         colPat.setCellEditor(new DefaultCellEditor(editorTiposPatCombo));
 
-        // Registros
-        JLabel lblReg = new JLabel("Ver detalles del registro");
-        content.add(lblReg, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
-
-        tblDetalleDeRegistro = new JTable(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Nombre", "Descripción", "Costo", "Cupo"}
-        ) { @Override public boolean isCellEditable(int r, int c) { return false; }});
-        configurarTablaBasica(tblDetalleDeRegistro);
-        spReg = new JScrollPane(tblDetalleDeRegistro);
-        spReg.setVisible(false);
-        content.add(spReg, gbc(0, y++, 1, 1, 1, 1, GridBagConstraints.BOTH));
-
-        // Patrocinios
-        JLabel lblPat = new JLabel("Ver detalle del patrocinio");
-        content.add(lblPat, gbc(0, y++, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
-
-        tblDetalleDePatrocinio = new JTable(new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Fecha", "Monto", "Código", "Nivel Patrocinio"}
-        ) { @Override public boolean isCellEditable(int r, int c) { return false; }});
-        configurarTablaBasica(tblDetalleDePatrocinio);
-        spPat = new JScrollPane(tblDetalleDePatrocinio);
-        spPat.setVisible(false);
-        content.add(spPat, gbc(0, y++, 1, 1, 1, 1, GridBagConstraints.BOTH));
-
-        // Datos demo + listeners
-        cargarDatosDemo();
+        //listeners
         alCambiarEvento();
+        cargarEventosDesdeLogica();
 
         if (cbxListadoDeEventos.getItemCount() > 0) cbxListadoDeEventos.setSelectedIndex(0);
     }
+    
+    
 
     private static GridBagConstraints gbc(int x, int y, int w, int h, double wx, double wy, int fill) {
         GridBagConstraints c = new GridBagConstraints();
@@ -198,6 +219,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         t.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
+    
 
     /* ---------- listeners ---------- */
     private void alCambiarEvento() {
@@ -213,103 +235,113 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 
     private void actualizarEdicionesPara(String evento) {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        List<String> eds = edicionesPorEvento.getOrDefault(evento, Collections.emptyList());
-        for (String ed : eds) model.addElement(ed);
+        try {
+            if (evento != null) {
+                for (String ed : controllerEvento.listarEdiciones(evento)) {
+                    model.addElement(ed);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         cbxListadoDeEdiciones.setModel(model);
-        cbxListadoDeEdiciones.setEnabled(!eds.isEmpty());
+        cbxListadoDeEdiciones.setEnabled(model.getSize() > 0);
 
         limpiarTablas();
         prepararEditorTipoRegistros(null);
         prepararEditorTipoPatrocinios(null);
-        spReg.setVisible(false);
-        spPat.setVisible(false);
 
-        if (!eds.isEmpty()) cbxListadoDeEdiciones.setSelectedIndex(0);
+
+        if (model.getSize() > 0) cbxListadoDeEdiciones.setSelectedIndex(0);
     }
 
-    private void actualizarTablasParaEdicion(String edicion) {
-        if (edicion == null) {
-            limpiarTablas();
-            prepararEditorTipoRegistros(null);
-            prepararEditorTipoPatrocinios(null);
-            spReg.setVisible(false);
-            spPat.setVisible(false);
-            return;
-        }
 
-        DefaultTableModel detModel = (DefaultTableModel) tblDetallesDeEdicion.getModel();
-        detModel.setRowCount(0);
-        Object[] fila = detalleEdicionPorNombre.get(edicion);
-        if (fila != null) detModel.addRow(fila);
+	private void actualizarTablasParaEdicion(String edicion) {
+	    DefaultTableModel detModel = (DefaultTableModel) tblDetallesDeEdicion.getModel();
+	    detModel.setRowCount(0);
+	
+	    if (edicion == null) {
+	        prepararEditorTipoRegistros(null);
+	        prepararEditorTipoPatrocinios(null);
+	        return;
+	    }
+	
+	    try {
+	        logica.DTDetalleEdicion dt = controllerEvento.mostrarDetallesEdicion(edicion);
+	        if (dt != null) {
+	            Object[] fila = new Object[]{
+	                dt.getNombre(),
+	                dt.getSigla(),
+	                String.valueOf(dt.getFechaInicio()),
+	                String.valueOf(dt.getFechaFin()),
+	                dt.getCiudad(),
+	                dt.getPais(),
+	                dt.getOrganizador(),   
+	                PLACEHOLDER_REG_TIPO,
+	                PLACEHOLDER_PAT_TIPO
+	            };
+	            detModel.addRow(fila);
+	        }
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	    }
+	
+	    prepararEditorTipoRegistros(edicion);
+	    prepararEditorTipoPatrocinios(edicion);
+	
+	}
 
-        if (detModel.getRowCount() > 0) {
-            detModel.setValueAt(PLACEHOLDER_REG_TIPO, 0, 7);
-            detModel.setValueAt(PLACEHOLDER_PAT_TIPO, 0, 8);
-        }
 
-        prepararEditorTipoRegistros(edicion);
-        prepararEditorTipoPatrocinios(edicion);
+	private void prepararEditorTipoRegistros(String edicion) {
+	    DefaultComboBoxModel<String> tipoModel = new DefaultComboBoxModel<>();
+	    tipoModel.addElement(PLACEHOLDER_REG_TIPO);
 
-        limpiarRegistros();  spReg.setVisible(false);
-        limpiarPatrocinios(); spPat.setVisible(false);
-    }
+	    if (edicion != null) {
+	        String evento = (String) cbxListadoDeEventos.getSelectedItem();
+	        try {
+	            for (logica.DTTipoRegistro tr : controllerEvento.listarTipoRegistro(evento, edicion)) {
+	                if (tr != null && tr.getNombre() != null) tipoModel.addElement(tr.getNombre());
+	            }
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    }
+	    editorTiposRegCombo.setModel(tipoModel);
+	}
 
-    private void prepararEditorTipoRegistros(String edicion) {
-        DefaultComboBoxModel<String> tipoModel = new DefaultComboBoxModel<>();
-        tipoModel.addElement(PLACEHOLDER_REG_TIPO);
-        if (edicion != null) {
-            Set<String> tipos = new LinkedHashSet<>();
-            for (Object[] r : registrosPorEdicion.getOrDefault(edicion, Collections.emptyList())) {
-                if (r != null && r.length >= 1 && r[0] != null) tipos.add(String.valueOf(r[0]));
-            }
-            for (String t : tipos) tipoModel.addElement(t);
-        }
-        editorTiposRegCombo.setModel(tipoModel);
-    }
 
-    private void prepararEditorTipoPatrocinios(String edicion) {
-        DefaultComboBoxModel<String> patModel = new DefaultComboBoxModel<>();
-        patModel.addElement(PLACEHOLDER_PAT_TIPO);
-        if (edicion != null) {
-            Set<String> niveles = new LinkedHashSet<>();
-            for (Object[] p : patrociniosPorEdicion.getOrDefault(edicion, Collections.emptyList())) {
-                if (p != null && p.length >= 4 && p[3] != null) niveles.add(String.valueOf(p[3]));
-            }
-            for (String n : niveles) patModel.addElement(n);
-        }
-        editorTiposPatCombo.setModel(patModel);
-    }
+	private void prepararEditorTipoPatrocinios(String edicion) {
+	    DefaultComboBoxModel<String> patModel = new DefaultComboBoxModel<>();
+	    patModel.addElement(PLACEHOLDER_PAT_TIPO);
 
-    private void actualizarRegistrosParaTipo(String edicion, String tipo) {
-        DefaultTableModel regModel = (DefaultTableModel) tblDetalleDeRegistro.getModel();
-        regModel.setRowCount(0);
-        for (Object[] r : registrosPorEdicion.getOrDefault(edicion, Collections.emptyList())) {
-            String nombre = (r != null && r.length >= 1 && r[0] != null) ? String.valueOf(r[0]) : "";
-            if (nombre.equalsIgnoreCase(tipo)) regModel.addRow(r);
-        }
-    }
+	    if (edicion != null) {
+	        java.util.Set<String> instituciones = java.util.Collections.emptySet();
+	        try {
+	            instituciones = controllerEvento.listarPatrocinios(edicion);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
 
-    private void actualizarPatrociniosParaNivel(String edicion, String nivel) {
-        DefaultTableModel patModel = (DefaultTableModel) tblDetalleDePatrocinio.getModel();
-        patModel.setRowCount(0);
-        for (Object[] p : patrociniosPorEdicion.getOrDefault(edicion, Collections.emptyList())) {
-            String n = (p != null && p.length >= 4 && p[3] != null) ? String.valueOf(p[3]) : "";
-            if (n.equalsIgnoreCase(nivel)) patModel.addRow(p);
-        }
-    }
+	        java.util.Set<String> niveles = new java.util.LinkedHashSet<>();
+	        for (String inst : instituciones) {
+	            try {
+	                logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
+	                if (p != null && p.getNivelPatrocinio().name() != null) niveles.add(p.getNivelPatrocinio().name());
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	        for (String n : niveles) patModel.addElement(n);
+	    }
 
-    private void limpiarRegistros() {
-        ((DefaultTableModel) tblDetalleDeRegistro.getModel()).setRowCount(0);
-    }
+	    editorTiposPatCombo.setModel(patModel);
+	}
 
-    private void limpiarPatrocinios() {
-        ((DefaultTableModel) tblDetalleDePatrocinio.getModel()).setRowCount(0);
-    }
 
+   
+    
     private void limpiarTablas() {
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
-        limpiarRegistros();
-        limpiarPatrocinios();
     }
     public void invocacionDesdeConsultaDeEvento(String edicion,String evento){
     	cbxListadoDeEventos.setSelectedItem(evento);
@@ -318,78 +350,28 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 		actualizarTablasParaEdicion(edicion);
     }
 
-    // --------- Datos de demostración ----------
-    private void cargarDatosDemo() {
-        edicionesPorEvento.put("Jornadas de Informática",
-                Arrays.asList("JI 2025 - Montevideo", "JI 2024 - Salto", "JI 2023 - Online"));
-        edicionesPorEvento.put("ExpoTech",
-                Arrays.asList("Primavera 2025", "Otoño 2024"));
-        edicionesPorEvento.put("DataConf",
-                Collections.singletonList("DC 2025 - Buenos Aires"));
-
-        DefaultComboBoxModel<String> evModel = new DefaultComboBoxModel<>();
-        for (String ev : edicionesPorEvento.keySet()) evModel.addElement(ev);
+    // Carga de datos en tablas y demás
+    private void cargarEventosDesdeLogica() {
+    	DefaultComboBoxModel<String> evModel = new DefaultComboBoxModel<>();
+    	try {
+            for (String ev : controllerEvento.listarEventos()) {
+                evModel.addElement(ev);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         cbxListadoDeEventos.setModel(evModel);
-
-        detalleEdicionPorNombre.put("JI 2025 - Montevideo", new Object[]{
-                "Jornadas de Informática", "JI25", "2025-09-10", "2025-09-12",
-                "Montevideo", "Uruguay", "FING", "General/Estudiante", "Oro, Plata, Bronce"
-        });
-        detalleEdicionPorNombre.put("JI 2024 - Salto", new Object[]{
-                "Jornadas de Informática", "JI24", "2024-09-11", "2024-09-13",
-                "Salto", "Uruguay", "FING", "General/Estudiante", "Oro, Plata"
-        });
-        detalleEdicionPorNombre.put("JI 2023 - Online", new Object[]{
-                "Jornadas de Informática", "JI23", "2023-09-01", "2023-09-03",
-                "Online", "Uruguay", "FING", "General", "Plata"
-        });
-        detalleEdicionPorNombre.put("Primavera 2025", new Object[]{
-                "ExpoTech", "XT25P", "2025-11-05", "2025-11-07",
-                "Punta del Este", "Uruguay", "Cámara TI", "General/Pro", "Oro, Plata, Bronce"
-        });
-        detalleEdicionPorNombre.put("Otoño 2024", new Object[]{
-                "ExpoTech", "XT24O", "2024-04-18", "2024-04-20",
-                "Montevideo", "Uruguay", "Cámara TI", "General", "Oro"
-        });
-        detalleEdicionPorNombre.put("DC 2025 - Buenos Aires", new Object[]{
-                "DataConf", "DC25", "2025-08-20", "2025-08-22",
-                "Buenos Aires", "Argentina", "Data Org", "General/Estudiante", "Platino, Oro"
-        });
-
-        registrosPorEdicion.put("JI 2025 - Montevideo", Arrays.<Object[]>asList(
-                new Object[]{"General", "Acceso completo", 1200, 300},
-                new Object[]{"Estudiante", "Acceso completo (50% off)", 600, 500}
-        ));
-        registrosPorEdicion.put("JI 2024 - Salto", Arrays.<Object[]>asList(
-                new Object[]{"General", "Acceso completo", 1000, 250},
-                new Object[]{"Estudiante", "Acceso completo (50% off)", 500, 400}
-        ));
-        registrosPorEdicion.put("JI 2023 - Online", Arrays.<Object[]>asList(
-                new Object[]{"General", "Streaming + material", 300, 2000}
-        ));
-        registrosPorEdicion.put("Primavera 2025", Arrays.<Object[]>asList(
-                new Object[]{"General", "Expo + Charlas", 1500, 350},
-                new Object[]{"Pro", "General + Talleres", 2500, 120}
-        ));
-        registrosPorEdicion.put("Otoño 2024", Arrays.<Object[]>asList(
-                new Object[]{"General", "Expo + Charlas", 1100, 300}
-        ));
-        registrosPorEdicion.put("DC 2025 - Buenos Aires", Arrays.<Object[]>asList(
-                new Object[]{"General", "Charlas + Networking", 2000, 400},
-                new Object[]{"Estudiante", "Charlas + Networking (40% off)", 1200, 300}
-        ));
-
-        patrociniosPorEdicion.put("JI 2025 - Montevideo", Arrays.<Object[]>asList(
-                new Object[]{"2025-07-01", 5000, "SP-001", "Oro"},
-                new Object[]{"2025-07-15", 2500, "SP-002", "Plata"}
-        ));
-        patrociniosPorEdicion.put("Primavera 2025", Arrays.<Object[]>asList(
-                new Object[]{"2025-09-10", 8000, "SP-101", "Oro"},
-                new Object[]{"2025-10-01", 3000, "SP-102", "Bronce"}
-        ));
-        patrociniosPorEdicion.put("DC 2025 - Buenos Aires", Arrays.<Object[]>asList(
-                new Object[]{"2025-06-20", 12000, "SP-201", "Platino"},
-                new Object[]{"2025-07-05", 6000, "SP-202", "Oro"}
-        ));
+        cbxListadoDeEventos.setEnabled(evModel.getSize() > 0);
+        if (evModel.getSize() > 0) cbxListadoDeEventos.setSelectedIndex(0);
     }
+    public static ConsultaEdicionDeEvento getInstance(IControllerEvento ice) {
+    			if (instance == null) {
+    				instance = new ConsultaEdicionDeEvento(ice);
+    			}
+    			return instance;
+    }
+
+
+
+
 }
