@@ -85,6 +85,7 @@ public class Main {
 		frmAltaUsuario.setVisible(false);
 		mntmAltaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				frmAltaUsuario.refrescar();
 				frmAltaUsuario.setVisible(true);
 				frmAltaUsuario.toFront();
 			}

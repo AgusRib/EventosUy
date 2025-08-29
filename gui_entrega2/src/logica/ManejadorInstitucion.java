@@ -23,7 +23,7 @@ public class ManejadorInstitucion {
 		instituciones.put(institucion.getNombre(), institucion);
 	}
 	
-	public Institucion ObtenerInstitucion(String nombreInstitucion) {
+	public Institucion obtenerInstitucion(String nombreInstitucion) {
 		return instituciones.get(nombreInstitucion);
 	}
 	

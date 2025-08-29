@@ -32,7 +32,7 @@ public class ControllerUsuario implements IControllerUsuario {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
 		Asistente asistente = mU.obtenerAsistente(nicknameAsistente);
-		asistente.setInstitucion(mI.ObtenerInstitucion(nombreInstitucion));
+		asistente.setInstitucion(mI.obtenerInstitucion(nombreInstitucion));
 
 	}
 
@@ -63,6 +63,7 @@ public class ControllerUsuario implements IControllerUsuario {
 
 	}
 	
+	@Override
 	public DataUsuario infoUsuario(String nickname) {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		Usuario user = mU.obtenerUsuario(nickname);
@@ -88,5 +89,17 @@ public class ControllerUsuario implements IControllerUsuario {
 		Organizador org = mI.obtenerOrganizador(nickname);
 		return org.getEdiciones();
 	}
-
+	
+	@Override
+	public void ingresarInstitucion(String nombre, String descripcion, String web) throws Exception {
+		ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
+		if (mI.obtenerInstitucion(nombre) != null) {
+			throw new Exception("Ya existe una institucion con este nombre");
+		} else {
+			Institucion institucion = new Institucion(nombre, descripcion, web);
+			mI.agregarInstitucion(institucion);
+		}
+	}
+	
+	
 }

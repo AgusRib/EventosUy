@@ -57,7 +57,25 @@ public class AltaUsuario extends JInternalFrame {
 		
 		controllerUsr = icu;
 		
-		ManejadorInstitucion.getInstance().agregarInstitucion(new Institucion("Instituto prueba", "descripcion prueba", "url prueba")); 
+		try {
+			icu.ingresarInstitucion("Institucion", "Descripcion", "hhtps://www.institucion.com");
+		} catch (Exception e) {
+			// Institucion ya existe
+		}
+		
+		try {
+			icu.ingresarInstitucion("Institucion", "Descripcion", "hhtps://www.institucion.com");
+		} catch (Exception e) {
+			// Institucion ya existe
+		}
+		
+		try {
+			icu.ingresarInstitucion("Otra Institucion", "Descripcion", "hhtps://www.oinstitucion.com");
+		} catch (Exception e) {
+			// Institucion ya existe
+		}
+		
+
 		
 		setTitle("Alta de Usuario");
 		setClosable(true);
@@ -250,5 +268,14 @@ public class AltaUsuario extends JInternalFrame {
 		btnAsistente.setSelected(true);
 		verFormAsistente(true);
 		verFormOrganizador(false);
+	}
+
+	public void refrescar() {
+		cmBxInstitucion.removeAllItems();
+		cmBxInstitucion.addItem("-- Seleccione una institucion ---");
+		for (String inst : ManejadorInstitucion.getInstance().obtenerInstituciones()) {
+			cmBxInstitucion.addItem(inst);
+		}
+		
 	}
 }
