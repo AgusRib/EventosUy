@@ -6,6 +6,14 @@ public class TipoRegistro {
 	private float costo;
 	private int cupo;
 	
+	public TipoRegistro(String nombre, String descripcion, float costo, int cupo) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.costo = costo;
+		this.cupo = cupo;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}

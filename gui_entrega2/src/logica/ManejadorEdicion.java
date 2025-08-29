@@ -21,4 +21,12 @@ public class ManejadorEdicion {
 		return colEdiciones.containsKey(nickname);
 	}
 	
+	public HashMap<String,Edicion> obtenerEdiciones() {
+		return colEdiciones;
+	}
+ 	
+	public Edicion encontrarEdicion(String nickname) {
+		return colEdiciones.get(nickname);
+	}
+	
 }

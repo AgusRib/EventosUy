@@ -1,4 +1,5 @@
 package logica;
+import java.util.List;
 import java.util.Set;
 
 public class ControllerEvento implements IControllerEvento{
@@ -7,22 +8,26 @@ public class ControllerEvento implements IControllerEvento{
 	@Override
 	public Set<String> listarEventos() {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
-		eventos = mE.obtenerEventos();
-		for (evento e : eventos) {
-			
+		List<Evento> eventos = mE.obtenerEventos();
+		
+		Set<String> nomEventos = null;
+		for (Evento e : eventos) {
+			nomEventos.add(e.getNombre());
 		}
+		
+		return nomEventos;
 		
 	}
 
 	@Override
 	public Set<String> listarEdiciones(String nombreEvento) {
-		// falta implementar ManejadorEvento
+		
 		ManejadorEvento h_evento = ManejadorEvento.getInstance();
 		Evento ev = h_evento.getEvento(nombreEvento);
 		
-		Set<String> ediciones;
+		Set<String> ediciones = null;
 		for (Edicion ed : ev.getEdiciones()) {
-			ediciones.add(ed.getNombre());
+			ediciones.add( ed.getNombre() );
 		}
 		return ediciones;
 	}
@@ -46,9 +51,11 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public DTTRegistro verDetalleTRegistro(String nombreEdi, String nomTRegistro) {
-		// TODO Auto-generated method stub
-		return null;
+	public DTTipoRegistro verDetalleTRegistro(String nombreEdi, String nomTRegistro) {
+		ManejadorEdicion h_edicion = ManejadorEdicion.getInstance();
+		Edicion edi = h_edicion.encontrarEdicion(nombreEdi);
+		TipoRegistro tRegis = edi.obtenerTipoRegistro(nomTRegistro);
+		return tRegis.infoTipoRegistro();
 	}
 
 	@Override
@@ -67,9 +74,7 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public DTDetalleEvento verDetalleEvento(String nombreEvento) {
-		// TODO Auto-generated method stub
-		
-		
+		return null;
 	}
 	
 	
