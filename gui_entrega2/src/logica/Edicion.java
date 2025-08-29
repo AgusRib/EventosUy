@@ -2,7 +2,9 @@ package logica;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Edicion {
@@ -15,7 +17,8 @@ public class Edicion {
 	private String pais;
 	
     private final Set<TipoRegistro> tiposRegistro;
-	
+	private final Map<String, DTPatrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
+    
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
 			String ciudad, String pais) {
 		super();
@@ -86,6 +89,12 @@ public class Edicion {
 			setTipoReg.add(tipoReg.infoTipoRegistro());
 		}
 		return setTipoReg;
+	}
+	
+	public DTPatrocinio getPatrocinio(String nombreInstitucion) {
+		DTPatrocinio p = patrociniosPorInstitucion.get(nombreInstitucion);
+		return p;
+		
 	}
 
 

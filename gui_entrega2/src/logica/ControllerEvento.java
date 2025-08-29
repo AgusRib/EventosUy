@@ -29,8 +29,9 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion) {
-		// TODO Auto-generated method stub
-		return null;
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		return edi.getPatrocinio(nombreInstitucion);
 	}
 
 	@Override
