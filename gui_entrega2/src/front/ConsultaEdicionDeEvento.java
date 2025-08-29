@@ -37,7 +37,7 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 public class ConsultaEdicionDeEvento extends JInternalFrame {
-	
+	private static ConsultaEdicionDeEvento instance = null;
 	public static interface AbrirRegistros {
 	    void open(String evento, String edicion, logica.DTTipoRegistro registro);
 	}
@@ -364,4 +364,14 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         cbxListadoDeEventos.setEnabled(evModel.getSize() > 0);
         if (evModel.getSize() > 0) cbxListadoDeEventos.setSelectedIndex(0);
     }
+    public static ConsultaEdicionDeEvento getInstance(IControllerEvento ice) {
+    			if (instance == null) {
+    				instance = new ConsultaEdicionDeEvento(ice);
+    			}
+    			return instance;
+    }
+
+
+
+
 }

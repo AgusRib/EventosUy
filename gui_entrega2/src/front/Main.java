@@ -83,97 +83,93 @@ public class Main {
 		
 		JMenuItem mntmAltaUsuario = new JMenuItem("Alta Usuario");
 		mnUsuario.add(mntmAltaUsuario);
-		frmAltaUsuario = new AltaUsuario(ICU);
-		desktopPane.add(frmAltaUsuario);
-		frmAltaUsuario.setVisible(false);
-		mntmAltaUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmAltaUsuario.setVisible(true);
-				frmAltaUsuario.toFront();
-			}
-		});
+		frmAltaUsuario = AltaUsuario.getInstance(ICU);
+        desktopPane.add(frmAltaUsuario);
+        frmAltaUsuario.setVisible(false);
+        mntmAltaUsuario.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmAltaUsuario.setVisible(true);
+                frmAltaUsuario.toFront();
+            }
+        });
 		
 		JMenuItem mntmConsultaUsuario = new JMenuItem("Consulta Usuario");
 		mnUsuario.add(mntmConsultaUsuario);
-		frmConsultaUsuario = new ConsultaUsuario(ICU);
-		desktopPane.add(frmConsultaUsuario);
-		frmConsultaUsuario.setVisible(false);
-		mntmConsultaUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmConsultaUsuario.refrescar();
-				frmConsultaUsuario.setVisible(true);
-				frmConsultaUsuario.toFront();
-			}
-		});
+		frmConsultaUsuario = ConsultaUsuario.getInstance(ICU);
+        desktopPane.add(frmConsultaUsuario);
+        frmConsultaUsuario.setVisible(false);
+        mntmConsultaUsuario.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmConsultaUsuario.refrescar();
+                frmConsultaUsuario.setVisible(true);
+                frmConsultaUsuario.toFront();
+            }
+        });
 		
 		JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 		mnUsuario.add(mntmModificarDatos);
-		frmModificarDatosUsuario = new ModificarDatosUsuario();
-		desktopPane.add(frmModificarDatosUsuario);
-		frmModificarDatosUsuario.setVisible(false);
-		mntmModificarDatos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmModificarDatosUsuario.setVisible(true);
-				frmModificarDatosUsuario.toFront();
-			}
-		});
+		frmModificarDatosUsuario = ModificarDatosUsuario.getInstance();
+        desktopPane.add(frmModificarDatosUsuario);
+        frmModificarDatosUsuario.setVisible(false);
+        mntmModificarDatos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmModificarDatosUsuario.setVisible(true);
+                frmModificarDatosUsuario.toFront();
+            }
+        });
 		
 		JMenu mnEvento = new JMenu("Evento");
 		mnFuncionalidades.add(mnEvento);
 		
 		JMenuItem mntmConsultaEvento = new JMenuItem("Consulta");
 		mnEvento.add(mntmConsultaEvento);
-		frmConsultaDeEvento = new ConsultaDeEvento();
-		desktopPane.add(frmConsultaDeEvento);
-		frmConsultaDeEvento.setVisible(false);
-		mntmConsultaEvento.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmConsultaDeEvento.setVisible(true);
-				frmConsultaDeEvento.toFront();
-			}
-		});
-		JMenu mnEdicion = new JMenu("Edicion");
-		mnFuncionalidades.add(mnEdicion);
-		
-		JMenuItem mntmRegistro = new JMenuItem("Registro");
-		mnEdicion.add(mntmRegistro);
-		frmRegistroEdicion = new RegistroEdicion();
-		desktopPane.add(frmRegistroEdicion);
-		frmRegistroEdicion.setVisible(false);
-		mntmRegistro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmRegistroEdicion.setVisible(true);
-				frmRegistroEdicion.toFront();
-			}
-		});
-		
-		JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
-		mnEdicion.add(mntmConsultaEdicion);
-		frmConsultaEdicion = new ConsultaEdicionDeEvento(ICE);
-		
-		frmConsultaEdicion.setOnOpenTipoRegistro((evento, edicion, dto) -> {
-		    DetalleTipoRegistroFrame f = new DetalleTipoRegistroFrame(evento, edicion, dto);
-		    desktopPane.add(f);
-		    f.setVisible(true);
-		    f.toFront();
-		});
-
-		frmConsultaEdicion.setOnOpenPatrocinio((evento, edicion, nivel, lista) -> {
-		    DetallePatrociniosFrame f = new DetallePatrociniosFrame(evento, edicion, nivel, lista);
-		    desktopPane.add(f);
-		    f.setVisible(true);
-		    f.toFront();
-		});
-		
-		
-		desktopPane.add(frmConsultaEdicion);
-		frmConsultaEdicion.setVisible(false);
-		mntmConsultaEdicion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmConsultaEdicion.setVisible(true);
-				frmConsultaEdicion.toFront();
-			}
-		});
+		frmConsultaDeEvento = ConsultaDeEvento.getInstance(ICE);
+        desktopPane.add(frmConsultaDeEvento);
+        frmConsultaDeEvento.setVisible(false);
+        mntmConsultaEvento.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmConsultaDeEvento.setVisible(true);
+                frmConsultaDeEvento.toFront();
+            }
+        });
+        JMenu mnEdicion = new JMenu("Edicion");
+        mnFuncionalidades.add(mnEdicion);
+        
+        JMenuItem mntmRegistro = new JMenuItem("Registro");
+        mnEdicion.add(mntmRegistro);
+        frmRegistroEdicion = RegistroEdicion.getInstance();
+        desktopPane.add(frmRegistroEdicion);
+        frmRegistroEdicion.setVisible(false);
+        mntmRegistro.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmRegistroEdicion.setVisible(true);
+                frmRegistroEdicion.toFront();
+            }
+        });
+        
+        JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
+        mnEdicion.add(mntmConsultaEdicion);
+        frmConsultaEdicion = ConsultaEdicionDeEvento.getInstance(ICE);
+        frmConsultaEdicion.setOnOpenTipoRegistro((evento, edicion, dto) -> {
+            DetalleTipoRegistroFrame f = new DetalleTipoRegistroFrame(evento, edicion, dto);
+            desktopPane.add(f);
+            f.setVisible(true);
+            f.toFront();
+        });
+        frmConsultaEdicion.setOnOpenPatrocinio((evento, edicion, nivel, lista) -> {
+            DetallePatrociniosFrame f = new DetallePatrociniosFrame(evento, edicion, nivel, lista);
+            desktopPane.add(f);
+            f.setVisible(true);
+            f.toFront();
+        });
+        desktopPane.add(frmConsultaEdicion);
+        frmConsultaEdicion.setVisible(false);
+        mntmConsultaEdicion.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frmConsultaEdicion.setVisible(true);
+                frmConsultaEdicion.toFront();
+            }
+        });
 		
 		JMenu mnPatrocinio = new JMenu("Patrocinio");
 		mnFuncionalidades.add(mnPatrocinio);

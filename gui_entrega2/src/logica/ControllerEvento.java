@@ -17,6 +17,9 @@ public class ControllerEvento implements IControllerEvento{
 	public HashSet<String> listarEdiciones(String nombreEvento) {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		Evento ev = mE.obtenerEvento(nombreEvento);
+		if (ev == null) {
+			return new HashSet<>(); // Return empty set if event not found
+		}
 		return ev.getEdiciones();
 	}
 

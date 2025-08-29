@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 
 public class ModificarDatosUsuario extends JInternalFrame {
-
+    private static ModificarDatosUsuario instance = null;
 	private static final long serialVersionUID = 1L;
 	private JTextField txtFieldNombreUsuario;
 	private JTextField txtFieldNicknameUsuario;
@@ -97,5 +97,11 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		
 		
 
+	}
+	public static ModificarDatosUsuario getInstance() {
+		if (instance == null) {
+			instance = new ModificarDatosUsuario();
+		}
+		return instance;
 	}
 }

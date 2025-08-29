@@ -14,13 +14,13 @@ public class DTDetalleEdicion {
 	private LocalDate fechaAlta;
 	private String ciudad;
 	private String pais;
-	//private String organizador;
+	private String organizador;
 	
     private final Set<String> nombresTiposRegistros;
 	private final Set<String> nombresInstituciones;
 	
 	public DTDetalleEdicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
-			String ciudad, String pais, /*String organizador, */Set<String> tiposRegistro, Set<String> instituciones) {
+			String ciudad, String pais, String organizador, Set<String> tiposRegistro, Set<String> instituciones) {
 		super();
 		this.nombre = nombre;
 		this.sigla = sigla;
@@ -29,7 +29,7 @@ public class DTDetalleEdicion {
 		this.fechaAlta = fechaAlta;
 		this.ciudad = ciudad;
 		this.pais = pais;
-		//this.organizador = organizador;
+		this.organizador = organizador;
 		this.nombresTiposRegistros = tiposRegistro;
 		this.nombresInstituciones = instituciones;
 	}
@@ -90,13 +90,13 @@ public class DTDetalleEdicion {
 		this.pais = pais;
 	}
 
-	/*public String getOrganizador() {
+	public String getOrganizador() {
 		return organizador;
 	}
 
 	public void setOrganizador(String organizador) {
 		this.organizador = organizador;
-	}*/
+	}
 
 	public Set<String> getNombresTiposRegistros() {
 		return nombresTiposRegistros;

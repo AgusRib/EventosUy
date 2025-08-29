@@ -7,7 +7,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 
 public class RegistroEdicion extends JInternalFrame {
-	
+	private static RegistroEdicion instance = null;
 	private JLabel lblEvento;
 	private JComboBox<String> comboBoxEvento;
 	
@@ -82,6 +82,12 @@ public class RegistroEdicion extends JInternalFrame {
 		comboBoxEdicion.setSelectedIndex(-1);
 		comboBoxAsistente.setSelectedIndex(-1);
 		comboBoxTipoReg.setSelectedIndex(-1);
+	}
+	public static RegistroEdicion getInstance() {
+		if (instance == null) {
+			instance = new RegistroEdicion();
+		}
+		return instance;
 	}
 	
 }

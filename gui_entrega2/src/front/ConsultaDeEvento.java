@@ -3,6 +3,10 @@ package front;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import logica.Factory;
+import logica.IControllerEvento;
+
 import java.awt.*;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -23,10 +27,10 @@ public class ConsultaDeEvento extends JInternalFrame {
     private static final String PLACEHOLDER_EDICION = "Seleccionar edición";
     private JComboBox<String> cbxListadoDeEventos;
     private JComboBox<String> cbxListadoDeEdiciones;
-
-    private JTable tblDetallesDeEdicion;
-    private JTable tblDetalleDePatrocinio;
-    private JTable tblDetalleDeRegistro;
+    
+    
+    private IControllerEvento controllerEvento;
+ 
     private JTextField txtNombreEvento = new JTextField(20);
     private JTextField txtSiglaEvento = new JTextField(20);
     
@@ -44,8 +48,9 @@ public class ConsultaDeEvento extends JInternalFrame {
     private final Map<String, Object[]> detalleEdicionPorNombre = new LinkedHashMap<>();
 
 
-    public ConsultaDeEvento() {
-        setTitle("Consulta de evento");
+    public ConsultaDeEvento(IControllerEvento ice) {
+    	controllerEvento = ice;
+    	setTitle("Consulta de evento");
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
@@ -198,7 +203,7 @@ public class ConsultaDeEvento extends JInternalFrame {
     
     
     private void llamarAConsultaEdicion(String edicion, String evento) {
-        ConsultaEdicionDeEvento frmConsultaEdicionDeEvento = ConsultaEdicionDeEvento.getInstance();
+        ConsultaEdicionDeEvento frmConsultaEdicionDeEvento = ConsultaEdicionDeEvento.getInstance(controllerEvento);
         JDesktopPane desktop = getDesktopPane();
         if (desktop != null) {
 			setVisible(false);
@@ -219,9 +224,9 @@ public class ConsultaDeEvento extends JInternalFrame {
         c.anchor = GridBagConstraints.LINE_START;
         return c;
     }
-    public static ConsultaDeEvento getInstance() {
+    public static ConsultaDeEvento getInstance(IControllerEvento ice) {
     	 if (instance == null) {
-			 instance = new ConsultaDeEvento();
+			 instance = new ConsultaDeEvento(ice);
 		 }
 		 return instance;
     }
