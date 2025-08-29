@@ -1,24 +1,23 @@
 package logica;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ControllerEvento implements IControllerEvento{
 	
 	
 	@Override
-	public Set<String> listarEventos() {
-		manejadorEvento mE = manejadorEvento.getInstance();
-		eventos = mE.obtenerEventos();
-		for (evento e : eventos) {
-			
-		}
-		
+	public HashSet<String> listarEventos() {
+		ManejadorEvento mE = ManejadorEvento.getInstance();
+		HashSet<String> evs = mE.obtenerNombresEventos();
+		return evs;
 	}
 
 	@Override
-	public Set<String> listarEdiciones(String nombreEvento) {
-		// TODO Auto-generated method stub
-		
+	public HashSet<String> listarEdiciones(String nombreEvento) {
+		ManejadorEvento mE = ManejadorEvento.getInstance();
+		Evento ev = mE.obtenerEvento(nombreEvento);
+		return ev.getEdiciones();
 	}
 
 	@Override

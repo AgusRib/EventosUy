@@ -68,4 +68,12 @@ public class Evento{
 		if (getEdicion(nueva.getNombre()) != null) throw new IllegalArgumentException("Ya existe una edición con ese nombre");
 		ediciones.add(nueva);
 	}
+	
+	public HashSet<String> getEdiciones() {
+		HashSet<String> eds = new HashSet<String>();
+		for (Edicion edi : this.ediciones) {
+			eds.add(edi.getNombre());
+		}
+		return eds;
+	}
 }
