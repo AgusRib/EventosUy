@@ -1,6 +1,8 @@
 package logica;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
@@ -10,14 +12,16 @@ public class Evento{
 	private Date fecha;
 	private String descripcion;
 	private String url;
-	private SortedSet(Edicion*) ediciones;
+	//private SortedSet(Edicion*) ediciones; ??
+	private final Set<Edicion> ediciones;
 
 	public Evento(String nombre, Date fecha, String descripcion, String url) {
 		this.nombre = nombre;
 		this.fecha = fecha;
 		this.descripcion = descripcion;
 		this.url = url;
-		this.ediciones = NULL;
+		//this.ediciones = NULL; ??
+		this.ediciones = new HashSet<>();
 	}
 
 	public String getNombre() {
@@ -37,10 +41,25 @@ public class Evento{
 	}
 	
 	public Edicion getEdicion(String nombreEdicion) {	
-		for (Edicion* edi : this.ediciones) {
-			if (edi.nombre == nombreEdicion) {
+		/*for (Edicion* edi : this.ediciones) {
+			if (edi.nombre == nombreEdicion) { ???
+				return edi;
+			}
+		}*/
+		for (Edicion edi : this.ediciones) {
+			if (nombreEdicion.equals(edi.getNombre())) {
 				return edi;
 			}
 		}
+		return null;
+		
+	}
+	
+	public Set<DTTipoRegistro> infoTipoRegDeEdi(String nombreEdicion){
+		Set<DTTipoRegistro> setTipoReg = new HashSet<>();
+		Edicion edi = getEdicion(nombreEdicion);
+		setTipoReg = edi.obtenerTipoReg();
+		return setTipoReg;
+		
 	}
 }
