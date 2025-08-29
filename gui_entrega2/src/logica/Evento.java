@@ -1,26 +1,29 @@
 package logica;
 
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.time.LocalDate;
 
 
 
 
 public class Evento{
 	private String nombre;
-	private Date fecha;
+	private String sigla;
+	private LocalDate fechaAlta;
 	private String descripcion;
-	private String url;
 	//private SortedSet(Edicion*) ediciones; ??
-	private final Set<Edicion> ediciones;
+	private final HashSet<Edicion> ediciones;
+	private final HashSet<Categoria> categorias;
 
-	public Evento(String nombre, Date fecha, String descripcion, String url) {
+	public Evento(String nombre,String sigla, LocalDate fecha, String descripcion) {
 		this.nombre = nombre;
-		this.fecha = fecha;
+		this.fechaAlta = fecha;
+		this.sigla = sigla;
 		this.descripcion = descripcion;
-		this.url = url;
 		//this.ediciones = NULL; ??
+		this.categorias = new HashSet<>();
 		this.ediciones = new HashSet<>();
 	}
 
@@ -28,17 +31,15 @@ public class Evento{
 		return nombre;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public LocalDate getfechaAlta() {
+		return fechaAlta;
 	}
 
 	public String getDescripcion() {
 		return descripcion;
 	}
 
-	public String getUrl() {
-		return url;
-	}
+	
 	
 	public Edicion getEdicion(String nombreEdicion) {	
 		/*for (Edicion* edi : this.ediciones) {
@@ -65,8 +66,16 @@ public class Evento{
 	
 	public void agregarEdicion(Edicion nueva) {
 		if (nueva == null) throw new IllegalArgumentException("Edición vacía");
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		if (getEdicion(nueva.getNombre()) != null) throw new IllegalArgumentException("Ya existe una edición con ese nombre");
 		ediciones.add(nueva);
+	}
+	
+	public void agregarCategoria(Categoria cat) {
+		if (cat == null) throw new IllegalArgumentException("Categoría vacía");
+		
+		if (this.categorias.contains(cat)) throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
+		categorias.add(cat);
 	}
 	
 	public HashSet<String> getEdiciones() {
@@ -75,5 +84,17 @@ public class Evento{
 			eds.add(edi.getNombre());
 		}
 		return eds;
+	}
+	public HashSet<String> getCategorias() {
+		HashSet<String> cats = new HashSet<String>();
+		for (Categoria cat : this.categorias) {
+			cats.add(cat.getNombre());
+		}
+		return cats;
+	}
+	
+	public DTDetalleEvento devolverDT() {
+		DTDetalleEvento dtE = new DTDetalleEvento(this.nombre, this.sigla, this.fechaAlta, this.descripcion, this.getCategorias(), this.getEdiciones());
+		return dtE;
 	}
 }

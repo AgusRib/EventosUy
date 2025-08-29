@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public interface IControllerEvento{
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws Exception;
 	public Set<String> listarEventos();
 	public Set<String> listarEdiciones(String nombreEvento);
 	public Set<String> listarPatrocinios(String nombreEdi);

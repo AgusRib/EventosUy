@@ -5,6 +5,25 @@ import java.util.Set;
 
 public class ControllerEvento implements IControllerEvento{
 	
+	@Override
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion,Set<String> categorias)throws Exception {
+		
+		ManejadorEvento mE = ManejadorEvento.getInstance();
+		if (mE.existeEvento(nombre)) {throw new Exception("El evento ya existe");}
+		else {
+			Evento nuevoEvento= new Evento(nombre, sigla, fechaAlta, descripcion);
+			ManejadorCategoria mC = ManejadorCategoria.getInstance();
+			for (String cat : categorias) {
+				nuevoEvento.agregarCategoria(mC.obtenerCategoria(cat));
+			}
+			mE.agregarEvento(nuevoEvento);
+		}
+		
+	   
+	}
+	
+	
+	
 	
 	@Override
 	public HashSet<String> listarEventos() {
@@ -56,13 +75,16 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo) throws Exception{
-		
+		    
 		
 	}
 
 	@Override
 	public DTDetalleEvento verDetalleEvento(String nombreEvento) {
-		// TODO Auto-generated method stub
+	  ManejadorEvento mE = ManejadorEvento.getInstance();
+	  Evento ev = mE.obtenerEvento(nombreEvento);
+	  DTDetalleEvento dtE = ev.devolverDT();
+	  return dtE;
 		
 		
 	}

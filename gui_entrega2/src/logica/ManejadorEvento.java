@@ -33,6 +33,13 @@ public class ManejadorEvento{
 		return eventos.get(nombreEvento);
 	}
 	
+	public void agregarEvento(Evento e) {
+		eventos.put(e.getNombre(), e);
+	}
+	public boolean existeEvento(String nombreEvento) {
+		return eventos.containsKey(nombreEvento);
+	}
+	
 	
 	
 	
