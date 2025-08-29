@@ -106,6 +106,7 @@ public class Edicion {
 	        }
 		}
 		Set<String> nombresInstituciones = new LinkedHashSet<>(patrociniosPorInstitucion.keySet());
+		
 		return new DTDetalleEdicion(
 				this.nombre,
 				this.sigla,
@@ -114,6 +115,7 @@ public class Edicion {
 				this.fechaAlta,
 				this.ciudad,
 				this.pais,
+				null,
 				nombresTiposRegistros,
 				nombresInstituciones
 		);

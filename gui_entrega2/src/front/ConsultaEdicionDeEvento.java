@@ -276,7 +276,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	                String.valueOf(dt.getFechaFin()),
 	                dt.getCiudad(),
 	                dt.getPais(),
-	                /* Organizador */  "",   
+	                dt.getOrganizador(),   
 	                PLACEHOLDER_REG_TIPO,
 	                PLACEHOLDER_PAT_TIPO
 	            };
