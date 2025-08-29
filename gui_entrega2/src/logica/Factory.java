@@ -17,4 +17,8 @@ public class Factory {
 		return new ControllerUsuario();
 	}
 
+	public IControllerEvento getControllerEvento() {
+		return new ControllerEvento();
+	}
+
 }
