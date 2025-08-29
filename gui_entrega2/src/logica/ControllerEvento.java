@@ -1,4 +1,5 @@
 package logica;
+import java.time.LocalDate;
 import java.util.Set;
 
 public class ControllerEvento implements IControllerEvento{
@@ -64,6 +65,16 @@ public class ControllerEvento implements IControllerEvento{
 		Evento ev = mE.obtenerEvento(nombreEvento);
 		Set<DTTipoRegistro> setTipoReg = ev.infoTipoRegDeEdi(nombreEdicion);
 		return setTipoReg;
+		
+	}
+	
+	@Override
+	public void altaEdicionDeEvento(String nombreEvento, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) {
+		ManejadorEvento mEve = ManejadorEvento.getInstance(); 
+		Evento ev = mEve.obtenerEvento(nombreEvento);
+		if(ev == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
+		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais);
+		ev.agregarEdicion(nueva);
 		
 	}
 	

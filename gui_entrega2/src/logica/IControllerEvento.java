@@ -1,6 +1,6 @@
 package logica;
+import java.time.LocalDate;
 import java.util.Set;
-import DTTipoRegistro.java
 
 public interface IControllerEvento{
 	public Set<String> listarEventos();
@@ -8,8 +8,9 @@ public interface IControllerEvento{
 	public Set<String> listarPatrocinios(String nombreEdi);
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion);
 	public DTEdicion mostrarDetallesEdicion(String nombreEdi);
-	public DTTRegistro verDetalleTRegistro(String nombreEdi,String nomTRegistro);
+	public DTTipoRegistro verDetalleTRegistro(String nombreEdi,String nomTRegistro);
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo);
 	public DTDetalleEvento verDetalleEvento(String nombreEvento);
-	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion)
-	}
+	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion);
+	public void altaEdicionDeEvento(String nombreEvento, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais);
+}

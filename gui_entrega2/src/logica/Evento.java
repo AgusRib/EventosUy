@@ -62,4 +62,10 @@ public class Evento{
 		return setTipoReg;
 		
 	}
+	
+	public void agregarEdicion(Edicion nueva) {
+		if (nueva == null) throw new IllegalArgumentException("Edición vacía");
+		if (getEdicion(nueva.getNombre()) != null) throw new IllegalArgumentException("Ya existe una edición con ese nombre");
+		ediciones.add(nueva);
+	}
 }
