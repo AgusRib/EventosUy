@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 
 
 //TODO: Quitar main() y statics
@@ -131,10 +133,19 @@ public class CargaDatos {
 			String nombre= campos[1];
 			String descripcion = campos[2];
 			String sigla = campos[3];
-			String fechaAlta = campos[4]; //Sin formatear
-			String[] categorias = campos[5].split(",");
+			String fechaAlta = campos[4];
+			// Formatear fecha de dd/mm/yyyy a yyyy-mm-dd
+			String[] fechaParts = fechaAlta.split("/");
+			fechaAlta = new String(fechaParts[2] + "-" + fechaParts[1] + "-" + fechaParts[0]);
 			
-			ICE.ingresarEvento(nombre, sigla, descripcion, fechaAlta, categorias);
+			HashSet<String> idCategorias = new HashSet<String>(Arrays.asList(campos[5].split(",")));
+			
+			HashSet<String> categorias = new HashSet<String>();
+			for (String cat : idCategorias) {
+				categorias.add(buscarLinea(cat, "/datosPrueba/2025Categorias.csv")[1]);
+			}
+			
+			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias);
 		}
 	}
 	

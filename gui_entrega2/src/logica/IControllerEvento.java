@@ -15,6 +15,5 @@ public interface IControllerEvento{
 	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion);
 	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais);
 	public void ingresarCategoria(String string);
-	public void ingresarEvento(String nombre, String sigla, String descripcion, String fechaAlta, String[] categorias) throws Exception;
 
 }

@@ -24,4 +24,13 @@ public class ManejadorCategoria {
 	public void agregarCategoria(Categoria cat) {
 		categorias.add(cat);
 	}
+
+	public Categoria obtenerCategoria(String cat) {
+		for (Categoria c : categorias) {
+			if (c.getNombre().equals(cat)) {
+				return c;
+			}
+		}
+		return null;
+	}
 }
