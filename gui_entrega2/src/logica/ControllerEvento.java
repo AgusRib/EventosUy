@@ -78,13 +78,23 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public void altaEdicionDeEvento(String nombreEvento, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) {
-		ManejadorEvento mEve = ManejadorEvento.getInstance(); 
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) {
+		ManejadorEvento mEve = ManejadorEvento.getInstance();
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		Evento ev = mEve.obtenerEvento(nombreEvento);
 		if(ev == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
 		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais);
 		ev.agregarEdicion(nueva);
+		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
+		org.agregarEdicion(nombre);
 		
+	}
+	
+	@Override
+	public void ingresarCategoria(String string) {
+		ManejadorCategoria mC = ManejadorCategoria.getInstance();
+		mC.agregarCategoria(new Categoria(string));
+		return;
 	}
 	
 	

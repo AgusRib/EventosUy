@@ -179,10 +179,6 @@ public class ConsultaUsuario extends JInternalFrame {
 			listAsociaciones.setListData(controllerUsr.listarEdicionesOrganizadas(selected).toArray(new String[0]));
 		}
 	}
-<<<<<<< HEAD
-}
-=======
-	
 	public static ConsultaUsuario getInstance(IControllerUsuario ICU) {
 		if (instance == null) {
 			instance = new ConsultaUsuario(ICU);
@@ -195,4 +191,3 @@ public class ConsultaUsuario extends JInternalFrame {
 	
 	
 }
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
