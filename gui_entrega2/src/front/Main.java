@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import logica.Factory;
+import logica.IControllerEvento;
 import logica.IControllerUsuario;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
@@ -31,6 +32,7 @@ public class Main {
 	private RegistroEdicion frmRegistroEdicion;
 	private ConsultaDeEvento frmConsultaDeEvento;
 	private IControllerUsuario ICU;
+	private IControllerEvento ICE;
 	/**
 	 * Launch the application.
 	 */
@@ -53,6 +55,7 @@ public class Main {
 		frmMain.setTitle("Main");
 
 		ICU = Factory.getInstance().getControllerUsuario();
+		ICE = Factory.getInstance().getControllerEvento();
 		
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMain.setBounds(100, 100, 720, 480);
@@ -85,7 +88,6 @@ public class Main {
 		frmAltaUsuario.setVisible(false);
 		mntmAltaUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frmAltaUsuario.refrescar();
 				frmAltaUsuario.setVisible(true);
 				frmAltaUsuario.toFront();
 			}
@@ -147,7 +149,23 @@ public class Main {
 		
 		JMenuItem mntmConsultaEdicion = new JMenuItem("Consulta");
 		mnEdicion.add(mntmConsultaEdicion);
-		frmConsultaEdicion = new ConsultaEdicionDeEvento();
+		frmConsultaEdicion = new ConsultaEdicionDeEvento(ICE);
+		
+		frmConsultaEdicion.setOnOpenTipoRegistro((evento, edicion, dto) -> {
+		    DetalleTipoRegistroFrame f = new DetalleTipoRegistroFrame(evento, edicion, dto);
+		    desktopPane.add(f);
+		    f.setVisible(true);
+		    f.toFront();
+		});
+
+		frmConsultaEdicion.setOnOpenPatrocinio((evento, edicion, nivel, lista) -> {
+		    DetallePatrociniosFrame f = new DetallePatrociniosFrame(evento, edicion, nivel, lista);
+		    desktopPane.add(f);
+		    f.setVisible(true);
+		    f.toFront();
+		});
+		
+		
 		desktopPane.add(frmConsultaEdicion);
 		frmConsultaEdicion.setVisible(false);
 		mntmConsultaEdicion.addActionListener(new ActionListener() {
