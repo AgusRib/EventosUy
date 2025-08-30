@@ -13,5 +13,7 @@ public interface IControllerEvento{
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, Float costo, int cupo);
 	public DTDetalleEvento verDetalleEvento(String nombreEvento);
 	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion);
-	public void altaEdicionDeEvento(String nombreEvento, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais);
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais);
+	public void ingresarCategoria(String string);
+
 }

@@ -81,9 +81,8 @@ public class Main {
 		mnSistema.add(mntmCargarDatos);
 		mntmCargarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CargaDatos carga = new CargaDatos();
 				try {
-					carga.cargarDatos();
+					CargaDatos.cargarDatos();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

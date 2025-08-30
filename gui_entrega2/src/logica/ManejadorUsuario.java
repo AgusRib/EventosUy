@@ -53,5 +53,10 @@ public class ManejadorUsuario {
 	public HashSet<String> obtenerUsuarios() {
 		return new HashSet<String>(usuarios.keySet());
 	}
+
+	public Organizador buscarOrganizadorDeEdicion(String nombreEdi) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

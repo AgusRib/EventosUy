@@ -1,15 +1,15 @@
 package logica;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
-public class ManejadorCategoria{		
-    private static ManejadorCategoria instance = null;
-    private final HashMap<String,Categoria> categorias;
-    
-    private ManejadorCategoria() {
-		categorias = new HashMap<>();
-	}
-    
+public class ManejadorCategoria {
+ 	private static ManejadorCategoria instance = null;
+ 	private HashSet<Categoria> categorias;
+ 	
+ 	private ManejadorCategoria() {
+ 		categorias = new HashSet<Categoria>();
+ 	}
+	
 	public static ManejadorCategoria getInstance() {
 		if (instance == null) {
 			instance = new ManejadorCategoria();
@@ -17,15 +17,20 @@ public class ManejadorCategoria{
 		return instance;
 	}
 	
-	public void agregarCategoria(Categoria cat) {
-		categorias.put(cat.getNombre(), cat);
-	}
-	
-	public Categoria obtenerCategoria(String nombreCat) {
-		return categorias.get(nombreCat);
-	}
-	
-	public HashMap<String,Categoria> obtenerCategorias(){
+	public HashSet<Categoria> getCategorias() {
 		return categorias;
+	}
+	
+	public void agregarCategoria(Categoria cat) {
+		categorias.add(cat);
+	}
+
+	public Categoria obtenerCategoria(String cat) {
+		for (Categoria c : categorias) {
+			if (c.getNombre().equals(cat)) {
+				return c;
+			}
+		}
+		return null;
 	}
 }
