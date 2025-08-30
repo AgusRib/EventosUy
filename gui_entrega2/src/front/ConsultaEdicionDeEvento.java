@@ -349,6 +349,13 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 		cbxListadoDeEdiciones.setSelectedItem(edicion);
 		actualizarTablasParaEdicion(edicion);
     }
+    
+    
+    public void invocacionDesdeConsultaUsuario(String edicion) {
+    	cbxListadoDeEdiciones.setSelectedItem(edicion);
+   		actualizarTablasParaEdicion(edicion);
+    	
+    }
 
     // Carga de datos en tablas y demás
     private void cargarEventosDesdeLogica() {
