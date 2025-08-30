@@ -3,8 +3,10 @@ package front;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Set;
 
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -23,6 +25,8 @@ import logica.IControllerUsuario;
 //TODO: Implementar llamado a ventana de consulta de edicion al hacer doble click en una edicion
 //TODO: Implementar llamado a ventana de consulta de registro al hacer doble click en un registro
 public class ConsultaUsuario extends JInternalFrame {
+	private static final long serialVersionUID = 1L;
+	
 	private static ConsultaUsuario instance = null;
 	private IControllerUsuario controllerUsr;
 	private JPanel panelDetallesUsr;
@@ -152,8 +156,16 @@ public class ConsultaUsuario extends JInternalFrame {
 		});
 		
 		listUsuarios = new JList<String>();
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		listUsuarios.setModel(model);
+		
 		JScrollPane scrollPane = new JScrollPane(listUsuarios);
 		scrollPane.setBounds(10, 11, 113, 248);
+		Set<String> usuarios = ICU.listarUsuarios();
+		for (String nomUsuario : usuarios) {
+			model.addElement(nomUsuario);
+		}
+		
 		getContentPane().add(scrollPane);
 		listUsuarios.setVisible(true);
 		listUsuarios.setEnabled(true);

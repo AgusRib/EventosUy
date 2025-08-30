@@ -39,7 +39,6 @@ public class ControllerUsuario implements IControllerUsuario {
 
 	@Override
 	public void ingresarOrganizador(String nickname, String nombre, String email, String descripcion, String web) throws Exception {
-		// TODO Auto-generated method stub
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		if (mU.existeNickname(nickname)) {
 			throw new Exception("Ya existe un usuario con este nickname");

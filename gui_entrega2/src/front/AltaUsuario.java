@@ -14,12 +14,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import logica.IControllerUsuario;
-import logica.Institucion;
 import logica.ManejadorInstitucion;
 
 
 //TODO: Validar que el nickname y email no esten vacíos (puede hacerse desde el controller)
 public class AltaUsuario extends JInternalFrame {
+	private static final long serialVersionUID = 1L;
 	private static AltaUsuario instance = null;
 	private JTextField txtNickname;
 	private JTextField txtNombre;

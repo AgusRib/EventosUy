@@ -113,7 +113,7 @@ public class Main {
 			
 			JMenuItem mntmModificarDatos = new JMenuItem("Modificar Datos");
 			mnUsuario.add(mntmModificarDatos);
-			frmModificarDatosUsuario = ModificarDatosUsuario.getInstance();
+			frmModificarDatosUsuario = ModificarDatosUsuario.getInstance(ICU);
 			frmMain.getContentPane().add(frmModificarDatosUsuario);
 			frmModificarDatosUsuario.setVisible(false);
 			mntmModificarDatos.addActionListener(new ActionListener() {
