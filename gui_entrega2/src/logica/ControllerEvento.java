@@ -52,6 +52,14 @@ public class ControllerEvento implements IControllerEvento{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Set(DTAsistente) listarAsistentesAEdicionDeEvento(String nomEdi) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		return edi.obtenerAsistene()
+		
+	}
 
 	@Override
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion) {

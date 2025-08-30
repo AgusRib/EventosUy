@@ -16,6 +16,7 @@ public class Edicion {
 	private String ciudad;
 	private String pais;
 	
+	private final Set<Registro> registros;
     private final Set<TipoRegistro> tiposRegistro;
 	private final Map<String, DTPatrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
     
@@ -87,6 +88,14 @@ public class Edicion {
 		Set<DTTipoRegistro> setTipoReg = new HashSet<>();
 		for (TipoRegistro tipoReg : this.tiposRegistro) {
 			setTipoReg.add(tipoReg.infoTipoRegistro());
+		}
+		return setTipoReg;
+	}
+	
+	public Set<DTAsistente> obtenerAsistente(){
+		Set<DTAsistente> setAsist= new Set<>();
+		for (Registro reg : this.registros) {
+			setAsist.add(reg.getAsistente(). );
 		}
 		return setTipoReg;
 	}

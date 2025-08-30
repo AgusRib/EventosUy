@@ -46,6 +46,10 @@ public class Asistente extends Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
+	public DTAsistente infoAsist() {
+		
+	}
+	
 
 	
 }
