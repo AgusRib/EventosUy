@@ -78,16 +78,18 @@ public class Main {
 		
 		JMenuItem mntmCargarDatos = new JMenuItem("Cargar Datos");
 		mnSistema.add(mntmCargarDatos);
-		mntmCargarDatos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					CargaDatos.cargarDatos();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-
-			}
+		mntmCargarDatos.addActionListener(e -> {
+		    try {
+		        CargaDatos.cargarDatos();
+		        // refrescar pantallas que dependen de los datos:
+		        if (frmConsultaEdicion != null) frmConsultaEdicion.refrescar();
+		        if (frmConsultaDeEvento != null) frmConsultaDeEvento.refrescar(); // si tenés método similar
+		        // idem otras vistas
+		    } catch (Exception ex) {
+		        ex.printStackTrace();
+		    }
 		});
+
 		
 		JMenu mnFuncionalidades = new JMenu("Funcionalidades");
 		menuBar.add(mnFuncionalidades);
@@ -188,11 +190,13 @@ public class Main {
 			frmMain.getContentPane().add(frmConsultaEdicion);
 			frmConsultaEdicion.setVisible(false);
 			mntmConsultaEdicion.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					frmConsultaEdicion.setVisible(true);
-					frmConsultaEdicion.toFront();
-				}
+			    public void actionPerformed(ActionEvent e) {
+			        frmConsultaEdicion.refrescar();    // ← importante
+			        frmConsultaEdicion.setVisible(true);
+			        frmConsultaEdicion.toFront();
+			    }
 			});
+
 		
 		// Patrocinio
 		JMenu mnPatrocinio = new JMenu("Patrocinio");
