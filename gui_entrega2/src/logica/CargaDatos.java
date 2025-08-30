@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 
 //TODO: Quitar main() y statics
@@ -22,10 +23,9 @@ public class CargaDatos {
 		cargarEdiciones();
 		
 		System.out.println("Carga de datos finalizada");
+	    imprimirDatosCargados();
 		
 	}
-	
-	
 	
 	
 	
@@ -228,5 +228,133 @@ public class CargaDatos {
 		System.out.println("No se encontro id " + id + " en " + path);
 		return null;
 	}
+	
+	
+	// ===== DEBUG / DUMP =====
+	public static void imprimirDatosCargados() {
+	    System.out.println("\n================= RESUMEN DATOS CARGADOS =================");
+
+	    // Factory y controllers
+	    Factory fac = Factory.getInstance();
+	    IControllerUsuario ICU = fac.getControllerUsuario();
+	    IControllerEvento ICE = fac.getControllerEvento();
+	    System.out.println("[Factory] ControllerUsuario = " + ICU.getClass().getName());
+	    System.out.println("[Factory] ControllerEvento  = " + ICE.getClass().getName());
+
+	    // Manejadores
+	    imprimirInstituciones();
+	    imprimirUsuarios();
+	    imprimirCategorias();
+	    imprimirEventosYEdiciones();
+
+	    System.out.println("==========================================================\n");
+	}
+
+	private static void imprimirInstituciones() {
+	    ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
+	    java.util.Set<String> insts = mI.obtenerInstituciones();
+	    System.out.println("\n[Instituciones] total = " + (insts == null ? 0 : insts.size()));
+	    if (insts != null) {
+	        for (String nombre : insts) {
+	            System.out.println("  - " + nombre);
+	        }
+	    }
+	}
+
+	private static void imprimirUsuarios() {
+	    ManejadorUsuario mU = ManejadorUsuario.getInstance();
+	    java.util.Set<String> nicks = mU.obtenerUsuarios();
+	    System.out.println("\n[Usuarios] total = " + (nicks == null ? 0 : nicks.size()));
+	    if (nicks != null) {
+	        for (String nick : nicks) {
+	            Usuario u = mU.obtenerUsuario(nick);
+	            if (u == null) continue;
+	            String tipo = (u instanceof Organizador) ? "Organizador" :
+	                          (u instanceof Asistente)   ? "Asistente"   : u.getClass().getSimpleName();
+	            System.out.println("  - " + nick + "  (" + tipo + ")  nombre=" + u.getNombre() + " email=" + u.getEmail());
+
+	            // Si es organizador, mostrar qué ediciones declara organizar
+	            if (u instanceof Organizador) {
+	                java.util.Set<String> eds = ((Organizador) u).getEdiciones();
+	                System.out.println("      edicionesOrganizadas=" + (eds == null ? "[]" : eds));
+	            }
+	        }
+	    }
+	}
+
+	private static void imprimirCategorias() {
+	    // Si tenés ManejadorCategoria con Set<String> o Map<String,Categoria>
+	    ManejadorCategoria mC = ManejadorCategoria.getInstance();
+	    java.util.Set<String> nombres = mC.obtenernombresCategorias(); // o adaptá según tu API
+	    System.out.println("\n[Categorias] total = " + (nombres == null ? 0 : nombres.size()));
+	    if (nombres != null) {
+	        for (String n : nombres) {
+	            System.out.println("  - " + n);
+	        }
+	    }
+	}
+
+	private static void imprimirEventosYEdiciones() {
+	    ManejadorEvento mE = ManejadorEvento.getInstance();
+	    java.util.Map<String, Evento> eventos = mE.obtenerEventos();
+	    System.out.println("\n[Eventos] total = " + (eventos == null ? 0 : eventos.size()));
+
+	    if (eventos == null) return;
+
+	    // Para resolver organizador por edición (Opción B que estabas usando)
+	    ManejadorUsuario mU = ManejadorUsuario.getInstance();
+
+	    for (java.util.Map.Entry<String, Evento> entry : eventos.entrySet()) {
+	        Evento ev = entry.getValue();
+	        if (ev == null) continue;
+
+	        System.out.println("--------------------------------------------------");
+	        System.out.println("Evento: " + ev.getNombre());
+	        System.out.println("  fechaAlta: " + ev.getFechaAlta());
+	        System.out.println("  descripcion: " + ev.getDescripcion());
+
+	        // Categorías
+	        HashSet<String> cats = (HashSet<String>) ev.getCategorias(); // asegurate de tener getter en Evento
+	        if (cats != null && !cats.isEmpty()) {
+	            System.out.print("  categorias: ");
+	            for (int i = 0; i < cats.size(); i++) {
+	                System.out.print(cats);
+	                if (i < cats.size() - 1) System.out.print(", ");
+	            }
+	            System.out.println();
+	        } else {
+	            System.out.println("  categorias: (ninguna)");
+	        }
+
+	        // Ediciones
+	        Set<String> eds = (Set<String>) ev.getEdiciones(); // agregá getter en Evento si no existe
+	        System.out.println("  ediciones (" + (eds == null ? 0 : eds.size()) + "):");
+	        if (eds != null) {
+	            for (String ed : eds) {
+	                if (ed == null) continue;
+	                System.out.println(eds);
+	            }
+	        }
+	    }
+	}
+
+	// Helper para encontrar organizador por nombre de edición (Opción B)
+	private static String buscarOrganizadorDeEdicion(ManejadorUsuario mU, String nombreEdicion) {
+	    if (mU == null || nombreEdicion == null) return null;
+	    java.util.Set<String> nicks = mU.obtenerUsuarios();
+	    if (nicks == null) return null;
+	    for (String nick : nicks) {
+	        Usuario u = mU.obtenerUsuario(nick);
+	        if (u instanceof Organizador) {
+	            Organizador org = (Organizador) u;
+	            if (org.organizaEdicion(nombreEdicion)) {
+	                // devolvés nombre visible + nick
+	                return org.getNombre() + " (" + org.getNickname() + ")";
+	            }
+	        }
+	    }
+	    return null;
+	}
+
 
 }
