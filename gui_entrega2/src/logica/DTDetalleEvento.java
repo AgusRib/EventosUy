@@ -1,21 +1,26 @@
 package logica;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.time.LocalDate;
 
 public class DTDetalleEvento {
 	private String nombre;
 	private String sigla;
+	private LocalDate fechaAlta;
 	private String descripcion;
-	private List<String> categorias;
-	private List<String> ediciones;
-	public DTDetalleEvento(String nombre, String sigla, String descripcion, List<String> categorias,
-			List<String> ediciones) {
+	private HashSet<String>  categorias;
+	private HashSet<String> ediciones;
+	public DTDetalleEvento(String nombre,String sigla, LocalDate fecha, String descripcion, HashSet<String> categorias,
+			HashSet<String> hashSet) {
 		super();
 		this.nombre = nombre;
 		this.sigla = sigla;
+		this.fechaAlta= fecha;
 		this.descripcion = descripcion;
 		this.categorias = categorias;
-		this.ediciones = ediciones;
+		this.ediciones = hashSet;
 	}
 	public String getNombre() {
 		return nombre;
@@ -26,10 +31,10 @@ public class DTDetalleEvento {
 	public String getDescripcion() {
 		return descripcion;
 	}
-	public List<String> getCategorias() {
+	public HashSet<String> getCategorias() {
 		return categorias;
 	}
-	public List<String> getEdiciones() {
+	public HashSet<String> getEdiciones() {
 		return ediciones;
 	}
 	

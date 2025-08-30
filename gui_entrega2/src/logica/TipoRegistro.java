@@ -39,14 +39,19 @@ public class TipoRegistro {
 		this.cupo = cupo;
 	}
 	
+	public void restarCupo() {
+		this.cupo--;
+	}
+	
 	public boolean verificarCupo() {
 		return !(this.cupo == 0);
 	}
 	
-	DTTipoRegistro infoTipoRegistro() {
+	public DTTipoRegistro infoTipoRegistro() {
 		
 		DTTipoRegistro dt = new DTTipoRegistro(nombre, descripcion, costo, cupo);
 		return dt;
 		
 	}
+	
 }
