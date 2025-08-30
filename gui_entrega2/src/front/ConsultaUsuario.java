@@ -147,6 +147,7 @@ public class ConsultaUsuario extends JInternalFrame {
 						ConsultaEdicionDeEvento ce = ConsultaEdicionDeEvento.getInstance(Factory.getInstance().getControllerEvento());
 						ce.setVisible(true);
 						ce.toFront();
+						//TODO: Arreglar que ande esto
 						ce.invocacionDesdeConsultaUsuario(listAsociaciones.getSelectedValue());
 					} else {
 

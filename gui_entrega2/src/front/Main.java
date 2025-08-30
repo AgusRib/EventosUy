@@ -146,6 +146,7 @@ public class Main {
         mntmConsultaEvento.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frmConsultaDeEvento.setVisible(true);
+                frmConsultaDeEvento.refrescar();
                 frmConsultaDeEvento.toFront();
             }
         });

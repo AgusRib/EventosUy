@@ -182,7 +182,14 @@ public class ConsultaDeEvento extends JInternalFrame {
 
     
     
-
+    //Metodo para refrescar el combo de eventos
+    public void refrescar() {
+		Set<String> eventos = controllerEvento.listarEventos();
+		cbxListadoDeEventos.removeAllItems();
+		cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
+		for (String ev : eventos) cbxListadoDeEventos.addItem(ev);
+		if (cbxListadoDeEventos.getItemCount() > 0) cbxListadoDeEventos.setSelectedIndex(0);
+	}
        
     
     
