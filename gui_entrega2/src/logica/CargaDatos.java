@@ -142,7 +142,7 @@ public class CargaDatos {
 			
 			HashSet<String> categorias = new HashSet<String>();
 			for (String cat : idCategorias) {
-				categorias.add(buscarLinea(cat, "/datosPrueba/2025Categorias.csv")[1]);
+				categorias.add(buscarLinea(cat.stripLeading(), "/datosPrueba/2025Categorias.csv")[1]);
 			}
 			
 			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias);
