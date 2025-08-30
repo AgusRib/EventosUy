@@ -1,8 +1,6 @@
 package logica;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class DTAsistente {
@@ -21,7 +19,7 @@ public class DTAsistente {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public int getnickname() {
+	public String getnickname() {
 		return nickname;
 	}
 
@@ -52,4 +50,9 @@ public class DTAsistente {
 	public void setapellido(String apellido) {
 		this.apellido = apellido;
 	}
+	
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
 }
+

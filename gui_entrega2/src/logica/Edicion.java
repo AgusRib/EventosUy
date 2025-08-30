@@ -92,10 +92,11 @@ public class Edicion {
 		return setTipoReg;
 	}
 	
-	public Set<DTAsistente> obtenerAsistente(){
+	public Set<DTAsistente> obtenerAsistentes(){
 		Set<DTAsistente> setAsist= new Set<>();
 		for (Registro reg : this.registros) {
-			setAsist.add(reg.getAsistente(). );
+			Asistente asist = reg.getAsistente()
+			setAsist.add(asist.infoAsist() );
 		}
 		return setTipoReg;
 	}
@@ -138,7 +139,33 @@ public class Edicion {
 		}
 		return null;
 	}
+	
+	public boolean verificarCupoTipoReg(String tipoReg) {
+		
+		TipoRegistro tReg this.getTipoRegistro( tipoReg );
+		return tReg.verificarCupo();
+	}
+	
+	public boolean verificarRegistros(String nickAsist) {
+		
+		for (Registro reg : this.registros) {
+			Asistente asist = reg.getAsistente();
+			String nick = asist.getNickname();
+			if (nick == nickAsist) {
+				return False;
+			}
+		}
+		return True
+	}
 
+	public void crearRegistro(Asistente as, String tipoReg) {
+		
+		TipoRegistro treg = this.getTipoRegistro(tipoReg);
+		treg.restarCupo();
+		Registro nReg = Registro(as, tReg, this);
+		this.registros.add(nReg);
+		return;
+	}
 
 
 	

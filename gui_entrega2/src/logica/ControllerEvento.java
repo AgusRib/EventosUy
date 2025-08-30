@@ -52,14 +52,6 @@ public class ControllerEvento implements IControllerEvento{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	@Override
-	public Set(DTAsistente) listarAsistentesAEdicionDeEvento(String nomEdi) {
-		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
-		return edi.obtenerAsistene()
-		
-	}
 
 	@Override
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion) {
@@ -132,6 +124,42 @@ public class ControllerEvento implements IControllerEvento{
 		return;
 	}
 	
+	@Override
+	public Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		return edi.obtenerAsistentes()	;
+	}
+	
+	@Override
+	public boolean elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) { //asumo que nomEdi viene de la interfaz en memoria
+	
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		
+		boolean ok = edi.verificarCupoTipoReg(tipoReg);
+		
+		ok = edi.verificarRegistros(nickAsistente);
+		
+		if (ok==False) return False;
+		
+		altaRegistro(nickAsistente, tipoReg, edi);
+		
+		return ok;
+	}
+	
+	@Override
+	public void altaRegistro(String nickAsistente, string tipoReg, string edi) {
+		
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Asistente as = mU.obtenerAsistente(nickAsistente);
+		
+		edi.crearRegistro(as,tipoReg);
+		return;
+	}
 	
 	
 	

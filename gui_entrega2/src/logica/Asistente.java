@@ -47,7 +47,8 @@ public class Asistente extends Usuario {
 	}
 	
 	public DTAsistente infoAsist() {
-		
+		DTAsistente dt = new DTAsistente(this.nickname, this.nombre, this.email, this.apellido, this.fechaNacimiento));
+		return dt;
 	}
 	
 

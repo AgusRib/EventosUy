@@ -31,6 +31,10 @@ public class TipoRegistro {
 		this.cupo = cupo;
 	}
 	
+	public void restarCupo() {
+		this.cupo--;
+	}
+	
 	public boolean verificarCupo() {
 		return !(this.cupo == 0);
 	}
