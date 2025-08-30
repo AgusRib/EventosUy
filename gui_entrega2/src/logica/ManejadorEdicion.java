@@ -17,5 +17,16 @@ public class ManejadorEdicion {
 		return instance;
 	}
 	
+	public boolean existeEdicion(String nickname) {
+		return colEdiciones.containsKey(nickname);
+	}
+	
+	public HashMap<String,Edicion> obtenerEdiciones() {
+		return colEdiciones;
+	}
+ 	
+	public Edicion encontrarEdicion(String nickname) {
+		return colEdiciones.get(nickname);
+	}
 	
 }
