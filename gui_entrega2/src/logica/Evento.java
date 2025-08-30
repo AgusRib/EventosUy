@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.HashSet;
@@ -20,8 +21,8 @@ public class Evento{
 		this.sigla = sigla;
 		this.descripcion = descripcion;
 		//this.colEdiciones = NULL; ??
-		this.colEdiciones = null;
-		this.colCategorias = null;
+		this.colEdiciones = new ArrayList<>();
+		this.colCategorias = new ArrayList<>();
 		
 	}
 

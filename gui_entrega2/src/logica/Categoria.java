@@ -8,7 +8,7 @@ public class Categoria {
 	}
 	
 	public String getNombre() {
-		return this.getNombre();
+		return this.nombre;
 	}
 	
 	public void setNombre(String nombre) {
