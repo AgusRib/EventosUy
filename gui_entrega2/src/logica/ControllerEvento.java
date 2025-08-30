@@ -2,11 +2,12 @@ package logica;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import excepciones.NombreEventoExcepcion;
 
 public class ControllerEvento implements IControllerEvento{
 	
 	@Override
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion,Set<String> categorias)throws Exception {
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion,Set<String> categorias)throws NombreEventoExcepcion, Exception {
 		
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		if (mE.existeEvento(nombre)) {throw new Exception("El evento ya existe");}
@@ -22,7 +23,11 @@ public class ControllerEvento implements IControllerEvento{
 	   
 	}
 	
-	
+	@Override
+	public Set<String> listarCategorias() {
+		ManejadorCategoria mC = ManejadorCategoria.getInstance();
+		return mC.obtenernombresCategorias();
+	}
 	
 	
 	@Override

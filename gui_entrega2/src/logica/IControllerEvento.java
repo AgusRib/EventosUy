@@ -1,10 +1,12 @@
 package logica;
 import java.time.LocalDate;
 import java.util.Set;
+import excepciones.NombreEventoExcepcion;
 
 public interface IControllerEvento{
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws Exception;
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception;
 	public Set<String> listarEventos();
+	public Set<String> listarCategorias();
 	public Set<String> listarEdiciones(String nombreEvento);
 	public Set<String> listarPatrocinios(String nombreEdi);
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion);

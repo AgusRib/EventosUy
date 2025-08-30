@@ -32,6 +32,7 @@ public class Main {
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
+	private AltaEvento frmAltaEvento;
 	private ConsultaDeEvento frmConsultaDeEvento;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
@@ -147,6 +148,18 @@ public class Main {
                 frmConsultaDeEvento.setVisible(true);
                 frmConsultaDeEvento.toFront();
             }
+        });
+        
+        JMenuItem mntmAltaEvento = new JMenuItem("Alta");
+        mnEvento.add(mntmAltaEvento);
+        frmAltaEvento = AltaEvento.getInstance(ICE);
+        desktopPane.add(frmAltaEvento);
+        frmAltaEvento.setVisible(false);
+        mntmAltaEvento.addActionListener(new ActionListener() {
+        				public void actionPerformed(ActionEvent e) { 
+							frmAltaEvento.setVisible(true);
+							frmAltaEvento.toFront();
+						}
         });
         JMenu mnEdicion = new JMenu("Edicion");
         mnFuncionalidades.add(mnEdicion);

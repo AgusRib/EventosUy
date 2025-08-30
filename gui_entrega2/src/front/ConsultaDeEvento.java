@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.Set;
 import java.util.LinkedHashSet;
+import logica.DTDetalleEvento;
 
 
 @SuppressWarnings("serial")
@@ -41,12 +42,7 @@ public class ConsultaDeEvento extends JInternalFrame {
     private JList<String> listCategorias = new JList<>(modeloCategorias);
     
    
-    // Datos
-    private final Map<String, String[]> detalleEventoPorNombre = new LinkedHashMap<>();
-    private final Map<String, List<String>> categoriasPorEvento = new LinkedHashMap<>();
-    private final Map<String, List<String>> edicionesPorEvento = new LinkedHashMap<>();
-    private final Map<String, Object[]> detalleEdicionPorNombre = new LinkedHashMap<>();
-
+    
 
     public ConsultaDeEvento(IControllerEvento ice) {
     	controllerEvento = ice;
@@ -116,10 +112,7 @@ public class ConsultaDeEvento extends JInternalFrame {
         content.add(lblcat, gbc(1, y-1, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));
         content.add(spDesc, gbc(0, y, 1, 1, 1, 1, GridBagConstraints.BOTH));
         content.add(spCats, gbc(1, y++, 1, 1, 0.5, 1, GridBagConstraints.BOTH));
-        modeloCategorias.addElement("Acción");
-        modeloCategorias.addElement("Comedia");
-        modeloCategorias.addElement("Drama");
-        modeloCategorias.addElement("Jorge");
+      
         // Combo de ediciones
         JLabel lblEdiciones = new JLabel("Listado de Ediciones");
         content.add(lblEdiciones, gbc(0, y++, 2, 1, 1, 0, GridBagConstraints.HORIZONTAL));
@@ -132,12 +125,13 @@ public class ConsultaDeEvento extends JInternalFrame {
      
 
 
-        // Cargar datos demo
-        cargarDatosDemo();
+        // Vincular con el BackEnd
+        
+        Set<String> eventos = controllerEvento.listarEventos();
         cbxListadoDeEventos.removeAllItems();
         cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
-        for (String ev : detalleEventoPorNombre.keySet()) cbxListadoDeEventos.addItem(ev);
-
+        for (String ev : eventos) cbxListadoDeEventos.addItem(ev);
+        
         // Listeners
         cbxListadoDeEventos.addActionListener(e -> actualizarEventoSeleccionado());
         cbxListadoDeEdiciones.addActionListener(e -> {
@@ -156,18 +150,17 @@ public class ConsultaDeEvento extends JInternalFrame {
         String evento = (String) cbxListadoDeEventos.getSelectedItem();
         if (evento != null && !evento.equals(PLACEHOLDER_EVENTO)) {
             // Labels de Nombre y Sigla
-            String[] fila = detalleEventoPorNombre.get(evento);
-            if (fila != null) {
-            	txtNombreEvento.setText(fila[0] != null ? fila[0] : "");
-            	txtSiglaEvento.setText(fila[1] != null ? fila[1] : "");
+        	DTDetalleEvento dtde = controllerEvento.verDetalleEvento(evento);
+            
+           
+            	txtNombreEvento.setText(dtde.getNombre());
+            	txtSiglaEvento.setText(dtde.getSigla());
+                textAreaDescripcion.setText(dtde.getDescripcion());
+            
 
-                textAreaDescripcion.setText(fila[2] != null ? fila[2] : "");
-            }
-
-            // Categorías (antes JTextArea, ahora JList con DefaultListModel)
+           
             modeloCategorias.clear(); 
-            List<String> cats = categoriasPorEvento.get(evento);
-            if (cats != null) {
+            Set<String> cats = dtde.getCategorias();
                 for (String c : cats) {
                     modeloCategorias.addElement(c);
                 }
@@ -176,27 +169,18 @@ public class ConsultaDeEvento extends JInternalFrame {
             // Combo de ediciones
             cbxListadoDeEdiciones.removeAllItems();
             cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
-            List<String> eds = edicionesPorEvento.get(evento);
+            Set<String> eds = controllerEvento.listarEdiciones(evento);
             if (eds != null) {
                 for (String ed : eds) cbxListadoDeEdiciones.addItem(ed);
                 if (!eds.isEmpty()) cbxListadoDeEdiciones.setSelectedIndex(0);
             }
-        } else {
+         else {
             cbxListadoDeEdiciones.removeAllItems();
             cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
         }
     }
 
-    private void actualizarEdicionesPara(String evento) {
-        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-        model.addElement(PLACEHOLDER_EDICION);
-        List<String> eds = edicionesPorEvento.getOrDefault(evento, Collections.emptyList());
-        for (String ed : eds) model.addElement(ed);
-        cbxListadoDeEdiciones.setModel(model);
-        cbxListadoDeEdiciones.setEnabled(!eds.isEmpty());
-        if (!eds.isEmpty()) cbxListadoDeEdiciones.setSelectedIndex(0);
-    }
-
+    
     
 
        
@@ -230,43 +214,7 @@ public class ConsultaDeEvento extends JInternalFrame {
 		 }
 		 return instance;
     }
-    private void cargarDatosDemo() {
-        // --- Eventos ---
-        detalleEventoPorNombre.put("Jornadas de Informática", new String[]{"Jornadas de Informática", "JI25", "Evento anual de informática."});
-        detalleEventoPorNombre.put("ExpoTech", new String[]{"ExpoTech", "XT25P", "Exposición de tecnología."});
-        detalleEventoPorNombre.put("DataConf", new String[]{"DataConf", "DC25", "Conferencia de datos."});
-
-        // --- Categorías ---
-        categoriasPorEvento.put("Jornadas de Informática", Arrays.asList("Tecnología", "Informática", "Networking"));
-        categoriasPorEvento.put("ExpoTech", Arrays.asList("Innovación", "Empresas", "Charlas"));
-        categoriasPorEvento.put("DataConf", Arrays.asList("Datos", "Ciencia", "Educación"));
-
-        // --- Ediciones ---
-        edicionesPorEvento.put("Jornadas de Informática", Arrays.asList("JI 2025 - Montevideo", "JI 2024 - Salto", "JI 2023 - Online"));
-        edicionesPorEvento.put("ExpoTech", Arrays.asList("Primavera 2025", "Otoño 2024"));
-        edicionesPorEvento.put("DataConf", Arrays.asList("DC 2025 - Buenos Aires"));
-
-        // --- Detalles de ediciones ---
-        detalleEdicionPorNombre.put("JI 2025 - Montevideo", new Object[]{
-            "Jornadas de Informática", "JI25", "2025-09-10", "2025-09-12", "Montevideo", "Uruguay", "FING", "— Seleccione tipo —", "— Seleccione nivel —"
-        });
-        detalleEdicionPorNombre.put("JI 2024 - Salto", new Object[]{
-            "Jornadas de Informática", "JI24", "2024-09-11", "2024-09-13", "Salto", "Uruguay", "FING", "— Seleccione tipo —", "— Seleccione nivel —"
-        });
-        detalleEdicionPorNombre.put("JI 2023 - Online", new Object[]{
-            "Jornadas de Informática", "JI23", "2023-09-01", "2023-09-03", "Online", "Uruguay", "FING", "— Seleccione tipo —", "— Seleccione nivel —"
-        });
-        detalleEdicionPorNombre.put("Primavera 2025", new Object[]{
-            "ExpoTech", "XT25P", "2025-11-05", "2025-11-07", "Punta del Este", "Uruguay", "Cámara TI", "— Seleccione tipo —", "— Seleccione nivel —"
-        });
-        detalleEdicionPorNombre.put("Otoño 2024", new Object[]{
-            "ExpoTech", "XT24O", "2024-04-18", "2024-04-20", "Montevideo", "Uruguay", "Cámara TI", "— Seleccione tipo —", "— Seleccione nivel —"
-        });
-        detalleEdicionPorNombre.put("DC 2025 - Buenos Aires", new Object[]{
-            "DataConf", "DC25", "2025-08-20", "2025-08-22", "Buenos Aires", "Argentina", "Data Org", "— Seleccione tipo —", "— Seleccione nivel —"
-        });
-
-    }
+    
 
 
 }

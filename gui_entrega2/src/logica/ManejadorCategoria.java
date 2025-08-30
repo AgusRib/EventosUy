@@ -1,6 +1,7 @@
 package logica;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class ManejadorCategoria {
  	private static ManejadorCategoria instance = null;
@@ -33,4 +34,13 @@ public class ManejadorCategoria {
 		}
 		return null;
 	}
-}
+
+
+   public Set<String> obtenernombresCategorias() {
+	   Set<String> nombres = new HashSet<>();
+	   for (Categoria c : categorias) {
+		   nombres.add(c.getNombre());
+	   }
+	   return nombres;
+   }}
+   
