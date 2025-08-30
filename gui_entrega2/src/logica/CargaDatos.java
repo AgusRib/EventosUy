@@ -19,6 +19,7 @@ public class CargaDatos {
 		cargarUsuarios();
 		cargarCategorias();
 		cargarEventos();
+		cargarEdiciones();
 		
 		System.out.println("Carga de datos finalizada");
 		
@@ -151,6 +152,60 @@ public class CargaDatos {
 	
 	
 	
+	
+	
+	public static void cargarEdiciones() {
+		BufferedReader brEdiciones;
+		try {
+			brEdiciones = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025EdicionesEventos.csv"));
+
+			IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+			
+			String linea;
+			brEdiciones.readLine(); // Saltear la primer linea (headers)
+			while ((linea = brEdiciones.readLine()) != null) {
+				if (linea.isBlank())
+					continue;
+				System.out.println(linea);
+				
+				String[] campos = linea.split(";");
+				
+				String idEdi = campos[0];
+				String idEve = campos[1];
+				String idOrg = campos[2];
+				String nombre = campos[3];
+				String sigla = campos[4];
+				String ciudad = campos[5];
+				String pais = campos[6];
+				String fechaIni = campos[7];
+				String fechaFin = campos[8];
+				String fechaAlta = campos[9];
+				
+				String nombreEvento = buscarLinea(idEve, "/datosPrueba/2025Eventos.csv")[1];
+				String nicknameOrganizador = buscarLinea(idOrg, "/datosPrueba/2025Usuarios.csv")[2];
+				
+				String[] fechaIniParts = fechaIni.split("/");
+				fechaIni = new String(fechaIniParts[2] + "-" + fechaIniParts[1] + "-" + fechaIniParts[0]);
+				
+				String[] fechaFinParts = fechaFin.split("/");
+				fechaFin = new String(fechaFinParts[2] + "-" + fechaFinParts[1] + "-" + fechaFinParts[0]);
+				
+				String[] fechaAltaParts = fechaAlta.split("/");
+				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
+				
+				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais);
+			
+			}} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	
+		System.out.println("Ediciones cargadas");};
+			
 	
 	
 	

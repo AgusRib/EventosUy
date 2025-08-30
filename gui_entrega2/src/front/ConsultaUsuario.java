@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionListener;
 
 import logica.DataUsuario;
 import logica.DataUsuario.TipoUsuario;
+import logica.Factory;
 import logica.IControllerUsuario;
 import javax.swing.AbstractListModel;
 import javax.swing.border.CompoundBorder;
@@ -23,7 +24,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 
-//TODO: Implementar mensaje de usuarios no existentes
+
 //TODO: Implementar llamado a ventana de consulta de edicion al hacer doble click en una edicion
 //TODO: Implementar llamado a ventana de consulta de registro al hacer doble click en un registro
 public class ConsultaUsuario extends JInternalFrame {
@@ -134,6 +135,25 @@ public class ConsultaUsuario extends JInternalFrame {
 		
 		listAsociaciones = new JList<String>();
 		scrollPane_1.setViewportView(listAsociaciones);
+		listAsociaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				if (evt.getClickCount() == 2) {
+					String selected = listAsociaciones.getSelectedValue();
+					if (selected == null) {
+						return;
+					}
+					if (lblAsociaciones.getText().equals("Ediciones organizadas:")) {
+						ConsultaEdicionDeEvento ce = ConsultaEdicionDeEvento.getInstance(Factory.getInstance().getControllerEvento());
+						ce.setVisible(true);
+						ce.toFront();
+						ce.invocacionDesdeConsultaUsuario(listAsociaciones.getSelectedValue());
+					} else {
+
+					}
+				}
+			}
+		});
 		
 		listUsuarios = new JList<String>();
 		JScrollPane scrollPane = new JScrollPane(listUsuarios);
