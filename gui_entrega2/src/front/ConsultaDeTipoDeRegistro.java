@@ -27,8 +27,8 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
     private static final String PLACEHOLDER_TIPO = "— Seleccione tipo —";
 
     public ConsultaDeTipoDeRegistro(IControllerEvento ICE) {
-    	super("Detalle de Tipo de Registro", true, true, true, true);
-    	IControllerEvento controllerEvento = ICE;
+        super("Detalle de Tipo de Registro", true, true, true, true);
+        this.controllerEvento = ICE;
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(520, 380);
         setLocation(40, 40);
@@ -47,29 +47,20 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         cbEventos = new JComboBox<>();
         cbEventos.setModel(new DefaultComboBoxModel<>(new String[] { PLACEHOLDER_EVENTO }));
         cbEventos.setEnabled(true);
-        cbEventos.addActionListener(e -> AlSeleccionarEvento());
         content.add(new JLabel("Evento:"), gbc(0, y, 1));
         content.add(cbEventos, gbc(1, y++, 1));
-        cbEventos.removeAllItems();
-        Set<String> eventos = controllerEvento.listarEventos();
-        for (String evento : eventos) {
-			cbEventos.addItem(evento);
-		}
-        
 
-        // ComboBox ecus
+        // ComboBox ediciones
         cbEdiciones = new JComboBox<>();
         cbEdiciones.setModel(new DefaultComboBoxModel<>(new String[] { PLACEHOLDER_EDICION }));
         cbEdiciones.setEnabled(false);
-        cbEdiciones.addActionListener(e -> AlSeleccionarEdicion());
         content.add(new JLabel("Edición:"), gbc(0, y, 1));
         content.add(cbEdiciones, gbc(1, y++, 1));
 
-        // ComboBox tregs
+        // ComboBox tipo registro
         cbTipoRegistro = new JComboBox<>();
         cbTipoRegistro.setModel(new DefaultComboBoxModel<>(new String[] { PLACEHOLDER_TIPO }));
         cbTipoRegistro.setEnabled(false);
-        cbTipoRegistro.addActionListener(e -> AlSeleccionarTipoRegistro());
         content.add(new JLabel("Tipo de Registro:"), gbc(0, y, 1));
         content.add(cbTipoRegistro, gbc(1, y++, 1));
 
@@ -81,8 +72,21 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         c.weighty = 1.0;
         content.add(panelDetalle, c);
 
-        // Now safe to clear fields
+        // Listeners (después de inicializar todos los combos)
+        cbEventos.addActionListener(e -> AlSeleccionarEvento());
+        cbEdiciones.addActionListener(e -> AlSeleccionarEdicion());
+        cbTipoRegistro.addActionListener(e -> AlSeleccionarTipoRegistro());
+
+        // Limpiar campos
         limpiarCampos();
+
+        // Poblar cbEventos
+        cbEventos.removeAllItems();
+        Set<String> eventos = controllerEvento.listarEventos();
+        cbEventos.addItem(PLACEHOLDER_EVENTO);
+        for (String evento : eventos) {
+            cbEventos.addItem(evento);
+        }
     }
 
     

@@ -34,6 +34,7 @@ public class Main {
 	private RegistroEdicion frmRegistroEdicion;
 	private AltaEvento frmAltaEvento;
 	private ConsultaDeEvento frmConsultaDeEvento;
+	private ConsultaDeTipoDeRegistro frmConsultaTipoDeRegistro;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
 	/**
@@ -212,5 +213,15 @@ public class Main {
 		
 		JMenuItem mntmConsultaTipoReg = new JMenuItem("Consulta");
 		mnTipoRegistro.add(mntmConsultaTipoReg);
+		frmConsultaTipoDeRegistro = ConsultaDeTipoDeRegistro.getInstance(ICE);
+		desktopPane.add(frmConsultaTipoDeRegistro);
+		frmConsultaTipoDeRegistro.setVisible(false);
+		mntmConsultaTipoReg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmConsultaTipoDeRegistro.setVisible(true);
+				frmConsultaTipoDeRegistro.toFront();
+			}
+		});
+		
 	
 }}

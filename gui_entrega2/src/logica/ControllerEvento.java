@@ -95,13 +95,14 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public Set<DTTipoRegistro> listarTipoRegistro(String nombreEvento, String nombreEdicion) {
-		//TODO zangano
-		ManejadorEvento mE = ManejadorEvento.getInstance();
-		Evento ev = mE.obtenerEvento(nombreEvento);
-		Set<DTTipoRegistro> setTipoReg = ev.infoTipoRegDeEdi(nombreEdicion);
-		return setTipoReg;
-		
+	public Set<String> listarTiposDeRegistro(String nombreEdi) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
+	    Set<String> tiposReg = new HashSet<>();
+	    for (TipoRegistro tr : ed.getTiposRegistro()) {
+	    	tiposReg.add(tr.getNombre());
+	    }
+		return tiposReg;
 	}
 	
 	@Override
