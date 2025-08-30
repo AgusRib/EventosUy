@@ -84,8 +84,10 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         cbEventos.removeAllItems();
         Set<String> eventos = controllerEvento.listarEventos();
         cbEventos.addItem(PLACEHOLDER_EVENTO);
-        for (String evento : eventos) {
-            cbEventos.addItem(evento);
+        if(eventos != null) {
+	        for (String evento : eventos) {
+	            cbEventos.addItem(evento);
+	        }
         }
     }
 

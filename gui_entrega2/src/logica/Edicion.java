@@ -1,15 +1,12 @@
 package logica;
 
 import java.time.LocalDate;
-<<<<<<< HEAD
 import java.util.List;
-=======
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 
 public class Edicion {
 	private String nombre;
@@ -19,66 +16,7 @@ public class Edicion {
 	private LocalDate fechaAlta;
 	private String ciudad;
 	private String pais;
-<<<<<<< HEAD
 	private List<TipoRegistro> TRegistros;
-	
-	public String getNombre() {
-		return nombre;
-	}
-	public String getSigla() {
-		return sigla;
-	}
-	public LocalDate getFechaInicio() {
-		return fechaInicio;
-	}
-	public LocalDate getFechaFin() {
-		return fechaFin;
-	}
-	public LocalDate getFechaAlta() {
-		return fechaAlta;
-	}
-	public String getCiudad() {
-		return ciudad;
-	}
-	public String getPais() {
-		return pais;
-	}
-	public boolean existeTipoRegistro(String nombreTRegis) {
-		
-		if(TRegistros != null) {
-			// Busca en la lista TRegistros y devuelve True si encuentra el nickname 
-			for (TipoRegistro tipoRegistro : TRegistros) {
-				if(tipoRegistro.getNombre() == nombreTRegis) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	public TipoRegistro obtenerTipoRegistro(String nombreTRegis) {
-			
-			if(TRegistros != null) {
-				
-				for (TipoRegistro tipoRegistro : TRegistros) {
-					if(tipoRegistro.getNombre() == nombreTRegis) {
-						return tipoRegistro;
-					}
-				}
-			}
-			
-			return null; //null si no lo encuentra.
-	}
-	
-	public void crearTRegistro(String nom, String desc, Float costo, int cupo) {
-		TipoRegistro newTRegistro = new TipoRegistro(nom,desc,costo,cupo);
-		TRegistros.addFirst(newTRegistro);
-		
-	}
-	
-=======
-	
 	private final Set<Registro> registros;
     private final Set<TipoRegistro> tiposRegistro;
 	private final Map<String, DTPatrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
@@ -93,6 +31,7 @@ public class Edicion {
 		this.fechaAlta = fechaAlta;
 		this.ciudad = ciudad;
 		this.pais = pais;
+		this.registros = null;
 		this.tiposRegistro = new LinkedHashSet<>();
 
 	}
@@ -156,12 +95,12 @@ public class Edicion {
 	}
 	
 	public Set<DTAsistente> obtenerAsistentes(){
-		Set<DTAsistente> setAsist= new Set<>();
+		Set<DTAsistente> setAsist= new HashSet<>();
 		for (Registro reg : this.registros) {
-			Asistente asist = reg.getAsistente()
+			Asistente asist = reg.getAsistente();
 			setAsist.add(asist.infoAsist() );
 		}
-		return setTipoReg;
+		return setAsist;
 	}
 	
 	public DTPatrocinio getPatrocinio(String nombreInstitucion) {
@@ -205,7 +144,7 @@ public class Edicion {
 	
 	public boolean verificarCupoTipoReg(String tipoReg) {
 		
-		TipoRegistro tReg this.getTipoRegistro( tipoReg );
+		TipoRegistro tReg = this.getTipoRegistro( tipoReg );
 		return tReg.verificarCupo();
 	}
 	
@@ -215,25 +154,39 @@ public class Edicion {
 			Asistente asist = reg.getAsistente();
 			String nick = asist.getNickname();
 			if (nick == nickAsist) {
-				return False;
+				return false;
 			}
 		}
-		return True
+		return true;
 	}
 
 	public void crearRegistro(Asistente as, String tipoReg) {
 		
 		TipoRegistro treg = this.getTipoRegistro(tipoReg);
 		treg.restarCupo();
-		Registro nReg = Registro(as, tReg, this);
+		Registro nReg = new Registro(as, treg, this);
 		this.registros.add(nReg);
 		return;
 	}
 
-
+	public boolean existeTipoRegistro(String nombreTRegis) {
+		
+		if(this.TRegistros != null) {
+			for (TipoRegistro tipoRegistro : TRegistros) {
+				if(tipoRegistro.getNombre() == nombreTRegis) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	
+	public void crearTRegistro(String nom,String desc,Float costo, int cupo) {
+		TipoRegistro newTRegistro = new TipoRegistro(nom,desc,costo,cupo);
+		TRegistros.addFirst(newTRegistro);
+	}
+	
 
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	
 }

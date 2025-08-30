@@ -1,9 +1,7 @@
 package logica;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.time.LocalDate;
+import java.util.HashSet;
 
 public class DTDetalleEvento {
 	private String nombre;

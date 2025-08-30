@@ -297,10 +297,9 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	    tipoModel.addElement(PLACEHOLDER_REG_TIPO);
 
 	    if (edicion != null) {
-	        String evento = (String) cbxListadoDeEventos.getSelectedItem();
 	        try {
-	            for (logica.DTTipoRegistro tr : controllerEvento.listarTipoRegistro(evento, edicion)) {
-	                if (tr != null && tr.getNombre() != null) tipoModel.addElement(tr.getNombre());
+	            for (String tr : controllerEvento.listarTiposDeRegistro(edicion)) { //como hacemos esto
+	                tipoModel.addElement(tr);
 	            }
 	        } catch (Exception ex) {
 	            ex.printStackTrace();
@@ -361,9 +360,11 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     private void cargarEventosDesdeLogica() {
     	DefaultComboBoxModel<String> evModel = new DefaultComboBoxModel<>();
     	try {
-            for (String ev : controllerEvento.listarEventos()) {
-                evModel.addElement(ev);
-            }
+    		if(controllerEvento.listarEventos() != null) {
+	            for (String ev : controllerEvento.listarEventos()) {
+	                evModel.addElement(ev);
+	            }
+    		}
         } catch (Exception ex) {
             ex.printStackTrace();
         }

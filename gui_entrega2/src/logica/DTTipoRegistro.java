@@ -3,11 +3,11 @@ package logica;
 public class DTTipoRegistro {
 	private String nombre;
 	private String descripcion;
-	private double costo;
+	private float costo;
 	private int cupo;
 	
 	
-	public DTTipoRegistro(String nombre, String descripcion, double d, int cupo) {
+	public DTTipoRegistro(String nombre, String descripcion, float d, int cupo) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;

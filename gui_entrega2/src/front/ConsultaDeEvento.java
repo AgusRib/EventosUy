@@ -130,7 +130,7 @@ public class ConsultaDeEvento extends JInternalFrame {
         Set<String> eventos = controllerEvento.listarEventos();
         cbxListadoDeEventos.removeAllItems();
         cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
-        for (String ev : eventos) cbxListadoDeEventos.addItem(ev);
+        if(eventos != null) {for (String ev : eventos) cbxListadoDeEventos.addItem(ev);};
         
         // Listeners
         cbxListadoDeEventos.addActionListener(e -> actualizarEventoSeleccionado());

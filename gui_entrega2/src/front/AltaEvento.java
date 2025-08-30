@@ -5,29 +5,29 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.DefaultListModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import logica.IControllerEvento;
-import javax.swing.JComboBox;
-import java.util.Set;
-import javax.swing.JButton;
-import java.util.HashSet;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-import excepciones.NombreEventoExcepcion;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import excepciones.NombreEventoExcepcion;
+import logica.IControllerEvento;
 
 
 public class AltaEvento extends JInternalFrame{
+	private static final long serialVersionUID = 1L;
 	private static AltaEvento instance = null;
 	private  IControllerEvento controllerEvento;
 	private JTextField NombreEvento;

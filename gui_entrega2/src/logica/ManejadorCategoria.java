@@ -1,29 +1,4 @@
-<<<<<<< HEAD
 package logica;
-
-import java.util.List;
-
-public class ManejadorCategoria {
-	private static ManejadorCategoria instance;
-	private List<Categoria> categorias; 
-	
-	private ManejadorCategoria() {
-		categorias = null;
-	}
-	
-	
-	public ManejadorCategoria getInstance() {
-		
-		if(instance == null) {
-			instance = new ManejadorCategoria();
-		}
-		return instance;
-	}
-	
-}
-=======
-package logica;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,6 +41,6 @@ public class ManejadorCategoria {
 		   nombres.add(c.getNombre());
 	   }
 	   return nombres;
-   }}
+   }
+}
    
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git

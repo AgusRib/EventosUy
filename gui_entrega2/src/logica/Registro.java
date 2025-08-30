@@ -24,7 +24,7 @@ public class Registro {
 		this.fechaRegistro = fechaRegistro;
 	}
 
-	public void Registro(Asistente as, TipoRegistro tipoReg, Edicion edi) {
+	public Registro(Asistente as, TipoRegistro tipoReg, Edicion edi) {
 		super();
 		this.asistente=as;
 		this.edicion=edi;

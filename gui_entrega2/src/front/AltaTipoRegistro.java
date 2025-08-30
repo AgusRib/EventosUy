@@ -55,11 +55,11 @@ public class AltaTipoRegistro extends JInternalFrame {
 		
 		// fila de seleccionar evento
 		JPanel filaSeleccionarEvento = new JPanel();
-		lbl_seleccionarEdicion = new JLabel("Seleccione un evento: ");
+		lbl_seleccionarEvento = new JLabel("Seleccione un evento: ");
 		seleccionarEvento = new JComboBox<String>();
 		filaSeleccionarEvento.setLayout(new FlowLayout(FlowLayout.LEFT));
-		for (Evento ev : ManejadorEvento.getInstance().obtenerEventos()) {
-			seleccionarEvento.addItem(ev.getNombre());
+		for (Evento ev : ManejadorEvento.getInstance().obtenerEventos().values()) {
+		    seleccionarEvento.addItem(ev.getNombre());
 		}
 		
 		filaSeleccionarEvento.add(lbl_seleccionarEvento);
@@ -95,6 +95,7 @@ public class AltaTipoRegistro extends JInternalFrame {
 		JPanel filaNombre = new JPanel();
 		filaNombre.setLayout(new FlowLayout(FlowLayout.LEFT));
 		lbl_nombre = new JLabel("Nombre: ");
+		tf_nombre = new JTextField();
 		filaNombre.add(lbl_nombre);
 		filaNombre.add(tf_nombre);
 		ventana.add(filaNombre);
@@ -102,6 +103,7 @@ public class AltaTipoRegistro extends JInternalFrame {
 		JPanel filaDescripcion = new JPanel();
 		filaDescripcion.setLayout(new FlowLayout(FlowLayout.LEFT));
 		lbl_descripcion = new JLabel("Descripcion: ");
+		tf_descripcion = new JTextField();
 		filaDescripcion.add(lbl_descripcion);
 		filaDescripcion.add(tf_descripcion);
 		ventana.add(filaDescripcion);
@@ -110,6 +112,7 @@ public class AltaTipoRegistro extends JInternalFrame {
 		JPanel filaCosto = new JPanel();
 		filaCosto.setLayout(new FlowLayout(FlowLayout.LEFT));
 		lbl_costo = new JLabel("Costo: ");
+		tf_costo = new JTextField();
 		filaCosto.add(lbl_costo);
 		filaCosto.add(tf_costo);
 		ventana.add(filaCosto);
@@ -118,6 +121,7 @@ public class AltaTipoRegistro extends JInternalFrame {
 		JPanel filaCupo = new JPanel();
 		filaCupo.setLayout(new FlowLayout(FlowLayout.LEFT));
 		lbl_cupo = new JLabel("Cupo: ");
+		tf_cupo = new JTextField();
 		filaCupo.add(lbl_cupo);
 		filaCupo.add(tf_cupo);
 		ventana.add(filaCupo);

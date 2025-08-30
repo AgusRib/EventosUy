@@ -17,7 +17,6 @@ public class ManejadorEdicion {
 		return instance;
 	}
 	
-<<<<<<< HEAD
 	public boolean existeEdicion(String nickname) {
 		return colEdiciones.containsKey(nickname);
 	}
@@ -25,15 +24,7 @@ public class ManejadorEdicion {
 	public HashMap<String,Edicion> obtenerEdiciones() {
 		return colEdiciones;
 	}
- 	
-	public Edicion encontrarEdicion(String nickname) {
-		return colEdiciones.get(nickname);
-	}
-=======
 	public Edicion encontrarEdicion(String nombreEdi) {
 		return (Edicion) colEdiciones.get(nombreEdi);
 	}
-	
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
-	
 }

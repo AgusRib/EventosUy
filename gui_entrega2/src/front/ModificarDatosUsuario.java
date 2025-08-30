@@ -1,13 +1,17 @@
 package front;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
+import java.awt.Font;
+import java.util.Set;
+
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.Box;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.Font;
+
+import logica.IControllerUsuario;
 
 public class ModificarDatosUsuario extends JInternalFrame {
     private static ModificarDatosUsuario instance = null;
@@ -17,8 +21,9 @@ public class ModificarDatosUsuario extends JInternalFrame {
 	private JTextField txtFieldEmailUsuario;
 	private JTextField txtFieldfNacUsuario;
 	private JTextField txtFieldApellidoUsuario;
+	JComboBox<String> comboBox;
 
-	public ModificarDatosUsuario() {
+	public ModificarDatosUsuario(IControllerUsuario ICU) {
 		setTitle("Modificar datos de Usuario");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -35,7 +40,11 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		lblUsuario.setBounds(58, 16, 156, 17);
 		getContentPane().add(lblUsuario);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox<String>();
+		Set<String> usuarios = ICU.listarUsuarios();
+		for (String nomUsuario : usuarios) {
+			comboBox.addItem(nomUsuario);
+		}
 		comboBox.setBounds(214, 12, 124, 26);
 		getContentPane().add(comboBox);
 		
@@ -95,12 +104,30 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		btnCancelarEdicionUsuario.setBounds(226, 229, 105, 27);
 		getContentPane().add(btnCancelarEdicionUsuario);
 		
+		btnConfirmarEdicionUsuario.addActionListener(e -> {
+			
+		});
+		
+		btnCancelarEdicionUsuario.addActionListener(e -> {
+		    setVisible(false);
+		    limpiarFormulario();
+		});
+		
 		
 
 	}
-	public static ModificarDatosUsuario getInstance() {
+	private void limpiarFormulario() {
+		comboBox.setSelectedIndex(-1);
+		txtFieldNombreUsuario.setText("");
+		txtFieldNicknameUsuario.setText("");
+		txtFieldfNacUsuario.setText("");
+		txtFieldEmailUsuario.setText("");
+		txtFieldApellidoUsuario.setText("");
+	}
+	
+	public static ModificarDatosUsuario getInstance(IControllerUsuario ICU) {
 		if (instance == null) {
-			instance = new ModificarDatosUsuario();
+			instance = new ModificarDatosUsuario(ICU);
 		}
 		return instance;
 	}
