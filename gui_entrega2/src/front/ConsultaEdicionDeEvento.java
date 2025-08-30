@@ -378,6 +378,13 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     			}
     			return instance;
     }
+    
+    public void refrescar() {
+        cargarEventosDesdeLogica();  // repuebla el combo de eventos
+        // forzá limpiar/estado inicial
+        ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
+    }
+
 
 
 

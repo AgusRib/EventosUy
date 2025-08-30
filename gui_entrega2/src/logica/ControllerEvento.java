@@ -3,6 +3,7 @@ import java.util.List;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import excepciones.NombreEventoExcepcion;
 
@@ -13,7 +14,7 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		HashMap<String,Evento> eventos = mE.obtenerEventos(); //consultar con agus pq puso List y no hashmap
 		
-		Set<String> nomEventos = null;
+		Set<String> nomEventos = new LinkedHashSet<>();
 		for (Evento e : eventos.values()) {
 			nomEventos.add(e.getNombre());
 		}
@@ -46,7 +47,7 @@ public class ControllerEvento implements IControllerEvento{
 		
 		ManejadorEvento h_evento = ManejadorEvento.getInstance();
 		Evento ev = h_evento.obtenerEvento(nombreEvento);
-		Set<String> ediciones = null;
+		Set<String> ediciones = new LinkedHashSet<>();
 		
 		if(ev != null) {
 			for (Edicion ed : ev.getColEdiciones()) {
