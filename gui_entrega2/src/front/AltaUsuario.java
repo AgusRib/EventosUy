@@ -18,6 +18,7 @@ import logica.Institucion;
 import logica.ManejadorInstitucion;
 
 
+//TODO: Validar que el nickname y email no esten vacíos (puede hacerse desde el controller)
 public class AltaUsuario extends JInternalFrame {
 	private static AltaUsuario instance = null;
 	private JTextField txtNickname;
@@ -55,26 +56,7 @@ public class AltaUsuario extends JInternalFrame {
 
 	public AltaUsuario(IControllerUsuario icu) {
 		
-		controllerUsr = icu;
-		
-		try {
-			icu.ingresarInstitucion("Institucion", "Descripcion", "hhtps://www.institucion.com");
-		} catch (Exception e) {
-			// Institucion ya existe
-		}
-		
-		try {
-			icu.ingresarInstitucion("Institucion", "Descripcion", "hhtps://www.institucion.com");
-		} catch (Exception e) {
-			// Institucion ya existe
-		}
-		
-		try {
-			icu.ingresarInstitucion("Otra Institucion", "Descripcion", "hhtps://www.oinstitucion.com");
-		} catch (Exception e) {
-			// Institucion ya existe
-		}
-		
+		controllerUsr = icu;		
 
 		
 		setTitle("Alta de Usuario");
@@ -269,6 +251,7 @@ public class AltaUsuario extends JInternalFrame {
 		verFormAsistente(true);
 		verFormOrganizador(false);
 	}
+	
 
 	public void refrescar() {
 		cmBxInstitucion.removeAllItems();

@@ -114,7 +114,6 @@ public class ControllerEvento implements IControllerEvento{
 		ev.agregarEdicion(nueva);
 		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
-		
 	}
 	
 	@Override

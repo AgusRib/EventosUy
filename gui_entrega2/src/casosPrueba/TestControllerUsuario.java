@@ -13,7 +13,7 @@ import logica.Factory;
 import logica.IControllerUsuario;
 import logica.ManejadorUsuario;
 
-public class testAltaUsuarioInstitucion {
+public class TestControllerUsuario {
 		
 	@Test
 	public void testAltaUsuarioInstitucion() {
