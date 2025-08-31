@@ -16,7 +16,6 @@ public class Edicion {
 	private LocalDate fechaAlta;
 	private String ciudad;
 	private String pais;
-	private List<TipoRegistro> TRegistros;
 	private final Set<Registro> registros;
     private final Set<TipoRegistro> tiposRegistro;
 	private final Map<String, DTPatrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
@@ -31,7 +30,7 @@ public class Edicion {
 		this.fechaAlta = fechaAlta;
 		this.ciudad = ciudad;
 		this.pais = pais;
-		this.registros = null;
+		this.registros = new LinkedHashSet<>();
 		this.tiposRegistro = new LinkedHashSet<>();
 
 	}
@@ -171,8 +170,8 @@ public class Edicion {
 
 	public boolean existeTipoRegistro(String nombreTRegis) {
 		
-		if(this.TRegistros != null) {
-			for (TipoRegistro tipoRegistro : TRegistros) {
+		if(this.tiposRegistro != null) {
+			for (TipoRegistro tipoRegistro : tiposRegistro) {
 				if(tipoRegistro.getNombre() == nombreTRegis) {
 					return true;
 				}
@@ -184,7 +183,7 @@ public class Edicion {
 	
 	public void crearTRegistro(String nom,String desc,Float costo, int cupo) {
 		TipoRegistro newTRegistro = new TipoRegistro(nom,desc,costo,cupo);
-		TRegistros.addFirst(newTRegistro);
+		tiposRegistro.add(newTRegistro);
 	}
 	
 

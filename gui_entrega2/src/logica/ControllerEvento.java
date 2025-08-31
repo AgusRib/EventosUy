@@ -115,6 +115,9 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
 	    Set<String> tiposReg = new HashSet<>();
+	    if (ed == null) {
+	        return tiposReg; // o lanzar una excepción si prefieres
+	    };
 	    for (TipoRegistro tr : ed.getTiposRegistro()) {
 	    	tiposReg.add(tr.getNombre());
 	    }

@@ -102,4 +102,10 @@ public class ControllerUsuario implements IControllerUsuario {
 	}
 	
 	
+	@Override
+	public Set<String> listarAsistentes() {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		return mU.obtenerAsistentes();
+	}
+	
 }

@@ -28,6 +28,8 @@ public interface IControllerUsuario {
 
 	public Set<String> listarEdicionesOrganizadas(String nickname);
 	
+	public Set<String> listarAsistentes();
+	
 	
 	//EDITAR
 	public void agregarAsistente(String nicknameAsistente, String nombreInstitucion);

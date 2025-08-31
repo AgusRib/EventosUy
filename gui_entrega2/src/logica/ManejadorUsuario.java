@@ -2,6 +2,7 @@ package logica;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public class ManejadorUsuario {
 	
@@ -57,6 +58,16 @@ public class ManejadorUsuario {
 	public Organizador buscarOrganizadorDeEdicion(String nombreEdi) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Set<String> obtenerAsistentes() {
+		Set<String> asistentes = new HashSet<>();
+		for (Usuario user : usuarios.values()) {
+			if (user instanceof Asistente) {
+				asistentes.add(user.getNickname());
+			}
+		}
+		return asistentes;
 	}
 	
 }

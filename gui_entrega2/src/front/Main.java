@@ -134,6 +134,7 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmConsultaUsuario.setVisible(true);
 					frmConsultaUsuario.toFront();
+					frmConsultaUsuario.refrescar();
 				}
 			});
 
@@ -177,13 +178,14 @@ public class Main {
 		//Submenus Edicion
 			JMenuItem mntmRegistro = new JMenuItem("Registro");
 			mnEdicion.add(mntmRegistro);
-			frmRegistroEdicion = new RegistroEdicion();
+			frmRegistroEdicion = new RegistroEdicion(ICE, ICU);
 			frmMain.getContentPane().add(frmRegistroEdicion);
 			frmRegistroEdicion.setVisible(false);
 			mntmRegistro.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					frmRegistroEdicion.setVisible(true);
 					frmRegistroEdicion.toFront();
+					frmRegistroEdicion.refrescarEventosAsistentes(ICE, ICU);
 				}
 			});
 			
@@ -194,7 +196,7 @@ public class Main {
 			frmConsultaEdicion.setVisible(false);
 			mntmConsultaEdicion.addActionListener(new ActionListener() {
 			    public void actionPerformed(ActionEvent e) {
-			        frmConsultaEdicion.refrescar();    // ← importante
+			        frmConsultaEdicion.refrescar();    
 			        frmConsultaEdicion.setVisible(true);
 			        frmConsultaEdicion.toFront();
 			    }
