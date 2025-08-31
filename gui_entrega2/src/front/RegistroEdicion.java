@@ -83,12 +83,15 @@ public class RegistroEdicion extends JInternalFrame {
 		btnAceptar.addActionListener(e -> {
 			// Lógica para registrar al asistente en la edición del evento
 			// Usar ICE e ICU según sea necesario
-			ICE.altaRegistro(
+			try {
+			ICE.elegirAsistenteYTipoRegistro(
 				(String) comboBoxAsistente.getSelectedItem(),
 				(String) comboBoxTipoReg.getSelectedItem(),
 				(String) comboBoxEdicion.getSelectedItem()
 
-			);
+			);} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			limpiarFormulario();
 			setVisible(false);
 		});
@@ -109,14 +112,16 @@ public class RegistroEdicion extends JInternalFrame {
 		comboBoxTipoReg.setSelectedIndex(-1);
 	}
 	
-	public void refrescarEventosAsistentes(IControllerEvento ICE, IControllerUsuario ICU) {
+	public void refrescarEventos(IControllerEvento ICE) {
 		comboBoxEvento.removeAllItems();
 		for (String evento : ICE.listarEventos()) {
 			comboBoxEvento.addItem(evento);
 		}
 		comboBoxEvento.setSelectedIndex(-1);
-	
 		
+	}
+	
+	public void refrescarAsistentes(IControllerUsuario ICU) {
 		comboBoxAsistente.removeAllItems();
 		for (String asistente : ICU.listarAsistentes()) {
 			comboBoxAsistente.addItem(asistente);

@@ -174,8 +174,9 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public boolean elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) { //asumo que nomEdi viene de la interfaz en memoria
-	
+	public boolean elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws Exception { 
+		//asumo que nomEdi viene de la interfaz en memoria
+			
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
 		
@@ -183,7 +184,7 @@ public class ControllerEvento implements IControllerEvento{
 		
 		ok = edi.verificarRegistros(nickAsistente);
 		
-		if (ok==false) return false;
+		if (ok==false) throw new Exception("No se pudo completar el registro. Verifique los datos ingresados.");
 		
 		altaRegistro(nickAsistente, tipoReg, nomEdi);
 		

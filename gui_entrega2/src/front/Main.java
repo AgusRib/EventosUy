@@ -188,7 +188,8 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmRegistroEdicion.setVisible(true);
 					frmRegistroEdicion.toFront();
-					frmRegistroEdicion.refrescarEventosAsistentes(ICE, ICU);
+					frmRegistroEdicion.refrescarEventos(ICE);
+					frmRegistroEdicion.refrescarAsistentes(ICU);
 				}
 			});
 			
