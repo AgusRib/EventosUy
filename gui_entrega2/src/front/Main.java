@@ -10,7 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import logica.CargaDatos;
+import casosPrueba.CargaDatos;
 import logica.Factory;
 import logica.IControllerEvento;
 import logica.IControllerUsuario;

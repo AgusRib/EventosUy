@@ -12,6 +12,7 @@ import logica.DataUsuario.TipoUsuario;
 import logica.Factory;
 import logica.IControllerUsuario;
 import logica.ManejadorUsuario;
+import logica.Organizador;
 
 public class TestControllerUsuario {
 		
@@ -79,6 +80,7 @@ public class TestControllerUsuario {
 		assertEquals(ICU.infoUsuario("nachito").getNombre(), "Ignacio");
 		assertEquals(ICU.infoUsuario("nachito").getEmail(), "nachito@gmail.com");
 		assertEquals(ICU.infoUsuario("nachito").getTipo(), TipoUsuario.ORGANIZADOR);
+		assertEquals(((Organizador)ICU.obtenerUsuario("nachito")).getDescripcion(), "descripcion generica 123");
 	
 		
 		try {
