@@ -26,6 +26,8 @@ public class Main {
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
+	private AltaPatrocinio frmAltaPatrocinio;
+	private ConsultaPatrocinio frmConsultaPatrocinio;
 	private AltaEvento frmAltaEvento;
 	private ConsultaDeEvento frmConsultaDeEvento;
 	private AltaTipoRegistro frmAltaTipoRegistro;
@@ -186,7 +188,8 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmRegistroEdicion.setVisible(true);
 					frmRegistroEdicion.toFront();
-					frmRegistroEdicion.refrescarEventosAsistentes(ICE, ICU);
+					frmRegistroEdicion.refrescarEventos(ICE);
+					frmRegistroEdicion.refrescarAsistentes(ICU);
 				}
 			});
 			
@@ -209,8 +212,31 @@ public class Main {
 		mnFuncionalidades.add(mnPatrocinio);
 		
 		//Submenus patrocinio
+			JMenuItem mntmAltaPatrocinio = new JMenuItem("Alta");
+			mnPatrocinio.add(mntmAltaPatrocinio);
+			frmAltaPatrocinio = new AltaPatrocinio(ICE, ICU);
+			desktopPane.add(frmAltaPatrocinio);
+			frmAltaPatrocinio.setVisible(false);
+			mntmAltaPatrocinio.addActionListener(e -> {
+			    frmAltaPatrocinio.refrescar();
+			    frmAltaPatrocinio.setVisible(true);
+			    frmAltaPatrocinio.toFront();
+			});
+		
 			JMenuItem mntmConsultaPatrocinio = new JMenuItem("Consulta");
 			mnPatrocinio.add(mntmConsultaPatrocinio);
+
+			frmConsultaPatrocinio = ConsultaPatrocinio.getInstance(ICE);
+			desktopPane.add(frmConsultaPatrocinio);
+			frmConsultaPatrocinio.setVisible(false);
+
+			mntmConsultaPatrocinio.addActionListener(e -> {
+			    frmConsultaPatrocinio.refrescar();
+			    frmConsultaPatrocinio.setVisible(true);
+			    frmConsultaPatrocinio.toFront();
+			    try { frmConsultaPatrocinio.setSelected(true); } catch (Exception ignore) {}
+			});
+
 		
 		
 		// Tipo Registro

@@ -4,6 +4,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JInternalFrame;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -132,7 +133,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         editorTiposRegCombo.setToolTipText("Elegí un tipo de registro");
         editorTiposRegCombo.addActionListener(e -> {
             if (tblDetallesDeEdicion.isEditing()) tblDetallesDeEdicion.getCellEditor().stopCellEditing();
-
+            
+            
             String tipo = (String) editorTiposRegCombo.getSelectedItem();
             String evento = (String) cbxListadoDeEventos.getSelectedItem();
             String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
@@ -141,16 +143,10 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 return;
             }
 
-            try {
-                logica.DTTipoRegistro dto = controllerEvento.verDetalleTRegistro(edicion, tipo);
-                if (dto != null && onOpenTipoRegistro != null) {
-                    onOpenTipoRegistro.open(evento, edicion, dto);
-                } else {
-                    
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+           tblDetallesDeEdicion.setValueAt(PLACEHOLDER_REG_TIPO, 0, 7);
+           llamarAConsultaDeTipoDeRegistro(tipo, edicion, evento);
+
+           
         });
 
         TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(7);
@@ -186,7 +182,16 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            
+            tblDetallesDeEdicion.setValueAt(PLACEHOLDER_REG_TIPO, 0, 8);
+            llamarAConsultaDePatrocinio(nivel, edicion, evento);
+
+            
         });
+        
+
+        
+        
 
         TableColumn colPat = tblDetallesDeEdicion.getColumnModel().getColumn(8);
         colPat.setCellEditor(new DefaultCellEditor(editorTiposPatCombo));
@@ -339,7 +344,27 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	}
 
 
-   
+	private void llamarAConsultaDeTipoDeRegistro(String tipoReg, String edicion, String evento) {
+        ConsultaDeTipoDeRegistro frmConsultaDeTipoRegistro = ConsultaDeTipoDeRegistro.getInstance(controllerEvento);
+        JDesktopPane desktop = getDesktopPane();
+        if (desktop != null) {
+			frmConsultaDeTipoRegistro.invocacionDesdeConsultaDeEdicion(tipoReg, edicion, evento);
+			frmConsultaDeTipoRegistro.setVisible(true);
+			frmConsultaDeTipoRegistro.toFront();
+			
+			}
+		}
+	
+	private void llamarAConsultaDePatrocinio(String nivel, String edicion, String evento) {
+		ConsultaPatrocinio frmConsultaPatrocinio = ConsultaPatrocinio.getInstance(controllerEvento);
+		JDesktopPane desktop = getDesktopPane();
+		if (desktop != null) {
+			
+			frmConsultaPatrocinio.invocacionDesdeConsultaDeEdicion(nivel, edicion, evento);
+			frmConsultaPatrocinio.setVisible(true);
+			frmConsultaPatrocinio.toFront();
+		}
+	}
     
     private void limpiarTablas() {
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);

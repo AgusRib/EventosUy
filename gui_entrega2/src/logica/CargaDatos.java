@@ -9,9 +9,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import logica.NivelPatrocinio;
 
-
-//TODO: Quitar main() y statics
 public class CargaDatos {
 	
 	public static void cargarDatos() throws Exception {
@@ -22,6 +21,8 @@ public class CargaDatos {
 		cargarEventos();
 		cargarEdiciones();
 		cargarTiposRegistro();
+		cargarPatrocinios();
+		cargarRegistros();
 		
 		System.out.println("Carga de datos finalizada");
 	    imprimirDatosCargados();
@@ -259,6 +260,123 @@ public class CargaDatos {
 		}
 	
 	
+	private static void cargarPatrocinios() {
+		BufferedReader brPatrocinios;
+		try {
+			brPatrocinios = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025Patrocinios.csv"));
+
+			IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+			
+			String linea;
+			brPatrocinios.readLine(); // Saltear la primer linea (headers)
+			while ((linea = brPatrocinios.readLine()) != null) {
+				if (linea.isBlank())
+					continue;
+				
+				String[] campos = linea.split(";");
+							
+				String idPat = campos[0];
+				String idEdi = campos[1];
+				String idInst = campos[2];
+				String nivel = campos[3];
+				String idTipoReg = campos[4];
+				double aporte = Double.parseDouble(campos[5]);
+				String fechaAlta = campos[6];
+				int cantReg = Integer.parseInt(campos[7]);
+				String codigo = campos[8];
+				
+				String nombreEdi = buscarLinea(idEdi, "/datosPrueba/2025EdicionesEventos.csv")[3];
+				String nombreInst = buscarLinea(idInst, "/datosPrueba/2025Instituciones.csv")[1];
+				String tipoGratis = buscarLinea(idTipoReg, "/datosPrueba/2025TipoRegistro.csv")[2];
+				
+				NivelPatrocinio nivelEnum;
+				if (nivel.equals("Platino")) {
+					nivelEnum = NivelPatrocinio.Platino;
+				} else if (nivel.equals("Oro")) {
+					nivelEnum = NivelPatrocinio.Oro;
+				} else if (nivel.equals("Plata")) {
+					nivelEnum = NivelPatrocinio.Plata;
+				} else {
+					nivelEnum = NivelPatrocinio.Bronce;
+				}
+				
+				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
+				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta));
+				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);
+			
+			}} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	
+		System.out.println("Patrocinios cargados");
+		
+	}
+	
+	
+	
+	
+	
+	private static void cargarRegistros() {
+		BufferedReader brRegistros;
+		try {
+			brRegistros = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025Registros.csv"));
+
+			IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+			
+			String linea;
+			brRegistros.readLine(); // Saltear la primer linea (headers)
+			while ((linea = brRegistros.readLine()) != null) {
+				if (linea.isBlank())
+					continue;
+				
+				String[] campos = linea.split(";");
+							
+				String idReg = campos[0];
+				String idUsu = campos[1];
+				String idEdi = campos[2];
+				String idTipoReg = campos[3];
+				String fechaAlta = campos[4];
+				float costo = Float.parseFloat(campos[5]);
+				
+				String nombreEdi = buscarLinea(idEdi, "/datosPrueba/2025EdicionesEventos.csv")[3];
+				String nickAsistente = buscarLinea(idUsu, "/datosPrueba/2025Usuarios.csv")[2];
+				String tipoReg = buscarLinea(idTipoReg, "/datosPrueba/2025TipoRegistro.csv")[2];
+				
+				fechaAlta = fechaAlta.split("/")[2] + "-" + fechaAlta.split("/")[1] + "-" + fechaAlta.split("/")[0];
+				
+				ICE.setFechaSistema(LocalDate.parse(fechaAlta));
+				ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nombreEdi);
+				
+				
+			} } catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	
+		System.out.println("Registros cargados");
+	}
+
+	
+	
+	
+	
+	
+	
+		
 	//UTILS
 	private static String[] buscarLinea(String id, String path) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + path));

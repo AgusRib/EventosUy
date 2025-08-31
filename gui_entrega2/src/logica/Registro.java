@@ -28,7 +28,8 @@ public class Registro {
 		this.edicion=edi;
 		this.setTipoReg(tipoReg);
 		this.costo = tipoReg.getCosto();
-		this.fechaRegistro = LocalDate.now();
+		IControllerEvento ce = new ControllerEvento();
+		this.fechaRegistro = ce.getFechaSistema();
 		return;
 	}
 
