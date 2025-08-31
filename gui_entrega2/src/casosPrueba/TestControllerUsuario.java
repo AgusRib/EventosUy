@@ -12,13 +12,13 @@ import logica.DataUsuario.TipoUsuario;
 import logica.Factory;
 import logica.IControllerUsuario;
 import logica.ManejadorUsuario;
+import logica.Organizador;
 
 public class TestControllerUsuario {
 		
 	@Test
-	public void testAltaUsuarioInstitucion() {
-		
-		
+	public void testAltaUsuarioInstitucion() throws Exception {
+
 		IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		
@@ -54,7 +54,7 @@ public class TestControllerUsuario {
 			e.printStackTrace();
 		}
 		
-		HashSet institucionesSet = new HashSet<String>();
+		HashSet<String> institucionesSet = new HashSet<String>();
 		institucionesSet.add("Instituto Tecnologico");
 		institucionesSet.add("Instituto de Artes");
 		assertEquals(true, ICU.listarInstituciones().equals(institucionesSet));
@@ -79,6 +79,7 @@ public class TestControllerUsuario {
 		assertEquals(ICU.infoUsuario("nachito").getNombre(), "Ignacio");
 		assertEquals(ICU.infoUsuario("nachito").getEmail(), "nachito@gmail.com");
 		assertEquals(ICU.infoUsuario("nachito").getTipo(), TipoUsuario.ORGANIZADOR);
+		assertEquals(((Organizador)ICU.obtenerUsuario("nachito")).getDescripcion(), "descripcion generica 123");
 	
 		
 		try {
@@ -88,10 +89,50 @@ public class TestControllerUsuario {
 			e.printStackTrace();
 		}
 		
+		try {
+			ICU.ingresarAsistente("jorge", "Jorge", "jorge@gmail.com", "Gonzalez", LocalDate.of(2005, 05, 05));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		HashSet<String> usuariosSet = new HashSet<String>();
 		usuariosSet.add("ignaciotema");
 		usuariosSet.add("nachito");
+		usuariosSet.add("jorge");
 		assertEquals(true, ICU.listarUsuarios().equals(usuariosSet));
+		
+		HashSet<String> asistentesSet = new HashSet<String>();
+		asistentesSet.add("ignaciotema");
+		asistentesSet.add("jorge");
+		assertEquals(true, ICU.listarAsistentes().equals(asistentesSet));
+		
+		
+		
+		
+		
+		CargaDatos.cargarDatos();
+
+		// TEST LISTAR REGISTROS A EDICIONES
+		HashSet<String> registros = new HashSet<String>();
+		registros.add("Maratón de Montevideo 2025");
+		registros.add("Maratón de Montevideo 2024");
+		registros.add("Montevideo Rock 2025");
+		
+		assertEquals(true, ICU.listarRegistrosAEventos("sofirod").equals(registros));
+		
+		
+		
+		
+		//TEST LISTAR EDICIONES ORGANIZADAS
+		HashSet<String> ediciones = new HashSet<String>();
+		ediciones.add("Maratón de Montevideo 2025");
+		ediciones.add("Maratón de Montevideo 2024");
+		ediciones.add("Montevideo Rock 2025");
+		ediciones.add("Maratón de Montevideo 2022");
+		
+		assertEquals(true, ICU.listarEdicionesOrganizadas("imm").equals(ediciones));
 		
 	}
 	

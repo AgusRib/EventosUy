@@ -1,4 +1,5 @@
-package logica;
+package casosPrueba;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +10,19 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import logica.Asistente;
+import logica.Evento;
+import logica.Factory;
+import logica.IControllerEvento;
+import logica.IControllerUsuario;
+import logica.ManejadorCategoria;
+import logica.ManejadorEvento;
+import logica.ManejadorInstitucion;
+import logica.ManejadorUsuario;
 import logica.NivelPatrocinio;
+import logica.Organizador;
+import logica.Usuario;
 
 public class CargaDatos {
 	
