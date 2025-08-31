@@ -14,6 +14,7 @@ import logica.CargaDatos;
 import logica.Factory;
 import logica.IControllerEvento;
 import logica.IControllerUsuario;
+import logica.ManejadorUsuario;
 
 public class Main {
 
@@ -30,6 +31,7 @@ public class Main {
 	private ConsultaPatrocinio frmConsultaPatrocinio;
 	private AltaEvento frmAltaEvento;
 	private ConsultaDeEvento frmConsultaDeEvento;
+	private AltaEdicionDeEvento frmAltaEdicion;
 	private AltaTipoRegistro frmAltaTipoRegistro;
 	private ConsultaDeTipoDeRegistro frmConsultaTipoDeRegistro;
 	private ConsultaRegistro frmConsultaRegistro;
@@ -56,6 +58,7 @@ public class Main {
 
 		ICU = Factory.getInstance().getControllerUsuario();
 		ICE = Factory.getInstance().getControllerEvento();
+		ManejadorUsuario h_user = ManejadorUsuario.getInstance();
 		
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMain.setBounds(100, 100, 720, 480);
@@ -179,6 +182,21 @@ public class Main {
 		mnFuncionalidades.add(mnEdicion);
 		
 		//Submenus Edicion
+			JMenuItem mntmAlta = new JMenuItem("Alta");
+			mnEdicion.add(mntmAlta);
+			frmAltaEdicion = new AltaEdicionDeEvento(ICE,h_user);
+			frmMain.getContentPane().add(frmAltaEdicion);
+			frmAltaEdicion.setVisible(false);
+			mntmAlta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frmAltaEdicion.setVisible(true);
+					frmAltaEdicion.toFront();
+					frmAltaEdicion.refrescar(ICE,h_user);
+				}
+			});
+		
+		
+		
 			JMenuItem mntmRegistro = new JMenuItem("Registro");
 			mnEdicion.add(mntmRegistro);
 			frmRegistroEdicion = new RegistroEdicion(ICE, ICU);

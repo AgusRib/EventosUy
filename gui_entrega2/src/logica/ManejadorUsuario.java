@@ -64,6 +64,16 @@ public class ManejadorUsuario {
 		}
 		return asistentes;
 	}
+	
+	public HashSet<String> obtenerOrganizadores() {
+		HashSet<String> organizadores = new HashSet<String>();
+		for (Usuario u : usuarios.values()) {
+			if (u instanceof Organizador) {
+				organizadores.add(u.getNickname());
+			}
+		}
+		return organizadores;
+	}
 
 	public Organizador buscarOrganizadorDeEdicion(String nombreEdi) {
 		// TODO Auto-generated method stub
