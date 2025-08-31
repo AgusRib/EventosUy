@@ -22,11 +22,14 @@ public interface IControllerUsuario {
 	
 	public Set<String> listarUsuarios();
 
+	public Set<String> listarAsistentes();
+	
 	public DataUsuario infoUsuario(String nickname);
 
 	public Set<String> listarRegistrosAEventos(String nickname);
 
 	public Set<String> listarEdicionesOrganizadas(String nickname);
+
 	
 	
 	//EDITAR
@@ -35,7 +38,7 @@ public interface IControllerUsuario {
 	public void editarDatos(String nickname, String nombre, 
 			String descripcion, String URL, String apellido, LocalDate fechaNac);
 
-
+	public Usuario obtenerUsuario(String usuario);
 	
 
 }

@@ -9,7 +9,7 @@ public class Asistente extends Usuario {
 	private String apellido;
 	private LocalDate fechaNacimiento;
 	private Institucion institucion = null;
-	private Set<String> registros = new HashSet<String>();
+	private Set<Registro> registros = new HashSet<Registro>();
 	
 	public String getApellido() {
 		return apellido;
@@ -36,10 +36,23 @@ public class Asistente extends Usuario {
 	}
 	
 
-	public Set<String> getRegistros() {
+	public Set<Registro> getRegistros() {
 		return registros;
 	}
 	
+	public void addRegistro(Registro reg) {
+		this.registros.add(reg);
+	}
+	
+	public Registro getRegistro(Edicion edicion) {
+		for (Registro reg : registros) {
+			if (reg.getEdicion().equals(edicion)) {
+				return reg;
+			}
+		}
+		return null;
+	}
+
 	public Asistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento) {
 		super(nickname, nombre, email);
 		this.apellido = apellido;

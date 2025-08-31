@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import logica.Usuario;
 
 import logica.DataUsuario;
 import logica.DataUsuario.TipoUsuario;
@@ -149,6 +150,12 @@ public class ConsultaUsuario extends JInternalFrame {
 						//TODO: Arreglar que ande esto
 						ce.invocacionDesdeConsultaUsuario(listAsociaciones.getSelectedValue());
 					} else {
+						ConsultaRegistro cr = ConsultaRegistro.getInstance(Factory.getInstance().getControllerEvento(), Factory.getInstance().getControllerUsuario());
+						cr.setVisible(true);
+						cr.toFront();
+						String usuario = listUsuarios.getSelectedValue();
+						Usuario u = controllerUsr.obtenerUsuario(usuario);
+						cr.invocacionDesdeConsultaUsuario(u, listAsociaciones.getSelectedValue());
 
 					}
 				}

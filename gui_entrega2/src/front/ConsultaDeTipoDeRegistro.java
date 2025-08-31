@@ -128,14 +128,35 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
 			cbTipoRegistro.setEnabled(true);
     }}
 
-  
+    public void invocacionDesdeConsultaDeEdicion(String tipo, String edicion, String evento) {
+		cbEventos.addItem(evento); // Asegurarse de que el evento esté en el combo
+    	cbEventos.setSelectedItem(evento);
+		AlSeleccionarEvento();
+	    cbEdiciones.addItem(edicion); // Asegurarse de que la edición esté en el combo
+		cbEdiciones.setSelectedItem(edicion);
+		AlSeleccionarEdicion(); // Cargar tipos de registro de la edición seleccionada
+		cbTipoRegistro.addItem(tipo); // Asegurarse de que el tipo esté en el combo
+		cbTipoRegistro.setSelectedItem(tipo);
+		AlSeleccionarTipoRegistro();
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private void AlSeleccionarTipoRegistro() {
         panelDetalle.removeAll();
         panelDetalle.setVisible(false);
         panelDetalle.revalidate();
         panelDetalle.repaint();
+       
         DTTipoRegistro dto = controllerEvento.verDetalleTRegistro(
-				(String) cbEdiciones.getSelectedItem(),
+				
+        		(String) cbEdiciones.getSelectedItem(),
 				(String) cbTipoRegistro.getSelectedItem()
 		);
         
@@ -221,4 +242,18 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         panelDetalle.revalidate();
         panelDetalle.repaint();
     }  
+    
+    public void refrescar() {
+		limpiarCampos();
+		cbEventos.removeAllItems();
+		cbEventos.addItem(PLACEHOLDER_EVENTO);
+		Set<String> eventos = controllerEvento.listarEventos();
+		if(eventos != null) {
+	        for (String evento : eventos) {
+	            cbEventos.addItem(evento);
+	        }
+		}
+	}
+    
+    
 }

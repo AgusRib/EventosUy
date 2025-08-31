@@ -21,6 +21,7 @@ public class CargaDatos {
 		cargarCategorias();
 		cargarEventos();
 		cargarEdiciones();
+		cargarTiposRegistro();
 		
 		System.out.println("Carga de datos finalizada");
 	    imprimirDatosCargados();
@@ -29,7 +30,11 @@ public class CargaDatos {
 	
 	
 	
-	
+
+
+
+
+
 	//CARGAS
 	public static void cargarUsuarios() throws Exception {
 		BufferedReader brUsuarios = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025Usuarios.csv"));
@@ -207,7 +212,51 @@ public class CargaDatos {
 		System.out.println("Ediciones cargadas");};
 			
 	
-	
+		
+		
+		
+		
+		private static void cargarTiposRegistro() {
+			BufferedReader brTiposReg;
+			try {
+				brTiposReg = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025TipoRegistro.csv"));
+
+				IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+				
+				String linea;
+				brTiposReg.readLine(); // Saltear la primer linea (headers)
+				while ((linea = brTiposReg.readLine()) != null) {
+					if (linea.isBlank())
+						continue;
+					
+					String[] campos = linea.split(";");
+								
+					String idTip = campos[0];
+					String idEdi = campos[1];
+					String nombre = campos[2];
+					String descripcion = campos[3];
+					Float costo = Float.parseFloat(campos[4]);
+					int cupo = Integer.parseInt(campos[5]);
+					
+					String nombreEdi = buscarLinea(idEdi, "/datosPrueba/2025EdicionesEventos.csv")[3];
+					
+					ICE.altaTipoDeRegistro(nombreEdi, nombre, descripcion, costo, cupo);
+				
+				}} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+		
+			System.out.println("Tipos de registro cargados");
+			
+		}
 	
 	
 	//UTILS

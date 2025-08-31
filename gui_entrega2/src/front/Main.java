@@ -26,10 +26,13 @@ public class Main {
 	private ModificarDatosUsuario frmModificarDatosUsuario;
 	private ConsultaEdicionDeEvento frmConsultaEdicion;
 	private RegistroEdicion frmRegistroEdicion;
+	private AltaPatrocinio frmAltaPatrocinio;
+	private ConsultaPatrocinio frmConsultaPatrocinio;
 	private AltaEvento frmAltaEvento;
 	private ConsultaDeEvento frmConsultaDeEvento;
 	private AltaTipoRegistro frmAltaTipoRegistro;
 	private ConsultaDeTipoDeRegistro frmConsultaTipoDeRegistro;
+	private ConsultaRegistro frmConsultaRegistro;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
 	
@@ -134,6 +137,7 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmConsultaUsuario.setVisible(true);
 					frmConsultaUsuario.toFront();
+					frmConsultaUsuario.refrescar();
 				}
 			});
 
@@ -177,13 +181,14 @@ public class Main {
 		//Submenus Edicion
 			JMenuItem mntmRegistro = new JMenuItem("Registro");
 			mnEdicion.add(mntmRegistro);
-			frmRegistroEdicion = new RegistroEdicion();
+			frmRegistroEdicion = new RegistroEdicion(ICE, ICU);
 			frmMain.getContentPane().add(frmRegistroEdicion);
 			frmRegistroEdicion.setVisible(false);
 			mntmRegistro.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					frmRegistroEdicion.setVisible(true);
 					frmRegistroEdicion.toFront();
+					frmRegistroEdicion.refrescarEventosAsistentes(ICE, ICU);
 				}
 			});
 			
@@ -194,7 +199,7 @@ public class Main {
 			frmConsultaEdicion.setVisible(false);
 			mntmConsultaEdicion.addActionListener(new ActionListener() {
 			    public void actionPerformed(ActionEvent e) {
-			        frmConsultaEdicion.refrescar();    // ← importante
+			        frmConsultaEdicion.refrescar();    
 			        frmConsultaEdicion.setVisible(true);
 			        frmConsultaEdicion.toFront();
 			    }
@@ -206,8 +211,31 @@ public class Main {
 		mnFuncionalidades.add(mnPatrocinio);
 		
 		//Submenus patrocinio
+			JMenuItem mntmAltaPatrocinio = new JMenuItem("Alta");
+			mnPatrocinio.add(mntmAltaPatrocinio);
+			frmAltaPatrocinio = new AltaPatrocinio(ICE, ICU);
+			desktopPane.add(frmAltaPatrocinio);
+			frmAltaPatrocinio.setVisible(false);
+			mntmAltaPatrocinio.addActionListener(e -> {
+			    frmAltaPatrocinio.refrescar();
+			    frmAltaPatrocinio.setVisible(true);
+			    frmAltaPatrocinio.toFront();
+			});
+		
 			JMenuItem mntmConsultaPatrocinio = new JMenuItem("Consulta");
 			mnPatrocinio.add(mntmConsultaPatrocinio);
+
+			frmConsultaPatrocinio = ConsultaPatrocinio.getInstance(ICE);
+			desktopPane.add(frmConsultaPatrocinio);
+			frmConsultaPatrocinio.setVisible(false);
+
+			mntmConsultaPatrocinio.addActionListener(e -> {
+			    frmConsultaPatrocinio.refrescar();
+			    frmConsultaPatrocinio.setVisible(true);
+			    frmConsultaPatrocinio.toFront();
+			    try { frmConsultaPatrocinio.setSelected(true); } catch (Exception ignore) {}
+			});
+
 		
 		
 		// Tipo Registro
@@ -223,6 +251,7 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmAltaTipoRegistro.setVisible(true);
 					frmAltaTipoRegistro.toFront();
+					frmAltaTipoRegistro.refrescar(ICE);
 				}
 			});
 			
@@ -235,9 +264,28 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmConsultaTipoDeRegistro.setVisible(true);
 					frmConsultaTipoDeRegistro.toFront();
+					frmConsultaTipoDeRegistro.refrescar();
 				}
 			});
 		
+		//Registro
+		JMenu mnRegistro = new JMenu("Registro");
+		mnFuncionalidades.add(mnRegistro);
+			//Submenus Registro
+			JMenuItem mntmConsultaRegistro = new JMenuItem("Consulta");
+			mnRegistro.add(mntmConsultaRegistro);
+			frmConsultaRegistro = ConsultaRegistro.getInstance(ICE, ICU);
+			frmMain.getContentPane().add(frmConsultaRegistro);
+			frmConsultaRegistro.setVisible(false);
+			mntmConsultaRegistro.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frmConsultaRegistro.setVisible(true);
+					frmConsultaRegistro.toFront();
+					frmConsultaRegistro.refrescar();
+				}
+			});
+			
+			
 		frmMain.getContentPane().setLayout(null);
 	}
 }

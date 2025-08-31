@@ -9,6 +9,8 @@ import excepciones.NombreEventoExcepcion;
 
 public class ControllerEvento implements IControllerEvento{
 	
+	//TODO: agregar opcion en el front para cambiar la fecha del sistema
+	
 	@Override
 	public Set<String> listarEventos() {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
@@ -59,8 +61,13 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public Set<String> listarPatrocinios(String nombreEdi) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<String> listaPat = new LinkedHashSet<>();
+		
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		listaPat = edi.getPatrocinios();
+		
+		return listaPat;
 	}
 
 	@Override
@@ -115,12 +122,28 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
 	    Set<String> tiposReg = new HashSet<>();
+	    if (ed == null) {
+	        return tiposReg; // o lanzar una excepción si prefieres
+	    };
 	    for (TipoRegistro tr : ed.getTiposRegistro()) {
 	    	tiposReg.add(tr.getNombre());
 	    }
 		return tiposReg;
 	}
 	
+@Override
+	public DTRegistro infoRegistro(String edicion, String usuario) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(edicion);
+		
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Asistente usu = mU.obtenerAsistente(usuario);
+		
+		Registro reg = usu.getRegistro(edi);
+		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto());
+		return dtR;
+	}
+
 	@Override
 	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) {
 		ManejadorEvento mEve = ManejadorEvento.getInstance();
@@ -178,6 +201,25 @@ public class ControllerEvento implements IControllerEvento{
 		
 		edi.crearRegistro(as,tipoReg);
 		return;
+	}
+	
+	@Override
+	public void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo) {
+	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+	    Edicion ed = mEdi.encontrarEdicion(nombreEdi);
+	    TipoRegistro tr = ed.getTipoRegistro(tipoRegistroGratis);
+	    double costoUnit = tr.getCosto();
+	    double costoGratis = costoUnit * cantidadGratis;
+	    double limite = aporteEconomico * 0.20;
+	    Patrocinio p = new Patrocinio(
+	            LocalDate.now(),
+	            (int) Math.round(aporteEconomico),
+	            codigo,
+	            cantidadGratis,
+	            nivel,
+	            tipoRegistroGratis
+	    );
+	    ed.agregarPatrocinio(institucion, p);
 	}
 	
 	

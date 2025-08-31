@@ -4,6 +4,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JInternalFrame;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -141,16 +142,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 return;
             }
 
-            try {
-                logica.DTTipoRegistro dto = controllerEvento.verDetalleTRegistro(edicion, tipo);
-                if (dto != null && onOpenTipoRegistro != null) {
-                    onOpenTipoRegistro.open(evento, edicion, dto);
-                } else {
-                    
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+           llamarAConsultaDeTipoDeRegistro(tipo, edicion, evento);
+           
         });
 
         TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(7);
@@ -323,25 +316,34 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 
 	        java.util.Set<String> niveles = new java.util.LinkedHashSet<>();
 	        
-	        if(instituciones != null) {
-	        
-		        for (String inst : instituciones) {
-		            try {
-		                logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
-		                if (p != null && p.getNivelPatrocinio().name() != null) niveles.add(p.getNivelPatrocinio().name());
-		            } catch (Exception ex) {
-		                ex.printStackTrace();
-		            }
-		        }
-		        for (String n : niveles) patModel.addElement(n);
-		    }
-	    }
+	        if (instituciones !=null){
+	        for (String inst : instituciones) {
+	            try {
+	                logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
+	                if (p != null && p.getNivelPatrocinio().name() != null) niveles.add(p.getNivelPatrocinio().name());
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	        for (String n : niveles) patModel.addElement(n);
+	    }}
 
 	    editorTiposPatCombo.setModel(patModel);
 	}
 
 
-   
+	private void llamarAConsultaDeTipoDeRegistro(String tipoReg, String edicion, String evento) {
+        ConsultaDeTipoDeRegistro frmConsultaDeTipoRegistro = ConsultaDeTipoDeRegistro.getInstance(controllerEvento);
+        JDesktopPane desktop = getDesktopPane();
+        if (desktop != null) {
+        	
+			frmConsultaDeTipoRegistro.invocacionDesdeConsultaDeEdicion(tipoReg, edicion, evento);
+			frmConsultaDeTipoRegistro.setVisible(true);
+			frmConsultaDeTipoRegistro.toFront();
+			
+		}
+			
+		}
     
     private void limpiarTablas() {
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
@@ -364,11 +366,9 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     private void cargarEventosDesdeLogica() {
     	DefaultComboBoxModel<String> evModel = new DefaultComboBoxModel<>();
     	try {
-    		if(controllerEvento.listarEventos() != null) {
-	            for (String ev : controllerEvento.listarEventos()) {
-	                evModel.addElement(ev);
-	            }
-    		}
+            for (String ev : controllerEvento.listarEventos()) {
+                evModel.addElement(ev);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -382,15 +382,13 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     			}
     			return instance;
     }
-    
+
+
     public void refrescar() {
-        cargarEventosDesdeLogica();  // repuebla el combo de eventos
+		cargarEventosDesdeLogica();
         // forzá limpiar/estado inicial
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
-    }
 
-
-
-
+	}
 
 }
