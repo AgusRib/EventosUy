@@ -4,6 +4,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JInternalFrame;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -141,16 +142,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 return;
             }
 
-            try {
-                logica.DTTipoRegistro dto = controllerEvento.verDetalleTRegistro(edicion, tipo);
-                if (dto != null && onOpenTipoRegistro != null) {
-                    onOpenTipoRegistro.open(evento, edicion, dto);
-                } else {
-                    
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+           llamarAConsultaDeTipoDeRegistro(tipo, edicion, evento);
+           
         });
 
         TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(7);
@@ -339,7 +332,18 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	}
 
 
-   
+	private void llamarAConsultaDeTipoDeRegistro(String tipoReg, String edicion, String evento) {
+        ConsultaDeTipoDeRegistro frmConsultaDeTipoRegistro = ConsultaDeTipoDeRegistro.getInstance(controllerEvento);
+        JDesktopPane desktop = getDesktopPane();
+        if (desktop != null) {
+        	
+			frmConsultaDeTipoRegistro.invocacionDesdeConsultaDeEdicion(tipoReg, edicion, evento);
+			frmConsultaDeTipoRegistro.setVisible(true);
+			frmConsultaDeTipoRegistro.toFront();
+			
+		}
+			
+		}
     
     private void limpiarTablas() {
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
