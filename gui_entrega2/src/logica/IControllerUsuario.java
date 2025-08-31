@@ -29,8 +29,7 @@ public interface IControllerUsuario {
 	public Set<String> listarRegistrosAEventos(String nickname);
 
 	public Set<String> listarEdicionesOrganizadas(String nickname);
-	
-	public Set<String> listarAsistentes();
+
 	
 	
 	//EDITAR

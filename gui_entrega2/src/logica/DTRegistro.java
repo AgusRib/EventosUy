@@ -6,9 +6,9 @@ public class DTRegistro {
 	private LocalDate fechaRegistro;
 	private String nombreEdicion;
 	private String nombreAsistente;
-	private int costo;
+	private float costo;
 	
-	public DTRegistro(LocalDate fechaRegistro, String nombreEdicion, String nombreAsistente, int costo) {
+	public DTRegistro(LocalDate fechaRegistro, String nombreEdicion, String nombreAsistente, float costo) {
 		this.fechaRegistro = fechaRegistro;
 		this.nombreEdicion = nombreEdicion;
 		this.nombreAsistente = nombreAsistente;
@@ -27,7 +27,7 @@ public class DTRegistro {
 		return nombreAsistente;
 	}
 	
-	public int getCosto() {
+	public float getCosto() {
 		return costo;
 	}
 	

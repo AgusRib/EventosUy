@@ -8,32 +8,31 @@ public class Registro {
 
 	private Edicion edicion;
 	private Asistente asistente;
-	private int costo;
+	private float costo;
 	private TipoRegistro tipoReg;
-
 	private LocalDate fechaRegistro;
 
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
 	}
 
-	public Asistente getAsistente() {
-		return this.asistente;
-	}
 
 	public void setFechaRegistro(LocalDate fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 
+	//TODO: implementar caso en el que el costo sea 0 (ej: asistente de una institucion que patrocina)
 	public Registro(Asistente as, TipoRegistro tipoReg, Edicion edi) {
 		super();
 		this.asistente=as;
 		this.edicion=edi;
-		this.tipoReg=tipoReg;
+		this.setTipoReg(tipoReg);
+		this.costo = tipoReg.getCosto();
+		this.fechaRegistro = LocalDate.now();
 		return;
 	}
 
-	public Object getEdicion() {
+	public Edicion getEdicion() {
 		return edicion;
 	}
 	
@@ -49,12 +48,22 @@ public class Registro {
 		this.asistente = asistente;
 	}
 	
-	public int getCosto() {
+	public float getCosto() {
 		return costo;
 	}
 	
 	public void setCosto(int costo) {
 		this.costo = costo;
+	}
+
+
+	public TipoRegistro getTipoReg() {
+		return tipoReg;
+	}
+
+
+	public void setTipoReg(TipoRegistro tipoReg) {
+		this.tipoReg = tipoReg;
 	}
 
 }

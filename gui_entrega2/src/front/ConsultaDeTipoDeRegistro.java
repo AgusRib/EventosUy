@@ -221,4 +221,19 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         panelDetalle.revalidate();
         panelDetalle.repaint();
     }  
+    
+    public void refrescar() {
+		limpiarCampos();
+		cbEventos.removeAllItems();
+		cbEventos.addItem(PLACEHOLDER_EVENTO);
+		Set<String> eventos = controllerEvento.listarEventos();
+		if(eventos != null) {
+	        for (String evento : eventos) {
+	            cbEventos.addItem(evento);
+	        }
+		}
+	}
+    
+    
 }
+
