@@ -55,6 +55,10 @@ public class ControllerUsuario implements IControllerUsuario {
 		return ManejadorUsuario.getInstance().obtenerUsuarios();
 	}
 
+	@Override
+	public Set<String> listarAsistentes() {
+		return ManejadorUsuario.getInstance().obtenerAsistentes();
+	}
 
 	@Override
 	public void editarDatos(String nickname, String nombre, String descripcion, String URL, String apellido,
@@ -75,12 +79,23 @@ public class ControllerUsuario implements IControllerUsuario {
 		}
 		return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), tipo);
 	}
+
+	@Override
+	public Usuario obtenerUsuario(String usuario) {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		return mU.obtenerUsuario(usuario);
+	}
 	
 	@Override
 	public Set<String> listarRegistrosAEventos(String nickname) {
 		ManejadorUsuario mI = ManejadorUsuario.getInstance();
 		Asistente asistente = mI.obtenerAsistente(nickname);
-		return asistente.getRegistros();
+		Set<Registro>regs=asistente.getRegistros();
+		Set<String> nombresRegistros= new HashSet<>();
+		for (String nom:nombresRegistros) {
+			nombresRegistros.add(nom);
+		}
+		return nombresRegistros;
 	}
 	
 	@Override
