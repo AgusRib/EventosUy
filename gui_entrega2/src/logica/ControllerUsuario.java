@@ -55,6 +55,10 @@ public class ControllerUsuario implements IControllerUsuario {
 		return ManejadorUsuario.getInstance().obtenerUsuarios();
 	}
 
+	@Override
+	public Set<String> listarAsistentes() {
+		return ManejadorUsuario.getInstance().obtenerAsistentes();
+	}
 
 	@Override
 	public void editarDatos(String nickname, String nombre, String descripcion, String URL, String apellido,
@@ -74,6 +78,12 @@ public class ControllerUsuario implements IControllerUsuario {
 			tipo = TipoUsuario.ORGANIZADOR;
 		}
 		return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), tipo);
+	}
+
+	@Override
+	public Usuario obtenerUsuario(String usuario) {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		return mU.obtenerUsuario(usuario);
 	}
 	
 	@Override

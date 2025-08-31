@@ -121,6 +121,18 @@ public class ControllerEvento implements IControllerEvento{
 		return tiposReg;
 	}
 	
+@Override
+	public DTRegistro infoRegistro(String edicion, String usuario) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(edicion);
+		
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Asistente usu = mU.obtenerAsistente(usuario);
+		Registro reg = usu.getRegistro(edi);
+		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto() );
+		return dtR;
+	}
+
 	@Override
 	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) {
 		ManejadorEvento mEve = ManejadorEvento.getInstance();

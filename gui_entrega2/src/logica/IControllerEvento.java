@@ -17,6 +17,7 @@ public interface IControllerEvento{
 	public Set<String> listarTiposDeRegistro( String nombreEdicion);
 	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais);
 	public void ingresarCategoria(String string);
+	public DTRegistro infoRegistro(String edicion, String usuario);
 	Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi);
 	boolean elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi);
 	void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi);
