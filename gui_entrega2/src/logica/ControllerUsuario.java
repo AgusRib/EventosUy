@@ -60,14 +60,6 @@ public class ControllerUsuario implements IControllerUsuario {
 	public Set<String> listarAsistentes() {
 		return ManejadorUsuario.getInstance().obtenerAsistentes();
 	}
-
-	/*
-	@Override
-	public void editarDatos(String nickname, String nombre, String descripcion, String URL, String apellido,
-			LocalDate fechaNac) {
-		// TODO Auto-generated method stub
-
-	}*/
 	
 	@Override
 	public DataUsuario infoUsuario(String nickname) {

@@ -145,7 +145,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		y++;
 
 		// Fila sigla
-		lbl_sigla = new JLabel("Descripcion: ");
+		lbl_sigla = new JLabel("Sigla: ");
 		GridBagConstraints gbcLblSigla = new GridBagConstraints();
 		gbcLblSigla.insets = new Insets(5, 5, 5, 5);
 		gbcLblSigla.fill = GridBagConstraints.HORIZONTAL;
@@ -313,7 +313,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		                    "La edicion '" + nombre + " ya existe ");
 		            }
 		            ice.altaEdicionDeEvento(ev, org, nombre, sigla, fIni, fFin, fAlta, ciudad, pais);
-		            JOptionPane.showMessageDialog(this, "El tipo de registro se ha registrado con éxito", "Alta de Tipo Registro",
+		            JOptionPane.showMessageDialog(this, "La edicion se ha registrado con exito", "Alta Edicion",
 		                        JOptionPane.INFORMATION_MESSAGE);
 		            limpiarFormulario();
 		        } catch (excepciones.NombreEdicionExistenteExcepcion ex) {

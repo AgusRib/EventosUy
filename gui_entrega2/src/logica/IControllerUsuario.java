@@ -35,8 +35,8 @@ public interface IControllerUsuario {
 	//EDITAR
 	public void agregarAsistente(String nicknameAsistente, String nombreInstitucion);
 	
-	/**public void editarDatos(String nickname, String nombre, 
-			String descripcion, String URL, String apellido, LocalDate fechaNac);**/
+	//public void editarDatos(String nickname, String nombre, 
+			//String descripcion, String URL, String apellido, LocalDate fechaNac);
 
 	public Usuario obtenerUsuario(String usuario);
 	
