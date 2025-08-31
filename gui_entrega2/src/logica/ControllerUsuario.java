@@ -90,7 +90,12 @@ public class ControllerUsuario implements IControllerUsuario {
 	public Set<String> listarRegistrosAEventos(String nickname) {
 		ManejadorUsuario mI = ManejadorUsuario.getInstance();
 		Asistente asistente = mI.obtenerAsistente(nickname);
-		return asistente.getRegistros();
+		Set<Registro>regs=asistente.getRegistros();
+		Set<String> nombresRegistros= new HashSet<>();
+		for (String nom:nombresRegistros) {
+			nombresRegistros.add(nom);
+		}
+		return nombresRegistros;
 	}
 	
 	@Override
