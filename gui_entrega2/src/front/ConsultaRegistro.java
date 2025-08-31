@@ -51,13 +51,13 @@ public class ConsultaRegistro extends JInternalFrame {
 		controllerEv = controllerEvento;
 		controllerUsr = ICU;
 	
-		setTitle("Consulta de Usuario");
+		setTitle("Consulta de Registro");
 		setClosable(true);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setTitle("Consulta de Usuario");
+		setTitle("Consulta de Registro");
 		setClosable(true);
 		
 		
