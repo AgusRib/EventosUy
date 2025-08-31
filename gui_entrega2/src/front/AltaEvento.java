@@ -94,10 +94,6 @@ public class AltaEvento extends JInternalFrame{
 	   for (String categoria : categorias) {
 			cbxCategorias.addItem(categoria);
 		}
-		cbxCategorias.addItem("Deporte");
-		cbxCategorias.addItem("Cultura");
-		cbxCategorias.addItem("Tecnología");
-		cbxCategorias.addItem("Música");
 		
 		
 		listModelCategorias = new DefaultListModel<>();
@@ -194,6 +190,7 @@ public class AltaEvento extends JInternalFrame{
 			DescripcionEvento.setText("");
 			FechaEvento.setText("");
 			listModelCategorias.clear();
+			setVisible(false);
 		
 		});
 	}
@@ -216,6 +213,13 @@ public class AltaEvento extends JInternalFrame{
         return c;
     }
 	
+	public void resfrescar() {
+		//cbxCategorias.removeAllItems();
+		Set<String> categorias = controllerEvento.listarCategorias();
+		   for (String categoria : categorias) {
+				cbxCategorias.addItem(categoria);
+			}
+	}
 	
 	
 	

@@ -150,8 +150,10 @@ public class Main {
 			frmAltaEvento.setVisible(false);
 			mntmAltaEvento.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					frmAltaEvento.resfrescar();
 					frmAltaEvento.setVisible(true);
 					frmAltaEvento.toFront();
+					
 				}
 			});
 		
@@ -162,6 +164,7 @@ public class Main {
 			frmConsultaDeEvento.setVisible(false);
 			mntmConsultaEvento.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					frmConsultaDeEvento.refrescar();
 					frmConsultaDeEvento.setVisible(true);
 					frmConsultaDeEvento.toFront();
 				}

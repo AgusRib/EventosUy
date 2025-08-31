@@ -74,6 +74,7 @@ public class ControllerEvento implements IControllerEvento{
 	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
+		System.out.println(ed);
 		DTDetalleEdicion dtEdi = ed.devolverDT();
 		Organizador org = ManejadorUsuario.getInstance().buscarOrganizadorDeEdicion(nombreEdi);
 		dtEdi.setOrganizador(org != null ? org.getNombre() : null);
@@ -130,6 +131,9 @@ public class ControllerEvento implements IControllerEvento{
 		ev.agregarEdicion(nueva);
 		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		mEdi.agregarEdicion(nueva);
+		
 	}
 	
 	@Override

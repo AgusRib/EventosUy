@@ -27,7 +27,7 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
     private static final String PLACEHOLDER_TIPO = "— Seleccione tipo —";
 
     public ConsultaDeTipoDeRegistro(IControllerEvento ICE) {
-        super("Detalle de Tipo de Registro", true, true, true, true);
+        super("Consulta de Tipo de Registro", true, true, true, true);
         this.controllerEvento = ICE;
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(520, 380);
@@ -220,9 +220,5 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         panelDetalle.setVisible(false);
         panelDetalle.revalidate();
         panelDetalle.repaint();
-    }
-    
-    
-    
-    
+    }  
 }

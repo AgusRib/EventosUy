@@ -27,4 +27,8 @@ public class ManejadorEdicion {
 	public Edicion encontrarEdicion(String nombreEdi) {
 		return (Edicion) colEdiciones.get(nombreEdi);
 	}
+
+	public void agregarEdicion(Edicion nueva) {
+		colEdiciones.put(nueva.getNombre(), nueva);
+	}
 }

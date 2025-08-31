@@ -1,22 +1,27 @@
 package front;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
-import logica.Factory;
-import logica.IControllerEvento;
-
-import java.awt.*;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Collections;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Set;
-import java.util.LinkedHashSet;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+
 import logica.DTDetalleEvento;
+import logica.IControllerEvento;
 
 
 @SuppressWarnings("serial")
@@ -184,12 +189,22 @@ public class ConsultaDeEvento extends JInternalFrame {
     
     //Metodo para refrescar el combo de eventos
     public void refrescar() {
-		Set<String> eventos = controllerEvento.listarEventos();
-		cbxListadoDeEventos.removeAllItems();
-		cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
-		for (String ev : eventos) cbxListadoDeEventos.addItem(ev);
-		if (cbxListadoDeEventos.getItemCount() > 0) cbxListadoDeEventos.setSelectedIndex(0);
-	}
+        Set<String> eventos = controllerEvento.listarEventos();
+        cbxListadoDeEventos.removeAllItems();
+        cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
+        if (eventos != null) {
+            for (String ev : eventos) cbxListadoDeEventos.addItem(ev);
+        }
+        cbxListadoDeEventos.setSelectedIndex(0);
+
+        // Limpiar campos
+        txtNombreEvento.setText("");
+        txtSiglaEvento.setText("");
+        textAreaDescripcion.setText("");
+        modeloCategorias.clear();
+        cbxListadoDeEdiciones.removeAllItems();
+        cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
+    }
        
     
     
@@ -197,7 +212,6 @@ public class ConsultaDeEvento extends JInternalFrame {
         ConsultaEdicionDeEvento frmConsultaEdicionDeEvento = ConsultaEdicionDeEvento.getInstance(controllerEvento);
         JDesktopPane desktop = getDesktopPane();
         if (desktop != null) {
-			setVisible(false);
 			frmConsultaEdicionDeEvento.invocacionDesdeConsultaDeEvento(edicion, evento);
 			frmConsultaEdicionDeEvento.setVisible(true);
 		    frmConsultaEdicionDeEvento.toFront();
