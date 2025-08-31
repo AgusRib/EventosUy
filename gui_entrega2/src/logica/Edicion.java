@@ -18,7 +18,7 @@ public class Edicion {
 	private String pais;
 	private final Set<Registro> registros;
     private final Set<TipoRegistro> tiposRegistro;
-	private final Map<String, DTPatrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
+	private final Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
 			String ciudad, String pais) {
@@ -103,11 +103,17 @@ public class Edicion {
 	}
 	
 	public DTPatrocinio getPatrocinio(String nombreInstitucion) {
-		DTPatrocinio p = patrociniosPorInstitucion.get(nombreInstitucion);
-		return p;
-		
+		Patrocinio p = patrociniosPorInstitucion.get(nombreInstitucion);
+		return new DTPatrocinio(
+		        p.getFecha(),
+		        p.getMonto(),
+		        p.getCodigo(),
+		        p.getNivelPatrocinio(),
+		        p.getTipoRegistroGratis(),
+		        p.getCantRegsGratis()
+		 );
 	}
-
+	
 
 	public DTDetalleEdicion devolverDT() {
 		Set<String> nombresTiposRegistros = new LinkedHashSet<>();
@@ -185,6 +191,15 @@ public class Edicion {
 	public void crearTRegistro(String nom,String desc,Float costo, int cupo) {
 		TipoRegistro newTRegistro = new TipoRegistro(nom,desc,costo,cupo);
 		tiposRegistro.add(newTRegistro);
+	}
+	
+	public void agregarPatrocinio(String nombreInstitucion, Patrocinio pat) {
+		patrociniosPorInstitucion.put(nombreInstitucion, pat);
+	}
+
+
+	public Set<String> getPatrocinios() {
+		return new LinkedHashSet<>(patrociniosPorInstitucion.keySet());
 	}
 	
 

@@ -61,8 +61,13 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public Set<String> listarPatrocinios(String nombreEdi) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<String> listaPat = new LinkedHashSet<>();
+		
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		listaPat = edi.getPatrocinios();
+		
+		return listaPat;
 	}
 
 	@Override
@@ -196,6 +201,25 @@ public class ControllerEvento implements IControllerEvento{
 		
 		edi.crearRegistro(as,tipoReg);
 		return;
+	}
+	
+	@Override
+	public void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo) {
+	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+	    Edicion ed = mEdi.encontrarEdicion(nombreEdi);
+	    TipoRegistro tr = ed.getTipoRegistro(tipoRegistroGratis);
+	    double costoUnit = tr.getCosto();
+	    double costoGratis = costoUnit * cantidadGratis;
+	    double limite = aporteEconomico * 0.20;
+	    Patrocinio p = new Patrocinio(
+	            LocalDate.now(),
+	            (int) Math.round(aporteEconomico),
+	            codigo,
+	            cantidadGratis,
+	            nivel,
+	            tipoRegistroGratis
+	    );
+	    ed.agregarPatrocinio(institucion, p);
 	}
 	
 	

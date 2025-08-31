@@ -21,5 +21,6 @@ public interface IControllerEvento{
 	Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi);
 	boolean elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi);
 	void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi);
+	void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo);
 }
 
