@@ -104,6 +104,9 @@ public class Edicion {
 	
 	public DTPatrocinio getPatrocinio(String nombreInstitucion) {
 		Patrocinio p = patrociniosPorInstitucion.get(nombreInstitucion);
+		if (p == null) {
+			return null;
+		}
 		return new DTPatrocinio(
 		        p.getFecha(),
 		        p.getMonto(),
