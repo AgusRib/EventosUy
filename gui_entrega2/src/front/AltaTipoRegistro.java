@@ -65,6 +65,16 @@ public class AltaTipoRegistro extends JInternalFrame {
 		for (Evento ev : ManejadorEvento.getInstance().obtenerEventos().values()) {
 		    seleccionarEvento.addItem(ev.getNombre());
 		}
+		
+		seleccionarEvento.addActionListener(e -> {
+		    String eventoSeleccionado = (String) seleccionarEvento.getSelectedItem();
+		    actualizarEdiciones(ice, eventoSeleccionado);
+		    if (eventoSeleccionado != null) {
+		        activarTextFields();
+		    } else {
+		        desactivarTextFields();
+		    }
+		});
 		GridBagConstraints gbcComboEvento = new GridBagConstraints();
 		gbcComboEvento.insets = new Insets(5, 5, 5, 5);
 		gbcComboEvento.fill = GridBagConstraints.HORIZONTAL;
@@ -255,6 +265,9 @@ public class AltaTipoRegistro extends JInternalFrame {
 		tf_nombre.setEnabled(false);
 		
 	}
+	
+	
+	
 	
 	private void actualizarEdiciones(IControllerEvento ice, String eventoSeleccionado) {
 	    seleccionarEdicion.removeAllItems();

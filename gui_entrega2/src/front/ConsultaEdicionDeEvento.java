@@ -322,6 +322,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	        }
 
 	        java.util.Set<String> niveles = new java.util.LinkedHashSet<>();
+	        
+	        if (instituciones !=null){
 	        for (String inst : instituciones) {
 	            try {
 	                logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
@@ -331,7 +333,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	            }
 	        }
 	        for (String n : niveles) patModel.addElement(n);
-	    }
+	    }}
 
 	    editorTiposPatCombo.setModel(patModel);
 	}
