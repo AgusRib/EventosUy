@@ -9,6 +9,8 @@ import excepciones.NombreEventoExcepcion;
 
 public class ControllerEvento implements IControllerEvento{
 	
+	//TODO: agregar opcion en el front para cambiar la fecha del sistema
+	
 	@Override
 	public Set<String> listarEventos() {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
@@ -131,8 +133,9 @@ public class ControllerEvento implements IControllerEvento{
 		
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		Asistente usu = mU.obtenerAsistente(usuario);
+		
 		Registro reg = usu.getRegistro(edi);
-		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto() );
+		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto());
 		return dtR;
 	}
 

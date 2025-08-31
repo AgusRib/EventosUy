@@ -165,6 +165,7 @@ public class Edicion {
 		treg.restarCupo();
 		Registro nReg = new Registro(as, treg, this);
 		this.registros.add(nReg);
+		as.addRegistro(nReg);
 		return;
 	}
 

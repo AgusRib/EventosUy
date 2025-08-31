@@ -1,6 +1,7 @@
 package logica;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import logica.DataUsuario.TipoUsuario;
@@ -90,10 +91,10 @@ public class ControllerUsuario implements IControllerUsuario {
 	public Set<String> listarRegistrosAEventos(String nickname) {
 		ManejadorUsuario mI = ManejadorUsuario.getInstance();
 		Asistente asistente = mI.obtenerAsistente(nickname);
-		Set<Registro>regs=asistente.getRegistros();
+		Set<Registro> regs = asistente.getRegistros();
 		Set<String> nombresRegistros= new HashSet<>();
-		for (String nom:nombresRegistros) {
-			nombresRegistros.add(nom);
+		for (Registro reg: regs) {
+			nombresRegistros.add((reg.getEdicion()).getNombre());
 		}
 		return nombresRegistros;
 	}
@@ -117,10 +118,5 @@ public class ControllerUsuario implements IControllerUsuario {
 	}
 	
 	
-	@Override
-	public Set<String> listarAsistentes() {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		return mU.obtenerAsistentes();
-	}
 	
 }

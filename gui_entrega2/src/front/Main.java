@@ -30,6 +30,7 @@ public class Main {
 	private ConsultaDeEvento frmConsultaDeEvento;
 	private AltaTipoRegistro frmAltaTipoRegistro;
 	private ConsultaDeTipoDeRegistro frmConsultaTipoDeRegistro;
+	private ConsultaRegistro frmConsultaRegistro;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
 	
@@ -225,6 +226,7 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmAltaTipoRegistro.setVisible(true);
 					frmAltaTipoRegistro.toFront();
+					frmAltaTipoRegistro.refrescar(ICE);
 				}
 			});
 			
@@ -237,9 +239,28 @@ public class Main {
 				public void actionPerformed(ActionEvent e) {
 					frmConsultaTipoDeRegistro.setVisible(true);
 					frmConsultaTipoDeRegistro.toFront();
+					frmConsultaTipoDeRegistro.refrescar();
 				}
 			});
 		
+		//Registro
+		JMenu mnRegistro = new JMenu("Registro");
+		mnFuncionalidades.add(mnRegistro);
+			//Submenus Registro
+			JMenuItem mntmConsultaRegistro = new JMenuItem("Consulta");
+			mnRegistro.add(mntmConsultaRegistro);
+			frmConsultaRegistro = ConsultaRegistro.getInstance(ICE, ICU);
+			frmMain.getContentPane().add(frmConsultaRegistro);
+			frmConsultaRegistro.setVisible(false);
+			mntmConsultaRegistro.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frmConsultaRegistro.setVisible(true);
+					frmConsultaRegistro.toFront();
+					frmConsultaRegistro.refrescar();
+				}
+			});
+			
+			
 		frmMain.getContentPane().setLayout(null);
 	}
 }

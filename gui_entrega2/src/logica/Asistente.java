@@ -40,6 +40,10 @@ public class Asistente extends Usuario {
 		return registros;
 	}
 	
+	public void addRegistro(Registro reg) {
+		this.registros.add(reg);
+	}
+	
 	public Registro getRegistro(Edicion edicion) {
 		for (Registro reg : registros) {
 			if (reg.getEdicion().equals(edicion)) {

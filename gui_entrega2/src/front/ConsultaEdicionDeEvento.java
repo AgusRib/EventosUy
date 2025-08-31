@@ -322,19 +322,15 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	        }
 
 	        java.util.Set<String> niveles = new java.util.LinkedHashSet<>();
-	        
-	        if(instituciones != null) {
-	        
-		        for (String inst : instituciones) {
-		            try {
-		                logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
-		                if (p != null && p.getNivelPatrocinio().name() != null) niveles.add(p.getNivelPatrocinio().name());
-		            } catch (Exception ex) {
-		                ex.printStackTrace();
-		            }
-		        }
-		        for (String n : niveles) patModel.addElement(n);
-		    }
+	        for (String inst : instituciones) {
+	            try {
+	                logica.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
+	                if (p != null && p.getNivelPatrocinio().name() != null) niveles.add(p.getNivelPatrocinio().name());
+	            } catch (Exception ex) {
+	                ex.printStackTrace();
+	            }
+	        }
+	        for (String n : niveles) patModel.addElement(n);
 	    }
 
 	    editorTiposPatCombo.setModel(patModel);
@@ -364,11 +360,9 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     private void cargarEventosDesdeLogica() {
     	DefaultComboBoxModel<String> evModel = new DefaultComboBoxModel<>();
     	try {
-    		if(controllerEvento.listarEventos() != null) {
-	            for (String ev : controllerEvento.listarEventos()) {
-	                evModel.addElement(ev);
-	            }
-    		}
+            for (String ev : controllerEvento.listarEventos()) {
+                evModel.addElement(ev);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -382,15 +376,13 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     			}
     			return instance;
     }
-    
+
+
     public void refrescar() {
-        cargarEventosDesdeLogica();  // repuebla el combo de eventos
+		cargarEventosDesdeLogica();
         // forzá limpiar/estado inicial
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
-    }
 
-
-
-
+	}
 
 }

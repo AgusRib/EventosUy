@@ -230,6 +230,8 @@ public class ConsultaRegistro extends JInternalFrame {
 		listUsuarios.setVisible(true);
 		listUsuarios.setEnabled(true);
 		listUsuarios.addListSelectionListener(e -> {
+			Fecha.setText("");
+			Costo.setText("");
 			detallesUsuario();
 		});
 		listUsuarios.setListData(controllerUsr.listarAsistentes().toArray(new String[0]));
@@ -247,27 +249,37 @@ public class ConsultaRegistro extends JInternalFrame {
 	}
 	
 	public void refrescar() {
-		listUsuarios.setListData(controllerUsr.listarUsuarios().toArray(new String[0]));
+		listUsuarios.setListData(controllerUsr.listarAsistentes().toArray(new String[0]));
+		listUsuarios.setSelectedIndex(0);
+		Fecha.setText("");
+		Costo.setText("");
+		txtNombre.setText("");
+		txtEmail.setText("");
+		listRegistros.setListData(new String[] {});
+
 	}
 
 	private void detallesUsuario() {
 		String selected = listUsuarios.getSelectedValue();
 		if (selected == null) {
-			
 			return;
 		}
+		
+		System.out.println("Selected user: " + selected);
 		panelDetallesUsr.setVisible(true);
 		DataUsuario dataUser = controllerUsr.infoUsuario(selected);
 		txtNombre.setText(dataUser.getNombre());
 		txtEmail.setText(dataUser.getEmail());
 		
 		lblAsociaciones.setText("Registros a ediciones:");
+		System.out.println(controllerUsr.listarRegistrosAEventos(selected).toArray(new String[0]).length);
 		listRegistros.setListData(controllerUsr.listarRegistrosAEventos(selected).toArray(new String[0]));
 		
 	}
 	
 	//TODO: checkear como convertirlo a lista
 	private void detallesRegistro(String edicion) {
+		
 		
 		String usuario = listUsuarios.getSelectedValue();
 		if (edicion == null) {
@@ -276,7 +288,8 @@ public class ConsultaRegistro extends JInternalFrame {
 		}
 		//panelRegistro.setVisible(true);
 		DTRegistro dataReg = controllerEv.infoRegistro(edicion, usuario);
-		Fecha.setText( (dataReg.getFechaRegistro()).toString());
+		Fecha.setText((dataReg.getFechaRegistro()).toString());
+		
 		Costo.setText(String.valueOf(dataReg.getCosto()));
 		
 		//lblAsociaciones.setText("Registros a ediciones:");
@@ -301,4 +314,6 @@ public class ConsultaRegistro extends JInternalFrame {
 		}
 		return instance;
 	}
+	
+	
 }

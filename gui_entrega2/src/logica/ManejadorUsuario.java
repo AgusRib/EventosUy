@@ -70,14 +70,5 @@ public class ManejadorUsuario {
 		return null;
 	}
 
-	public Set<String> obtenerAsistentes() {
-		Set<String> asistentes = new HashSet<>();
-		for (Usuario user : usuarios.values()) {
-			if (user instanceof Asistente) {
-				asistentes.add(user.getNickname());
-			}
-		}
-		return asistentes;
-	}
 	
 }
