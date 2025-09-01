@@ -170,10 +170,41 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(btnAceptar);
 		btnAceptar.addActionListener(a -> {
 			try {
+				if (txtNombre.getText().trim().isEmpty()) {
+	                JOptionPane.showMessageDialog(this, "El campo 'Nombre' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+				if (txtNickname.getText().trim().isEmpty()) {
+	                JOptionPane.showMessageDialog(this, "El campo 'Nickname' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+				if (txtEmail.getText().trim().isEmpty()) {
+				    JOptionPane.showMessageDialog(this, "El campo 'Email' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+				}
+				
+				
+				
+				
 				if (btnOrganizador.isSelected()) {
+					if (txtDescripcion.getText().trim().isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "El campo 'Descripcion' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+					
 					controllerUsr.ingresarOrganizador(txtNickname.getText(), txtNombre.getText(), 
 							txtEmail.getText(), txtDescripcion.getText(), txtWeb.getText());
 				} else {
+					if (txtApellido.getText().trim().isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "El campo 'Apellido' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+					if (txtFechaNac.getText().trim().isEmpty()) {
+			            JOptionPane.showMessageDialog(this, "El campo 'Fecha de Nacimiento' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+					}
+					
+					
 					controllerUsr.ingresarAsistente(txtNickname.getText(), txtNombre.getText(), 
 							txtEmail.getText(), txtApellido.getText(), LocalDate.parse(txtFechaNac.getText())); 
 					if (cmBxInstitucion.getSelectedIndex() > 0) {

@@ -280,6 +280,26 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		            String sigla = tf_sigla.getText();
 		            String ciudad = tf_ciudad.getText();
 		            String pais = tf_pais.getText();
+		            
+		            if (nombre.isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+		            
+		            if (sigla.isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "La sigla no puede estar vacía.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+		            if (ciudad.isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "La ciudad no puede estar vacía.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+		            if (pais.isEmpty()) { 
+		                JOptionPane.showMessageDialog(this, "El país no puede estar vacío.", "Error de Entrada", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+		            
+		            
 
 		            LocalDate fIni;
 		            try {
