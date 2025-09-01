@@ -1,10 +1,10 @@
 package logica;
-import java.util.List;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 import excepciones.NombreEventoExcepcion;
 
 public class ControllerEvento implements IControllerEvento{
