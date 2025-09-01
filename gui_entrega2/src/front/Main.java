@@ -35,6 +35,7 @@ public class Main {
 	private AltaTipoRegistro frmAltaTipoRegistro;
 	private ConsultaDeTipoDeRegistro frmConsultaTipoDeRegistro;
 	private ConsultaRegistro frmConsultaRegistro;
+	private FechaSistema frmFechaSistema;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
 	
@@ -75,12 +76,22 @@ public class Main {
 		JMenu mnSistema = new JMenu("Sistema");
 		menuBar.add(mnSistema);
 		
-		JMenuItem mntmSalir = new JMenuItem("Salir");
-		mnSistema.add(mntmSalir);
-		mntmSalir.addActionListener(e-> {
-			frmMain.dispose();
-			System.exit(0);
+		
+	
+		frmFechaSistema = FechaSistema.getInstance(ICE);
+		frmMain.getContentPane().add(frmFechaSistema);
+		
+		JMenuItem mntmCambiarFecha = new JMenuItem("Cambiar Fecha del Sistema");
+		mnSistema.add(mntmCambiarFecha);
+		mntmCambiarFecha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmFechaSistema = FechaSistema.getInstance(ICE);
+				frmFechaSistema.setVisible(true);
+				frmFechaSistema.toFront();
+				System.out.println("Fecha del sistema actual: " + ICE.getFechaSistema());
+			}
 		});
+		
 		
 		JMenuItem mntmCargarDatos = new JMenuItem("Cargar Datos");
 		mnSistema.add(mntmCargarDatos);
@@ -94,6 +105,13 @@ public class Main {
 		    } catch (Exception ex) {
 		        ex.printStackTrace();
 		    }
+		});
+		
+		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mnSistema.add(mntmSalir);
+		mntmSalir.addActionListener(e-> {
+			frmMain.dispose();
+			System.exit(0);
 		});
 
 		
