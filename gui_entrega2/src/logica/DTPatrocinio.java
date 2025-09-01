@@ -36,7 +36,7 @@ public class DTPatrocinio {
 	public int getCantRegsGratis() {
 		return cantRegsGratis;
 	}
-	public void setFecha(LocalDate fecha) {
+	/*public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 	public void setMonto(float monto) {
@@ -47,7 +47,7 @@ public class DTPatrocinio {
 	}
 	public void setNivelPatrocinio(NivelPatrocinio nivelPatrocinio) {
 		this.nivelPatrocinio = nivelPatrocinio;
-	}
+	}*/
 	
 	
 }

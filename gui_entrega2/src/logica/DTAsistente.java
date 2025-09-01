@@ -24,6 +24,9 @@ public class DTAsistente {
 	}
 
 	
+	/*public void setnickname(String nickname) {
+		this.nickname = nickname;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -44,6 +47,6 @@ public class DTAsistente {
 
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
-	}
+	}*/
 }
 

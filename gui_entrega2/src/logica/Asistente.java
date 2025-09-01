@@ -11,7 +11,7 @@ public class Asistente extends Usuario {
 	private Institucion institucion = null;
 	private Set<Registro> registros = new HashSet<Registro>();
 	
-	public String getApellido() {
+	/*public String getApellido() {
 		return apellido;
 	}
 
@@ -25,7 +25,7 @@ public class Asistente extends Usuario {
 
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
-	}
+	}*/
 
 	public Institucion getInstitucion() {
 		return institucion;

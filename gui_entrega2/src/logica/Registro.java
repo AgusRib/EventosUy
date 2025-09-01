@@ -37,30 +37,30 @@ public class Registro {
 		return edicion;
 	}
 	
-	public void setEdicion(Edicion edicion) {
+	/*public void setEdicion(Edicion edicion) {
 		this.edicion = edicion;
-	}
+	}*/
 	
 	public Asistente getAsistente() {
 		return asistente;
 	}
 	
-	public void setAsistente(Asistente asistente) {
+	/*public void setAsistente(Asistente asistente) {
 		this.asistente = asistente;
-	}
+	}*/
 	
 	public float getCosto() {
 		return costo;
 	}
 	
-	public void setCosto(int costo) {
+	/*public void setCosto(int costo) {
 		this.costo = costo;
 	}
 
 
 	public TipoRegistro getTipoReg() {
 		return tipoReg;
-	}
+	}*/
 
 
 	public void setTipoReg(TipoRegistro tipoReg) {
