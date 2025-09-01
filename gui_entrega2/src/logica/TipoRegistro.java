@@ -17,6 +17,7 @@ public class TipoRegistro {
 	public String getNombre() {
 		return nombre;
 	}
+	/*
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -25,11 +26,12 @@ public class TipoRegistro {
 	}
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
+	}*/
 	public float getCosto() {
 		return costo;
 	}
-	public void setCosto(float costo) {
+	
+	/*public void setCosto(float costo) {
 		this.costo = costo;
 	}
 	public int getCupo() {
@@ -38,7 +40,7 @@ public class TipoRegistro {
 	public void setCupo(int cupo) {
 		this.cupo = cupo;
 	}
-	
+	*/
 	public void restarCupo() {
 		this.cupo--;
 	}

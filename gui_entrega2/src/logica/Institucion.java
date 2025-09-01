@@ -9,7 +9,7 @@ public class Institucion {
 	public String getNombre() {
 		return nombre;
 	}
-	public void setNombre(String nombre) {
+	/*public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 	public String getDescripcion() {
@@ -24,7 +24,7 @@ public class Institucion {
 	public void setWeb(String web) {
 		this.web = web;
 	}
-	
+	*/
 	public Institucion(String nombre, String descripcion, String web) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;

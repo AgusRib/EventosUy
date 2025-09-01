@@ -38,29 +38,60 @@ public class DTDetalleEdicion {
 		return nombre;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public String getSigla() {
 		return sigla;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public LocalDate getFechaInicio() {
 		return fechaInicio;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public LocalDate getFechaFin() {
 		return fechaFin;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public LocalDate getFechaAlta() {
 		return fechaAlta;
 	}
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public String getCiudad() {
 		return ciudad;
 	}
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public String getPais() {
 		return pais;
 	}
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57.git
 	public String getOrganizador() {
 		return organizador;
 	}

@@ -23,7 +23,8 @@ public class DTAsistente {
 		return nickname;
 	}
 
-	public void setnickname(String nickname) {
+	
+	/*public void setnickname(String nickname) {
 		this.nickname = nickname;
 	}
 
@@ -31,28 +32,21 @@ public class DTAsistente {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+	
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	
 
 	public String getapellido() {
 		return apellido;
 	}
 
-	public void setapellido(String apellido) {
-		this.apellido = apellido;
-	}
-	
+
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
-	}
+	}*/
 }
 

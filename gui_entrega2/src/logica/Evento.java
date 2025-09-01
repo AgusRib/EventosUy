@@ -30,9 +30,9 @@ public class Evento{
 		return nombre;
 	}
 
-	public LocalDate getfechaAlta() {
+	/*public LocalDate getfechaAlta() {
 		return fechaAlta;
-	}
+	}*/
 
 	public String getDescripcion() {
 		return descripcion;
@@ -51,13 +51,13 @@ public class Evento{
 		
 	}
 	
-	public Set<DTTipoRegistro> infoTipoRegDeEdi(String nombreEdicion){
+	/*public Set<DTTipoRegistro> infoTipoRegDeEdi(String nombreEdicion){
 		Set<DTTipoRegistro> setTipoReg = new HashSet<>();
 		Edicion edi = getEdicion(nombreEdicion);
 		setTipoReg = edi.obtenerTipoReg();
 		return setTipoReg;
 		
-	}
+	}*/
 	
 	public void agregarEdicion(Edicion nueva) {
 		if (nueva == null) throw new IllegalArgumentException("Edición vacía");
