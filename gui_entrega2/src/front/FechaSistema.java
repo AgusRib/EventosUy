@@ -141,5 +141,10 @@ public class FechaSistema extends JInternalFrame{
 		}
 		return instance;
 	}
+	
+	public void refrescar(IControllerEvento ICE) {
+		txtFechaSistema.setText(ICE.getFechaSistema().toString());
+		textFieldNuevaFecha.setText("");
+	}
 
 }
