@@ -202,14 +202,14 @@ public class Main {
 		//Submenus Edicion
 			JMenuItem mntmAlta = new JMenuItem("Alta");
 			mnEdicion.add(mntmAlta);
-			frmAltaEdicion = new AltaEdicionDeEvento(ICE,h_user);
+			frmAltaEdicion =AltaEdicionDeEvento.getInstance(ICE,ICU);
 			frmMain.getContentPane().add(frmAltaEdicion);
 			frmAltaEdicion.setVisible(false);
 			mntmAlta.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					frmAltaEdicion.setVisible(true);
 					frmAltaEdicion.toFront();
-					frmAltaEdicion.refrescar(ICE,h_user);
+					frmAltaEdicion.refrescar(ICE,ICU);
 				}
 			});
 		
@@ -217,7 +217,7 @@ public class Main {
 		
 			JMenuItem mntmRegistro = new JMenuItem("Registro");
 			mnEdicion.add(mntmRegistro);
-			frmRegistroEdicion = new RegistroEdicion(ICE, ICU);
+			frmRegistroEdicion =  RegistroEdicion.getInstance(ICE, ICU);
 			frmMain.getContentPane().add(frmRegistroEdicion);
 			frmRegistroEdicion.setVisible(false);
 			mntmRegistro.addActionListener(new ActionListener() {
@@ -250,7 +250,7 @@ public class Main {
 		//Submenus patrocinio
 			JMenuItem mntmAltaPatrocinio = new JMenuItem("Alta");
 			mnPatrocinio.add(mntmAltaPatrocinio);
-			frmAltaPatrocinio = new AltaPatrocinio(ICE, ICU);
+			frmAltaPatrocinio = AltaPatrocinio.getInstance(ICE, ICU);
 			desktopPane.add(frmAltaPatrocinio);
 			frmAltaPatrocinio.setVisible(false);
 			mntmAltaPatrocinio.addActionListener(e -> {
@@ -281,7 +281,7 @@ public class Main {
 			//Sub menus TipoRegistro
 			JMenuItem mntmAltaTipoRegistro = new JMenuItem("Alta");
 			mnTipoRegistro.add(mntmAltaTipoRegistro);
-			frmAltaTipoRegistro = new AltaTipoRegistro(ICE);
+			frmAltaTipoRegistro = AltaTipoRegistro.getInstance(ICE);
 			frmMain.getContentPane().add(frmAltaTipoRegistro);
 			frmAltaTipoRegistro.setVisible(false);
 			mntmAltaTipoRegistro.addActionListener(new ActionListener() {

@@ -7,6 +7,9 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import excepciones.FechaInicioPOSTFINAL;
+import excepciones.FechaInicioPREALTA;
+import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 import logica.DTDetalleEdicion;
 import logica.DTPatrocinio;
@@ -44,7 +47,21 @@ public class TestPatrocinio {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ICE.altaEdicionDeEvento("Evo1", "imm", "E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 11, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY");
+		try {
+			ICE.altaEdicionDeEvento("Evo1", "imm", "E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 12, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY");
+		} catch (NombreEdicionExistenteExcepcion e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FechaInicioPOSTFINAL e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FechaInicioPREALTA e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		try {
 			ICE.altaTipoDeRegistro( "E90", "pinguinesco", "DescTipoRegGratis", 0.0f, 100);
@@ -92,7 +109,7 @@ public class TestPatrocinio {
 	    ins.add("ORT Uruguay");
 	    
 	  
-	    DTDetalleEdicion dte= new DTDetalleEdicion("E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 11, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY", "imm", cats, ins);
+	    DTDetalleEdicion dte= new DTDetalleEdicion("E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 12, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY", "imm", cats, ins);
 	    DTDetalleEdicion dted=ICE.mostrarDetallesEdicion("E90");
 	    
 	    System.out.println(dted.getNombre());

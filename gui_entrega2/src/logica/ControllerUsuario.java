@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import excepciones.EmailRepetido;
+import excepciones.NombreUsuarioExistente;
 import logica.DataUsuario.TipoUsuario;
 
 //TODO: implementar excepciones para manejar campos vacíos en las altas salvo la web de organizador ya que es opcional
@@ -11,12 +13,12 @@ public class ControllerUsuario implements IControllerUsuario {
 
 	@Override
 	public void ingresarAsistente(String nickname, String nombre, String email, String apellido,
-			LocalDate fechaNac) throws Exception {
+			LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		if (mU.existeNickname(nickname)) {
-			throw new Exception("Ya existe un usuario con este nickname");
+			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
 		} else if (mU.existeEmail(email)) {
-			throw new Exception("Ya existe un usuario con este email");
+			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
 			Asistente user = new Asistente(nickname, nombre, email, apellido, fechaNac);
 			mU.agregarUsuario(user);
@@ -39,12 +41,12 @@ public class ControllerUsuario implements IControllerUsuario {
 	}
 
 	@Override
-	public void ingresarOrganizador(String nickname, String nombre, String email, String descripcion, String web) throws Exception {
+	public void ingresarOrganizador(String nickname, String nombre, String email, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		if (mU.existeNickname(nickname)) {
-			throw new Exception("Ya existe un usuario con este nickname");
+			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
 		} else if (mU.existeEmail(email)) {
-			throw new Exception("Ya existe un usuario con este email");
+			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
 			Organizador user = new Organizador(nickname, nombre, email, descripcion, web);
 			mU.agregarUsuario(user);
@@ -55,6 +57,19 @@ public class ControllerUsuario implements IControllerUsuario {
 	public Set<String> listarUsuarios() {
 		return ManejadorUsuario.getInstance().obtenerUsuarios();
 	}
+	
+	
+	public Set<String> listarOrganizadores() {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Set<String> organizadores = new HashSet<>();
+		for (String nick: mU.obtenerUsuarios()) {
+			if (mU.obtenerUsuario(nick) instanceof Organizador) {
+				organizadores.add(nick);
+			}
+		}
+		return organizadores;
+	}
+	
 
 	@Override
 	public Set<String> listarAsistentes() {

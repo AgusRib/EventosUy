@@ -5,7 +5,10 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
+import excepciones.AsistenteYaRegistrado;
+import excepciones.CupoLLeno;
 import logica.IControllerEvento;
 import logica.IControllerUsuario;
 
@@ -89,11 +92,20 @@ public class RegistroEdicion extends JInternalFrame {
 				(String) comboBoxTipoReg.getSelectedItem(),
 				(String) comboBoxEdicion.getSelectedItem()
 
-			);} catch (Exception ex) {
+			);
+			
+			JOptionPane.showMessageDialog(this, "Asistente registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			limpiarFormulario();
+			
+			}catch(AsistenteYaRegistrado ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}catch(CupoLLeno ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			limpiarFormulario();
-			setVisible(false);
+			
 		});
 		
 		btnCancelar = new JButton("Cancelar");
@@ -156,5 +168,8 @@ public class RegistroEdicion extends JInternalFrame {
 		}
 		return instance;
 	}
+	
+	
+	
 	
 }

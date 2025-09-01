@@ -55,8 +55,8 @@ public class TestVerDetalles {
 		categoriasSet.add("Categoria1");
 		ICE.ingresarCategoria("Categoria1");
 		ICE.altaEvento("Evento1", "ev1", ICE.getFechaSistema(), "descripcion 1", categoriasSet); 
-		ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ed1", LocalDate.of(2004, 1,1), LocalDate.of(2004, 1,8), LocalDate.of(2003, 12,31), "Montevideo", "Uruguay");
-		DTEdicion dtEdicion = new DTEdicion("Edicion1", "ed1",LocalDate.of(2004, 1,1), LocalDate.of(2004, 1,8), "Montevideo", "Uruguay");
+		ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ed1", LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), LocalDate.of(2027, 1,1), "Montevideo", "Uruguay");
+		DTEdicion dtEdicion = new DTEdicion("Edicion1", "ed1",LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), "Montevideo", "Uruguay");
 		DTDetalleEdicion detalleEdicion = ICE.mostrarDetallesEdicion("Edicion1");
 		Organizador org = (Organizador) ICU.obtenerUsuario("Vegetta");
 		

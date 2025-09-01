@@ -19,11 +19,12 @@ import java.awt.Insets;
 import logica.Edicion;
 import logica.Evento;
 import logica.IControllerEvento;
+import logica.IControllerUsuario;
 import logica.ManejadorEdicion;
 import logica.ManejadorEvento;
 
 public class AltaTipoRegistro extends JInternalFrame {
-
+    private static AltaTipoRegistro instance=null;
 	private static final long serialVersionUID = 1L;
 
 	private JComboBox<String> seleccionarEvento;
@@ -214,8 +215,20 @@ public class AltaTipoRegistro extends JInternalFrame {
 		            String edi = (String) seleccionarEdicion.getSelectedItem();
 		            String nombre = tf_nombre.getText();
 		            String descripcion = tf_descripcion.getText();
-		            float costo = Float.parseFloat(tf_costo.getText());
+		           
+		           float costo = Float.parseFloat(tf_costo.getText());
 		            int cupo = Integer.parseInt(tf_cupo.getText());
+		            
+		        if(costo <  0 ) {
+		        	JOptionPane.showMessageDialog(this,"el costo no puede ser negativo");
+		        	return;
+		        }
+		        
+		        if(cupo <  0 ) {
+		        	JOptionPane.showMessageDialog(this,"la cantidad de cupos no puede ser negativa");
+		        	return;
+		        }
+		      
 		            Edicion edicion = ManejadorEdicion.getInstance().encontrarEdicion(edi);
 		            if (edicion != null && edicion.existeTipoRegistro(nombre)) {
 		                throw new excepciones.TipoRegistroExistenteExcepcion(
@@ -225,7 +238,11 @@ public class AltaTipoRegistro extends JInternalFrame {
 		            JOptionPane.showMessageDialog(this, "El tipo de registro se ha registrado con éxito", "Alta de Tipo Registro",
 		                        JOptionPane.INFORMATION_MESSAGE);
 		            limpiarFormulario();
-		        } catch (excepciones.TipoRegistroExistenteExcepcion ex) {
+		        } catch(NumberFormatException nfe) {
+		        	JOptionPane.showMessageDialog(this, "Costo y cupo deben ser numéricos","Alta de Tipo Registro", JOptionPane.ERROR_MESSAGE);
+		        }
+		        
+		        catch (excepciones.TipoRegistroExistenteExcepcion ex) {
 		        	JOptionPane.showMessageDialog(this, ex.getMessage(),"Alta de Tipo Registro", JOptionPane.ERROR_MESSAGE);
 		            tf_nombre.setText("");
 		        } catch (Exception ex) {
@@ -296,4 +313,15 @@ public class AltaTipoRegistro extends JInternalFrame {
 			activarTextFields();
 		}
 	}
-}
+	
+	
+	public static AltaTipoRegistro getInstance(IControllerEvento ICE) {
+		if (instance == null) {
+			instance = new AltaTipoRegistro(ICE);
+		}
+		return instance;
+	
+	
+	
+	
+}}

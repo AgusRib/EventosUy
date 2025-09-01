@@ -3,15 +3,18 @@ package logica;
 import java.time.LocalDate;
 import java.util.Set;
 
+import excepciones.EmailRepetido;
+import excepciones.NombreUsuarioExistente;
+
 public interface IControllerUsuario {
 	 
 	//ALTAS
 	public void ingresarAsistente(String nickname, 
 			String nombre, String email, 
-			String apellido, LocalDate fechaNac) throws Exception;
+			String apellido, LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception;
 	
 	public void ingresarOrganizador(String nickname, String nombre, 
-			String email, String descripcion, String web) throws Exception;
+			String email, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception;
 	
 	public void ingresarInstitucion(String nombre, 
 			String descripcion, String web) throws Exception;
@@ -23,6 +26,8 @@ public interface IControllerUsuario {
 	public Set<String> listarUsuarios();
 
 	public Set<String> listarAsistentes();
+	
+	public Set<String> listarOrganizadores();
 	
 	public DataUsuario infoUsuario(String nickname);
 
@@ -39,6 +44,8 @@ public interface IControllerUsuario {
 			//String descripcion, String URL, String apellido, LocalDate fechaNac);
 
 	public Usuario obtenerUsuario(String usuario);
+
+	public void editarUsuario(String nickname, String apellido, LocalDate fdef);
 	
 
 }

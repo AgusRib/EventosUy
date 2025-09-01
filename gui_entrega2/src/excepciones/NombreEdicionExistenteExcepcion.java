@@ -1,19 +1,8 @@
 package excepciones;
 
 public class NombreEdicionExistenteExcepcion extends Exception {
-    public NombreEdicionExistenteExcepcion() {
-        super("El nombre de la edición ya existe");
-    }
+    private static final long serialVersionUID = -5438586414051001574L;
 
-    public NombreEdicionExistenteExcepcion(String message) {
-        super(message);
-    }
-
-    public NombreEdicionExistenteExcepcion(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NombreEdicionExistenteExcepcion(Throwable cause) {
-        super(cause);
-    }
-}
+	public NombreEdicionExistenteExcepcion(String mensaje) {
+        super(mensaje);
+     } }

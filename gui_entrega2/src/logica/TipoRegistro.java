@@ -46,7 +46,7 @@ public class TipoRegistro {
 	public int getCupo() {
 		return cupo;
 	}
-	
+
 	public boolean verificarCupo() {
 		return !(this.cupo == 0);
 	}

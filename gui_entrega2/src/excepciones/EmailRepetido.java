@@ -1,13 +1,13 @@
 package excepciones;
 
-public class AsistenteYaRegistrado extends Exception{
+public class EmailRepetido extends Exception{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public AsistenteYaRegistrado(String mensaje) {
+	public EmailRepetido(String mensaje) {
 		super(mensaje);
 	}
 }

@@ -6,7 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,16 +17,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import logica.Evento;
 import logica.IControllerEvento;
-import logica.ManejadorEdicion;
-import logica.ManejadorEvento;
-import logica.ManejadorUsuario;
+import logica.IControllerUsuario;
+
 
 public class AltaEdicionDeEvento extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static AltaEdicionDeEvento instance = null;
 
+	private IControllerUsuario controllerUsuario;
 	private JComboBox<String> seleccionarEvento;
 	private JComboBox<String> seleccionarOrganizador;
 	private JLabel lbl_seleccionarEvento;
@@ -50,7 +50,8 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 	private JButton btn_aceptar;
 	private JButton btn_cancelar;
 
-	public AltaEdicionDeEvento(IControllerEvento ice, ManejadorUsuario h_user) {
+	public AltaEdicionDeEvento(IControllerEvento ice,IControllerUsuario icu) {
+		controllerUsuario = icu;
 		setTitle("Alta de Edicion");
 		setClosable(true);
 		setBounds(100, 100, 800, 400);
@@ -70,8 +71,8 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		ventana.add(lbl_seleccionarEvento, gbcLblEvento);
 
 		seleccionarEvento = new JComboBox<>();
-		for (Evento ev : ManejadorEvento.getInstance().obtenerEventos().values()) {
-		    seleccionarEvento.addItem(ev.getNombre());
+		for (String ev : ice.listarEventos()) {
+		    seleccionarEvento.addItem(ev);
 		}
 		
 		seleccionarEvento.addActionListener(e -> {
@@ -102,7 +103,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		ventana.add(lbl_seleccionarOrganizador, gbcLblOrganizador);
 
 		seleccionarOrganizador = new JComboBox<>();
-		HashSet<String> organizadores = ManejadorUsuario.getInstance().obtenerOrganizadores();
+		Set<String> organizadores = controllerUsuario.listarOrganizadores();
 		for (String nomOrganizador : organizadores) {
 		    seleccionarOrganizador.addItem(nomOrganizador);
 		}
@@ -179,7 +180,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		y++;
 
 		// Fila pais
-		lbl_pais = new JLabel("Cupo: ");
+		lbl_pais = new JLabel("Pais: ");
 		GridBagConstraints gbcLblPais = new GridBagConstraints();
 		gbcLblPais.insets = new Insets(5, 5, 5, 5);
 		gbcLblPais.fill = GridBagConstraints.HORIZONTAL;
@@ -325,16 +326,19 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		                return;
 		            }
 
-		            ManejadorEdicion edicion = ManejadorEdicion.getInstance();
-		            if (edicion.existeEdicion(nombre)) {
-		                throw new excepciones.NombreEdicionExistenteExcepcion(
-		                    "La edicion '" + nombre + " ya existe ");
-		            }
+		          
 		            ice.altaEdicionDeEvento(ev, org, nombre, sigla, fIni, fFin, fAlta, ciudad, pais);
 		            JOptionPane.showMessageDialog(this, "La edicion se ha registrado con exito", "Alta Edicion",
 		                        JOptionPane.INFORMATION_MESSAGE);
 		            limpiarFormulario();
-		        } catch (excepciones.NombreEdicionExistenteExcepcion ex) {
+		        } catch(excepciones.FechaInicioPOSTFINAL ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(),"Alta de Edicion", JOptionPane.ERROR_MESSAGE);
+		            tf_fIni.setText("");
+		        } catch (excepciones.FechaInicioPREALTA ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(),"Alta de Edicion", JOptionPane.ERROR_MESSAGE);
+		            tf_fIni.setText("");
+		        }
+		    	catch (excepciones.NombreEdicionExistenteExcepcion ex) {
 		            JOptionPane.showMessageDialog(this, ex.getMessage(),"Alta de Edicion", JOptionPane.ERROR_MESSAGE);
 		            tf_nombre.setText("");
 		        } catch (Exception ex) {
@@ -387,7 +391,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		
 	}
 	
-	public void refrescar(IControllerEvento ice,  ManejadorUsuario h_user) {
+	public void refrescar(IControllerEvento ice, IControllerUsuario controllerUsuario) {
 		seleccionarEvento.removeAllItems();
 		for (String evento : ice.listarEventos()) {
 			seleccionarEvento.addItem(evento);
@@ -395,7 +399,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		seleccionarEvento.setSelectedIndex(-1);
 		
 		seleccionarOrganizador.removeAllItems();
-	    var orgs = h_user.obtenerOrganizadores();
+	    var orgs = controllerUsuario.listarOrganizadores();
 	    for (String string : orgs) {
 			seleccionarOrganizador.addItem(string);
 		}
@@ -410,5 +414,16 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 			activarTextFields();
 		}
 	}
+	
+	public static AltaEdicionDeEvento getInstance(IControllerEvento ice,IControllerUsuario icu) {
+		if (instance == null) {
+			instance = new AltaEdicionDeEvento(ice,icu);
+		}
+		return instance;
+	}
+	
+	
+	
+	
 }
 

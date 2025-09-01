@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import excepciones.EmailRepetido;
+import excepciones.NombreUsuarioExistente;
 import logica.IControllerUsuario;
 import logica.ManejadorInstitucion;
 
@@ -214,12 +216,15 @@ public class AltaUsuario extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "El Usuario se ha registrado con éxito", "Alta de Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
                 limpiarFormulario();
-			} catch (Exception e) {
-				if (e instanceof DateTimeParseException) {
-					JOptionPane.showMessageDialog(this, "El formato de la fecha es incorrecto", "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
-				} else
+			} catch ( DateTimeParseException e) {
+					JOptionPane.showMessageDialog(this, "El formato de la fecha es incorrecto", "Alta de Usuario", JOptionPane.ERROR_MESSAGE);}
+			  catch (NombreUsuarioExistente e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
-			}
+			} catch (EmailRepetido e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
+			}	
 		});
 		
 		btnCancelar = new JButton("Cancelar");

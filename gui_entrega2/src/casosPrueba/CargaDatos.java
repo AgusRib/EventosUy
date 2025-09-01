@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import excepciones.FechaInicioPOSTFINAL;
+import excepciones.FechaInicioPREALTA;
+import excepciones.NombreEdicionExistenteExcepcion;
 import logica.Asistente;
 import logica.Evento;
 import logica.Factory;
@@ -218,6 +221,18 @@ public class CargaDatos {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NombreEdicionExistenteExcepcion e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FechaInicioPOSTFINAL e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FechaInicioPREALTA e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

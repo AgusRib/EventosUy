@@ -5,6 +5,11 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import excepciones.AsistenteYaRegistrado;
+import excepciones.CupoLLeno;
+import excepciones.FechaInicioPOSTFINAL;
+import excepciones.FechaInicioPREALTA;
+import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 
 public class ControllerEvento implements IControllerEvento{
@@ -146,16 +151,24 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) {
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion,FechaInicioPOSTFINAL,FechaInicioPREALTA, Exception {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		if(mEdi.existeEdicion(nombre)) throw new NombreEdicionExistenteExcepcion("Ya existe una edicion con el nombre: " + nombre);
+		if(fechaInicio.isAfter(fechaFin)) throw new FechaInicioPOSTFINAL("La fecha de inicio no puede ser posterior a la fecha de finalizacion");
+		if(fechaInicio.isBefore(fechaAlta)) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta de edicion");
+		
 		ManejadorEvento mEve = ManejadorEvento.getInstance();
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		Evento ev = mEve.obtenerEvento(nombreEvento);
+		
 		if(ev == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
+		if(fechaInicio.isBefore(ev.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta del evento");
+		if(fechaAlta.isBefore(ev.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de alta de edicion no puede ser anterior a la fecha de alta del evento");
 		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais);
 		ev.agregarEdicion(nueva);
 		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
-		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		
 		mEdi.agregarEdicion(nueva);
 		
 	}
@@ -175,19 +188,21 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public boolean elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws Exception { 
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws CupoLLeno,AsistenteYaRegistrado, Exception { 
 		//asumo que nomEdi viene de la interfaz en memoria
 			
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
 		
-		boolean ok = edi.verificarCupoTipoReg(tipoReg) && edi.verificarRegistros(nickAsistente);
+		if(!edi.verificarCupoTipoReg(tipoReg)) throw new CupoLLeno("No hay cupo disponible para el tipo de registro seleccionado.");
+			
+	    if(!edi.verificarRegistros(nickAsistente)) throw new AsistenteYaRegistrado("El asistente ya se encuentra registrado en la edicion seleccionada.");
 		
-		if (ok==false) throw new Exception("No se pudo completar el registro. Verifique los datos ingresados.");
+		
 		
 		altaRegistro(nickAsistente, tipoReg, nomEdi);
 		
-		return ok;
+		
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ import java.util.List;
 public class AltaPatrocinio extends JInternalFrame {
 
     private static final long serialVersionUID = 1L;
-
+    private static AltaPatrocinio instance = null;
 	private final IControllerEvento ice;
 	private final IControllerUsuario icu;
 
@@ -42,6 +42,7 @@ public class AltaPatrocinio extends JInternalFrame {
     	setBounds(20, 20, 720, 360);
         this.ice = iCE;
         this.icu = iCU;
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         
         JPanel root = new JPanel(new GridBagLayout());
@@ -179,6 +180,8 @@ public class AltaPatrocinio extends JInternalFrame {
     }
 
     private void onGuardar() {
+    	
+      try {
         String edicion = (String) cbEdicion.getSelectedItem();
         String institucion = (String) cbInstitucion.getSelectedItem();
         String tipo = (String) cbTipo.getSelectedItem();
@@ -186,11 +189,26 @@ public class AltaPatrocinio extends JInternalFrame {
         double aporte = parseDouble(tfAporte.getText());
         int cant = (int) ((SpinnerNumberModel) spCantGratis.getModel()).getNumber();
         String codigo = tfCodigo.getText().trim();
-
-        if (edicion == null || institucion == null || tipo == null || nivel == null || aporte <= 0 || codigo.isEmpty()) {
+     
+        if (edicion == null || institucion == null || tipo == null || nivel == null||tfAporte.getText().trim().isEmpty()|| codigo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Completa todos los campos obligatorios.", "Datos incompletos", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        
+        
+        
+        
+        if(aporte<=0) {
+			JOptionPane.showMessageDialog(this, "El aporte económico debe ser un número positivo.", "Aporte inválido", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+        if(cant<0 ) {
+			JOptionPane.showMessageDialog(this, "La cantidad de registros gratis debe ser un número positivo o cero.", "Cantidad inválida", JOptionPane.ERROR_MESSAGE);
+			return;
+        }
+        
+    
         if (ice.obtenerPatrocinio(edicion, institucion) != null) {
             // Según el caso de uso: informar y permitir editar/cancelar (no continuar).
             JOptionPane.showMessageDialog(this,
@@ -211,8 +229,10 @@ public class AltaPatrocinio extends JInternalFrame {
 
         ice.altaPatrocinio(edicion, institucion, nivel, aporte, tipo, cant, codigo);
         JOptionPane.showMessageDialog(this, "Patrocinio registrado con éxito.", "OK", JOptionPane.INFORMATION_MESSAGE);
-        clearForm();
-    }
+        clearForm();}
+        catch (NumberFormatException nfe) {
+      	  JOptionPane.showMessageDialog(this, "El aporte económico y la cantidad de registros gratuitos deben ser un número válido.", "Aporte inválido", JOptionPane.ERROR_MESSAGE);
+        }}
 
     private void onCancelar() {
         int r = JOptionPane.showConfirmDialog(this, "¿Cancelar el alta de patrocinio?", "Cancelar", JOptionPane.YES_NO_OPTION);
@@ -240,4 +260,15 @@ public class AltaPatrocinio extends JInternalFrame {
         cargaData();
     }
 
-}
+    public static AltaPatrocinio getInstance(IControllerEvento ICE, IControllerUsuario ICU) {
+		if (instance == null) {
+			instance = new AltaPatrocinio(ICE, ICU);
+		}
+		return instance;
+	
+    
+    
+    
+    
+    
+}}
