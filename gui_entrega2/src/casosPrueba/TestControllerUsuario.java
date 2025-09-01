@@ -24,7 +24,7 @@ public class TestControllerUsuario {
 		
 		//TEST ALTA DE ASISTENTE
 		try {
-			ICU.ingresarInstitucion("Instituto Tecnologico", "Instituto de tecnologia de punta", "www.it.com");
+			ICU.altaInstitucion("Instituto Tecnologico", "Instituto de tecnologia de punta", "www.it.com");
 			ICU.ingresarAsistente("ignaciotema", "Ignacio", "ignaciotema@gmail.com", "Tejera", LocalDate.of(2006, 02, 18));
 			ICU.agregarAsistente("ignaciotema", "Instituto Tecnologico");
 			ICU.ingresarAsistente("ignaciotema", "Nombre", "correo@gmail.com", "Apellido", LocalDate.of(2000, 01, 01));
@@ -47,8 +47,8 @@ public class TestControllerUsuario {
 		
 		//TEST ALTA DE INSTITUCION
 		try {
-			ICU.ingresarInstitucion("Instituto de Artes", "Descripcion diferente", "www.it.com");
-			ICU.ingresarInstitucion("Instituto de Artes", "Instituto de tecnologia de punta", "www.it.com");
+			ICU.altaInstitucion("Instituto de Artes", "Descripcion diferente", "www.it.com");
+			ICU.altaInstitucion("Instituto de Artes", "Instituto de tecnologia de punta", "www.it.com");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -74,7 +74,7 @@ public class CargaDatos {
 				String[] lineaAsist = buscarLinea(idUsr, "/datosPrueba/2025Usuarios-Asistentes.csv");
 				String[] fechaNac = lineaAsist[2].split("/");
 				String strFechaNac = new String(fechaNac[2] + "-" + fechaNac[1] + "-" + fechaNac[0]);
-				ICU.ingresarAsistente(nickname, nombre, email, lineaAsist[0], LocalDate.parse(strFechaNac));
+				ICU.ingresarAsistente(nickname, nombre, email, lineaAsist[1], LocalDate.parse(strFechaNac));
 				
 				if (lineaAsist.length == 4) {
 					String[] lineaInst = buscarLinea(lineaAsist[3], "/datosPrueba/2025Instituciones.csv");
@@ -107,7 +107,10 @@ public class CargaDatos {
 			if (linea.isBlank())
 				continue;
 			String[] campos = linea.split(";");
-			ICU.ingresarInstitucion(campos[0], campos[1], campos[2]);
+			System.out.println(campos[1]);
+			System.out.println(campos[2]);
+			System.out.println(campos[3]);
+			ICU.altaInstitucion(campos[1], campos[2], campos[3]);
 		}
 		System.out.println("Instituciones cargadas");
 		brInstituciones.close();

@@ -226,7 +226,7 @@ public class AltaPatrocinio extends JInternalFrame {
                 "Regla 20% incumplida", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         ice.altaPatrocinio(edicion, institucion, nivel, aporte, tipo, cant, codigo);
         JOptionPane.showMessageDialog(this, "Patrocinio registrado con éxito.", "OK", JOptionPane.INFORMATION_MESSAGE);
         clearForm();}

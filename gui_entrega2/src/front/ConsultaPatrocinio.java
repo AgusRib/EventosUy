@@ -143,7 +143,7 @@ public class ConsultaPatrocinio extends JInternalFrame {
         try { txtCantGratis.setText(String.valueOf(p.getCantRegsGratis())); } catch (Exception ex) { txtCantGratis.setText(""); }
         try { txtCodigo.setText(p.getCodigo()); } catch (Exception ex) { txtCodigo.setText(""); }
         try {
-            txtFechaAlta.setText(p.getFecha() != null ? p.getFecha().format(DateTimeFormatter.ISO_DATE) : "");
+            txtFechaAlta.setText(p.getFecha().toString());
         } catch (Exception ex) {
             txtFechaAlta.setText("");
         }

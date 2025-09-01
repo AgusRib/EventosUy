@@ -17,8 +17,7 @@ public interface IControllerUsuario {
 	public void ingresarOrganizador(String nickname, String nombre, 
 			String email, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception;
 	
-	public void ingresarInstitucion(String nombre, 
-			String descripcion, String web) throws Exception;
+
 	
 	
 	//LISTAS

@@ -115,16 +115,8 @@ public class ControllerUsuario implements IControllerUsuario {
 		return org.getEdiciones();
 	}
 	
-	@Override
-	public void ingresarInstitucion(String nombre, String descripcion, String web) throws Exception {
-		ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
-		if (mI.obtenerInstitucion(nombre) != null) {
-			throw new Exception("Ya existe una institucion con este nombre");
-		} else {
-			Institucion institucion = new Institucion(nombre, descripcion, web);
-			mI.agregarInstitucion(institucion);
-		}
-	}
+
+	
 	
 	@Override
 	public DTAsistente infoAsistente(String nickname) {
