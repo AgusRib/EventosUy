@@ -1,6 +1,7 @@
 package casosPrueba;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -11,11 +12,14 @@ import org.junit.Test;
 import logica.DTDetalleEdicion;
 import logica.DTDetalleEvento;
 import logica.DTEdicion;
+import logica.DTTipoRegistro;
 import logica.DataUsuario;
 import logica.DataUsuario.TipoUsuario;
+import logica.Edicion;
 import logica.Factory;
 import logica.IControllerEvento;
 import logica.IControllerUsuario;
+import logica.ManejadorEdicion;
 import logica.Organizador;
 
 public class TestVerDetalles {
@@ -78,6 +82,27 @@ public class TestVerDetalles {
 		assertEquals("descripcion 1",dtde.getDescripcion());
 		assertEquals(categorias,dtde.getCategorias());
 		assertEquals(edis,dtde.getEdiciones());
+		
+		// Checkeo que funcione DTTipoRegistro
+		
+		DTTipoRegistro tRegis = new DTTipoRegistro("Tipo1", "Descripcion de Tipo1",100, 5);
+		Edicion edicionTest  = ManejadorEdicion.getInstance().encontrarEdicion("Edicion1");
+		ICE.altaTipoDeRegistro("Edicion1", "Tipo1", "Descripcion de Tipo1",(float) 100, 5);
+		DTTipoRegistro detalleTRegis = ICE.verDetalleTRegistro("Edicion1", "Tipo1");
+		assertEquals(tRegis.getNombre(), detalleTRegis.getNombre());
+		assertEquals(tRegis.getDescripcion(), detalleTRegis.getDescripcion());
+		assertEquals(tRegis.getCupo(), detalleTRegis.getCupo());
+		
+		ICE.altaTipoDeRegistro("Edicion1", "Tipo2", "Descripcion de Tipo2",(float) 100, 1);
+		ICE.altaRegistro("Willyrex", "Tipo2", "Edicion1");
+		//ahora se supone que tiene que tener 0 cupos
+		assertEquals(0, edicionTest.getTipoRegistro("Tipo2").getCupo());
+		
+		//ahora deberia no funcionar porque no hay cupos en Tipo2
+		ICU.ingresarAsistente("Willyrex2", "Guillermo2", "willy2@gmail.com", "Diaz", LocalDate.of(2004, 1,1));
+		assertThrows(Exception.class, () -> {
+		    ICE.elegirAsistenteYTipoRegistro("Willyrex2", "Tipo2", "Edicion1");
+		});
 		
 		
 	}

@@ -181,9 +181,7 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
 		
-		boolean ok = edi.verificarCupoTipoReg(tipoReg);
-		
-		ok = edi.verificarRegistros(nickAsistente);
+		boolean ok = edi.verificarCupoTipoReg(tipoReg) && edi.verificarRegistros(nickAsistente);
 		
 		if (ok==false) throw new Exception("No se pudo completar el registro. Verifique los datos ingresados.");
 		
