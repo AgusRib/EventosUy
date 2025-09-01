@@ -4,12 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import logica.DTAsistente;
+import excepciones.EmailRepetido;
+import excepciones.NombreUsuarioExistente;
 import logica.Factory;
 import logica.IControllerEvento;
 import logica.IControllerUsuario;
@@ -23,7 +22,7 @@ public class TestControllerEvento {
 	public void testAltaEventoEdicionCategoria()  {
 		
 			
-	
+	    IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		
@@ -57,11 +56,22 @@ public class TestControllerEvento {
 		//TEST LISTAR CATEGORIAS
 		categoriasSet.add("Categoria2");
 		assertEquals(true, ICE.listarCategorias().equals(categoriasSet));
-		
+		try {
+			ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com", "Muy buenas a todos guapisimos", "www.v777.com");
+		} catch (NombreUsuarioExistente e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EmailRepetido e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//TEST ALTA DE EDICION
 		try {
-			ICE.altaEdicionDeEvento("Evento1", "Org1", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1");
-			ICE.altaEdicionDeEvento("Evento2", "Org1", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1");
+			ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1");
+			ICE.altaEdicionDeEvento("Evento2", "Vegetta", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

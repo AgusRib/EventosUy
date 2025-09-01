@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
+import excepciones.FechaRegPREALTA;
 import logica.IControllerEvento;
 import logica.IControllerUsuario;
 
@@ -101,7 +102,11 @@ public class RegistroEdicion extends JInternalFrame {
 				JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			}catch(CupoLLeno ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			}catch (Exception ex) {
+			}catch(FechaRegPREALTA ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			limpiarFormulario();

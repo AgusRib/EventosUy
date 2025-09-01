@@ -9,6 +9,7 @@ import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
+import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 
@@ -190,11 +191,14 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws CupoLLeno,AsistenteYaRegistrado, Exception { 
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno,AsistenteYaRegistrado, Exception { 
 		//asumo que nomEdi viene de la interfaz en memoria
 			
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
+		Evento ev = edi.getEvento();
+		if(ev.getFechaAlta().isAfter(fechaSistema)) throw new FechaRegPREALTA("La edicion no se encuentra habilitada para registros.");
+		
 		
 		if(!edi.verificarCupoTipoReg(tipoReg)) throw new CupoLLeno("No hay cupo disponible para el tipo de registro seleccionado.");
 			

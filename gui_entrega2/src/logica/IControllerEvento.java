@@ -6,6 +6,7 @@ import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
+import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 
@@ -25,7 +26,7 @@ public interface IControllerEvento{
 	public void ingresarCategoria(String string);
 	public DTRegistro infoRegistro(String edicion, String usuario);
 	Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi);
-	void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws CupoLLeno,AsistenteYaRegistrado, Exception;
+	void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaRegPREALTA, CupoLLeno,AsistenteYaRegistrado, Exception;
 	void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi);
 	void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo);
 	public LocalDate getFechaSistema();
