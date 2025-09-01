@@ -89,6 +89,7 @@ public class Main {
 		mntmCambiarFecha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmFechaSistema = FechaSistema.getInstance(ICE);
+				frmFechaSistema.refrescar(ICE);
 				frmFechaSistema.setVisible(true);
 				frmFechaSistema.toFront();
 				System.out.println("Fecha del sistema actual: " + ICE.getFechaSistema());

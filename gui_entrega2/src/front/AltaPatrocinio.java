@@ -34,7 +34,7 @@ public class AltaPatrocinio extends JInternalFrame {
     private final JSpinner spCantGratis = new JSpinner(new SpinnerNumberModel(0, 0, 10000, 1));
     private final JLabel lblCostoTipo = new JLabel("Costo tipo: -");
     private final JLabel lblRegla20 = new JLabel("Regla 20%: costoGratis=0 | 20% aporte=0");
-    private final JButton btnGuardar = new JButton("Guardar");
+    private final JButton btnAceptar = new JButton("Aceptar");
     private final JButton btnCancelar = new JButton("Cancelar");
 
     public AltaPatrocinio(IControllerEvento iCE, IControllerUsuario iCU) {
@@ -78,7 +78,7 @@ public class AltaPatrocinio extends JInternalFrame {
         add(lblRegla20, gbc(0, 5, 4, GridBagConstraints.HORIZONTAL, 1));
 
         JPanel btns = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        btns.add(btnGuardar);
+        btns.add(btnAceptar);
         btns.add(btnCancelar);
         add(btns, gbc(0, 6, 4, GridBagConstraints.HORIZONTAL, 1));
 
@@ -130,7 +130,7 @@ public class AltaPatrocinio extends JInternalFrame {
             if (e.getStateChange() == ItemEvent.SELECTED) checkDuplicado();
         });
 
-        btnGuardar.addActionListener(e -> onGuardar());
+        btnAceptar.addActionListener(e -> onAceptar());
         btnCancelar.addActionListener(e -> onCancelar());
     }
 
@@ -179,7 +179,7 @@ public class AltaPatrocinio extends JInternalFrame {
         }
     }
 
-    private void onGuardar() {
+    private void onAceptar() {
     	
       try {
         String edicion = (String) cbEdicion.getSelectedItem();
@@ -235,10 +235,8 @@ public class AltaPatrocinio extends JInternalFrame {
         }}
 
     private void onCancelar() {
-        int r = JOptionPane.showConfirmDialog(this, "¿Cancelar el alta de patrocinio?", "Cancelar", JOptionPane.YES_NO_OPTION);
-        if (r == JOptionPane.YES_OPTION) {
-            clearForm();
-        }
+    	clearForm();
+		setVisible(false);
     }
 
     private void clearForm() {
