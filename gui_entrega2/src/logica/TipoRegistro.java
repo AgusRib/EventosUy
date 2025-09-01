@@ -34,15 +34,17 @@ public class TipoRegistro {
 	/*public void setCosto(float costo) {
 		this.costo = costo;
 	}
-	public int getCupo() {
-		return cupo;
-	}
+
 	public void setCupo(int cupo) {
 		this.cupo = cupo;
 	}
 	*/
 	public void restarCupo() {
 		this.cupo--;
+	}
+	
+	public int getCupo() {
+		return cupo;
 	}
 	
 	public boolean verificarCupo() {
