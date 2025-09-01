@@ -28,7 +28,6 @@ import logica.Organizador;
 import logica.Usuario;
 
 public class CargaDatos {
-	
 	public static void cargarDatos() throws Exception {
 		
 		cargarInstituciones();

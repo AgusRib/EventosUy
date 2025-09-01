@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import casosPrueba.CargaDatos;
 import logica.Factory;
@@ -103,6 +104,8 @@ public class Main {
 		    try {
 		        CargaDatos.cargarDatos();
 		        // refrescar pantallas que dependen de los datos:
+		        JOptionPane.showMessageDialog(mntmCargarDatos, "Los datos se han cargado correctamente.", "Carga de datos", JOptionPane.INFORMATION_MESSAGE);
+		        mntmCargarDatos.setVisible(false);
 		        if (frmConsultaEdicion != null) frmConsultaEdicion.refrescar();
 		        if (frmConsultaDeEvento != null) frmConsultaDeEvento.refrescar(); // si tenés método similar
 		        // idem otras vistas
