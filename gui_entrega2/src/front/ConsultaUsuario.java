@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import logica.Usuario;
 
@@ -42,7 +43,8 @@ public class ConsultaUsuario extends JInternalFrame {
 	private JLabel lblFechaNac;
 	private JTextField txtFechaNac;
 	private JLabel lblDescripcion;
-	private JTextField txtDescripcion;
+	private JTextArea txtDescripcion;
+	private JScrollPane scrollDescripcion;
 	private JLabel lblWeb;
 	private JTextField txtWeb;
 	
@@ -253,17 +255,20 @@ public class ConsultaUsuario extends JInternalFrame {
 		panelDetallesUsr.add(lblDescripcion, gbc_lblDescripcion);
 		lblDescripcion.setVisible(false);
 
-		txtDescripcion = new JTextField();
-		GridBagConstraints gbc_txtDescripcion = new GridBagConstraints();
-		gbc_txtDescripcion.anchor = GridBagConstraints.NORTH;
-		gbc_txtDescripcion.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtDescripcion.insets = new Insets(0, 0, 5, 0);
-		gbc_txtDescripcion.gridx = 1;
-		gbc_txtDescripcion.gridy = 4;
-		panelDetallesUsr.add(txtDescripcion, gbc_txtDescripcion);
-		txtDescripcion.setColumns(10);
-		txtDescripcion.setVisible(false);
+		txtDescripcion = new JTextArea();
+		txtDescripcion.setLineWrap(true);
+		txtDescripcion.setWrapStyleWord(true);
+		txtDescripcion.setRows(3);
 		txtDescripcion.setEditable(false);
+		scrollDescripcion = new JScrollPane(txtDescripcion);
+		GridBagConstraints gbc_scrollDescripcion = new GridBagConstraints();
+		gbc_scrollDescripcion.anchor = GridBagConstraints.NORTH;
+		gbc_scrollDescripcion.fill = GridBagConstraints.BOTH;
+		gbc_scrollDescripcion.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollDescripcion.gridx = 1;
+		gbc_scrollDescripcion.gridy = 4;
+		panelDetallesUsr.add(scrollDescripcion, gbc_scrollDescripcion);
+		scrollDescripcion.setVisible(false);
 
 		// Web
 		lblWeb = new JLabel("Web: ");
@@ -308,7 +313,7 @@ public class ConsultaUsuario extends JInternalFrame {
 		lblFechaNac.setVisible(false);
 		txtFechaNac.setVisible(false);
 		lblDescripcion.setVisible(false);
-		txtDescripcion.setVisible(false);
+		scrollDescripcion.setVisible(false);
 		lblWeb.setVisible(false);
 		txtWeb.setVisible(false);
 		Usuario user = controllerUsr.obtenerUsuario(selected);
@@ -331,7 +336,7 @@ public class ConsultaUsuario extends JInternalFrame {
 			listAsociaciones.setListData(controllerUsr.listarEdicionesOrganizadas(selected).toArray(new String[0]));
 			// Show and set descripcion and web
 			lblDescripcion.setVisible(true);
-			txtDescripcion.setVisible(true);
+			scrollDescripcion.setVisible(true);
 			lblWeb.setVisible(true);
 			txtWeb.setVisible(true);
 			if (user instanceof logica.Organizador) {
