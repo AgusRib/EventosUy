@@ -89,7 +89,7 @@ public class ControllerEvento implements IControllerEvento{
 		Edicion ed = mEdi.encontrarEdicion(nombreEdi);
 		System.out.println(ed);
 		DTDetalleEdicion dtEdi = ed.devolverDT();
-		Organizador org = ManejadorUsuario.getInstance().buscarOrganizadorDeEdicion(nombreEdi);
+		Organizador org = ed.getOrganizador();
 		dtEdi.setOrganizador(org != null ? org.getNombre() : null);
 		return dtEdi;
 	}
@@ -164,10 +164,12 @@ public class ControllerEvento implements IControllerEvento{
 		if(ev == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
 		if(fechaInicio.isBefore(ev.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta del evento");
 		if(fechaAlta.isBefore(ev.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de alta de edicion no puede ser anterior a la fecha de alta del evento");
-		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais,ev);
-		ev.agregarEdicion(nueva);
+		
 		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
+
+		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais,ev,org);
+		ev.agregarEdicion(nueva); 
 		
 		mEdi.agregarEdicion(nueva);
 		

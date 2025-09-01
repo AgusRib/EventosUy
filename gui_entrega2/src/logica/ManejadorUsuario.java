@@ -75,11 +75,6 @@ public class ManejadorUsuario {
 		return organizadores;
 	}
 
-	public Organizador buscarOrganizadorDeEdicion(String nombreEdi) {
-		return null;
-		// TODO Auto-generated method stub
-		
-	}
-    
+
 	
 }
