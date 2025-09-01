@@ -35,7 +35,7 @@ public class TestEdicionRepetida {
 		Evento eventoSeleccionado = ManejadorEvento.getInstance().obtenerEvento("ev1");
 		
 		Edicion ed1 = new Edicion("edicion1", "sigla", LocalDate.of(2004, 1, 1), LocalDate.of(2004, 1, 9), ICE.getFechaSistema(),
-				"Montevideo", "Uruguay");
+				"Montevideo", "Uruguay", eventoSeleccionado);
 		
 		ManejadorEdicion.getInstance().agregarEdicion(ed1);
 		

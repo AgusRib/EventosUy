@@ -164,7 +164,7 @@ public class ControllerEvento implements IControllerEvento{
 		if(ev == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
 		if(fechaInicio.isBefore(ev.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta del evento");
 		if(fechaAlta.isBefore(ev.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de alta de edicion no puede ser anterior a la fecha de alta del evento");
-		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais);
+		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais,ev);
 		ev.agregarEdicion(nueva);
 		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
@@ -245,6 +245,13 @@ public class ControllerEvento implements IControllerEvento{
 	@Override
 	public LocalDate setFechaSistema(LocalDate fechaNueva) {
 		return fechaSistema = fechaNueva;
+	}
+	
+	public String NomEvPorEd(String nomEdi) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nomEdi);
+		Evento ev = edi.getEvento();
+		return ev.getNombre();
 	}
 	
 	

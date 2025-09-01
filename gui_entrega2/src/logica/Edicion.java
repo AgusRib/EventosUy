@@ -18,10 +18,11 @@ public class Edicion {
 	private String pais;
 	private final Set<Registro> registros;
     private final Set<TipoRegistro> tiposRegistro;
+    private Evento evento;
 	private final Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
-			String ciudad, String pais) {
+			String ciudad, String pais,Evento evento) {
 		super();
 		this.nombre = nombre;
 		this.sigla = sigla;
@@ -32,6 +33,7 @@ public class Edicion {
 		this.pais = pais;
 		this.registros = new LinkedHashSet<>();
 		this.tiposRegistro = new LinkedHashSet<>();
+		this.evento = evento;
 
 	}
 	
@@ -205,6 +207,11 @@ public class Edicion {
 
 	public Set<String> getPatrocinios() {
 		return new LinkedHashSet<>(patrociniosPorInstitucion.keySet());
+	}
+
+
+	public Evento getEvento() {
+		return evento;
 	}
 	
 

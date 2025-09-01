@@ -370,17 +370,17 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         ((DefaultTableModel) tblDetallesDeEdicion.getModel()).setRowCount(0);
     }
     public void invocacionDesdeConsultaDeEvento(String edicion,String evento){
-    	cbxListadoDeEventos.setSelectedItem(evento);
-    	actualizarEdicionesPara(evento);
-		cbxListadoDeEdiciones.setSelectedItem(edicion);
-		actualizarTablasParaEdicion(edicion);
+    	
     }
     
     
     public void invocacionDesdeConsultaUsuario(String edicion) {
-    	cbxListadoDeEdiciones.setSelectedItem(edicion);
-   		actualizarTablasParaEdicion(edicion);
+    	String evento=controllerEvento.NomEvPorEd(edicion);
     	
+    	cbxListadoDeEventos.setSelectedItem(evento);
+    	actualizarEdicionesPara(evento);
+		cbxListadoDeEdiciones.setSelectedItem(edicion);
+		actualizarTablasParaEdicion(edicion);
     }
 
     // Carga de datos en tablas y demás

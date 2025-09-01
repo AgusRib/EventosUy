@@ -37,6 +37,14 @@ public class ConsultaUsuario extends JInternalFrame {
 	private JTextField txtEmail;
 	private JLabel lblAsociaciones;
 	private JScrollPane scrollPane_1;
+	private JLabel lblApellido;
+	private JTextField txtApellido;
+	private JLabel lblFechaNac;
+	private JTextField txtFechaNac;
+	private JLabel lblDescripcion;
+	private JTextField txtDescripcion;
+	private JLabel lblWeb;
+	private JTextField txtWeb;
 	
 	@SuppressWarnings({ "serial", "unchecked" })
 	public ConsultaUsuario(IControllerUsuario ICU) {
@@ -44,7 +52,8 @@ public class ConsultaUsuario extends JInternalFrame {
 	
 		setTitle("Consulta de Usuario");
 		setClosable(true);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 448, 386);
+		setMaximizable(true);
 		getContentPane().setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -53,7 +62,7 @@ public class ConsultaUsuario extends JInternalFrame {
 		
 		
 		panelDetallesUsr = new JPanel();
-		panelDetallesUsr.setBounds(133, 11, 291, 248);
+		panelDetallesUsr.setBounds(133, 11, 291, 339);
 		getContentPane().add(panelDetallesUsr);
 		panelDetallesUsr.setVisible(true);
 		GridBagLayout gbl_panelDetallesUsr = new GridBagLayout();
@@ -145,17 +154,17 @@ public class ConsultaUsuario extends JInternalFrame {
 					}
 					if (lblAsociaciones.getText().equals("Ediciones organizadas:")) {
 						ConsultaEdicionDeEvento ce = ConsultaEdicionDeEvento.getInstance(Factory.getInstance().getControllerEvento());
+						ce.invocacionDesdeConsultaUsuario(listAsociaciones.getSelectedValue());
 						ce.setVisible(true);
 						ce.toFront();
-						ce.invocacionDesdeConsultaUsuario(listAsociaciones.getSelectedValue());
 					} else {
 						ConsultaRegistro cr = ConsultaRegistro.getInstance(Factory.getInstance().getControllerEvento(), Factory.getInstance().getControllerUsuario());
-						cr.setVisible(true);
-						cr.toFront();
+					
 						String usuario = listUsuarios.getSelectedValue();
 						Usuario u = controllerUsr.obtenerUsuario(usuario);
 						cr.invocacionDesdeConsultaUsuario(u, listAsociaciones.getSelectedValue());
-
+						cr.setVisible(true);
+						cr.toFront();
 					}
 				}
 			}
@@ -189,6 +198,94 @@ public class ConsultaUsuario extends JInternalFrame {
 			}
 		});
 		listUsuarios.setSelectedIndex(0);
+		
+		// Apellido
+		lblApellido = new JLabel("Apellido: ");
+		GridBagConstraints gbc_lblApellido = new GridBagConstraints();
+		gbc_lblApellido.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblApellido.insets = new Insets(0, 0, 5, 5);
+		gbc_lblApellido.gridx = 0;
+		gbc_lblApellido.gridy = 4;
+		panelDetallesUsr.add(lblApellido, gbc_lblApellido);
+		lblApellido.setVisible(false);
+
+		txtApellido = new JTextField();
+		GridBagConstraints gbc_txtApellido = new GridBagConstraints();
+		gbc_txtApellido.anchor = GridBagConstraints.NORTH;
+		gbc_txtApellido.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtApellido.insets = new Insets(0, 0, 5, 0);
+		gbc_txtApellido.gridx = 1;
+		gbc_txtApellido.gridy = 4;
+		panelDetallesUsr.add(txtApellido, gbc_txtApellido);
+		txtApellido.setColumns(10);
+		txtApellido.setVisible(false);
+		txtApellido.setEditable(false);
+
+		// Fecha de nacimiento
+		lblFechaNac = new JLabel("Fecha de nacimiento: ");
+		GridBagConstraints gbc_lblFechaNac = new GridBagConstraints();
+		gbc_lblFechaNac.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblFechaNac.insets = new Insets(0, 0, 5, 5);
+		gbc_lblFechaNac.gridx = 0;
+		gbc_lblFechaNac.gridy = 5;
+		panelDetallesUsr.add(lblFechaNac, gbc_lblFechaNac);
+		lblFechaNac.setVisible(false);
+
+		txtFechaNac = new JTextField();
+		GridBagConstraints gbc_txtFechaNac = new GridBagConstraints();
+		gbc_txtFechaNac.anchor = GridBagConstraints.NORTH;
+		gbc_txtFechaNac.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtFechaNac.insets = new Insets(0, 0, 5, 0);
+		gbc_txtFechaNac.gridx = 1;
+		gbc_txtFechaNac.gridy = 5;
+		panelDetallesUsr.add(txtFechaNac, gbc_txtFechaNac);
+		txtFechaNac.setColumns(10);
+		txtFechaNac.setVisible(false);
+		txtFechaNac.setEditable(false);
+
+		// Descripcion
+		lblDescripcion = new JLabel("Descripción: ");
+		GridBagConstraints gbc_lblDescripcion = new GridBagConstraints();
+		gbc_lblDescripcion.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblDescripcion.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDescripcion.gridx = 0;
+		gbc_lblDescripcion.gridy = 4;
+		panelDetallesUsr.add(lblDescripcion, gbc_lblDescripcion);
+		lblDescripcion.setVisible(false);
+
+		txtDescripcion = new JTextField();
+		GridBagConstraints gbc_txtDescripcion = new GridBagConstraints();
+		gbc_txtDescripcion.anchor = GridBagConstraints.NORTH;
+		gbc_txtDescripcion.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDescripcion.insets = new Insets(0, 0, 5, 0);
+		gbc_txtDescripcion.gridx = 1;
+		gbc_txtDescripcion.gridy = 4;
+		panelDetallesUsr.add(txtDescripcion, gbc_txtDescripcion);
+		txtDescripcion.setColumns(10);
+		txtDescripcion.setVisible(false);
+		txtDescripcion.setEditable(false);
+
+		// Web
+		lblWeb = new JLabel("Web: ");
+		GridBagConstraints gbc_lblWeb = new GridBagConstraints();
+		gbc_lblWeb.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblWeb.insets = new Insets(0, 0, 5, 5);
+		gbc_lblWeb.gridx = 0;
+		gbc_lblWeb.gridy = 5;
+		panelDetallesUsr.add(lblWeb, gbc_lblWeb);
+		lblWeb.setVisible(false);
+
+		txtWeb = new JTextField();
+		GridBagConstraints gbc_txtWeb = new GridBagConstraints();
+		gbc_txtWeb.anchor = GridBagConstraints.NORTH;
+		gbc_txtWeb.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtWeb.insets = new Insets(0, 0, 5, 0);
+		gbc_txtWeb.gridx = 1;
+		gbc_txtWeb.gridy = 5;
+		panelDetallesUsr.add(txtWeb, gbc_txtWeb);
+		txtWeb.setColumns(10);
+		txtWeb.setVisible(false);
+		txtWeb.setEditable(false);
 	}
 	
 	public void refrescar() {
@@ -205,12 +302,43 @@ public class ConsultaUsuario extends JInternalFrame {
 		DataUsuario dataUser = controllerUsr.infoUsuario(selected);
 		txtNombre.setText(dataUser.getNombre());
 		txtEmail.setText(dataUser.getEmail());
+		// Hide all extra fields first
+		lblApellido.setVisible(false);
+		txtApellido.setVisible(false);
+		lblFechaNac.setVisible(false);
+		txtFechaNac.setVisible(false);
+		lblDescripcion.setVisible(false);
+		txtDescripcion.setVisible(false);
+		lblWeb.setVisible(false);
+		txtWeb.setVisible(false);
+		Usuario user = controllerUsr.obtenerUsuario(selected);
 		if (dataUser.getTipo() == TipoUsuario.ASISTENTE) {
 			lblAsociaciones.setText("Registros a ediciones:");
 			listAsociaciones.setListData(controllerUsr.listarRegistrosAEventos(selected).toArray(new String[0]));
+			// Show and set apellido and fecha de nacimiento
+			lblApellido.setVisible(true);
+			txtApellido.setVisible(true);
+			lblFechaNac.setVisible(true);
+			txtFechaNac.setVisible(true);
+			if (user instanceof logica.Asistente) {
+				logica.Asistente asistente = (logica.Asistente) user;
+				txtApellido.setText(asistente.getApellido());
+				java.time.LocalDate fechaNac = asistente.getFechaNacimiento();
+				txtFechaNac.setText(fechaNac != null ? fechaNac.toString() : "");
+			}
 		} else {
 			lblAsociaciones.setText("Ediciones organizadas:");
 			listAsociaciones.setListData(controllerUsr.listarEdicionesOrganizadas(selected).toArray(new String[0]));
+			// Show and set descripcion and web
+			lblDescripcion.setVisible(true);
+			txtDescripcion.setVisible(true);
+			lblWeb.setVisible(true);
+			txtWeb.setVisible(true);
+			if (user instanceof logica.Organizador) {
+				logica.Organizador organizador = (logica.Organizador) user;
+				txtDescripcion.setText(organizador.getDescripcion());
+				txtWeb.setText(organizador.getWeb());
+			}
 		}
 	}
 	public static ConsultaUsuario getInstance(IControllerUsuario ICU) {

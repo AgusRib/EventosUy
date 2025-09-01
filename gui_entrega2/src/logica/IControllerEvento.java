@@ -30,5 +30,6 @@ public interface IControllerEvento{
 	void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo);
 	public LocalDate getFechaSistema();
 	public LocalDate setFechaSistema(LocalDate fechaNueva);
+	public String NomEvPorEd(String nomEdi);
 }
 
