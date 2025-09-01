@@ -28,49 +28,35 @@ public class Patrocinio  {
 		return fecha;
 	}
 
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
+
 
 	public int getMonto() {
 		return monto;
 	}
 
-	public void setMonto(int monto) {
-		this.monto = monto;
-	}
 
 	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+
 
 	public int getCantRegsGratis() {
 		return cantRegsGratis;
 	}
 
-	public void setCantRegsGratis(int cantRegsGratis) {
-		this.cantRegsGratis = cantRegsGratis;
-	}
+
 
 	public NivelPatrocinio getNivelPatrocinio() {
 		return nivelPatrocinio;
 	}
 
-	public void setNivelPatrocinio(NivelPatrocinio nivelPatrocinio) {
-		this.nivelPatrocinio = nivelPatrocinio;
-	}
+	
 
 	public String getTipoRegistroGratis() {
 		return tipoRegistroGratis;
 	}
 
-	public void setTipoRegistroGratis(String tipoRegistroGratis) {
-		this.tipoRegistroGratis = tipoRegistroGratis;
-	}
 	
 	
 	

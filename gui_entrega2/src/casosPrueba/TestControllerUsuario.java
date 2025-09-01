@@ -109,10 +109,9 @@ public class TestControllerUsuario {
 		assertEquals(true, ICU.listarAsistentes().equals(asistentesSet));
 		
 		
-		
-		
-		
 		CargaDatos.cargarDatos();
+		
+		
 
 		// TEST LISTAR REGISTROS A EDICIONES
 		HashSet<String> registros = new HashSet<String>();
@@ -134,6 +133,8 @@ public class TestControllerUsuario {
 		
 		assertEquals(true, ICU.listarEdicionesOrganizadas("imm").equals(ediciones));
 		
+	
+	
 	}
 	
 }
