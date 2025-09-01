@@ -35,6 +35,7 @@ public class Main {
 	private AltaTipoRegistro frmAltaTipoRegistro;
 	private ConsultaDeTipoDeRegistro frmConsultaTipoDeRegistro;
 	private ConsultaRegistro frmConsultaRegistro;
+	private AltaInstitucion frmAltaInstitucion;
 	private FechaSistema frmFechaSistema;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
@@ -132,6 +133,7 @@ public class Main {
 			mntmAltaUsuario.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					frmAltaUsuario.setVisible(true);
+					frmAltaUsuario.refrescar();
 					frmAltaUsuario.toFront();
 				}
 			});
@@ -144,6 +146,7 @@ public class Main {
 			frmModificarDatosUsuario.setVisible(false);
 			mntmModificarDatos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					frmModificarDatosUsuario.refrescar(ICU);
 					frmModificarDatosUsuario.setVisible(true);
 					frmModificarDatosUsuario.toFront();
 				}
@@ -321,6 +324,22 @@ public class Main {
 					frmConsultaRegistro.refrescar();
 				}
 			});
+		// Institucion
+		JMenu mnInstitucion = new JMenu("Institucion");
+		mnFuncionalidades.add(mnInstitucion);
+			//Submenus Institucion
+			JMenuItem mntmAltaInstitucion = new JMenuItem("Alta");
+			mnInstitucion.add(mntmAltaInstitucion);
+			frmAltaInstitucion = AltaInstitucion.getInstance(ICU);
+			frmMain.getContentPane().add(frmAltaInstitucion);
+			frmAltaInstitucion.setVisible(false);
+			mntmAltaInstitucion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frmAltaInstitucion.setVisible(true);
+					frmAltaInstitucion.toFront();
+					
+				}});
+				
 			
 			
 		frmMain.getContentPane().setLayout(null);

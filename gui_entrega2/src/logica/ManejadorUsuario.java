@@ -80,6 +80,6 @@ public class ManejadorUsuario {
 		// TODO Auto-generated method stub
 		
 	}
-
+    
 	
 }

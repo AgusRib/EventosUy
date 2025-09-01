@@ -12,7 +12,7 @@ public class Organizador extends Usuario {
     public String getDescripcion() {
 		return descripcion;
 	}
-	/*public void setDescripcion(String descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 	public String getWeb() {
@@ -20,7 +20,7 @@ public class Organizador extends Usuario {
 	}
 	public void setWeb(String web) {
 		this.web = web;
-	}*/
+	}
 	
     public HashSet<String> getEdiciones() {
 		return ediciones;
@@ -45,6 +45,9 @@ public class Organizador extends Usuario {
 		this.descripcion = descripcion;
 		this.web = web;
 	}
-    
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 	
 }

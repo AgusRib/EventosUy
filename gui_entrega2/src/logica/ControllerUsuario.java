@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import excepciones.EmailRepetido;
+import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
 import logica.DataUsuario.TipoUsuario;
 
@@ -125,6 +126,62 @@ public class ControllerUsuario implements IControllerUsuario {
 		}
 	}
 	
+	@Override
+	public DTAsistente infoAsistente(String nickname) {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Asistente user = mU.obtenerAsistente(nickname);
+		DTAsistente dtA;
+		if (user.getInstitucion() != null) {
+			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento());
+		} else {
+			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento());
+		}
+		return dtA;
+	}
 	
 	
-}
+	@Override
+	public DTOrganizador infoOrganizador(String nickname) {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Organizador user = mU.obtenerOrganizador(nickname);
+		DTOrganizador dtO = new DTOrganizador(user.getNickname(), user.getNombre(), user.getEmail(), user.getDescripcion(), user.getWeb());
+		return dtO;
+	}
+	@Override
+	public void editarAsistente(String nick,String nom, String apellido, LocalDate fdef) {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Asistente user = mU.obtenerAsistente(nick);
+		user.setApellido(apellido);
+		user.setFechaNacimiento(fdef);
+		user.setNombre(nom);}
+	
+	@Override
+	public void editarOrganizador(String nick,String nom, String descripcion, String web) {
+		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		Organizador user = mU.obtenerOrganizador(nick);
+		user.setDescripcion(descripcion);
+		user.setWeb(web);
+		user.setNombre(nom);}
+	
+		
+	
+	
+
+
+   @Override
+   public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception {
+	   ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
+	   if (mI.obtenerInstitucion(nombre) != null) {
+		   throw new NombreInstiExistente("Ya existe una institucion con este nombre");
+	   } else {
+		   Institucion institucion = new Institucion(nombre, descripcion, web);
+		   mI.agregarInstitucion(institucion);
+	   }
+   
+	
+   }}
+	
+
+
+    
+

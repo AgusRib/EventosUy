@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import excepciones.EmailRepetido;
+import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
 
 public interface IControllerUsuario {
@@ -45,7 +46,14 @@ public interface IControllerUsuario {
 
 	public Usuario obtenerUsuario(String usuario);
 
-	public void editarUsuario(String nickname, String apellido, LocalDate fdef);
+	public void editarAsistente(String nick,String nombre,String apellido, LocalDate fechaNac);
+	public void editarOrganizador(String nick, String nombre,  String descripcion, String web);
+	
+	
+	
+	public DTAsistente infoAsistente(String nickname);
+	public DTOrganizador infoOrganizador(String nickname);
+	public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception;
 	
 
 }

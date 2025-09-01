@@ -3,7 +3,7 @@ package logica;
 public abstract class Usuario {
 	
 	private String nickname;
-	private String nombre;
+	protected String nombre;
 	private String email;
 	
 	public String getNickname() {
