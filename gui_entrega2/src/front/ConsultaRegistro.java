@@ -299,9 +299,11 @@ public class ConsultaRegistro extends JInternalFrame {
 	
 	//TODO: Implementar esto:
 	public void invocacionDesdeConsultaUsuario(Usuario user, String edicion) {
-    	//cbxListadoDeEdiciones.setSelectedItem(edicion);
+		refrescar();
 		listUsuarios.setSelectedValue(user.getNickname(), true);
+		listRegistros.setListData(controllerUsr.listarRegistrosAEventos(user.getNickname()).toArray(new String[0]));
 		listRegistros.setSelectedValue(edicion, true);
+		detallesUsuario();
 		detallesRegistro(edicion);
 		//cbxListadoDeEdiciones.setSelectedItem(edicion);
 		//detallesRegistro(edicion);
