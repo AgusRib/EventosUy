@@ -61,6 +61,8 @@ public class ConsultaUsuario extends JInternalFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setTitle("Consulta de Usuario");
 		setClosable(true);
+		setIconifiable(true);
+		setMaximizable(true);
 		
 		
 		panelDetallesUsr = new JPanel();

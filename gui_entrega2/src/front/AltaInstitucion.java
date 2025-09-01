@@ -35,6 +35,8 @@ public class AltaInstitucion extends JInternalFrame{
 		setClosable(true);
 		setBounds(100, 100, 450, 300);
 		setResizable(true);
+		setIconifiable(true);
+		setMaximizable(true);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		JPanel content = new JPanel(new GridBagLayout());

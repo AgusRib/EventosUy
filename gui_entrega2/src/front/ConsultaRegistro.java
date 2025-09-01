@@ -59,6 +59,8 @@ public class ConsultaRegistro extends JInternalFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setTitle("Consulta de Registro");
 		setClosable(true);
+		setIconifiable(true);
+		setMaximizable(true);
 		
 		
 		panelDetallesUsr = new JPanel();

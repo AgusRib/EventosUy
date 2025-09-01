@@ -67,6 +67,8 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setIconifiable(true);
+		setMaximizable(true);
 		
 		txtNickname = new JTextField();
 		txtNickname.setBounds(150, 8, 200, 20);

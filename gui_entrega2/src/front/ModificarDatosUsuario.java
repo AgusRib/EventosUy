@@ -58,6 +58,8 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		getContentPane().setLayout(null);
 		setClosable(true);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setIconifiable(true);
+		setMaximizable(true);
 		
 		
 		Box horizontalBox = Box.createHorizontalBox();
@@ -165,7 +167,7 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		txtFieldWeb.setBounds(247, 173, 114, 17);
 		getContentPane().add(txtFieldWeb);
 		
-		btnConfirmarEdicionUsuario = new JButton("Confirmar");
+		btnConfirmarEdicionUsuario = new JButton("Aceptar");
 		btnConfirmarEdicionUsuario.setBounds(109, 229, 105, 27);
 		getContentPane().add(btnConfirmarEdicionUsuario);
 		

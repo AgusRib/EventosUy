@@ -32,6 +32,8 @@ public class  ConsultaDeTipoDeRegistro extends JInternalFrame {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(520, 380);
         setLocation(40, 40);
+        setIconifiable(true);
+		setMaximizable(true);
 
         JPanel content = new JPanel(new GridBagLayout());
         content.setBorder(new EmptyBorder(12, 12, 12, 12));

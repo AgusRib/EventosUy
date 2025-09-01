@@ -38,6 +38,8 @@ public class RegistroEdicion extends JInternalFrame {
 		getContentPane().setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setIconifiable(true);
+		setMaximizable(true);
 		
 		lblEvento = new JLabel("Evento:");
 		

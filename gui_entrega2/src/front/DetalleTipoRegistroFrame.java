@@ -21,6 +21,8 @@ public class DetalleTipoRegistroFrame extends JInternalFrame {
 
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(520, 280);
+        setIconifiable(true);
+		setMaximizable(true);
         setLocation(40, 40);
 
         JPanel content = new JPanel(new GridBagLayout());

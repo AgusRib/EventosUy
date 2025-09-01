@@ -31,6 +31,8 @@ public class DetallePatrociniosFrame extends JInternalFrame {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(640, 360);
         setLocation(60, 60);
+        setIconifiable(true);
+		setMaximizable(true);
 
         JPanel content = new JPanel(new BorderLayout(8, 8));
         content.setBorder(new EmptyBorder(12, 12, 12, 12));

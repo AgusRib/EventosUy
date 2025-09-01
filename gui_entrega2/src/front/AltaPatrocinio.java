@@ -43,6 +43,8 @@ public class AltaPatrocinio extends JInternalFrame {
         this.ice = iCE;
         this.icu = iCU;
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setIconifiable(true);
+		setMaximizable(true);
 
         
         JPanel root = new JPanel(new GridBagLayout());

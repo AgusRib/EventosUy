@@ -43,6 +43,8 @@ public class ConsultaPatrocinio extends JInternalFrame {
         setContentPane(root);
         
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+        setIconifiable(true);
+		setMaximizable(true);
 
         root.add(new JLabel("Eventos"),         gbc(0, 0, 1, 1, 0, 0, GridBagConstraints.HORIZONTAL));
         root.add(cbEventos,                     gbc(0, 1, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL));

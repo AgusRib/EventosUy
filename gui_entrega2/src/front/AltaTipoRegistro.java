@@ -49,6 +49,8 @@ public class AltaTipoRegistro extends JInternalFrame {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new GridBagLayout());
 		setResizable(false);
+		setIconifiable(true);
+		setMaximizable(true);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		Container ventana = getContentPane();
 		int y = 0;
