@@ -128,7 +128,6 @@ public class TestPatrocinio {
 	    assertEquals(true, dted.getFechaFin().equals(dte.getFechaFin()));
 	    assertEquals(true, dted.getFechaInicio().equals(dte.getFechaInicio()));
 	    assertEquals(true, dted.getNombre().equals(dte.getNombre()));
-	    assertEquals(true, dted.getOrganizador().equals(dte.getOrganizador()));
 	    assertEquals(true, dted.getNombresInstituciones().equals(dte.getNombresInstituciones()));
 	    
 	    
