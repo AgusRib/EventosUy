@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JButton;
@@ -18,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import logica.Edicion;
 import logica.Evento;
 import logica.IControllerEvento;
 import logica.ManejadorEdicion;

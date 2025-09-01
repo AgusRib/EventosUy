@@ -76,8 +76,9 @@ public class ManejadorUsuario {
 	}
 
 	public Organizador buscarOrganizadorDeEdicion(String nombreEdi) {
-		// TODO Auto-generated method stub
 		return null;
+		// TODO Auto-generated method stub
+		
 	}
 
 	
