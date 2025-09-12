@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>listarUsuarios</title>
+            <link rel="stylesheet" href="../assets/css/RolVisitante_listarUsuarios.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+            <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png"> 
+
+        </head>
+<body>
+
+<header>
+    <div class="conteneder-titulo">
+        <img class="logo" alt="" src="../assets/icons/Logo.png" style="height: 40px">
+        <h1 >
+            <a href="../index.html" style="text-decoration: none; color: inherit;"> Eventos.uy </a>
+
+        </h1>
+    </div>
+        <nav>
+            <button class="botonIniciarSesion">
+                <div class="header-button">Iniciar sesión</div>
+            </button>
+            <button class="botonRegistrarse">
+                <div class="header-button">Registrarse</div>
+            </button>
+        </nav>
+</header>
+
+<div class="contenedor-BuscadorUsuario">
+    <div class="buscadorUsuarios">
+            <input type="search" placeholder="Buscar usuarios registrados" class="barraBusquedaUsuario">
+    <!-- TODO: falta agregar la logica para que cuando toque enter, se busque el usuario -->
+    </div>
+</div>
+
+
+<!-- TODO: linkear cada usuario a su respectivo perfil usando href sobre el texto del nickname-->
+<div class="contenedor-listadoUsuarios">
+    <div class="listadoUsarios">
+            <div class="listadoUsuarios_itemUsuario">
+                    <div class="contenedor-foto">
+                            <img class="foto-usuario" src="../assets/images/SinFoto.jpg" alt="AleRespectFoto" style="height: 127px;">
+                    </div>
+                    <div class="contenedor-NickRolUser">
+                            <div class="nickname">AleRespect</div>
+                            <div class="rol">Asistente</div>
+                    </div>
+            </div>
+
+            <div class="listadoUsuarios_itemUsuario">
+                    <div class="contenedor-foto">
+                            <img class="foto-usuario" src="https://randomuser.me/api/portraits/men/2.jpg" alt="jorge.singleFoto">
+                    </div>
+                    <div class="contenedor-NickRolUser">
+                            <div class="nickname">jorge.single</div>
+                            <div class="rol">Asistente</div>
+                    </div>
+            </div>
+
+            <div class="listadoUsuarios_itemUsuario">
+                    <div class="contenedor-foto">
+                            <img class="foto-usuario" src="https://randomuser.me/api/portraits/women/1.jpg" alt="Sarita_Foto">
+                    </div>
+                    <div class="contenedor-NickRolUser">
+                            <div class="nickname">Sarita_</div>
+                            <div class="rol">Organizador</div>
+                    </div>
+            </div>
+
+            <div class="listadoUsuarios_itemUsuario">
+                    <div class="contenedor-foto">
+                            <img class="foto-usuario" src="https://randomuser.me/api/portraits/women/34.jpg" alt="estelitaBRFoto">
+                    </div>
+                    <div class="contenedor-NickRolUser">
+                            <div class="nickname">estelitaBR</div>
+                            <div class="rol">Asistente</div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+</body>
+
+
+</html>
+
