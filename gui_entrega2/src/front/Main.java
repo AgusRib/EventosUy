@@ -39,6 +39,7 @@ public class Main {
 	private ConsultaRegistro frmConsultaRegistro;
 	private AltaInstitucion frmAltaInstitucion;
 	private FechaSistema frmFechaSistema;
+	private ConfirmarRechazarEdicion frmConfirmarRechazarEdicion;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
 	
@@ -250,6 +251,21 @@ public class Main {
 			        frmConsultaEdicion.toFront();
 			    }
 			});
+			
+			// Confirmar/Rechazar Edicion
+			JMenuItem mntmConfirmarRechazarEdicion = new JMenuItem("Administrar ediciones pendientes");
+			mnEdicion.add(mntmConfirmarRechazarEdicion);
+			frmConfirmarRechazarEdicion = ConfirmarRechazarEdicion.getInstance(ICE, ICU);
+			frmMain.getContentPane().add(frmConfirmarRechazarEdicion);
+			frmConfirmarRechazarEdicion.setVisible(false);
+			mntmConfirmarRechazarEdicion.addActionListener(new ActionListener() {
+				  public void actionPerformed(ActionEvent e) {
+			        frmConfirmarRechazarEdicion.refrescar();
+			        frmConfirmarRechazarEdicion.setVisible(true);
+			        frmConfirmarRechazarEdicion.toFront();
+			    }
+			});
+			
 
 		
 		// Patrocinio

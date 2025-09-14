@@ -15,14 +15,12 @@ import excepciones.NombreEventoExcepcion;
 
 public class ControllerEvento implements IControllerEvento{
 	
-	//TODO: agregar opcion en el front para cambiar la fecha del sistema
 	public static LocalDate fechaSistema = LocalDate.now();
 	
 	@Override
 	public Set<String> listarEventos() {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
-		HashMap<String,Evento> eventos = mE.obtenerEventos(); //consultar con agus pq puso List y no hashmap
-		
+		HashMap<String,Evento> eventos = mE.obtenerEventos(); 
 		Set<String> nomEventos = new LinkedHashSet<>();
 		for (Evento e : eventos.values()) {
 			nomEventos.add(e.getNombre());
@@ -171,16 +169,26 @@ public class ControllerEvento implements IControllerEvento{
 
 		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais,ev,org);
 		ev.agregarEdicion(nueva); 
-		
 		mEdi.agregarEdicion(nueva);
 		
+	}
+	
+	public void ConfirmarRechazarEdicion(String nombreEdi, boolean aceptar) {
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+		if(aceptar && edi.getEstado() == EstadoEdicion.Ingresada) {
+			edi.setEstado(EstadoEdicion.Confirmada);
+			mEdi.agregarEdicion(edi);
+		} else {
+			edi.setEstado(EstadoEdicion.Rechazada);
+			//evaluar si hay que eliminar de alguna coleccion
+		}
 	}
 	
 	@Override
 	public void ingresarCategoria(String string) {
 		ManejadorCategoria mC = ManejadorCategoria.getInstance();
 		mC.agregarCategoria(new Categoria(string));
-		return;
 	}
 	
 	@Override

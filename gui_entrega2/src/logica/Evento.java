@@ -1,11 +1,9 @@
 package logica;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class Evento{
 	private String nombre;
@@ -13,6 +11,7 @@ public class Evento{
 	private LocalDate fechaAlta;
 	private String descripcion;
 	private List<Edicion> colEdiciones;
+	private List<Edicion> colEdicionesPendientes;
 	private List<Categoria> colCategorias;
 
 	public Evento(String nombre,String sigla, LocalDate fecha, String descripcion) {
@@ -23,6 +22,7 @@ public class Evento{
 		//this.colEdiciones = NULL; ??
 		this.colEdiciones = new ArrayList<>();
 		this.colCategorias = new ArrayList<>();
+		this.colEdicionesPendientes = new ArrayList<>();
 		
 	}
 
@@ -51,19 +51,13 @@ public class Evento{
 		
 	}
 	
-	/*public Set<DTTipoRegistro> infoTipoRegDeEdi(String nombreEdicion){
-		Set<DTTipoRegistro> setTipoReg = new HashSet<>();
-		Edicion edi = getEdicion(nombreEdicion);
-		setTipoReg = edi.obtenerTipoReg();
-		return setTipoReg;
-		
-	}*/
+	
 	
 	public void agregarEdicion(Edicion nueva) {
 		if (nueva == null) throw new IllegalArgumentException("Edición vacía");
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		if (getEdicion(nueva.getNombre()) != null) throw new IllegalArgumentException("Ya existe una edición con ese nombre");
-		colEdiciones.add(nueva);
+		colEdicionesPendientes.add(nueva); 
 	}
 	
 	public void agregarCategoria(Categoria cat) {
@@ -103,6 +97,10 @@ public class Evento{
 
 	public List<Edicion> getColEdiciones() {
 		return colEdiciones;
+	}
+	
+	public List<Edicion> getColEdicionesPendientes() {
+		return colEdicionesPendientes;
 	}
 
 	public List<Categoria> getColCategorias() {

@@ -1,7 +1,6 @@
 package logica;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -21,6 +20,7 @@ public class Edicion {
     private Evento evento;
 	private final Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
 	private Organizador organizador;
+	private EstadoEdicion estado;
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
 			String ciudad, String pais,Evento evento,Organizador organizador) {
@@ -36,6 +36,7 @@ public class Edicion {
 		this.tiposRegistro = new LinkedHashSet<>();
 		this.evento = evento;
 		this.organizador =organizador;
+		this.setEstado(EstadoEdicion.Ingresada); //siempre que agregamos una edicion, estado = ingresada.
 
 	}
 	
@@ -69,28 +70,13 @@ public class Edicion {
 		return organizador;
 	}
 	
-	/*blic void setNombre(String nombre) {
-		this.nombre = nombre;
+	public EstadoEdicion getEstado() {
+		return estado;
 	}
-	public void setFechaInicio(LocalDate fechaInicio) {
-		this.fechaInicio = fechaInicio;
+
+	public void setEstado(EstadoEdicion estado) {
+		this.estado = estado;
 	}
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
-	}
-	public void setFechaFin(LocalDate fechaFin) {
-		this.fechaFin = fechaFin;
-	}
-	public void setCiudad(String ciudad) {
-		this.ciudad = ciudad;
-	}
-	public void setFechaAlta(LocalDate fechaAlta) {
-		this.fechaAlta = fechaAlta;
-	}
-	public void setPais(String pais) {
-		this.pais = pais;
-	}*/
-	
 	
 	
 	//Otros
@@ -224,7 +210,4 @@ public class Edicion {
 	  		this.organizador = org;
 		
 	}
-	
-
-	
 }

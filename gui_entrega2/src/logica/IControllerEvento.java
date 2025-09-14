@@ -32,5 +32,6 @@ public interface IControllerEvento{
 	public LocalDate getFechaSistema();
 	public LocalDate setFechaSistema(LocalDate fechaNueva);
 	public String NomEvPorEd(String nomEdi);
+	public void ConfirmarRechazarEdicion(String nombreEdi, boolean aceptar);
 }
 
