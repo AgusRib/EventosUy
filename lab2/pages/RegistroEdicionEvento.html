@@ -220,6 +220,8 @@ c´odigo de patrocinio el costo asociado es 0.-->
         edicionSelect.innerHTML = '<option value="">-- Seleccione una edición --</option>';
         tipoRegistroSelect.innerHTML = '<option value="">-- Seleccione un tipo de registro --</option>';
         tipoRegistroWrapper.style.display = 'none';
+        costoWrapper.style.display = 'none';    
+        costoAsociado.value = '';
         if (edicionesPorEvento[selectedEvento]) {
         edicionesPorEvento[selectedEvento].forEach(function(edicion) {
             const option = document.createElement('option');
