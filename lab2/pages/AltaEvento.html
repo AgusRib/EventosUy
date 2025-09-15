@@ -132,10 +132,10 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     if (nombresExistentes.includes(nombreInput.value.trim())) {
-      nombreInput.classList.add('is-invalid');
+      nombreInput.classList.add('invalido');
       nombreInput.focus();
     } else {
-      nombreInput.classList.remove('is-invalid');
+      nombreInput.classList.remove('invalido');
       alert('Evento dado de alta correctamente');
       form.reset();
     }
