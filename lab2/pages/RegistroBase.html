@@ -77,13 +77,25 @@
             <!--<label for="imgPerfil" class="form-label">Insertar imagen de perfil</label>-->
                 <input type="file" class="form-control" id="imgPerfil" placeholder="Imagen de perfil"> 
             </div><data value=""></data>
-            <div class="mb-3 form-check">
+            <div class="mb-3 d-flex justify-content-center align-items-center">
                 <input type="checkbox" class="form-check-input" id="tipoUsuario">
-                <label class="form-check-label" for="tipoUsuario">¿Es usted organizador/a?</label>
+                <label class="form-check-label" for="tipoUsuario">¿Usted organiza algún evento o edición?</label>
             </div>
                 <button type="submit" class="btn btn-dark">Continuar</button>
         </form>
             
     </div>
+
+    <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const isOrganizador = document.getElementById('tipoUsuario').checked;
+    if (isOrganizador) {
+        window.location.href = 'RegistroOrganizador.html';
+    } else {
+        window.location.href = 'RegistroAsistente.html';
+    }
+    });
+    </script>
 </body>
 </html>
