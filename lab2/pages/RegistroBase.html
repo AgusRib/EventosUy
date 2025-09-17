@@ -9,7 +9,7 @@
     <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">    <!-- Icono de la pestaña -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta Evento - Eventos.uy</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
     <link rel="stylesheet" href="../assets/css/styles.css">
@@ -85,10 +85,19 @@
         </form>
             
     </div>
-
+    
+    <!-- JavaScript para manejar el envío del formulario y la redirección -->
     <script>
     document.querySelector('form').addEventListener('submit', function(e) {
     e.preventDefault();
+    const pass1 = document.getElementById('contraseña').value;
+    const pass2 = document.getElementById('confirmaContraseña').value;
+
+    if (pass1.length !== pass2.length) {
+        alert('Las contraseñas deben tener la misma longitud.');
+        return;
+    }
+
     const isOrganizador = document.getElementById('tipoUsuario').checked;
     if (isOrganizador) {
         window.location.href = 'RegistroOrganizador.html';
@@ -96,6 +105,7 @@
         window.location.href = 'RegistroAsistente.html';
     }
     });
+
     </script>
 </body>
 </html>
