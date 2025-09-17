@@ -22,10 +22,10 @@
             <b class="title"><a href="../index.html">EVENTOS.UY</a></b>
           </div>
           <div class="col-1 col-md-3 col-lg-3 d-flex flex-column flex-md-row justify-content-end align-items-center h-100 gap-2" >
-            <button class="button1">
-                <div class="header-button ">Iniciar sesión</div>
+            <button class="button1 rounded-3">
+                <div class="header-button  ">Iniciar sesión</div>
             </button>
-            <button class="button2">
+            <button class="button2 rounded-3">
                 <div class="header-button">Regístrate</div>
             </button>
           </div>
@@ -40,16 +40,36 @@
             <input type="search" class="search" placeholder="Buscar eventos, ediciones...">
         </div>
     </div>
-
+    
     <div class="container-fluid px-4 mt-3">
   <div class="row">
+    
+    <!-- Columna derecha: categorías estilo index -->
+    <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
+      <div class="carta-categorias align-items-center h-100">
+        <h3 class="categorias fw-bold">Categorías</h3>
+        <li class="list-group w-100 overflow-auto text-center" multiple>
+          <a href="#" value="tecnologia" class="list-group-item">Tecnología</a>
+          <a href="#" value="innovacion" class="list-group-item">Innovación</a>
+          <a href="#" value="literatura" class="list-group-item">Literatura</a>
+          <a href="#" value="cultura" class="list-group-item">Cultura</a>
+          <a href="#" value="musica" class="list-group-item">Música</a>
+          <a href="#" value="deporte" class="list-group-item">Deporte</a>
+          <a href="#" value="salud" class="list-group-item">Salud</a>
+          <a href="#" value="entretenimiento" class="list-group-item">Entretenimiento</a>
+          <a href="#" value="agro" class="list-group-item">Agro</a>
+          <a href="#" value="negocios" class="list-group-item">Negocios</a>
+        </li>
+      </div>
+    </div>
+  
     <!-- Columna izquierda: imagen -->
-    <div class="col-md-4 col-lg-3 col-xxl-2 px-5">
-      <img src="../assets/icons/images.png" alt="Imagen del Evento" class="img-fluid rounded">
+    <div class="col-md-4 col-lg-3 col-xl-2 px-5">
+      <img src="../assets/icons/images.png" alt="Imagen del Evento" class="img-fluid rounded imagen-evento">
     </div>
 
     <!-- Columna central: info del evento -->
-    <div class="col-md-5 col-lg-7 col-xxl-8 mt-3 mt-sm-3 mt-md-0 info-evento">
+    <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-sm-3 mt-md-0 info-evento">
       <h1 class="mb-3">MARATON MONTEVIDEO</h1>
       <p class="mb-2"><strong>Sigla:</strong> MARATON</p>
       <p class="mb-4">
@@ -64,25 +84,7 @@
       <p class="mb-2"><strong>Fecha:</strong> 01/01/2022</p>
     </div>
 
-    <!-- Columna derecha: categorías estilo index -->
-    <div class="col-md-3 col-lg-2 col-xxl-2 mt-3 mt-md-0">
-      <div class="carta-categorias-consulta">
-        <h3 class="categorias-consulta">Categorías</h3>
-        <ul class="lista-categoria-consulta">
-          <li class="categoria-item">Tecnología</li>
-          <li class="categoria-item">Innovación</li>
-          <li class="categoria-item">Literatura</li>
-          <li class="categoria-item">Cultura</li>
-          <li class="categoria-item">Música</li>
-          <li class="categoria-item">Deporte</li>
-          <li class="categoria-item">Salud</li>
-          <li class="categoria-item">Entretenimiento</li>
-          <li class="categoria-item">Agro</li>
-          <li class="categoria-item">Negocios</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+    
 
 <!-- Cards de Ediciones - estilo index -->
 <div class="container-fluid px-4 mt-5">
