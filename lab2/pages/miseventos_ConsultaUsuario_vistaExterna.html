@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>ConsultaUsuario</title>
+            <link rel="stylesheet" href="../assets/css/RolVisitante_ConsultaUsuario.css">
+            <link rel="stylesheet" href="../assets/css/RolVisitante_listarUsuarios.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+            <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png"> 
+    </head>
+
+    <header>
+    <div class="conteneder-titulo">
+        <img class="logo" alt="" src="../assets/icons/Logo.png" style="height: 40px">
+        <h1 >
+            <a href="../index.html" style="text-decoration: none; color: inherit;"> Eventos.uy </a>
+
+        </h1>
+    </div>
+        <nav>
+            <button class="botonIniciarSesion">
+                <div class="header-button">Iniciar sesión</div>
+            </button>
+            <button class="botonRegistrarse">
+                <div class="header-button">Registrarse</div>
+            </button>
+        </nav>
+    </header>
+
+    <body>
+        <div class="contenedor-perfil">
+            <!--- en la logica despues agregamos q si no tiene foto de perfil se ponga la tipica de usuario sin foto-->
+            <div class="contenedor-fotoPerfil">
+                <img class="foto-usuario" src="../assets/images/IMG-US04.jpeg" alt="jorge.singleFoto" style="height: 100px;">
+            </div>
+
+            <div class="contenedor-datosUsuario">
+                <div class="datosUsuario">
+                    <div class="contenedor-NickRolUser">
+                            <div class="nickname"><b>miseventos</b></div>
+                            <div class="rol">Organizador</div>
+                    </div>
+                    <div class="nombre"><u>Nombre:</u> miseventos</div>
+                    <div class="email"><u>Email:</u> contacto@miseventos.com </div>
+                    <div class="descripcion"><u>Descripcion:</u> Empresa de organizacion de eventos.</div>
+                    <div class="web"><u>Web</u>: <a href="https://miseventos.com" target="_blank">https://miseventos.com</a> </div>
+
+                    <div class="contenedor-ediciones">
+                        <div class="misEdiciones">
+                            Mis ediciones:
+                        </div>
+                        <div class="contenedor-edicion">
+                            <img class="foto-edicion" src="../assets/images/IMG-EDEV03.jpeg" alt="maraton2024">
+                            <div class="nombreEdicion"> <b>Maraton 2024</b></div>
+                        </div>
+
+                        <div class="contenedor-edicion">
+                            <img class="foto-edicion" src="../assets/images/SinFoto.jpg" alt="websummit2026">
+                            <div class="nombreEdicion"> <b>Web Summit 2026</b> </div>
+                        </div>
+
+                        <div class="contenedor-edicion">
+                            <img class="foto-edicion" src="../assets/images/SinFoto.jpg" alt="tecno2026">
+                            <div class="nombreEdicion"> <b>Tecnologia Punta del Este 2026</b> </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </body>
+
+
+</html>
