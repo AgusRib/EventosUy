@@ -8,6 +8,7 @@
             <link rel="stylesheet" href="../assets/css/RolVisitante_listarUsuarios.css">
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
             <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png"> 
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
 
     <header>
@@ -47,7 +48,7 @@
                     <div class="fechaNacimiento"><u>Fecha de Nacimiento:</u> 12/05/1990</div>
                     <div class="institucion"><u>Institución:</u> <!--INSERTAR LINK A ConsultaInstitucion.FING--> Facultad de Ingenieria</div>
 
-                    <div class="contenedor-ediciones">
+                    <!--<div class="contenedor-ediciones">
                         <div class="misEdiciones">
                             Mis Registros:
                         </div>
@@ -56,11 +57,65 @@
                             <div class="nombreEdicion"> <b>Maraton 2024</b></div>
                         </div>
 
-                        <!--- Aca ban EDEV03 y EDEV10 TR07 TR25-->
+                         Aca ban EDEV03 y EDEV10 TR07 TR25
                         <div class="contenedor-edicion">
                             <img class="foto-edicion" src="../assets/images/SinFoto.jpg" alt="websummit2026">
                             <div class="nombreEdicion"> <b>Web Summit 2026</b> </div>
                         </div>
+                    </div>-->
+
+
+                    <!-- Consulta Registro Asistente -->
+                    <div class="mt-4">
+                    <div class="contenedor-ediciones">
+                        
+                        <div class="d-flex align-items-baseline gap-2">
+                            <h5>Mis Registros</h5>
+                            <a href="RegistroEdicionEvento.html" class="btn btn-success btn-sm">
+                            <i class="bi bi-plus-lg"><strong>+</strong></i>
+                            </a>
+                        </div>
+                        
+                        <div class="accordion" id="registrosAccordion">
+                            <div class="accordion-item">
+                            <h2 class="accordion-header" id="maraton2024Header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#maraton2024" aria-expanded="false" aria-controls="maraton2024">
+                                Maratón 2024
+                                </button>
+                            </h2>
+                            <div id="maraton2024" class="accordion-collapse collapse" aria-labelledby="headingMaraton2024" data-bs-parent="#misRegistrosAccordion">
+                                <div class="accordion-body">
+                                <h5>
+                                    <a href="ConsultaEdicionAsistente.html" style="text-decoration: none; color: inherit;">
+                                    <u>Maratón 2024</u>
+                                    </a>
+                                </h5>
+                                <p><strong>Fecha de registro:</strong> 30/07/2024</p>
+                                <p><strong>Tipo:</strong> Corredor 21K</p>
+                                <p><strong>Descripción:<strong> Inscripción a media maratón</p>
+                                <p><strong>Costo:</strong> $500</p>                                </div>
+                            </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingWebSummit2026">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#websummit2026" aria-expanded="false" aria-controls="websummit2026">
+                                    Web Summit 2026
+                                </button>
+                            </h2>
+                            <div id="websummit2026" class="accordion-collapse collapse" aria-labelledby="headingWebSummit2026" data-bs-parent="#misRegistrosAccordion">
+                                <div class="accordion-body">
+                                <h5><u>Web Summit 2026</u></h5>
+                                <!--FALTA REPETIR LO MISMO DEL LINK DE MARATON2024!!!!!!!!-->
+                                <p><strong>Fecha de registro:</strong> 21/08/2025</p>
+                                <p><strong>Tipo:</strong> Estudiante</p>
+                                <p><strong>Descripción:<strong> Acceso para estudiantes</p>
+                                <p><strmaraton2024ong>Costo:</strong> $300</p>                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
                     </div>
 
                 </div>
@@ -68,6 +123,8 @@
 
         </div>
     </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </html>
