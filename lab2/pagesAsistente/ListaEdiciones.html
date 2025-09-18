@@ -18,11 +18,13 @@
     </head>
 
     <body>
-        <div class="header border-bottom">
-            <div class="block">
-                <a href="../index.html"><img class="logo" alt="" src="../assets/icons/Logo.png"></a>
-            </div>
-            <div class="header-auth">
+        <header>
+            <nav class="navbar bg-white shadow-sm" style="height: 86px;">
+                <div class="text-center align-items-center">
+                    <a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
+                        href="index.html"><b>Eventos.uy</b></a>
+                </div>
+            <div class="header-auth m-3">
                 <button class="button1 rounded-3">
                     <div class="header-button">Iniciar sesión</div>
                 </button>
@@ -30,7 +32,9 @@
                     <div class="header-button">Regístrate</div>
                 </button>
             </div>
-        </div>
+                </div>
+            </nav>
+        </header>
 
         <div class="container">
             <div class="m-4">
@@ -40,17 +44,11 @@
                     <div class="align-items-center col-12 col-xl-3 my-3">
                         <div class="mb-4 gap-2 d-flex flex-column">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1" checked>
+                                <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
                                 <label class="form-check-label" for="radioDefault1">
-                                    Mis ediciones
+                                    Mis ediciones registradas
                                 </label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2">
-                                <label class="form-check-label" for="radioDefault2">
-                                    Ediciones de otros organizadores
-                                </label>
-                            </div>                            
                         </div>
 
                         <h3 class="categorias fw-bold text-center">Categorías</h3>
@@ -67,7 +65,7 @@
                     <div class="row container m-2 col-12 col-xl-8">
                         <div class="row row-cols-1 gx-0 gy-3 col-12 mt-0">
                             <!-- Card Evento 1 -->
-                            <div class="col m-0">
+                            <div class="col-12">
                                 <div class="carta p-4">
                                     <div class="text-heading">
                                         <div class="search-text-heading">Maratón de Montevideo 2024</div>
@@ -90,98 +88,34 @@
                                         </div>
                                     </div>
 
-
                                 </div>
-                                <div>
-                                </div>
-                            </div>
 
-                            <!-- Card Evento 2 -->
-                            <div class="col">
-                                <div class="carta p-4 bg-danger bg-opacity-10 bg-gradient border-danger">
-                                    <div class="text-heading">
-                                        <div class="search-text-heading">Maratón de Montevideo 2022</div>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between align-items-start w-100">
-                                        <div class="avatar-block">
-                                            <div class="avatar">
-                                                <img class="shape-icon" alt="" src="../assets/images/IMG-EDEV04.jpeg">
-                                            </div>
-                                            <div class="info gap-1">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-geo-alt-fill mx-2"></i>
-                                                    <div class="description">Montevideo, Uruguay</div>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-calendar-fill mx-2"></i>
-                                                    <div class="description">14/09/2022</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="button1 rounded-5 p-3 bg-danger bg-gradient bg-opacity-75 text-white">
-                                            <div class="header-button">Rechazada</div>
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
                             <!-- Card Evento 3 -->
-                            <div class="col">
+                            <div class="col-12">
                                 <div class="carta p-4">
                                     <div class="text-heading">
                                         <div class="search-text-heading">Tecnología Punta del Este 2026</div>
                                     </div>
                                     <div class="d-flex flex-row justify-content-between align-items-start w-100">
-
-                                    </div>
-                                    <div class="avatar-block">
-                                        <div class="info gap-1">
-                                            <div class="d-flex align-items-center">
-                                                <i class="bi bi-geo-alt-fill mx-2"></i>
-                                                <div class="description">Punta del Este, Uruguay</div>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <i class="bi bi-calendar-fill mx-2"></i>
-                                                <div class="description">06/04/2026 - 10/04/2026</div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card Evento 4 -->
-                            <div class="col">
-                                <div class="carta p-4 bg-warning bg-opacity-10 bg-gradient border-warning">
-                                    <div class="text-heading">
-                                        <div class="search-text-heading">Mobile World Congress 2025 </div>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between align-items-start w-100">
                                         <div class="avatar-block">
-                                            <div class="avatar">
-                                                <img class="shape-icon" alt="" src="../assets/images/IMG-EDEV09.png">
-                                            </div>
                                             <div class="info gap-1">
                                                 <div class="d-flex align-items-center">
                                                     <i class="bi bi-geo-alt-fill mx-2"></i>
-                                                    <div class="description">Barcelona, España</div>
+                                                    <div class="description">Punta del Este, Uruguay</div>
                                                 </div>
                                                 <div class="d-flex align-items-center">
                                                     <i class="bi bi-calendar-fill mx-2"></i>
-                                                    <div class="description">12/12/2025</div>
+                                                    <div class="description">06/04/2026 - 10/04/2026</div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div
-                                            class="button1 rounded-5 px-4 py-3 bg-warning bg-gradient bg-opacity-75 text-white">
-                                            <div class="header-button">Pendiente</div>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
                             <!-- Card Evento 5 -->
-                            <div class="col">
+                            <div class="col-12">
                                 <div class="carta p-4">
                                     <div class="text-heading">
                                         <div class="search-text-heading">Web Summit 2026</div>
@@ -204,6 +138,7 @@
 
                                 </div>
                             </div>
+
                             <nav class="d-flex justify-content-center mt-5">
                                 <ul class="pagination">
                                     <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
