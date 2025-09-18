@@ -12,11 +12,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="header">
-        <div class="block">
-            <img class="logo" alt="" src="assets/icons/Logo.png">
-        </div>
-        <div class="header-auth">
+    <header>
+        <nav class="navbar bg-white shadow-sm" style="height: 86px;">
+            <div class="text-center align-items-center">
+                <a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
+                    href="index.html"><img class="logo" alt="logo" src="assets/icons/Logo.png"></a>
+            </div>
+        <div class="header-auth m-3">
             <button class="button1 rounded-3">
                 <div class="header-button">Iniciar sesión</div>
             </button>
@@ -24,7 +26,9 @@
                 <div class="header-button">Regístrate</div>
             </button>
         </div>
-    </div>
+            </div>
+        </nav>
+    </header>
 
     <div class="hero-actions">
         <div class="text-content-title">
@@ -53,9 +57,9 @@
                     <input type="search" class="search col-12 p-3 mb-4" placeholder="Buscar eventos, ediciones...">
                     
                     <!-- Card Evento 1 -->
-                     <a class="text-decoration-none" href="/lab2/pages/ConsulltaEventoMaraton.html" data-hotkey="5" role="button"></a>
-                        <div class="col-xl-6">
-                            <div class="carta-evento p-4">
+                     <div class="col-xl-6">
+                        <a class="text-decoration-none" href="/lab2/pages/ConsulltaEventoMaraton.html" data-hotkey="5" role="button">      
+                            <div class="carta p-4">
                                 <div class="text-heading">
                                     <div class="search-text-heading">Maratón de Montevideo</div>
                                 </div>
@@ -68,64 +72,37 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-
+                        </a>
+                    </div>
 
                     <!-- Card Evento 2 -->
-                     <a class="text-decoration-none" href="/lab2/pages/ConsulltaEventoConferencia.html" data-hotkey="5" role="button"></a>
+                    
                         <div class="col-xl-6">
-                            <div class="carta-evento p-4">
+                            <a class="text-decoration-none" href="/lab2/pages/ConsulltaEventoConferencia.html" data-hotkey="5" role="button">
+                            <div class="carta p-4">
                                 <div class="text-heading">
-                                    <div class="search-text-heading">Festival de Jazz</div>
+                                    <div class="search-text-heading">Conferencia de Tecnología</div>
                                 </div>
                                 <div class="avatar-block">
-                                    <div class="avatar">
-                                        <img class="shape-icon" alt="" src="assets/icons/Festival de Jazz.png">
-                                    </div>
                                     <div class="info">
-                                        <div class="description">Música en vivo en el centro histórico</div>
+                                        <div class="description">Evento sobre innovación tecnológica</div>
                                     </div>
                                 </div>
                             </div>
+                            </a>
                         </div>
-                    </a>
 
                     
 
-                     <!-- Card Evento 3 -->
-                      <div class="col-xl-6">
-                        <div class="carta-evento p-4">
-                            <div class="text-heading">
-                                <div class="search-text-heading">Montevideo Comics</div>
-                            </div>
-                            <div class="avatar-block">
-                                <div class="avatar">
-                                    <img class="shape-icon" alt="" src="assets/icons/MontevideoComics.png">
-                                </div>
-                                <div class="info">
-                                    <div class="description">Convención de historietas, cine y cultura geek</div>
-                                </div>
-                            </div>
-                        </div>
-                      </div>
+                </div>
+                
 
-                    <!-- Card Evento 4 -->
-                     <div class="col-xl-6">
-                        <div class="carta-evento p-4">
-                            <div class="text-heading">
-                                <div class="search-text-heading">Montevideo Rock</div>
-                            </div>
-                            <div class="avatar-block">
-                                <div class="avatar">
-                                    <img class="shape-icon" alt="" src="assets/icons/MontevideoRock.jpg">
-                                </div>
-                                <div class="info">
-                                    <div class="description">Festival de rock con artistas nacionales e internacionales</div>
-                                </div>
-                            </div>
-                        </div>
-                     </div>
+
+            </div>
+        </div>
+    </div>
+
+
 
                 </div>
                 
