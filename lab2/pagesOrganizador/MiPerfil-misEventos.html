@@ -106,9 +106,9 @@
                 <div class="dropdown">
                     <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                        <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle"
+                        <img src="../assets/images/IMG-US04.jpeg" alt="JA" class="rounded-circle"
                             style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-                        <span>Ana</span>
+                        <span>MisEventos</span>
                         <i class="bi bi-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
@@ -141,21 +141,20 @@
               <!-- izq: foto mas rol -->
               <div class="d-flex flex-column align-items-center">
                 <div class="contenedor-fotoPerfil mb-2">
-                  <img class="foto-usuario" src="../assets/images/IMG-US01.jpg" alt="atorresFoto" style="height: 127px;">
+                  <img class="foto-usuario" src="../assets/images/IMG-US04.jpeg" alt="miseventosFoto" style="height: 127px;">
                 </div>
                 <div class="contenedor-NickRolUser text-center">
-                  <div class="nickname"><b>atorres</b></div>
-                  <div class="rol">Asistente</div>
+                  <div class="nickname"><b>miseventos</b></div>
+                  <div class="rol">Organizador</div>
                 </div>
               </div>
               <!-- der: atributos -->
               <div class="d-flex flex-column contenedor-datosUsuario">
                 <div class="datosUsuario">
-                  <div class="nombre"><u>Nombre:</u> Ana</div>
-                  <div class="apellido"><u>Apellido:</u> Torres</div>
-                  <div class="email"><u>Email:</u> atorres@gmail.com </div>
-                  <div class="fechaNacimiento"><u>Fecha de Nacimiento:</u> 12/05/1990</div>
-                  <div class="institucion"><u>Institución:</u> Facultad de Ingeniería</div>
+                  <div class="nombre"><u>Nombre:</u> MisEventos</div>
+                  <div class="email"><u>Email:</u> contacto@miseventos.com </div>
+                  <div class="fechaNacimiento"><u>Descripción:</u> Empresa de organizacion de eventos.</div>
+                  <div class="institucion"><u>Web:</u> <a href="https://miseventos.com" target="_blank">https://miseventos.com</a> </div>
                 </div>
               </div>
             </div>
@@ -164,50 +163,25 @@
             <div class="contenedor-ediciones">
                 
                 <div class="d-flex align-items-baseline gap-2">
-                    <h5>Mis Registros</h5>
-                    <a href="RegistroEdicionEvento.html" class="btn btn-success btn-sm">
-                    <i class="bi bi-plus-lg"><strong></strong></i>
+                    <h5>Mis Ediciones</h5>
+                    <a href="AltaEdicionDeEvento-MISEVENTOS.html" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-lg"></i>
                     </a>
                 </div>
                 
-                <div class="accordion" id="registrosAccordion">
-                    <div class="accordion-item">
-                    <h2 class="accordion-header" id="maraton2024Header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#maraton2024" aria-expanded="false" aria-controls="maraton2024">
-                        Maratón 2024
-                        </button>
-                    </h2>
-                    <div id="maraton2024" class="accordion-collapse collapse" aria-labelledby="headingMaraton2024" data-bs-parent="#misRegistrosAccordion">
-                        <div class="accordion-body">
-                        <h5>
-                            <a href="ConsultaEdicionAsistente.html" style="text-decoration: none; color: inherit;">
-                            <u>Maratón 2024</u>
-                            </a>
-                        </h5>
-                        <p><strong>Fecha de registro:</strong> 30/07/2024</p>
-                        <p><strong>Tipo:</strong> Corredor 21K</p>
-                        <p><strong>Descripción:<strong> Inscripción a media maratón</p>
-                        <p><strong>Costo:</strong> $500</p>                                </div>
+                <div class="mb-2">
+                  <a class="action-card" href="ListaEdiciones.html" data-hotkey="2" role="button">
+                    <div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
+                      <i class="bi bi-collection-fill"></i>
                     </div>
+                    <div class="flex-fill ms-2">
+                      <h3 class="mb-0 h6 fw-bold">Monitorear ediciones</h3>
+                      <p class="mb-0 small text-muted">Permite ver estado de procesamiento y consultar detalles.</p>
                     </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingWebSummit2026">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#websummit2026" aria-expanded="false" aria-controls="websummit2026">
-                            Web Summit 2026
-                        </button>
-                    </h2>
-                    <div id="websummit2026" class="accordion-collapse collapse" aria-labelledby="headingWebSummit2026" data-bs-parent="#misRegistrosAccordion">
-                        <div class="accordion-body">
-                        <h5><u>Web Summit 2026</u></h5>
-                        <!--FALTA REPETIR LO MISMO DEL LINK DE MARATON2024!!!!!!!!-->
-                        <p><strong>Fecha de registro:</strong> 21/08/2025</p>
-                        <p><strong>Tipo:</strong> Estudiante</p>
-                        <p><strong>Descripción:<strong> Acceso para estudiantes</p>
-                        <p><strmaraton2024ong>Costo:</strong> $300</p>                                </div>
-                    </div>
-                    </div>
+                    <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+                  </a>
                 </div>
+
                 </div>
           </div>
         </div>
@@ -250,20 +224,48 @@
           </div>
 
           <!-- Grid de acciones -->
-          <div class="row actions-grid" role="navigation" aria-label="Acciones de perfil">
+          <div class="col actions-grid" role="navigation" aria-label="Acciones de perfil">
 
-          <div class="col-12 mb-2">
-            <a class="action-card" href="/lab2/pages/RegistroEdicion.html" data-hotkey="2" role="button">
+          <div class="row-4 mb-2">
+            <a class="action-card" href="/lab2/pages/AltaTipoRegistro.html" data-hotkey="1" role="button">
               <div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
-                <i class='bx bx-merge fs-4' aria-hidden="true"></i>
+                <i class='bx bx-list-plus fs-4' aria-hidden="true"></i>
               </div>
               <div class="flex-fill ms-2">
-                <h3 class="mb-0 h6 fw-bold">Registro a edición</h3>
-                <p class="mb-0 small text-muted">Vincula un registro a una edición existente.</p>
+                <h3 class="mb-0 h6 fw-bold">Alta Tipo de Registro</h3>
+                <p class="mb-0 small text-muted">Define nuevos tipos para categorizar registros.</p>
               </div>
               <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
             </a>
           </div>
+
+          <div class="row-4 mb-2">
+            <a class="action-card" href="/lab2/pages/AltaEvento.html" data-hotkey="3" role="button">
+              <div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
+                <i class='bx bx-calendar-plus fs-4' aria-hidden="true"></i>
+              </div>
+              <div class="flex-fill ms-2">
+                <h3 class="mb-0 h6 fw-bold">Alta evento</h3>
+                <p class="mb-0 small text-muted">Crea un nuevo evento con sus datos básicos.</p>
+              </div>
+              <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+            </a>
+          </div>
+
+          <div class="row-4 mb-2">
+            <a class="action-card" href="/lab2/pages/AltaPatrocinio.html" data-hotkey="6" role="button">
+              <div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
+                <i class='bx bx-donate-heart fs-4' aria-hidden="true"></i>
+              </div>
+              <div class="flex-fill ms-2">
+                <h3 class="mb-0 h6 fw-bold">Alta patrocinio</h3>
+                <p class="mb-0 small text-muted">Da de alta un patrocinio y sus condiciones.</p>
+              </div>
+              <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+            </a>
+          </div>
+        </div>
+
 
           
         </div>
