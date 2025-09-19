@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
   <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -39,43 +40,59 @@
             </div>
         </nav>
     </header>
-    
   <div class="container-fluid px-4 mt-4">
-    <div class="carta-de-eventos mb-4">
-      <input type="search" class="search" placeholder="Buscar ediciones...">
+    <div class="carta-de-eventos mb-4 d-flex justify-content-center">
+      <input type="search" class="busq" placeholder="Buscar ediciones...">
     </div>
   </div>
-
   <div class="container-fluid px-4 mt-3">
     <div class="row pb-4">
-      <!-- Imagen de la edición -->
-      <div class="col-md-4 col-lg-3 col-xxl-2 px-5">
-        <img src="../assets/images/maraton2025.jpg" alt="Imagen de la Edición" class="img-fluid rounded">
+      <!-- Columna derecha: categorías estilo index -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
+        <div class="carta-categorias align-items-center h-100">
+          <h3 class="categorias fw-bold">Categorías</h3>
+          <li class="list-group w-100 overflow-auto text-center" multiple>
+            <a href="/lab2/indexTecInnov.html" value="tecnologia" class="list-group-item">Tecnología</a>
+            <a href="/lab2/indexTecInnov.html" value="innovacion" class="list-group-item">Innovación</a>
+            <a href="/lab2/indexDeporSalu.html" value="deporte" class="list-group-item">Deporte</a>
+            <a href="/lab2/indexDeporSalu.html" value="salud" class="list-group-item">Salud</a>
+          </li>
+        </div>
       </div>
-
+      <!-- Imagen de la edición -->
+      <div class="col-md-4 col-lg-3 col-xl-2 px-5">
+        <img src="../assets/images/IMG-EDEV04.jpeg" alt="Imagen de la Edición" class="img-fluid rounded">
+      </div>
       <!-- Información principal de la edición -->
-      <div class="col-md-5 col-lg-7 col-xxl-8 mt-3 mt-md-0 info-evento">
+      <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
         <h1 class="mb-3">Maratón Montevideo 2022</h1>
         <p class="mb-2"><strong>Organizador:</strong> Empresa de organización de eventos.</p>
-        <p class="mb-2"><strong>Fecha:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha inicio:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha fin:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha alta:</strong> 21/05/2022</p>
+  <p class="mb-2"><strong>País:</strong> Uruguay</p>
+  <p class="mb-2"><strong>Ciudad:</strong> Montevideo</p>
         <p class="mb-2"><strong>Descripción:</strong> La edición 2022 del Maratón de Montevideo con novedades y actividades para toda la familia.</p>
-        <p class="mb-1"><strong>Ciudad:</strong> Montevideo</p>
-        <p class="mb-0"><strong>País:</strong> Uruguay</p>
-
-
-      </div>
-
-      <!-- Columna derecha: categorías (opcional) -->
-      <div class="col-md-3 col-lg-2 col-xxl-2 mt-3 mt-md-0">
-        <div class="carta-categorias-consulta">
-          <h3 class="categorias-consulta">Categorías</h3>
-          <ul class="lista-categoria-consulta">
-            <li class="categoria-item">Deporte</li>
-            <li class="categoria-item">Salud</li>
-            <li class="categoria-item">Cultura</li>
-            <li class="categoria-item">Tecnología</li>
-          </ul>
+        <p class="mb-2"><strong>Categorías:</strong> Deporte, Salud</p>
+        <!-- Tipos de registros -->
+        <div class="mt-4">
+          <div class="d-flex align-items-baseline gap-2">
+            <h5>Tipos de Registro</h5>
+          </div>
+          <div class="alert alert-secondary text-center mb-0" role="alert">
+            No hay tipos de registro disponibles para esta edición.
+          </div>
         </div>
+        <!-- Patrocinios -->
+        <div class="mt-4">
+          <div class="d-flex align-items-baseline gap-2">
+            <h5>Patrocinadores</h5>
+          </div>
+          <div class="alert alert-secondary text-center mb-0" role="alert">
+            No hay patrocinadores registrados para esta edición.
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>

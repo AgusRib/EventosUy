@@ -41,66 +41,74 @@
     </header>
     
   <div class="container-fluid px-4 mt-4">
-    <div class="carta-de-eventos mb-4">
-      <input type="search" class="search" placeholder="Buscar ediciones...">
+    <div class="carta-de-eventos mb-4 d-flex justify-content-center">
+      <input type="search" class="busq" placeholder="Buscar ediciones...">
     </div>
   </div>
-
   <div class="container-fluid px-4 mt-3">
     <div class="row pb-4">
-      <!-- Imagen de la edición -->
-      <div class="col-md-4 col-lg-3 col-xxl-2 px-5">
-        <img src="../assets/images/maraton2025.jpg" alt="Imagen de la Edición" class="img-fluid rounded">
-      </div>
-
-      <!-- Información principal de la edición -->
-      <div class="col-md-5 col-lg-7 col-xxl-8 mt-3 mt-md-0 info-evento">
-        <h1 class="mb-3">Web Summit 2026</h1>
-        <p class="mb-2"><strong>Organizador:</strong> Empresa de organización de eventos.</p>
-        <p class="mb-2"><strong>Fecha:</strong> 13/01/2026 - 01/02/2026</p>
-        <p class="mb-2"><strong>Descripción:</strong> La edición 2026 del Web Summit con novedades y actividades para toda la familia.</p>
-        <p class="mb-1"><strong>Ciudad:</strong> Lisboa</p>
-        <p class="mb-0"><strong>País:</strong> Portugal</p>
-
-        <!-- Tipos de registros -->
-        <div class="mt-3">
-          <h5>Tipos de registros</h5>
-          <ul class="list-group">
-            <li class="list-group-item"><a href="#">Estudiante</a></li>
-          </ul>
+      <!-- Columna derecha: categorías estilo index -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
+        <div class="carta-categorias align-items-center h-100">
+          <h3 class="categorias fw-bold">Categorías</h3>
+          <li class="list-group w-100 overflow-auto text-center" multiple>
+            <a href="/lab2/indexTecInnov.html" value="tecnologia" class="list-group-item">Tecnología</a>
+            <a href="/lab2/indexTecInnov.html" value="innovacion" class="list-group-item">Innovación</a>
+            <a href="/lab2/indexDeporSalu.html" value="deporte" class="list-group-item">Deporte</a>
+            <a href="/lab2/indexDeporSalu.html" value="salud" class="list-group-item">Salud</a>
+          </li>
         </div>
-
-
-        <!-- Información adicional según rol del usuario -->
-        <div class="mt-3">
-          <!-- Mostrar solo si es organizador 
-          <div id="organizador-section" style="display:none;">
-            <h5>Registros de asistentes</h5>
-            <ul class="list-group">
-              <li class="list-group-item">Juan Pérez - Maratón Completo</li>
-              <li class="list-group-item">María López - Media Maratón</li>
-            </ul>
-          </div>-->
-
-          <!-- Mostrar solo si es asistente registrado -->
-          <div id="asistente-section" style="display:none;">
-            <h5>Tu registro</h5>
-            <p>Costo: 300</p>
+      </div>
+      <!-- Imagen de la edición -->
+      <div class="col-md-4 col-lg-3 col-xl-2 px-5">
+  <img src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="Sin imagen disponible" class="img-fluid rounded">
+      </div>
+      <!-- Información principal de la edición -->
+      <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
+  <h1 class="mb-3">Web Summit 2026</h1>
+  <p class="mb-2"><strong>Organizador:</strong> Empresa de organización de eventos.</p>
+  <p class="mb-2"><strong>Fecha inicio:</strong> 13/01/2026</p>
+  <p class="mb-2"><strong>Fecha fin:</strong> 01/02/2026</p>
+  <p class="mb-2"><strong>Fecha alta:</strong> 04/06/2025</p>
+  <p class="mb-2"><strong>País:</strong> Portugal</p>
+  <p class="mb-2"><strong>Ciudad:</strong> Lisboa</p>
+  <p class="mb-2"><strong>Descripción:</strong> La edición 2026 del Web Summit con novedades y actividades para toda la familia.</p>
+  <p class="mb-2"><strong>Categorías:</strong> Tecnología, Innovación</p>
+        <!-- Tipos de registros -->
+        <div class="mt-4">
+          <div class="d-flex align-items-baseline gap-2">
+            <h5>Tipos de Registro</h5>
+          </div>
+          <div class="accordion" id="accordionTiposRegistro">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingEstudiante">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEstudiante" aria-expanded="false" aria-controls="collapseEstudiante">
+                  Estudiante
+                </button>
+              </h2>
+              <div id="collapseEstudiante" class="accordion-collapse collapse" aria-labelledby="headingEstudiante" data-bs-parent="#accordionTiposRegistro">
+                <div class="accordion-body">
+                  <strong>Precio:</strong> $300<br>
+                  <strong>Cupo:</strong> 1<br>
+                  <strong>Descripción:</strong> Acceso para estudiantes.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-      </div>
-
-      <!-- Columna derecha: categorías (opcional) -->
-      <div class="col-md-3 col-lg-2 col-xxl-2 mt-3 mt-md-0">
-        <div class="carta-categorias-consulta">
-          <h3 class="categorias-consulta">Categorías</h3>
-          <ul class="lista-categoria-consulta">
-            <li class="categoria-item">Deporte</li>
-            <li class="categoria-item">Salud</li>
-            <li class="categoria-item">Cultura</li>
-            <li class="categoria-item">Tecnología</li>
-          </ul>
+        <!-- Patrocinadores -->
+        <div class="mt-4">
+          <div class="d-flex align-items-baseline gap-2">
+            <h5>Patrocinadores</h5>
+          </div>
+          <div class="alert alert-secondary text-center mb-0" role="alert">
+            No hay patrocinadores registrados para esta edición.
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <button class="button2 rounded-3">
+            <div class="header-button">Ver detalle del Registro</div>
+          </button>
         </div>
       </div>
     </div>

@@ -13,35 +13,26 @@
   <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
 </head>
 
+<header>
+  <nav class="navbar bg-white shadow-sm">
+    <div class="container-fluid h-100">
+      <div class="row w-100 align-items-center h-100">
+        <div class="col-2 col-md-1 col-lg-2 text-center text-md-start align-items-center h-100">
+          <img class="logo" src="../assets/icons/Logo.png" alt="Logo">
+        </div>
+        <div class="col-8 col-md-8 col-lg-7 text-center align-items-center h-100">
+          <b class="title"><a href="../index.html">EVENTOS.UY</a></b>
+        </div>
+        <div class="col-1 col-md-3 col-lg-3 d-flex flex-column flex-md-row justify-content-end align-items-center h-100 gap-2">
+          <button class="button1"><div class="header-button">Iniciar sesión</div></button>
+          <button class="button2"><div class="header-button">Regístrate</div></button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
 <body>
-    <header>
-        <nav class="navbar bg-white shadow-sm">
-            <div class="text-center align-items-center">
-                <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="index.html"><b>Eventos.uy</b></a>
-            </div>
-            <div class="d-flex justify-content-end align-items-center">
-                <div class="dropdown">
-                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                        <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle"
-                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-                        <span>Ana</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-                        <li><a class="dropdown-item" href="/lab2/pages/MiPerfil.html"><i class="bx bx-user me-2"></i>Mi
-                                perfil</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="/logout"><i
-                                    class="bx bx-log-out-circle me-2"></i>Cerrar sesión</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    
   <div class="container-fluid px-4 mt-4">
     <div class="carta-de-eventos mb-4 d-flex justify-content-center me-8">
       <input type="search" class="busq" placeholder="Buscar ediciones...">
@@ -55,10 +46,16 @@
       <div class="carta-categorias align-items-center h-100">
         <h3 class="categorias fw-bold">Categorías</h3>
         <li class="list-group w-100 overflow-auto text-center" multiple>
-            <a href="/lab2/indexTecInnov.html" value="tecnologia" class="list-group-item">Tecnología</a>
-            <a href="/lab2/indexTecInnov.html" value="innovacion" class="list-group-item">Innovación</a>
-            <a href="/lab2/indexDeporSalu.html" value="deporte" class="list-group-item">Deporte</a>
-            <a href="/lab2/indexDeporSalu.html" value="salud" class="list-group-item">Salud</a>
+          <a href="#" value="tecnologia" class="list-group-item">Tecnología</a>
+          <a href="#" value="innovacion" class="list-group-item">Innovación</a>
+          <a href="#" value="literatura" class="list-group-item">Literatura</a>
+          <a href="#" value="cultura" class="list-group-item">Cultura</a>
+          <a href="#" value="musica" class="list-group-item">Música</a>
+          <a href="#" value="deporte" class="list-group-item">Deporte</a>
+          <a href="#" value="salud" class="list-group-item">Salud</a>
+          <a href="#" value="entretenimiento" class="list-group-item">Entretenimiento</a>
+          <a href="#" value="agro" class="list-group-item">Agro</a>
+          <a href="#" value="negocios" class="list-group-item">Negocios</a>
         </li>
       </div>
     </div>
@@ -175,11 +172,13 @@
               <div id="gatorade" class="accordion-collapse collapse">
                 <div class="accordion-body">
                   <h5>Gatorade</h5>
-                  <p><strong>Fecha de patrocinio:</strong> 15/02/2025</p>
-                  <p><strong>Monto:</strong> $25,000</p>
-                  <p><strong>Código:</strong> <span class="text-success">GAT-2025-002</span></p>
-                  <p><strong>Registros gratis:</strong> 50</p>
                   <p><strong>Nivel:</strong> Oro</p>
+                  <p><strong>Tipo de Registro :</strong> <span class="text-success">Estudiante</span></p>
+                  <p><strong>Aporte:</strong> $20,000</p>
+                   <p><strong>Fecha:</strong> 21/08/2025</p>
+                  <p><strong>Registros gratis:</strong> 4</p>
+                   <p><strong>Código:</strong> TECHUDELAR</p>
+                  
                 </div>
               </div>
             </div>
