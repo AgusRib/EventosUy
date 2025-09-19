@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Edición - Eventos.uy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+  <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar bg-white shadow-sm">
+            <div class="text-center align-items-center">
+                <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="index.html"><b>Eventos.uy</b></a>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                        <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle"
+                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
+                        <span>Ana</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
+                        <li><a class="dropdown-item" href="/lab2/pages/MiPerfil.html"><i class="bx bx-user me-2"></i>Mi
+                                perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="/logout"><i
+                                    class="bx bx-log-out-circle me-2"></i>Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+  <div class="container-fluid px-4 mt-4">
+    <div class="carta-de-eventos mb-4">
+      <input type="search" class="search" placeholder="Buscar ediciones...">
+    </div>
+  </div>
+
+  <div class="container-fluid px-4 mt-3">
+    <div class="row pb-4">
+      <!-- Imagen de la edición -->
+      <div class="col-md-4 col-lg-3 col-xxl-2 px-5">
+        <img src="../assets/images/maraton2025.jpg" alt="Imagen de la Edición" class="img-fluid rounded">
+      </div>
+
+      <!-- Información principal de la edición -->
+      <div class="col-md-5 col-lg-7 col-xxl-8 mt-3 mt-md-0 info-evento">
+        <h1 class="mb-3">Maratón Montevideo 2024</h1>
+        <p class="mb-2"><strong>Organizador:</strong> Empresa de organización de eventos.</p>
+        <p class="mb-2"><strong>Fecha:</strong> 14/09/2024</p>
+        <p class="mb-2"><strong>Descripción:</strong> La edición 2024 del Maratón de Montevideo con novedades y actividades para toda la familia.</p>
+        <p class="mb-1"><strong>Ciudad:</strong> Montevideo</p>
+        <p class="mb-0"><strong>País:</strong> Uruguay</p>
+
+        <!-- Tipos de registros -->
+        <div class="mt-3">
+          <h5>Tipos de registros</h5>
+          <ul class="list-group">
+            <li class="list-group-item"><a href="#">Corredor 21K</a></li>
+          </ul>
+        </div>
+
+        <!-- Patrocinios 
+        <div class="mt-3">
+          <h5>Patrocinios</h5>
+          <ul class="list-group">
+            <li class="list-group-item"><a href="#">Banco ABC</a></li>
+            <li class="list-group-item"><a href="#">Gatorade</a></li>
+            <li class="list-group-item"><a href="#">DeporteShop</a></li>
+          </ul>
+        </div>-->
+
+        <!-- Información adicional según rol del usuario -->
+        <div class="mt-3">
+          <!-- Mostrar solo si es organizador 
+          <div id="organizador-section" style="display:none;">
+            <h5>Registros de asistentes</h5>
+            <ul class="list-group">
+              <li class="list-group-item">Juan Pérez - Maratón Completo</li>
+              <li class="list-group-item">María López - Media Maratón</li>
+            </ul>
+          </div>-->
+
+          <!-- Mostrar solo si es asistente registrado -->
+          <div id="asistente-section" style="display:none;">
+            <h5>Tu registro</h5>
+            <p>Costo: 500</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha: categorías (opcional) -->
+      <div class="col-md-3 col-lg-2 col-xxl-2 mt-3 mt-md-0">
+        <div class="carta-categorias-consulta">
+          <h3 class="categorias-consulta">Categorías</h3>
+          <ul class="lista-categoria-consulta">
+            <li class="categoria-item">Deporte</li>
+            <li class="categoria-item">Salud</li>
+            <li class="categoria-item">Cultura</li>
+            <li class="categoria-item">Tecnología</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Ejemplo de control de visibilidad según rol
+    const rolUsuario = 'organizador'; // 'organizador', 'asistente' o 'visitante'
+
+    if(rolUsuario === 'organizador') {
+      document.getElementById('organizador-section').style.display = 'block';
+    } else if(rolUsuario === 'asistente') {
+      document.getElementById('asistente-section').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
