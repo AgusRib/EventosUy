@@ -13,26 +13,31 @@
 </head>
 
 <body>
-  <header>
-    <nav class="navbar bg-white shadow-sm">
+<header>
+        <nav class="navbar bg-white shadow-sm">
       <div class="d-flex align-items-center">
         <a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="index.html">Eventos.uy</a>
       </div>
-      <div class="d-flex justify-content-end align-items-center">
-        <div class="dropdown">
-          <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-            <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle" style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-            <span>Ana</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-            <li><a class="dropdown-item" href="../pages/MiPerfil.html">Mi perfil</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="../pagesVisitante/index.html" style="color:#dc3545 !important;">Cerrar sesión</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                        <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle"
+                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
+                        <span>Ana</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
+            <li><a class="dropdown-item" href="MiPerfil-atorres.html">Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="../pagesVisitante/index.html" style="color:#dc3545 !important;">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 
 
@@ -49,13 +54,34 @@
     <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
       <div class="carta-categorias align-items-center h-100">
         <h3 class="categorias fw-bold">Categorías</h3>
+        <div class="form-check mb-2 d-flex justify-content-center">
+          <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
+          <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
+        </div>
         <li class="list-group w-100 overflow-auto text-center" multiple>
-            <a href="ListarEventos.html" value="tecnologia" class="list-group-item">Tecnología</a>
-                <a href="ListarEventos.html" value="innovacion" class="list-group-item">Innovación</a>
-                <a href="ListarEventos.html" value="deporte" class="list-group-item">Deporte</a>
-                <a href="ListarEventos.html" value="salud" class="list-group-item">Salud</a>
+            <a href="#" value="tecnologia" class="list-group-item categoria-link">Tecnología</a>
+            <a href="#" value="innovacion" class="list-group-item categoria-link">Innovación</a>
+            <a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
+            <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
         </li>
       </div>
+<script>
+  // Redirige según el estado del checkbox al hacer click en una categoría
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkboxEdiciones = document.getElementById('checkboxEdiciones');
+    const categoriaLinks = document.querySelectorAll('.categoria-link');
+    categoriaLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (checkboxEdiciones.checked) {
+          window.location.href = 'ListaEdiciones.html';
+        } else {
+          window.location.href = 'ListarEventos.html';
+        }
+      });
+    });
+  });
+</script>
     </div>
   
     <!-- Columna izquierda: imagen -->

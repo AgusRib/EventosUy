@@ -9,10 +9,11 @@
   <link rel="stylesheet" href="../assets/css/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
   <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body>
-<header>
+    <header>
         <nav class="navbar bg-white shadow-sm">
       <div class="d-flex align-items-center">
         <a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="index.html">Eventos.uy</a>
@@ -37,9 +38,6 @@
             </div>
         </nav>
     </header>
-
-
-    
   <div class="container-fluid px-4 mt-4">
     <div class="carta-de-eventos mb-4 d-flex justify-content-center">
       <input type="search" class="busq" placeholder="Buscar ediciones...">
@@ -62,11 +60,10 @@
             <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
           </li>
         </div>
-        <!-- ...existing code... -->
       </div>
       <!-- Imagen de la edición -->
       <div class="col-md-4 col-lg-3 col-xl-2 px-5">
-  <img src="../assets/images/IMG-EDEV03.jpeg" alt="Maratón 2024" class="img-fluid rounded" style="width:180px;height:180px;object-fit:cover;aspect-ratio:1/1;">
+        <img src="../assets/images/IMG-EDEV04.jpeg" alt="Imagen de la Edición" class="img-fluid rounded">
 <script>
   // Redirige según el estado del checkbox al hacer click en una categoría
   document.addEventListener('DOMContentLoaded', function() {
@@ -87,41 +84,22 @@
       </div>
       <!-- Información principal de la edición -->
       <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
-        <h1 class="mb-3">Maratón Montevideo 2024</h1>
-        <div class="mb-2 d-flex align-items-center">
-          <strong class="me-2">Organizador:</strong>
-          <a href="../pagesAsistente/miseventos_ConsultaUsuario_vistaExterna.html" class="d-flex align-items-center text-decoration-none">
-            <img src="../assets/images/IMG-US04.jpeg" alt="Miseventos" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-            <span class="fw-bold text-dark">Miseventos</span>
-          </a>
-        </div>
-  <p class="mb-2"><strong>Fecha inicio:</strong> 14/09/2024</p>
-  <p class="mb-2"><strong>Fecha fin:</strong> 14/09/2024</p>
-  <p class="mb-2"><strong>Fecha alta:</strong> 21/04/2024</p>
+        <h1 class="mb-3">Maratón Montevideo 2022</h1>
+        <p class="mb-2"><strong>Organizador:</strong> Empresa de organización de eventos.</p>
+  <p class="mb-2"><strong>Fecha inicio:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha fin:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha alta:</strong> 21/05/2022</p>
   <p class="mb-2"><strong>País:</strong> Uruguay</p>
   <p class="mb-2"><strong>Ciudad:</strong> Montevideo</p>
-        <p class="mb-2"><strong>Descripción:</strong> La edición 2024 del Maratón de Montevideo con novedades y actividades para toda la familia.</p>
+        <p class="mb-2"><strong>Descripción:</strong> La edición 2022 del Maratón de Montevideo con novedades y actividades para toda la familia.</p>
         <p class="mb-2"><strong>Categorías:</strong> Deporte, Salud</p>
         <!-- Tipos de registros -->
         <div class="mt-4">
           <div class="d-flex align-items-baseline gap-2">
             <h5>Tipos de Registro</h5>
           </div>
-          <div class="accordion" id="accordionTiposRegistro">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="heading21k">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse21k" aria-expanded="false" aria-controls="collapse21k">
-                  Corredor 21K
-                </button>
-              </h2>
-              <div id="collapse21k" class="accordion-collapse collapse" aria-labelledby="heading21k" data-bs-parent="#accordionTiposRegistro">
-                <div class="accordion-body registro-info">
-                  <p><strong>Costo:</strong> $500</p>
-                  <p><strong>Cupo:</strong> 500</p>
-                  <p><strong>Descripción:</strong> Inscripción a la media maratón.</p>
-                </div>
-              </div>
-            </div>
+          <div class="alert alert-secondary text-center mb-0" role="alert">
+            No hay tipos de registro disponibles para esta edición.
           </div>
         </div>
         <!-- Patrocinios -->
@@ -134,19 +112,21 @@
           </div>
         </div>
         
-       
-        <div class="text-center mt-3">
-            <a href="verDetalleRegistroMaraton2024.html" style="text-decoration:none;">
-              <button class="button2 rounded-3">
-                <div class="header-button">Ver detalle del Registro</div>
-              </button>
-            </a>
-        </div>
+        
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Ejemplo de control de visibilidad según rol
+    const rolUsuario = 'organizador'; // 'organizador', 'asistente' o 'visitante'
 
+    if(rolUsuario === 'organizador') {
+      document.getElementById('organizador-section').style.display = 'block';
+    } else if(rolUsuario === 'asistente') {
+      document.getElementById('asistente-section').style.display = 'block';
+    }
+  </script>
 </body>
 </html>

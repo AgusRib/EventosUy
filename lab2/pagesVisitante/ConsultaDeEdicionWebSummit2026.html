@@ -46,22 +46,49 @@
       <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
         <div class="carta-categorias align-items-center h-100">
           <h3 class="categorias fw-bold">Categorías</h3>
+          <div class="form-check mb-2 d-flex justify-content-center">
+            <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
+            <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
+          </div>
           <li class="list-group w-100 overflow-auto text-center" multiple>
-             <a href="ListarEventos.html" value="tecnologia" class="list-group-item">Tecnología</a>
-                <a href="ListarEventos.html" value="innovacion" class="list-group-item">Innovación</a>
-                <a href="ListarEventos.html" value="deporte" class="list-group-item">Deporte</a>
-                <a href="ListarEventos.html" value="salud" class="list-group-item">Salud</a>
+            <a href="#" value="tecnologia" class="list-group-item categoria-link">Tecnología</a>
+            <a href="#" value="innovacion" class="list-group-item categoria-link">Innovación</a>
+            <a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
+            <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
           </li>
         </div>
       </div>
       <!-- Imagen de la edición -->
       <div class="col-md-4 col-lg-3 col-xl-2 px-5">
   <img src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="Sin imagen disponible" class="img-fluid rounded">
+<script>
+  // Redirige según el estado del checkbox al hacer click en una categoría
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkboxEdiciones = document.getElementById('checkboxEdiciones');
+    const categoriaLinks = document.querySelectorAll('.categoria-link');
+    categoriaLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (checkboxEdiciones.checked) {
+          window.location.href = 'ListaEdiciones.html';
+        } else {
+          window.location.href = 'ListarEventos.html';
+        }
+      });
+    });
+  });
+</script>
       </div>
       <!-- Información principal de la edición -->
       <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
   <h1 class="mb-3">Web Summit 2026</h1>
-  <p class="mb-2"><strong>Organizador:</strong> Empresa de organización de eventos.</p>
+  <div class="mb-2 d-flex align-items-center">
+    <strong class="me-2">Organizador:</strong>
+    <a href="../pagesVisitante/miseventos_ConsultaUsuario_vistaExterna.html" class="d-flex align-items-center text-decoration-none">
+  <img src="../assets/images/IMG-US04.jpeg" alt="Miseventos" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
+      <span class="fw-bold text-dark">Miseventos</span>
+    </a>
+  </div>
   <p class="mb-2"><strong>Fecha inicio:</strong> 13/01/2026</p>
   <p class="mb-2"><strong>Fecha fin:</strong> 01/02/2026</p>
   <p class="mb-2"><strong>Fecha alta:</strong> 04/06/2025</p>

@@ -14,10 +14,7 @@
 <body>
    <header>
         <nav class="navbar bg-white shadow-sm">
-            <div class="text-center align-items-center">
-                <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="index.html"><b>Eventos.uy</b></a>
-            </div>
-            <div class="d-flex justify-content-end align-items-center">
+            <div class="d-flex justify-content-end align-items-center w-100">
                 <div class="dropdown">
                     <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
@@ -51,12 +48,16 @@
 
         <div class="carta-categorias align-items-center col-12 col-md-8 col-xl-3 h-100 my-3">
             <h3 class="categorias fw-bold">Categorías</h3>
-            <li class="list-group w-100 overflow-auto text-center" multiple>
-                <a href="ListarEventos.html" value="tecnologia" class="list-group-item">Tecnología</a>
-                <a href="ListarEventos.html" value="innovacion" class="list-group-item">Innovación</a>
-                <a href="ListarEventos.html" value="deporte" class="list-group-item">Deporte</a>
-                <a href="ListarEventos.html" value="salud" class="list-group-item">Salud</a>
-            </li>
+                        <div class="form-check mb-2 d-flex justify-content-center">
+                            <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
+                            <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
+                        </div>
+                        <li class="list-group w-100 overflow-auto text-center" multiple>
+                                <a href="#" value="tecnologia" class="list-group-item categoria-link">Tecnología</a>
+                                <a href="#" value="innovacion" class="list-group-item categoria-link">Innovación</a>
+                                <a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
+                                <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
+                        </li>
         </div>
 
         <div class="container row col-12 col-md-8">
@@ -122,5 +123,22 @@
             </div>
         </div>
     </div>
+<script>
+    // Redirige según el estado del checkbox al hacer click en una categoría
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxEdiciones = document.getElementById('checkboxEdiciones');
+        const categoriaLinks = document.querySelectorAll('.categoria-link');
+        categoriaLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (checkboxEdiciones.checked) {
+                    window.location.href = 'ListaEdiciones.html';
+                } else {
+                    window.location.href = 'ListarEventos.html';
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
