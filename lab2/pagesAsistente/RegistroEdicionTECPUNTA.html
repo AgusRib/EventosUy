@@ -44,33 +44,30 @@
 </head>
 
 <header>
-  <nav class="navbar bg-white shadow-sm">
-    <div class="container-fluid h-100">
-      <div class="row w-100 align-items-center h-100">
-        <div class="col-2 col-md-1 col-lg-2 text-center text-md-start align-items-center h-100">
-          <img class="logo" src="../assets/icons/Logo.png" alt="Logo">
-        </div>
-        <div class="col-8 col-md-8 col-lg-7 text-center align-items-center h-100">
-          <b class="title"><a href="../index.html">Eventos.uy</a></b>
-        </div>
-        <div class="col-1 col-md-3 col-lg-3 d-flex justify-content-end align-items-center h-100">
-          <div class="dropdown">
-            <a class="d-flex align-items-center text-decoration-none" href="#" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-              <img src="/img/user-perfil/perfil-user-icono-def.png" alt="JA" class="rounded-circle" style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-              <span class="d-none d-md-inline ms-2 fw-semibold">Jolgito</span>
-              <i class="bx bx-chevron-down ms-2" aria-hidden="true"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-              <li><a class="dropdown-item" href="/lab2/pages/MiPerfil.html"><i class="bx bx-user me-2"></i>Mi perfil</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-danger" href="/logout"><i class="bx bx-log-out-circle me-2"></i>Cerrar sesión</a></li>
-            </ul>
-          </div>
-        </div>
+        <nav class="navbar bg-white shadow-sm">
+      <div class="d-flex align-items-center">
+        <a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="index.html">Eventos.uy</a>
       </div>
-    </div>
-  </nav>
-</header>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                        <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle"
+                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
+                        <span>Ana</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
+            <li><a class="dropdown-item" href="../pages/MiPerfil.html">Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="../pagesVisitante/index.html" style="color:#dc3545 !important;">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 <body id="body-pd">
 <main class="contUser">
