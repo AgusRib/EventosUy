@@ -94,17 +94,15 @@
 
           <!-- Campos de evento y edición como textos arriba de las imágenes -->
           <div class="mb-3 d-flex flex-column align-items-center justify-content-center">
-            <label class="form-label">Maraton Montevideo 2022</label>
-            <img src="../assets/images/IMG-EDEV03.jpeg" alt="Imagen Edición" class="img-fluid rounded" style="width:120px; height:120px; object-fit:cover;">
+            <label class="form-label">Tecnología Punta del este 2026</label>
+            <img src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="Imagen Edición" class="img-fluid rounded" style="width:120px; height:120px; object-fit:cover;">
           </div>
 
           <div class="mb-3">
             <label for="tipoRegistroSelect" class="form-label">Tipo de registro</label>
             <select class="form-select" id="tipoRegistroSelect" required>
               <option value="">-- Seleccione un tipo de registro --</option>
-              <option value="general">General</option>
-              <option value="vip">VIP</option>
-              <option value="early">Early Bird</option>
+              <option value="general">Estudiante</option>
             </select>
           </div>
 
@@ -145,14 +143,20 @@
     });
   });
 
+  // Validar código solo al enviar el formulario
+  const codigoInput = document.getElementById('codigoPatrocinio');
   document.getElementById('registroEdicionForm').addEventListener('submit', function(e) {
     const forma = document.querySelector('input[name="formaRegistro"]:checked').value;
-    if (forma === 'patrocinio') {
+    if (forma === 'patrocinio' && codigoInput && codigoInput.value.trim().toUpperCase() !== 'TECHUDELAR') {
       e.preventDefault();
-      alert('Código inválido.');
+      codigoInput.classList.add('is-invalid');
+      alert('Código inválido');
+    } else if (codigoInput) {
+      codigoInput.classList.remove('is-invalid');
     }
   });
 </script>
+
 
 </body>
 </html>
