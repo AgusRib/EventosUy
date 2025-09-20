@@ -1,7 +1,11 @@
-body {
+/* Centrar solo el contenedor de perfil, no el header */
+body > .contenedor-perfil {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* NO align-items: center; */
 }
 
 .contenedor-perfil {
