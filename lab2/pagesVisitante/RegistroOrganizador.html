@@ -47,14 +47,12 @@
 <body>
 
     <div class="container d-flex justify-content-center">
-    <div class="col-md-5 col-lg-7 col-13"> <!-- Contenedor centrado con Bootstrap -->
 
     <!-- Contenedor del formulario -->
-
     <div class="col-md-5 col-lg-7 col-xxl-9 mt-3 mt-sm-3 mt-md-0 Registro base text-center">
         <h1 class="mb-5"><strong></strong></h1>
         <h3 class="mb-4"><strong>Ya casi terminamos...</strong></h3>
-        <p class="mb-3">Introduce estos últimos datos como ORGANIZADOR</p>
+        <p class="mb-3" style="color: #757575">Introduce estos últimos datos como ORGANIZADOR</p>
           <form>
               <div class="mb-3">
                     <label for="descripción" class="form-label">Una breve descripción de su organización</label>
@@ -71,10 +69,10 @@
 
     <!-- FINALIZAR ALTA USUARIO  -->
     <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    window.location.href = 'index.html';
-    });
+        document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        window.location.href = 'index.html';
+        });
     </script>
     
 </body>

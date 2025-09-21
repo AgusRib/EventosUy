@@ -98,6 +98,18 @@ button {
   padding: 10px;
 }
 
+/* icono de + en el boton de agregar cosas*/
+.bi.bi-plus-lg{
+  color: white;
+}
+
+/*boton de agregar cosas*/
+.btn.btn-success {
+  background-color: #198754;
+  border: none;
+  font-size: 14px;
+  font-family: Inter;
+}
 .button1 {
   background-color: #e3e3e3;
   border: none;
