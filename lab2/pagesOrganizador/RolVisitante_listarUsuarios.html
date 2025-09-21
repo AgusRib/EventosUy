@@ -39,39 +39,51 @@
         </nav>
     </header>
 
-<div class="contenedor-BuscadorUsuario">
-    <div class="buscadorUsuarios">
-            <input type="search" placeholder="Buscar usuarios registrados" class="search">
-    <!-- TODO: falta agregar la logica para que cuando toque enter, se busque el usuario -->
-    </div>
-</div>
-
-
 <!-- TODO: linkear cada usuario a su respectivo perfil usando href sobre el texto del nickname-->
-<div class="contenedor-listadoUsuarios">
-    <div class="listadoUsarios">
-            <div class="listadoUsuarios_itemUsuario">
-                    <div class="contenedor-foto">
-                            <img class="foto-usuario" src="../assets/images/IMG-US01.jpg" alt="atorresFoto" style="height: 127px;">
-                    </div>
-                    <div class="contenedor-NickRolUser">
-                            <div class="nickname"><a href="ConsultaUsuarioatorres.html">atorres</a></div>
-                            <div class="rol">Asistente</div>
-                    </div>
+<main class="container my-5">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <input type="search" class="form-control form-control-lg" placeholder="Buscar usuarios registrados">
             </div>
+        </div>
 
-            <div class="listadoUsuarios_itemUsuario">
-                    <div class="contenedor-foto">
-                            <img class="foto-usuario" src="../assets/images/IMG-US04.jpeg" alt="miseventosFoto" style="height: 100px;">
-                    </div>
-                    <div class="contenedor-NickRolUser">
-                            <div class="nickname"><a href="MiPerfil-misEventos.html">miseventos</a></div>
-                            <div class="rol">Organizador</div>
-                    </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card rounded-5 mb-3">
+                    <a href="ConsultaUsuarioatorres.html" class="text-decoration-none d-block h-100 w-100">
+                        <div class="user row g-0 align-items-center">
+                            <div class="col-auto">
+                                <img src="../assets/images/IMG-US01.jpg" alt="atorresFoto" class="img-fluid rounded-circle m-3" style="width: 90px; height: 90px; object-fit: cover;">
+                            </div>
+                            <div class="col">
+                                <div class="card-body ">
+                                    <h5 class="card-title mb-1">atorres</h5>
+                                    <p class="card-text text-secondary mb-0">Asistente</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card rounded-5 mb-3">
+                    <a href="MiPerfil-misEventos.html">
+                        <div class="user row g-0 align-items-center">
+                            <div class="col-auto">
+                                <img src="../assets/images/IMG-US04.jpeg" alt="miseventosFoto" class="img-fluid rounded-circle m-3" style="width: 90px; height: 90px; object-fit: cover;">
+                            </div>
+                            <div class="col">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-1">miseventos</h5>
+                                    <p class="card-text text-secondary mb-0">Organizador</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
+        </div>
+    </main>
 
-    </div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
