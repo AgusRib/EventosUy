@@ -51,17 +51,18 @@
                     <div class="align-items-center col-12 col-xl-3 my-3">
                         <div class="mb-4 gap-2 d-flex flex-column">
                             <div class="form-check">
-                                <input class="form-check-input" type="radioDefault" id="radioDefault1" checked>
+                                <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1"
+                                    checked>
                                 <label class="form-check-label" for="radioDefault1">
-                                    Mis eventos
+                                    Mis ediciones
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radioDefault" id="radioDefault2">
+                                <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2">
                                 <label class="form-check-label" for="radioDefault2">
-                                    Eventos de otros organizadores
+                                    Ediciones de otros organizadores
                                 </label>
-                            </div>                            
+                            </div>
                         </div>
 
                         <h3 class="categorias fw-bold text-center">Categorías</h3>
@@ -80,73 +81,63 @@
                     </div>
 
                     <div class="row container m-2 col-12 col-xl-8">
-    <script>
-        // Redirige según el estado del checkbox al hacer click en una categoría
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxEdiciones = document.getElementById('checkboxEdiciones');
-            const categoriaLinks = document.querySelectorAll('.categoria-link');
-            categoriaLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (checkboxEdiciones.checked) {
-                        window.location.href = 'ListaEdiciones.html';
-                    } else {
-                        window.location.href = 'ListarEventos.html';
-                    }
-                });
-            });
-        });
-    </script>
-                                            <div class="row row-cols-1 gx-0 gy-3 col-12 mt-0">
+
+                        <div class="row row-cols-1 gx-0 gy-3 col-12 mt-0 gap-3">
                             <!-- Card Maratón Montevideo -->
                             <div class="col m-0">
-                                <div class="carta p-4">
-                                    <div class="text-heading">
-                                        <div class="search-text-heading">Maratón Montevideo</div>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between align-items-start w-100">
-                                        <div class="avatar-block">
-                                            <div class="avatar">
-                                                <img class="shape-icon" alt="" src="../assets/icons/images.png">
-                                            </div>
-                                            <div class="info gap-1">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-geo-alt-fill mx-2"></i>
-                                                    <div class="description">Montevideo, Uruguay</div>
+                                <a href="ConsulltaEventoMaraton.html" class="text-decoration-none text-dark">
+                                    <div class="carta p-4">
+                                        <div class="text-heading">
+                                            <div class="search-text-heading">Maratón Montevideo</div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-between align-items-start w-100">
+                                            <div class="avatar-block">
+                                                <div class="avatar">
+                                                    <img class="shape-icon" alt="" src="../assets/icons/images.png">
                                                 </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-calendar-fill mx-2"></i>
-                                                    <div class="description">14/09/2024</div>
+                                                <div class="info gap-1">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-geo-alt-fill mx-2"></i>
+                                                        <div class="description">Montevideo, Uruguay</div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-calendar-fill mx-2"></i>
+                                                        <div class="description">14/09/2024</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div>    
+                                </a>
+
                             </div>
                             <!-- Card Conferencia de Tecnología -->
                             <div class="col m-0">
-                                <div class="carta p-4">
-                                    <div class="text-heading">
-                                        <div class="search-text-heading">Conferencia de Tecnología</div>
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between align-items-start w-100">
-                                        <div class="avatar-block">
-                                            <div class="avatar">
-                                                <img class="shape-icon" alt="" src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg">
-                                            </div>
-                                            <div class="info gap-1">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-geo-alt-fill mx-2"></i>
-                                                    <div class="description">Montevideo, Uruguay</div>
+                                <a href="ConsulltaEventoConferencia.html" class="text-decoration-none text-dark">
+                                    <div class="carta p-4">
+                                        <div class="text-heading">
+                                            <div class="search-text-heading">Conferencia de Tecnología</div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-between align-items-start w-100">
+                                            <div class="avatar-block">
+                                                <div class="avatar">
+                                                    <img class="shape-icon" alt="" src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg">
                                                 </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-calendar-fill mx-2"></i>
-                                                    <div class="description">10/01/2025</div>
+                                                <div class="info gap-1">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-geo-alt-fill mx-2"></i>
+                                                        <div class="description">Montevideo, Uruguay</div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-calendar-fill mx-2"></i>
+                                                        <div class="description">10/01/2025</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </div>    
+                                </a>
+                                
                             </div>
                             <nav class="d-flex justify-content-center mt-5">
                                 <ul class="pagination">
