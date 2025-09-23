@@ -42,7 +42,7 @@
     </header>
 
     <body>
-      
+        
 
         <div class="container">
             <div class="m-4">
@@ -50,24 +50,45 @@
                 <input type="search" class="search col-12 p-3" placeholder="Buscar eventos...">
                 <div class="row row-cols-2 w-100 justify-content-center my-4 gap-5">
                     <div class="align-items-center col-12 col-xl-3 my-3">
-                       
+                        
 
                         <h3 class="categorias fw-bold text-center">Categorías</h3>
-                        <div class="carta-categorias">
-                            <li class="list-group w-100 overflow-auto text-center" multiple>
-                                <a href="ListarEventos.html" class="list-group-item">Tecnología</a>
-                                <a href="ListarEventos.html" class="list-group-item">Innovación</a>
-                                <a href="ListarEventos.html" class="list-group-item">Deporte</a>
-                                <a href="ListarEventos.html" class="list-group-item">Salud</a>
-                            </li>
-                        </div>
+                                                <div class="carta-categorias">
+                                                    <div class="form-check mb-2 d-flex justify-content-center">
+                                                        <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
+                                                        <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
+                                                    </div>
+                                                    <li class="list-group w-100 overflow-auto text-center" multiple>
+                                                            <a href="#" class="list-group-item categoria-link">Tecnología</a>
+                                                            <a href="#" class="list-group-item categoria-link">Innovación</a>
+                                                            <a href="#" class="list-group-item categoria-link">Deporte</a>
+                                                            <a href="#" class="list-group-item categoria-link">Salud</a>
+                                                    </li>
+                                                </div>
                     </div>
 
                     <div class="row container m-2 col-12 col-xl-8">
-                        <div class="row row-cols-1 gx-0 gy-3 col-12 mt-0">
+<script>
+    // Redirige según el estado del checkbox al hacer click en una categoría
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxEdiciones = document.getElementById('checkboxEdiciones');
+        const categoriaLinks = document.querySelectorAll('.categoria-link');
+        categoriaLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (checkboxEdiciones.checked) {
+                    window.location.href = 'ListaEdiciones.html';
+                } else {
+                    window.location.href = 'ListarEventos.html';
+                }
+            });
+        });
+    });
+</script>
+                        <div class="row row-cols-1 gx-0 gy-3 col-12 mt-0 gap-4">
                             <!-- Card Maratón Montevideo -->
                             <div class="col m-0">
-                                <a href="ConsulltaEventoMaraton.html" class="text-decoration-none text-dark">
+                              <a href="ConsulltaEventoMaraton.html" class="text-decoration-none">
                                 <div class="carta p-4">
                                     <div class="text-heading">
                                         <div class="search-text-heading">Maratón Montevideo</div>
@@ -90,12 +111,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                </a>
+                              </a>
                             </div>
-
                             <!-- Card Conferencia de Tecnología -->
                             <div class="col m-0">
-                                <a href="ConsulltaEventoConferencia.html" class="text-decoration-none text-dark"> 
+                              <a href="ConsulltaEventoConferencia.html" class="text-decoration-none">
                                 <div class="carta p-4">
                                     <div class="text-heading">
                                         <div class="search-text-heading">Conferencia de Tecnología</div>
@@ -118,7 +138,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                </a>
+                              </a>
                             </div>
                             <nav class="d-flex justify-content-center mt-5">
                                 <ul class="pagination">
