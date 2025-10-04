@@ -9,18 +9,18 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import logica.DTDetalleEdicion;
-import logica.DTDetalleEvento;
-import logica.DTEdicion;
-import logica.DTTipoRegistro;
-import logica.DataUsuario;
-import logica.DataUsuario.TipoUsuario;
-import logica.Edicion;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.IControllerUsuario;
-import logica.ManejadorEdicion;
-import logica.Organizador;
+import logica.models.Edicion;
+import logica.models.Organizador;
+import logica.controllers.Factory;
+import logica.controllers.IControllerEvento;
+import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DTDetalleEdicion;
+import logica.dataTypes.DTDetalleEvento;
+import logica.dataTypes.DTEdicion;
+import logica.dataTypes.DTTipoRegistro;
+import logica.dataTypes.DataUsuario;
+import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.manejadores.ManejadorEdicion;
 
 public class TestVerDetalles {
 	

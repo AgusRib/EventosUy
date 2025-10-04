@@ -7,12 +7,12 @@ import java.util.HashSet;
 import org.junit.Test;
 
 import excepciones.NombreEventoExcepcion;
-import logica.Categoria;
-import logica.Evento;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.ManejadorCategoria;
-import logica.ManejadorEvento;
+import logica.controllers.Factory;
+import logica.controllers.IControllerEvento;
+import logica.manejadores.ManejadorCategoria;
+import logica.manejadores.ManejadorEvento;
+import logica.models.Categoria;
+import logica.models.Evento;
 
 public class TestEdicionVacia {
 

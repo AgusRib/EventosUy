@@ -7,12 +7,12 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
-import logica.DataUsuario;
-import logica.DataUsuario.TipoUsuario;
-import logica.Factory;
-import logica.IControllerUsuario;
-import logica.ManejadorUsuario;
-import logica.Organizador;
+import logica.models.Organizador;
+import logica.controllers.Factory;
+import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DataUsuario;
+import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.manejadores.ManejadorUsuario;
 
 public class TestControllerUsuario {
 		

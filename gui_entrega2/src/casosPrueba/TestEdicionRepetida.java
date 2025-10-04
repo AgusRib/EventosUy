@@ -8,16 +8,16 @@ import java.util.HashSet;
 import org.junit.Test;
 
 import excepciones.NombreEventoExcepcion;
-import logica.Categoria;
-import logica.Edicion;
-import logica.Evento;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.ManejadorCategoria;
-import logica.ManejadorEdicion;
-import logica.ManejadorEvento;
-import logica.ManejadorUsuario;
-import logica.Organizador;
+import logica.controllers.Factory;
+import logica.controllers.IControllerEvento;
+import logica.manejadores.ManejadorCategoria;
+import logica.manejadores.ManejadorEdicion;
+import logica.manejadores.ManejadorEvento;
+import logica.manejadores.ManejadorUsuario;
+import logica.models.Categoria;
+import logica.models.Edicion;
+import logica.models.Evento;
+import logica.models.Organizador;
 
 
 public class TestEdicionRepetida {

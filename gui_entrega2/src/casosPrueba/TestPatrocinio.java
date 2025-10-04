@@ -11,14 +11,14 @@ import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
-import logica.DTDetalleEdicion;
-import logica.DTPatrocinio;
-import logica.Edicion;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.ManejadorCategoria;
-import logica.ManejadorEdicion;
-import logica.ManejadorInstitucion;
+import logica.controllers.Factory;
+import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTDetalleEdicion;
+import logica.dataTypes.DTPatrocinio;
+import logica.manejadores.ManejadorCategoria;
+import logica.manejadores.ManejadorEdicion;
+import logica.manejadores.ManejadorInstitucion;
+import logica.models.Edicion;
 
 public class TestPatrocinio {
 	@Test
@@ -72,7 +72,7 @@ public class TestPatrocinio {
 		
 		
 		
-		ICE.altaPatrocinio("E90", "ORT Uruguay", logica.NivelPatrocinio.Oro, 1000.0,"pinguinesco", 0, "COD123");
+		ICE.altaPatrocinio("E90", "ORT Uruguay", logica.enumerators.NivelPatrocinio.Oro, 1000.0,"pinguinesco", 0, "COD123");
 	
 	    ManejadorEdicion me = ManejadorEdicion.getInstance();
 	    Edicion ed = me.encontrarEdicion("E90");
@@ -84,7 +84,7 @@ public class TestPatrocinio {
 	    
 	    assertEquals(true, pat.getFecha().equals(ICE.getFechaSistema()));
 	    assertEquals(true, pat.getCodigo().equals("COD123"));
-	    assertEquals(true, pat.getNivelPatrocinio().equals(logica.NivelPatrocinio.Oro));
+	    assertEquals(true, pat.getNivelPatrocinio().equals(logica.enumerators.NivelPatrocinio.Oro));
 	    assertEquals(true, pat.getMonto() == 1000.0);
 	    assertEquals(true, pat.getTipoRegistroGratis().equals("pinguinesco"));
 	    assertEquals(true, pat.getCantRegsGratis() == 0);

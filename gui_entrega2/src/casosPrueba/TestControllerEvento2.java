@@ -9,11 +9,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import logica.DTAsistente;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.IControllerUsuario;
-import logica.ManejadorEvento;
+import logica.controllers.Factory;
+import logica.controllers.IControllerEvento;
+import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DTAsistente;
+import logica.manejadores.ManejadorEvento;
 
 
 public class TestControllerEvento2 {
@@ -53,7 +53,7 @@ public class TestControllerEvento2 {
 		
 		
 		// Alta de patrocinio
-		ICE.altaPatrocinio("EdTest", "InstTest", logica.NivelPatrocinio.Oro, 1000.0,"pinguinesco", 0, "COD123");
+		ICE.altaPatrocinio("EdTest", "InstTest", logica.enumerators.NivelPatrocinio.Oro, 1000.0,"pinguinesco", 0, "COD123");
 
 		
 		

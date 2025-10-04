@@ -7,14 +7,14 @@ import java.util.Set;
 import org.junit.Test;
 
 import excepciones.NombreInstiExistente;
-import logica.Asistente;
-import logica.DTAsistente;
-import logica.DTOrganizador;
-import logica.IControllerUsuario;
-import logica.Institucion;
-import logica.ManejadorInstitucion;
-import logica.ManejadorUsuario;
-import logica.Organizador;
+import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DTAsistente;
+import logica.dataTypes.DTOrganizador;
+import logica.manejadores.ManejadorInstitucion;
+import logica.manejadores.ManejadorUsuario;
+import logica.models.Asistente;
+import logica.models.Institucion;
+import logica.models.Organizador;
 
 public class TestControllerUsuario2{
 	@Test
@@ -28,7 +28,7 @@ public class TestControllerUsuario2{
 		}
 		
 		
-		IControllerUsuario ICU = logica.Factory.getInstance().getControllerUsuario();
+		IControllerUsuario ICU = logica.controllers.Factory.getInstance().getControllerUsuario();
 		ManejadorInstitucion mi = ManejadorInstitucion.getInstance();
 		
 		try {
