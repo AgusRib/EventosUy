@@ -59,6 +59,9 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 		for(Evento ev: ManejadorEvento.getInstance().obtenerEventos().values()) {
 				comboBoxEventos.addItem(ev.getNombre());
 		}
+		comboBoxEventos.addActionListener(e -> {
+			refrescarEdiciones();
+		});
 		
 		GridBagConstraints gbcComboBoxEventos = new GridBagConstraints();
 		gbcComboBoxEventos.insets = new Insets(5, 5, 5,5);
@@ -178,15 +181,33 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 		listaEdicionesPendientes.setModel(new DefaultListModel<String>());
 	}
 	
+	public void refrescarEdiciones() {
+	
+	    if (comboBoxEventos.getItemCount() > 0) {
+	        String nomEvento = (String) comboBoxEventos.getSelectedItem();
+	        Evento evento = ManejadorEvento.getInstance().obtenerEvento(nomEvento);
+	        if (evento != null) {
+	            List<Edicion> edicionesPendientes = evento.getColEdicionesPendientes();
+	            DefaultListModel<String> model = new DefaultListModel<>();
+	            for (Edicion edicion : edicionesPendientes) {
+	                model.addElement(edicion.getNombre());
+	            }
+	            listaEdicionesPendientes.setModel(model);
+	        }
+	    } else {
+	        listaEdicionesPendientes.setModel(new DefaultListModel<>());
+	    }
+	}
+	
 	public void refrescar() {
-			limpiarCampos();
-			comboBoxEventos.removeAllItems();
-			Collection<Evento> eventos = ManejadorEvento.getInstance().obtenerEventos().values();
-			if(eventos != null) {
-		        for (Evento evento : eventos) {
-		            comboBoxEventos.addItem(evento.getNombre());
-		        }
-			}
-		
+	    limpiarCampos();
+	    comboBoxEventos.removeAllItems();
+	    Collection<Evento> eventos = ManejadorEvento.getInstance().obtenerEventos().values();
+	    if (eventos != null) {
+	        for (Evento evento : eventos) {
+	            comboBoxEventos.addItem(evento.getNombre());
+	        }
+	    }
+	    
 	}
 }
