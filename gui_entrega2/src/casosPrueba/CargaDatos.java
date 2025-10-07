@@ -14,7 +14,6 @@ import java.util.Set;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
-import logica.controllers.Factory;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.enumerators.NivelPatrocinio;
@@ -24,6 +23,7 @@ import logica.manejadores.ManejadorInstitucion;
 import logica.manejadores.ManejadorUsuario;
 import logica.models.Asistente;
 import logica.models.Evento;
+import logica.models.Factory;
 import logica.models.Organizador;
 import logica.models.Usuario;
 

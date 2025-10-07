@@ -9,8 +9,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import logica.models.Factory;
 import logica.models.Usuario;
-import logica.controllers.Factory;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTRegistro;

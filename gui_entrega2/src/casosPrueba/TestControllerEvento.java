@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import excepciones.EmailRepetido;
 import excepciones.NombreUsuarioExistente;
-import logica.controllers.Factory;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.manejadores.ManejadorEvento;
+import logica.models.Factory;
 
 public class TestControllerEvento {
 	

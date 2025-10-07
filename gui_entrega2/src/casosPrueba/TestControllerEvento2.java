@@ -9,11 +9,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import logica.controllers.Factory;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTAsistente;
 import logica.manejadores.ManejadorEvento;
+import logica.models.Factory;
 
 
 public class TestControllerEvento2 {

@@ -10,8 +10,8 @@ import java.util.Set;
 import org.junit.Test;
 
 import logica.models.Edicion;
+import logica.models.Factory;
 import logica.models.Organizador;
-import logica.controllers.Factory;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTDetalleEdicion;

@@ -22,7 +22,7 @@ public class TestDTRegistro {
 		}
 		
 		
-		IControllerEvento ICE = logica.controllers.Factory.getInstance().getControllerEvento();
+		IControllerEvento ICE = logica.models.Factory.getInstance().getControllerEvento();
 		
 		ManejadorEdicion me = ManejadorEdicion.getInstance();
 		Edicion ed = me.encontrarEdicion("Maratón de Montevideo 2025");

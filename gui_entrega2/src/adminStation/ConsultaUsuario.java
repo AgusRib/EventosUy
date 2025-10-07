@@ -16,8 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import logica.models.Factory;
 import logica.models.Usuario;
-import logica.controllers.Factory;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DataUsuario;
 import logica.dataTypes.DataUsuario.TipoUsuario;

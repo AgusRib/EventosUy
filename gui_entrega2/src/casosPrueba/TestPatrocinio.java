@@ -11,7 +11,6 @@ import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
-import logica.controllers.Factory;
 import logica.controllers.IControllerEvento;
 import logica.dataTypes.DTDetalleEdicion;
 import logica.dataTypes.DTPatrocinio;
@@ -19,6 +18,7 @@ import logica.manejadores.ManejadorCategoria;
 import logica.manejadores.ManejadorEdicion;
 import logica.manejadores.ManejadorInstitucion;
 import logica.models.Edicion;
+import logica.models.Factory;
 
 public class TestPatrocinio {
 	@Test

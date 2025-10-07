@@ -28,7 +28,7 @@ public class TestControllerUsuario2{
 		}
 		
 		
-		IControllerUsuario ICU = logica.controllers.Factory.getInstance().getControllerUsuario();
+		IControllerUsuario ICU = logica.models.Factory.getInstance().getControllerUsuario();
 		ManejadorInstitucion mi = ManejadorInstitucion.getInstance();
 		
 		try {

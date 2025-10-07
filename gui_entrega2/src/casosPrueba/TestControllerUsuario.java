@@ -7,8 +7,8 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
+import logica.models.Factory;
 import logica.models.Organizador;
-import logica.controllers.Factory;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DataUsuario;
 import logica.dataTypes.DataUsuario.TipoUsuario;
