@@ -1,0 +1,125 @@
+package logica;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+public class Evento{
+	private String nombre;
+	private String sigla;
+	private LocalDate fechaAlta;
+	private String descripcion;
+	private List<Edicion> colEdicionesConfirmadas;
+	private List<Edicion> colEdicionesPendientes;
+	private List<Edicion> colEdicionesRechazadas;
+	private List<Categoria> colCategorias;
+
+	public Evento(String nombre,String sigla, LocalDate fecha, String descripcion) {
+		this.nombre = nombre;
+		this.fechaAlta = fecha;
+		this.sigla = sigla;
+		this.descripcion = descripcion;
+		this.colEdicionesConfirmadas = new ArrayList<>();
+		this.colEdicionesPendientes = new ArrayList<>();
+		this.colEdicionesRechazadas = new ArrayList<>();
+		this.colCategorias = new ArrayList<>();
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	
+	public Edicion getEdicion(String nombreEdicion) {
+		for (Edicion edi : this.colEdicionesConfirmadas) {
+			if (nombreEdicion.equals(edi.getNombre())) {
+				return edi;
+			}
+		}
+		for (Edicion edi : this.colEdicionesPendientes) {
+			if (nombreEdicion.equals(edi.getNombre())) {
+				return edi;
+			}
+		}
+		for (Edicion edi : this.colEdicionesRechazadas) {
+			if (nombreEdicion.equals(edi.getNombre())) {
+				return edi;
+			}
+		}
+		return null;
+	}
+
+	
+	public void agregarEdicion(Edicion nueva) {
+		if (nueva == null) throw new IllegalArgumentException("Edición vacía");
+		if (getEdicion(nueva.getNombre()) != null) throw new IllegalArgumentException("Ya existe una edición con ese nombre");
+		colEdicionesPendientes.add(nueva); 
+	}
+
+	public void agregarCategoria(Categoria cat) {
+		if (cat == null) throw new IllegalArgumentException("Categoría vacía");
+		if (this.colCategorias.contains(cat)) throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
+		colCategorias.add(cat);
+	}
+
+	
+	public HashSet<String> getEdiciones() {
+		HashSet<String> eds = new HashSet<String>();
+		for (Edicion edi : this.colEdicionesConfirmadas) {
+			eds.add(edi.getNombre());
+		}
+		for (Edicion edi : this.colEdicionesPendientes) {
+			eds.add(edi.getNombre());
+		}
+		for (Edicion edi : this.colEdicionesRechazadas) {
+			eds.add(edi.getNombre());
+		}
+		return eds;
+	}
+
+	public HashSet<String> getCategorias() {
+		HashSet<String> cats = new HashSet<String>();
+		for (Categoria cat : this.colCategorias) {
+			cats.add(cat.getNombre());
+		}
+		return cats;
+	}
+
+	public DTDetalleEvento devolverDT() {
+		DTDetalleEvento dtE = new DTDetalleEvento(this.nombre, this.sigla, this.fechaAlta, this.descripcion, this.getCategorias(), this.getCategorias());
+		return dtE;
+	}
+
+	public String getSigla() {
+		return sigla;
+	}
+
+	public LocalDate getFechaAlta() {
+		return fechaAlta;
+	}
+
+	// Devuelve las listas de ediciones según estado
+	public List<Edicion> getColEdicionesConfirmadas() {
+		return colEdicionesConfirmadas;
+	}
+	public List<Edicion> getColEdicionesPendientes() {
+		return colEdicionesPendientes;
+	}
+	public List<Edicion> getColEdicionesRechazadas() {
+		return colEdicionesRechazadas;
+	}
+	public List<Categoria> getColCategorias() {
+		return colCategorias;
+	}
+
+	public void CambioEstado(Edicion edi,EstadoEdicion  nuevoestado) {
+		colEdicionesPendientes.remove(edi);
+		colEdicionesConfirmadas.add(edi);
+		
+	}
+}

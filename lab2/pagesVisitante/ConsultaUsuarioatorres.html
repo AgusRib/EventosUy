@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>ConsultaUsuario</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="../assets/css/styles.css">
+            <link rel="stylesheet" href="../assets/css/RolVisitante_ConsultaUsuario.css">
+            <link rel="stylesheet" href="../assets/css/RolVisitante_listarUsuarios.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+            <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png"> 
+           
+    </head>
+
+   <header>
+        <nav class="navbar bg-white shadow-sm" style="height: 86px;">
+            <div class="d-flex align-items-center">
+                <a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="index.html">Eventos.uy</a>
+            </div>
+            <div class="header-auth m-3">
+                                <a href="InicioDeSesion.html" class="text-decoration-none">
+                                    <button type="button" class="button1 rounded-3">
+                                        <div class="header-button">Iniciar sesión</div>
+                                    </button>
+                                </a>
+                                <a href="RegistroBase.html" class="text-decoration-none">
+                                    <button type="button" class="button2 rounded-3">
+                                        <div class="header-button">Regístrarse</div>
+                                    </button>
+                                </a>
+            </div>
+        </nav>
+    </header>
+
+    <body>
+        <div class="contenedor-perfil">
+            <!--- en la logica despues agregamos q si no tiene foto de perfil se ponga la tipica de usuario sin foto-->
+            <div class="contenedor-fotoPerfil">
+                <img class="foto-usuario" src="../assets/images/IMG-US01.jpg" alt="atorresFoto" style="height: 127px;">
+            </div>
+
+            <div class="contenedor-datosUsuario">
+                <div class="datosUsuario">
+                    <div class="contenedor-NickRolUser">
+                        <div class="nickname"><b>atorres</b></div>
+                        <div class="rol">Asistente</div>
+                    </div>
+                    <div class="mb-2">
+                        <strong>Nombre:</strong> Ana
+                    </div>
+                    <div class="mb-2">
+                        <strong>Apellido:</strong> Torres
+                    </div>
+                    <div class="mb-2">
+                        <strong>Email:</strong> atorres@gmail.com
+                    </div>
+                    <div class="mb-2">
+                        <strong>Fecha de Nacimiento:</strong> 12/05/1990
+                    </div>
+                    <div class="mb-2">
+                        <strong>Institución:</strong> Facultad de Ingeniería
+                    </div>
+
+                    <!--<div class="contenedor-ediciones">
+                        <div class="misEdiciones">
+                            Mis Registros:
+                        </div>
+                        <div class="contenedor-edicion">
+                            <img class="foto-edicion" src="../assets/images/IMG-EDEV03.jpeg" alt="maraton2024">
+                            <div class="nombreEdicion"> <b>Maraton 2024</b></div>
+                        </div>
+
+                         Aca ban EDEV03 y EDEV10 TR07 TR25
+                        <div class="contenedor-edicion">
+                            <img class="foto-edicion" src="../assets/images/SinFoto.jpg" alt="websummit2026">
+                            <div class="nombreEdicion"> <b>Web Summit 2026</b> </div>
+                        </div>
+                    </div>-->
+
+
+                    
+
+                </div>
+            </div>
+
+            <div class="contenedor-ediciones">
+                <div class="misEdiciones">
+                        Registros:
+                </div>
+                <div class="contenedor-edicion d-flex align-items-center gap-3 mb-2">
+                    <img class="foto-edicion" src="../assets/images/IMG-EDEV03.jpeg" alt="maraton2024">
+                    <div class="nombreEdicion"> <a href="../pagesVisitante/ConsulltaEventoMaraton.html"><b>Maraton 2024</b></a></div>
+                    <a href="verDetalleRegistroMaraton2024.html" style="text-decoration:none;">
+                        <button class="button2 rounded-3 ms-2">
+                            <div class="header-button">Ver detalle del Registro</div>
+                        </button>
+                    </a>
+                </div>
+
+                <div class="contenedor-edicion d-flex align-items-center gap-3 mb-2">
+                    <img class="foto-edicion" src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="websummit2026">
+                    <div class="nombreEdicion"> <a href="../pagesVisitante/ConsultaDeEdicionWebSummit2026.html"><b>Web Summit 2026</b></a></div>
+                    <a href="verDetalleRegistroWebSummit.html" style="text-decoration:none;">
+                        <button class="button2 rounded-3 ms-2">
+                            <div class="header-button">Ver detalle del Registro</div>
+                        </button>
+                    </a>
+                </div>
+    </div>

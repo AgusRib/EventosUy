@@ -13,13 +13,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import excepciones.EmailRepetido;
+import excepciones.NombreUsuarioExistente;
 import logica.IControllerUsuario;
-import logica.Institucion;
 import logica.ManejadorInstitucion;
 
 
+//TODO: Validar que el nickname y email no esten vacíos (puede hacerse desde el controller)
 public class AltaUsuario extends JInternalFrame {
-	
+	private static final long serialVersionUID = 1L;
+	private static AltaUsuario instance = null;
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtEmail;
@@ -55,9 +58,8 @@ public class AltaUsuario extends JInternalFrame {
 
 	public AltaUsuario(IControllerUsuario icu) {
 		
-		controllerUsr = icu;
-		
-		ManejadorInstitucion.getInstance().agregarInstitucion(new Institucion("Instituto prueba", "descripcion prueba", "url prueba")); 
+		controllerUsr = icu;		
+
 		
 		setTitle("Alta de Usuario");
 		setClosable(true);
@@ -65,6 +67,8 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setIconifiable(true);
+		setMaximizable(true);
 		
 		txtNickname = new JTextField();
 		txtNickname.setBounds(150, 8, 200, 20);
@@ -170,10 +174,41 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(btnAceptar);
 		btnAceptar.addActionListener(a -> {
 			try {
+				if (txtNombre.getText().trim().isEmpty()) {
+	                JOptionPane.showMessageDialog(this, "El campo 'Nombre' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+				if (txtNickname.getText().trim().isEmpty()) {
+	                JOptionPane.showMessageDialog(this, "El campo 'Nickname' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+				if (txtEmail.getText().trim().isEmpty()) {
+				    JOptionPane.showMessageDialog(this, "El campo 'Email' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+	                return;
+				}
+				
+				
+				
+				
 				if (btnOrganizador.isSelected()) {
+					if (txtDescripcion.getText().trim().isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "El campo 'Descripcion' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+					
 					controllerUsr.ingresarOrganizador(txtNickname.getText(), txtNombre.getText(), 
 							txtEmail.getText(), txtDescripcion.getText(), txtWeb.getText());
 				} else {
+					if (txtApellido.getText().trim().isEmpty()) {
+		                JOptionPane.showMessageDialog(this, "El campo 'Apellido' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+					if (txtFechaNac.getText().trim().isEmpty()) {
+			            JOptionPane.showMessageDialog(this, "El campo 'Fecha de Nacimiento' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+					}
+					
+					
 					controllerUsr.ingresarAsistente(txtNickname.getText(), txtNombre.getText(), 
 							txtEmail.getText(), txtApellido.getText(), LocalDate.parse(txtFechaNac.getText())); 
 					if (cmBxInstitucion.getSelectedIndex() > 0) {
@@ -183,12 +218,15 @@ public class AltaUsuario extends JInternalFrame {
                 JOptionPane.showMessageDialog(this, "El Usuario se ha registrado con éxito", "Alta de Usuario",
                         JOptionPane.INFORMATION_MESSAGE);
                 limpiarFormulario();
-			} catch (Exception e) {
-				if (e instanceof DateTimeParseException) {
-					JOptionPane.showMessageDialog(this, "El formato de la fecha es incorrecto", "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
-				} else
+			} catch ( DateTimeParseException e) {
+					JOptionPane.showMessageDialog(this, "El formato de la fecha es incorrecto", "Alta de Usuario", JOptionPane.ERROR_MESSAGE);}
+			  catch (NombreUsuarioExistente e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
-			}
+			} catch (EmailRepetido e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Usuario", JOptionPane.ERROR_MESSAGE);
+			}	
 		});
 		
 		btnCancelar = new JButton("Cancelar");
@@ -251,4 +289,19 @@ public class AltaUsuario extends JInternalFrame {
 		verFormAsistente(true);
 		verFormOrganizador(false);
 	}
-}
+	
+
+	public void refrescar() {
+		cmBxInstitucion.removeAllItems();
+		cmBxInstitucion.addItem("-- Seleccione una institucion ---");
+		for (String inst : ManejadorInstitucion.getInstance().obtenerInstituciones()) {
+			cmBxInstitucion.addItem(inst);
+		}
+		
+	}
+	public static AltaUsuario getInstance(IControllerUsuario icu) {
+		if (instance == null) {
+			instance = new AltaUsuario(icu);
+		}
+		return instance;
+}}

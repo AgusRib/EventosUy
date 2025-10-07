@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Edición - Eventos.uy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+  <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+
+</head>
+
+<body> 
+ <header>
+        <nav class="navbar bg-white shadow-sm">
+            <div class="text-center align-items-center">
+                <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="index.html"><b>Eventos.uy</b></a>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                        <img src="../assets/images/IMG-US04.jpeg" alt="JA" class="rounded-circle"
+                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
+                        <span>MisEventos</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
+      <li><a class="dropdown-item" href="MiPerfil-misEventos.html">Mi perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="../pagesVisitante/index.html" style="color:#dc3545 !important;">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+  <div class="container-fluid px-4 mt-3">
+    <div class="row pb-4">
+      <!-- Columna derecha: categorías estilo index -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
+        <div class="carta-categorias align-items-center h-100">
+          <h3 class="categorias fw-bold">Categorías</h3>
+          <div class="form-check mb-2 d-flex justify-content-center">
+            <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
+            <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
+          </div>
+          <li class="list-group w-100 overflow-auto text-center" multiple>
+            <a href="#" value="tecnologia" class="list-group-item categoria-link">Tecnología</a>
+            <a href="#" value="innovacion" class="list-group-item categoria-link">Innovación</a>
+            <a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
+            <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
+          </li>
+        </div>
+      </div>
+      <!-- Imagen de la edición -->
+      <div class="col-md-4 col-lg-3 col-xl-2 px-5">
+        <img src="../assets/images/IMG-EDEV04.jpeg" alt="Imagen de la Edición" class="img-fluid rounded">
+<script>
+  // Redirige según el estado del checkbox al hacer click en una categoría
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkboxEdiciones = document.getElementById('checkboxEdiciones');
+    const categoriaLinks = document.querySelectorAll('.categoria-link');
+    categoriaLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (checkboxEdiciones.checked) {
+          window.location.href = 'ListaEdiciones.html';
+        } else {
+          window.location.href = 'ListarEventos.html';
+        }
+      });
+    });
+  });
+</script>
+      </div>
+      <!-- Información principal de la edición -->
+      <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
+        <h1 class="mb-3">Maratón Montevideo 2022</h1>
+        <div class="alert alert-danger d-flex align-items-center py-2 mb-3" role="alert" style="font-weight:600;">
+          <i class="bi bi-x-circle-fill me-2"></i> Rechazada
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <strong class="me-2">Organizador:</strong>
+          <a href="MiPerfil-misEventos.html" class="d-flex align-items-center text-decoration-none">
+            <img src="../assets/images/IMG-US04.jpeg" alt="Miseventos" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
+            <span class="fw-bold text-dark">Miseventos</span>
+          </a>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <strong class="me-2">Sigla:</strong>
+          <span class="fw-bold text-dark">MARATON22</span>
+        </div>
+  <p class="mb-2"><strong>Fecha inicio:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha fin:</strong> 14/09/2022</p>
+  <p class="mb-2"><strong>Fecha alta:</strong> 21/05/2022</p>
+  <p class="mb-2"><strong>País:</strong> Uruguay</p>
+  <p class="mb-2"><strong>Ciudad:</strong> Montevideo</p>
+        <p class="mb-2"><strong>Categorías:</strong> Deporte, Salud</p>
+        <!-- Tipos de registros -->
+        <div class="mt-4">
+          <div class="d-flex align-items-baseline gap-2">
+            <h5>Tipos de Registro</h5>
+            <div class="btn btn-secondary btn-sm" title="Agregar tipo de registro" style="cursor:default;">
+              <i class="bi bi-plus-lg"></i>
+            </div>
+          </div>
+          <div class="alert alert-secondary text-center mb-0" role="alert">
+            No hay tipos de registro disponibles para esta edición.
+          </div>
+        </div>
+        <!-- Patrocinios -->
+        <div class="mt-4">
+          <div class="d-flex align-items-baseline gap-2">
+            <h5>Patrocinadores</h5>
+            <div class="btn btn-secondary btn-sm" title="Agregar patrocinador" style="cursor:default;">
+              <i class="bi bi-plus-lg"></i>
+            </div>
+          </div>
+          <div class="alert alert-secondary text-center mb-0" role="alert">
+            No hay patrocinadores registrados para esta edición.
+          </div>
+        </div>
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Ejemplo de control de visibilidad según rol
+    const rolUsuario = 'organizador'; // 'organizador', 'asistente' o 'visitante'
+
+    if(rolUsuario === 'organizador') {
+      document.getElementById('organizador-section').style.display = 'block';
+    } else if(rolUsuario === 'asistente') {
+      document.getElementById('asistente-section').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
+

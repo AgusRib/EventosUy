@@ -2,6 +2,7 @@ package logica;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public class ManejadorUsuario {
 	
@@ -45,5 +46,35 @@ public class ManejadorUsuario {
 	public Organizador obtenerOrganizador(String nickname) {
 		return (Organizador) usuarios.get(nickname);
 	}
+	
+	public Usuario obtenerUsuario(String nickname) {
+		return usuarios.get(nickname);
+	}
+	
+	public HashSet<String> obtenerUsuarios() {
+		return new HashSet<String>(usuarios.keySet());
+	}
+
+	public HashSet<String> obtenerAsistentes() {
+		HashSet<String> asistentes = new HashSet<String>();
+		for (Usuario u : usuarios.values()) {
+			if (u instanceof Asistente) {
+				asistentes.add(u.getNickname());
+			}
+		}
+		return asistentes;
+	}
+	
+	public HashSet<String> obtenerOrganizadores() {
+		HashSet<String> organizadores = new HashSet<String>();
+		for (Usuario u : usuarios.values()) {
+			if (u instanceof Organizador) {
+				organizadores.add(u.getNickname());
+			}
+		}
+		return organizadores;
+	}
+
+
 	
 }

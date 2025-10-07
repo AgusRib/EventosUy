@@ -1,0 +1,1 @@
+Las paginas son las de las subcarpetas pagesAsistente,pagesOrganizador y pagesVisitante, las carpetas se conectan con el inicio de sesion, si se ponen los datos de atorres o miseventos desde las paginas de visitante se pasa a las otras subcarpetas.
