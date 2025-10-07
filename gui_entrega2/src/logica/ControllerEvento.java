@@ -13,6 +13,7 @@ import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 
+
 public class ControllerEvento implements IControllerEvento{
 	
 	public static LocalDate fechaSistema = LocalDate.now();
@@ -57,9 +58,7 @@ public class ControllerEvento implements IControllerEvento{
 		Set<String> ediciones = new LinkedHashSet<>();
 		
 		if(ev != null) {
-			for (Edicion ed : ev.getColEdiciones()) {
-				ediciones.add( ed.getNombre() );
-			}
+		  ediciones = ev.getEdiciones();
 		}
 		return ediciones;
 	}
@@ -169,7 +168,7 @@ public class ControllerEvento implements IControllerEvento{
 
 		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais,ev,org);
 		ev.agregarEdicion(nueva); 
-		mEdi.agregarEdicion(nueva);
+		mEdi.agregarEdicionIngresada(nueva);
 		
 	}
 	
@@ -178,7 +177,7 @@ public class ControllerEvento implements IControllerEvento{
 		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
 		if(aceptar && edi.getEstado() == EstadoEdicion.Ingresada) {
 			edi.setEstado(EstadoEdicion.Confirmada);
-			mEdi.agregarEdicion(edi);
+			mEdi.agregarEdicionIngresada(edi);
 		} else {
 			edi.setEstado(EstadoEdicion.Rechazada);
 			//evaluar si hay que eliminar de alguna coleccion
@@ -268,6 +267,29 @@ public class ControllerEvento implements IControllerEvento{
 		return ev.getNombre();
 	}
 	
+	public void AceptarEdicion(String nomedi, String nomev) {
+		ManejadorEvento mE = ManejadorEvento.getInstance();
+		Evento ev = mE.obtenerEvento(nomev);
+		Edicion edi = ev.getEdicion(nomedi);
+		ev.CambioEstado(edi,EstadoEdicion.Confirmada);
+		edi.setEstado(EstadoEdicion.Confirmada);
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		mEdi.CambioEstado(edi,EstadoEdicion.Confirmada);
+		
+		
+	}
+	
+	public void RechazarEdicion(String nomedi, String nomev) {
+		ManejadorEvento mE = ManejadorEvento.getInstance();
+		Evento ev = mE.obtenerEvento(nomev);
+		Edicion edi = ev.getEdicion(nomedi);
+		ev.CambioEstado(edi,EstadoEdicion.Rechazada);
+		edi.setEstado(EstadoEdicion.Rechazada);
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		mEdi.CambioEstado(edi,EstadoEdicion.Rechazada);
+		
+		
+	}
 	
 	
 }
