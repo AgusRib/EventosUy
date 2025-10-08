@@ -1,9 +1,12 @@
-package logica;
+package logica.models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import logica.dataTypes.DTDetalleEvento;
+import logica.enumerators.EstadoEdicion;
 
 public class Evento{
 	private String nombre;
@@ -119,7 +122,8 @@ public class Evento{
 
 	public void CambioEstado(Edicion edi,EstadoEdicion  nuevoestado) {
 		colEdicionesPendientes.remove(edi);
-		colEdicionesConfirmadas.add(edi);
+		if (nuevoestado == EstadoEdicion.Rechazada) colEdicionesRechazadas.add(edi);
+		if (nuevoestado == EstadoEdicion.Confirmada)colEdicionesConfirmadas.add(edi);
 		
 	}
 }

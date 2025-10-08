@@ -15,11 +15,11 @@ public interface IControllerUsuario {
 	 
 	//ALTAS
 	public void ingresarAsistente(String nickname, 
-			String nombre, String email, 
+			String nombre, String email,String password,
 			String apellido, LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception;
 	
 	public void ingresarOrganizador(String nickname, String nombre, 
-			String email, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception;
+			String email,String password, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception;
 	
 
 	
@@ -57,6 +57,10 @@ public interface IControllerUsuario {
 	public DTAsistente infoAsistente(String nickname);
 	public DTOrganizador infoOrganizador(String nickname);
 	public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception;
+
+	boolean iniciarSesionNickname(String nickname, String password);
+
+	boolean iniciarSesionEmail(String email, String password);
 	
 
 }

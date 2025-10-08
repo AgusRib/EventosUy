@@ -30,8 +30,8 @@ public class TestVerDetalles {
 		IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 		
-		ICU.ingresarAsistente("Willyrex", "Guillermo", "willy@gmail.com", "Diaz", LocalDate.of(2004, 1,1));
-		ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com", "Muy buenas a todos guapisimos", "www.v777.com");
+		ICU.ingresarAsistente("Willyrex", "Guillermo", "willy@gmail.com","a", "Diaz", LocalDate.of(2004, 1,1));
+		ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com","a", "Muy buenas a todos guapisimos", "www.v777.com");
 		DataUsuario dtaAsistente = (DataUsuario) ICU.infoUsuario("Willyrex");
 		DataUsuario dtaOrganizador = (DataUsuario) ICU.infoUsuario("Vegetta");
 		
@@ -99,7 +99,7 @@ public class TestVerDetalles {
 		assertEquals(0, edicionTest.getTipoRegistro("Tipo2").getCupo());
 		
 		//ahora deberia no funcionar porque no hay cupos en Tipo2
-		ICU.ingresarAsistente("Willyrex2", "Guillermo2", "willy2@gmail.com", "Diaz", LocalDate.of(2004, 1,1));
+		ICU.ingresarAsistente("Willyrex2", "Guillermo2", "willy2@gmail.com","a", "Diaz", LocalDate.of(2004, 1,1));
 		assertThrows(Exception.class, () -> {
 		    ICE.elegirAsistenteYTipoRegistro("Willyrex2", "Tipo2", "Edicion1");
 		});

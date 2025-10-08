@@ -40,8 +40,8 @@ public class Organizador extends Usuario {
 	}
 	
 	//CONSTRUCTOR
-	public Organizador(String nickname, String nombre, String email, String descripcion, String web) {
-		super(nickname, nombre, email);
+	public Organizador(String nickname, String nombre,String password, String email, String descripcion, String web) {
+		super(nickname, nombre, email,password);
 		this.descripcion = descripcion;
 		this.web = web;
 	}

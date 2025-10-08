@@ -57,7 +57,7 @@ public class TestControllerEvento {
 		categoriasSet.add("Categoria2");
 		assertEquals(true, ICE.listarCategorias().equals(categoriasSet));
 		try {
-			ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com", "Muy buenas a todos guapisimos", "www.v777.com");
+			ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com","passowrd", "Muy buenas a todos guapisimos", "www.v777.com");
 		} catch (NombreUsuarioExistente e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -26,6 +26,7 @@ public class AltaUsuario extends JInternalFrame {
 	private JTextField txtNickname;
 	private JTextField txtNombre;
 	private JTextField txtEmail;
+	private JTextField txtPassword;
 	
 	private JLabel lblNickname;
 	private JLabel lblNombre;
@@ -169,23 +170,35 @@ public class AltaUsuario extends JInternalFrame {
 		txtWeb.setBounds(150, 205, 200, 20);
 		getContentPane().add(txtWeb);
 		
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(10, 103, 100, 14);
+		getContentPane().add(lblPassword);
+		
+		txtPassword = new JTextField();
+		txtPassword.setBounds(150, 100, 200, 20);
+		getContentPane().add(txtPassword);
+		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.setBounds(150, 236, 89, 23);
 		getContentPane().add(btnAceptar);
 		btnAceptar.addActionListener(a -> {
 			try {
 				if (txtNombre.getText().trim().isEmpty()) {
-	                JOptionPane.showMessageDialog(this, "El campo 'Nombre' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
-	                return;
-	            }
+                    JOptionPane.showMessageDialog(this, "El campo 'Nombre' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 				if (txtNickname.getText().trim().isEmpty()) {
-	                JOptionPane.showMessageDialog(this, "El campo 'Nickname' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
-	                return;
-	            }
+                    JOptionPane.showMessageDialog(this, "El campo 'Nickname' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 				if (txtEmail.getText().trim().isEmpty()) {
 				    JOptionPane.showMessageDialog(this, "El campo 'Email' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
-	                return;
+                    return;
 				}
+				if (txtPassword.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "El campo 'Password' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 				
 				
 				
@@ -196,8 +209,7 @@ public class AltaUsuario extends JInternalFrame {
 		                return;
 		            }
 					
-					controllerUsr.ingresarOrganizador(txtNickname.getText(), txtNombre.getText(), 
-							txtEmail.getText(), txtDescripcion.getText(), txtWeb.getText());
+					controllerUsr.ingresarOrganizador(txtNickname.getText(), txtNombre.getText(), txtEmail.getText(), txtPassword.getText(), txtDescripcion.getText(), txtWeb.getText());
 				} else {
 					if (txtApellido.getText().trim().isEmpty()) {
 		                JOptionPane.showMessageDialog(this, "El campo 'Apellido' está vacío", "Error", JOptionPane.ERROR_MESSAGE);
@@ -209,8 +221,7 @@ public class AltaUsuario extends JInternalFrame {
 					}
 					
 					
-					controllerUsr.ingresarAsistente(txtNickname.getText(), txtNombre.getText(), 
-							txtEmail.getText(), txtApellido.getText(), LocalDate.parse(txtFechaNac.getText())); 
+					controllerUsr.ingresarAsistente(txtNickname.getText(), txtNombre.getText(), txtEmail.getText(), txtPassword.getText(), txtApellido.getText(), LocalDate.parse(txtFechaNac.getText())); 
 					if (cmBxInstitucion.getSelectedIndex() > 0) {
 						controllerUsr.agregarAsistente(txtNickname.getText(), (String) cmBxInstitucion.getSelectedItem());
 					}
@@ -280,6 +291,7 @@ public class AltaUsuario extends JInternalFrame {
 		txtNickname.setText("");
 		txtNombre.setText("");
 		txtEmail.setText("");
+		txtPassword.setText("");
 		txtApellido.setText("");
 		txtFechaNac.setText("");
 		txtDescripcion.setText("");

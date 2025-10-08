@@ -1,10 +1,9 @@
 package logica.dataTypes;
 
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import logica.enumerators.EstadoEdicion;
 
 public class DTDetalleEdicion {
 	private String nombre;
@@ -15,12 +14,13 @@ public class DTDetalleEdicion {
 	private String ciudad;
 	private String pais;
 	private String organizador;
+	private EstadoEdicion estado;
 	
     private final Set<String> nombresTiposRegistros;
 	private final Set<String> nombresInstituciones;
 	
 	public DTDetalleEdicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
-			String ciudad, String pais, String organizador, Set<String> tiposRegistro, Set<String> instituciones) {
+			String ciudad, String pais, String organizador, Set<String> tiposRegistro, Set<String> instituciones, EstadoEdicion estado) {
 		super();
 		this.nombre = nombre;
 		this.sigla = sigla;
@@ -32,6 +32,7 @@ public class DTDetalleEdicion {
 		this.organizador = organizador;
 		this.nombresTiposRegistros = tiposRegistro;
 		this.nombresInstituciones = instituciones;
+		this.estado = estado;
 	}
 
 	public String getNombre() {
@@ -64,6 +65,10 @@ public class DTDetalleEdicion {
 
 	public String getOrganizador() {
 		return organizador;
+	}
+	
+	public EstadoEdicion getEstado() {
+		return estado;
 	}
 
 

@@ -14,9 +14,9 @@ import excepciones.NombreEventoExcepcion;
 import logica.controllers.IControllerEvento;
 import logica.dataTypes.DTDetalleEdicion;
 import logica.dataTypes.DTPatrocinio;
+import logica.enumerators.EstadoEdicion;
 import logica.manejadores.ManejadorCategoria;
 import logica.manejadores.ManejadorEdicion;
-import logica.manejadores.ManejadorInstitucion;
 import logica.models.Edicion;
 import logica.models.Factory;
 
@@ -109,7 +109,7 @@ public class TestPatrocinio {
 	    ins.add("ORT Uruguay");
 	    
 	  
-	    DTDetalleEdicion dte= new DTDetalleEdicion("E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 12, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY", "imm", cats, ins);
+	    DTDetalleEdicion dte= new DTDetalleEdicion("E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 12, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY", "imm", cats, ins,EstadoEdicion.Ingresada);
 	    DTDetalleEdicion dted=ICE.mostrarDetallesEdicion("E90");
 	    
 	    System.out.println(dted.getNombre());

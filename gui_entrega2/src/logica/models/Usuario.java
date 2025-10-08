@@ -5,6 +5,7 @@ public abstract class Usuario {
 	private String nickname;
 	protected String nombre;
 	private String email;
+	private String password;
 	
 	public String getNickname() {
 		return nickname;
@@ -16,6 +17,9 @@ public abstract class Usuario {
 	
 	public String getEmail() {
 		return email;
+	}
+	public String getPassword() {
+		return password;
 	}
 	/*
 	public void setNickname(String nickname) {
@@ -30,10 +34,14 @@ public abstract class Usuario {
 		this.email = email;
 	}*/
 
-	public Usuario(String nickname, String nombre, String email) {
+	public Usuario(String nickname, String nombre, String email, String password) {
 		this.nickname = nickname;
 		this.nombre = nombre;
 		this.email = email;
+		this.password = password;
+		
 	}
+
+	
 
 }

@@ -1,5 +1,25 @@
 package adminStation;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.util.Set;
+import java.time.LocalDate;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -7,10 +27,6 @@ import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.enumerators.NivelPatrocinio;
 
-import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.util.*;
-import java.util.List;
 
 
 
@@ -228,7 +244,7 @@ public class AltaPatrocinio extends JInternalFrame {
                 "Regla 20% incumplida", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+        ice.setFechaSistema(LocalDate.now());
         ice.altaPatrocinio(edicion, institucion, nivel, aporte, tipo, cant, codigo);
         JOptionPane.showMessageDialog(this, "Patrocinio registrado con éxito.", "OK", JOptionPane.INFORMATION_MESSAGE);
         clearForm();}

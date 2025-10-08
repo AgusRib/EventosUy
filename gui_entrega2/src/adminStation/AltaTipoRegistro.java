@@ -3,6 +3,7 @@ package adminStation;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -96,8 +97,8 @@ public class AltaTipoRegistro extends JInternalFrame {
 		ventana.add(lbl_seleccionarEdicion, gbcLblEdicion);
 
 		seleccionarEdicion = new JComboBox<>();
-		HashMap<String, Edicion> ediciones = ManejadorEdicion.getInstance().obtenerEdiciones();
-		for (String nomEdicion : ediciones.keySet()) {
+		Set<String>ediciones=ice.listarEdicionesTodas();
+		for (String nomEdicion : ediciones) {
 		    seleccionarEdicion.addItem(nomEdicion);
 		}
 		GridBagConstraints gbcComboEdicion = new GridBagConstraints();

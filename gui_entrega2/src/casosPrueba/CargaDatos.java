@@ -73,7 +73,7 @@ public class CargaDatos {
 				String[] lineaAsist = buscarLinea(idUsr, "/datosPrueba/2025Usuarios-Asistentes.csv");
 				String[] fechaNac = lineaAsist[2].split("/");
 				String strFechaNac = new String(fechaNac[2] + "-" + fechaNac[1] + "-" + fechaNac[0]);
-				ICU.ingresarAsistente(nickname, nombre, email, lineaAsist[1], LocalDate.parse(strFechaNac));
+				ICU.ingresarAsistente(nickname, nombre, email,"a",lineaAsist[1], LocalDate.parse(strFechaNac));
 				
 				if (lineaAsist.length == 4) {
 					String[] lineaInst = buscarLinea(lineaAsist[3], "/datosPrueba/2025Instituciones.csv");
@@ -82,7 +82,7 @@ public class CargaDatos {
 				
 			} else {
 				String[] lineaOrg = buscarLinea(idUsr, "/datosPrueba/2025Usuarios-Organizadores.csv");
-				ICU.ingresarOrganizador(nickname, nombre, email, lineaOrg[1], lineaOrg.length == 3 ? lineaOrg[2] : "");
+				ICU.ingresarOrganizador(nickname, nombre, email,"a", lineaOrg[1], lineaOrg.length == 3 ? lineaOrg[2] : "");
 			}
 			
 		}

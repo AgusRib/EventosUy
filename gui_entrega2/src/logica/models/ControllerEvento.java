@@ -1,4 +1,4 @@
-package logica;
+package logica.models;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +12,19 @@ import excepciones.FechaInicioPREALTA;
 import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
+import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTAsistente;
+import logica.dataTypes.DTDetalleEdicion;
+import logica.dataTypes.DTDetalleEvento;
+import logica.dataTypes.DTPatrocinio;
+import logica.dataTypes.DTRegistro;
+import logica.dataTypes.DTTipoRegistro;
+import logica.enumerators.EstadoEdicion;
+import logica.enumerators.NivelPatrocinio;
+import logica.manejadores.ManejadorCategoria;
+import logica.manejadores.ManejadorEdicion;
+import logica.manejadores.ManejadorEvento;
+import logica.manejadores.ManejadorUsuario;
 
 
 public class ControllerEvento implements IControllerEvento{
@@ -27,6 +40,19 @@ public class ControllerEvento implements IControllerEvento{
 			nomEventos.add(e.getNombre());
 		}
 		return nomEventos;
+	}
+	
+	@Override
+	public Set<String>listarEdicionesTodas(){
+		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		HashMap<String,Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
+		ediciones.putAll(mEdi.obtenerEdicionesConfirmadas());
+		ediciones.putAll(mEdi.obtenerEdicionesRechazadas());
+		Set<String> nomEdiciones = new LinkedHashSet<>();
+		for (Edicion e : ediciones.values()) {
+			nomEdiciones.add(e.getNombre());
+		}
+		return nomEdiciones;
 	}
 	
 	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion,Set<String> categorias)throws NombreEventoExcepcion, Exception {
@@ -101,14 +127,14 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void altaTipoDeRegistro(String nombreEdi, String nombre, String desc, Float costo, int cupo) throws Exception{
+	public void altaTipoDeRegistro(String nombreEdi, String nombre, String desc, Float costo, int cupo) throws excepciones.TipoRegistroExistenteExcepcion, Exception {
 		
 		ManejadorEdicion h_edicion = ManejadorEdicion.getInstance();
 		Edicion ed = h_edicion.encontrarEdicion(nombreEdi);
 		if(!ed.existeTipoRegistro(nombre)) {
 			ed.crearTRegistro(nombre,desc,costo,cupo);
 		} else {
-			throw new Exception("Ya existe un tipo registro con este nombre");
+			throw new excepciones.TipoRegistroExistenteExcepcion("Ya existe un tipo registro con este nombre");
 		}
 	
 	}
@@ -266,29 +292,59 @@ public class ControllerEvento implements IControllerEvento{
 		Evento ev = edi.getEvento();
 		return ev.getNombre();
 	}
-	
+	@Override
 	public void AceptarEdicion(String nomedi, String nomev) {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		Evento ev = mE.obtenerEvento(nomev);
 		Edicion edi = ev.getEdicion(nomedi);
-		ev.CambioEstado(edi,EstadoEdicion.Confirmada);
 		edi.setEstado(EstadoEdicion.Confirmada);
+		ev.CambioEstado(edi,EstadoEdicion.Confirmada);
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		mEdi.CambioEstado(edi,EstadoEdicion.Confirmada);
 		
 		
 	}
-	
+	@Override
 	public void RechazarEdicion(String nomedi, String nomev) {
 		ManejadorEvento mE = ManejadorEvento.getInstance();
 		Evento ev = mE.obtenerEvento(nomev);
 		Edicion edi = ev.getEdicion(nomedi);
-		ev.CambioEstado(edi,EstadoEdicion.Rechazada);
 		edi.setEstado(EstadoEdicion.Rechazada);
+		ev.CambioEstado(edi,EstadoEdicion.Rechazada);
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		mEdi.CambioEstado(edi,EstadoEdicion.Rechazada);
 		
 		
+	}
+	
+	@Override
+	public Set<String>listarEdicionesConfirmadas(String nombreEvento) {
+		
+		ManejadorEvento h_evento = ManejadorEvento.getInstance();
+		Evento ev = h_evento.obtenerEvento(nombreEvento);
+		Set<String> ediciones = new LinkedHashSet<>();
+		
+		if(ev != null) {
+		  for (Edicion e : ev.getColEdicionesConfirmadas()) {
+			  ediciones.add(e.getNombre());
+		  }
+		}
+		return ediciones;
+	}
+	
+	@Override
+	public Set<String> listarEdicionesPendientes(String nombreEvento) {
+		
+		ManejadorEvento h_evento = ManejadorEvento.getInstance();
+		Evento ev = h_evento.obtenerEvento(nombreEvento);
+		Set<String> ediciones = new LinkedHashSet<>();
+		
+		if(ev != null) {
+		  for (Edicion e : ev.getColEdicionesPendientes()) {
+			  ediciones.add(e.getNombre());
+		  }
+		}
+		return ediciones;
 	}
 	
 	

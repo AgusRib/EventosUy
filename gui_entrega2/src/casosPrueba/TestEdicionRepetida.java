@@ -29,7 +29,7 @@ public class TestEdicionRepetida {
 		Categoria cat = new Categoria("cat1");
 		ManejadorCategoria.getInstance().agregarCategoria(cat);
 		//String nickname, String nombre, String email, String descripcion, String web
-		Organizador org = new Organizador("Vegetta","Samuel","samu@gmail.com","desc1","www.vegetta.com");
+		Organizador org = new Organizador("Vegetta","Samuel","samu@gmail.com","a","desc1","www.vegetta.com");
 		ManejadorUsuario.getInstance().agregarUsuario(org);
 		ICE.altaEvento("ev1", "e1", ICE.getFechaSistema(), "desc1",categorias);
 		Evento eventoSeleccionado = ManejadorEvento.getInstance().obtenerEvento("ev1");
@@ -37,7 +37,7 @@ public class TestEdicionRepetida {
 		Edicion ed1 = new Edicion("edicion1", "sigla", LocalDate.of(2004, 1, 1), LocalDate.of(2004, 1, 9), ICE.getFechaSistema(),
 				"Montevideo", "Uruguay", eventoSeleccionado,org);
 		
-		ManejadorEdicion.getInstance().agregarEdicion(ed1);
+		ManejadorEdicion.getInstance().agregarEdicionIngresada(ed1);
 		
 		assertThrows(Exception.class, () -> {
 			ICE.altaEdicionDeEvento("ev1","Vegetta", "edicion1", "sigla2", LocalDate.of(2004, 1, 1), LocalDate.of(2004, 1, 9), ICE.getFechaSistema(), "Montevideo", "Uruguay");

@@ -31,7 +31,7 @@ public class TestControllerEvento2 {
 		categorias.add("CatA");
 		
 		try {
-			ICU.ingresarOrganizador("Jorge","Jorge","a","b","c");
+			ICU.ingresarOrganizador("Jorge","Jorge","d","a","b","c");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,7 +58,7 @@ public class TestControllerEvento2 {
 		
 		
 		try {
-			ICU.ingresarAsistente("willyrex", "willyrex", "z", "b", LocalDate.of(2000, 1, 1));
+			ICU.ingresarAsistente("willyrex", "willyrex","l", "z", "b", LocalDate.of(2000, 1, 1));
 		}
 		catch (Exception e) {
 			e.printStackTrace();

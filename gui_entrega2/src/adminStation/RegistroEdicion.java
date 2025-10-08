@@ -90,6 +90,7 @@ public class RegistroEdicion extends JInternalFrame {
 			// Lógica para registrar al asistente en la edición del evento
 			// Usar ICE e ICU según sea necesario
 			try {
+		    ICE.setFechaSistema(java.time.LocalDate.now());
 			ICE.elegirAsistenteYTipoRegistro(
 				(String) comboBoxAsistente.getSelectedItem(),
 				(String) comboBoxTipoReg.getSelectedItem(),
@@ -152,7 +153,7 @@ public class RegistroEdicion extends JInternalFrame {
 	public void refrescarEdiciones(IControllerEvento ICE) {
 		comboBoxEdicion.removeAllItems();
 		if (comboBoxEvento.getSelectedItem() != null) {
-			for (String edicion : ICE.listarEdiciones((String) comboBoxEvento.getSelectedItem())) {
+			for (String edicion : ICE.listarEdicionesConfirmadas((String) comboBoxEvento.getSelectedItem())) {
 				comboBoxEdicion.addItem(edicion);
 			}
 		}

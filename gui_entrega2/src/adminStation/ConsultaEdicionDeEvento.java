@@ -119,9 +119,9 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         tblDetallesDeEdicion = new JTable(new DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Nombre", "Sigla", "Fecha inicio", "Fecha fin", "Ciudad", "País",
-                        "Organizador", "Tipo de registros", "Patrocinios"}
+                        "Organizador", "Estado", "Tipo de registros", "Patrocinios"}
         ) {
-            @Override public boolean isCellEditable(int r, int c) { return c == 7 || c == 8; }
+            @Override public boolean isCellEditable(int r, int c) { return c == 8 || c == 9; }
         });
         configurarTablaBasica(tblDetallesDeEdicion);
         JScrollPane spDetEd = new JScrollPane(tblDetallesDeEdicion);
@@ -281,7 +281,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	                String.valueOf(dt.getFechaFin()),
 	                dt.getCiudad(),
 	                dt.getPais(),
-	                dt.getOrganizador(),   
+	                dt.getOrganizador(),
+	                dt.getEstado() != null ? dt.getEstado().name() : "",
 	                PLACEHOLDER_REG_TIPO,
 	                PLACEHOLDER_PAT_TIPO
 	            };

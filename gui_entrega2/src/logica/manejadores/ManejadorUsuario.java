@@ -78,7 +78,13 @@ public class ManejadorUsuario {
 		}
 		return organizadores;
 	}
-
+   public Usuario obtenerUsuarioPorEmail(String email) {
+		for (Usuario u : usuarios.values()) {
+			if (u.getEmail().equals(email)) {
+				return u;
+			}
+		}
+		return null; // Retorna null si no se encuentra ningún usuario con el email dado
 
 	
-}
+}}

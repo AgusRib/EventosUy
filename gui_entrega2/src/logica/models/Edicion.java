@@ -138,7 +138,8 @@ public class Edicion {
 				this.pais,
 				null,
 				nombresTiposRegistros,
-				nombresInstituciones
+				nombresInstituciones,
+				this.estado
 		);
 	}
 	

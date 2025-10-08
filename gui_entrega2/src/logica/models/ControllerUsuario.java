@@ -19,7 +19,7 @@ import logica.manejadores.ManejadorUsuario;
 public class ControllerUsuario implements IControllerUsuario {
 
 	@Override
-	public void ingresarAsistente(String nickname, String nombre, String email, String apellido,
+	public void ingresarAsistente(String nickname, String nombre, String email,String password, String apellido,
 			LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		if (mU.existeNickname(nickname)) {
@@ -27,7 +27,7 @@ public class ControllerUsuario implements IControllerUsuario {
 		} else if (mU.existeEmail(email)) {
 			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
-			Asistente user = new Asistente(nickname, nombre, email, apellido, fechaNac);
+			Asistente user = new Asistente(nickname, nombre, email,password, apellido, fechaNac);
 			mU.agregarUsuario(user);
 		}
 	}
@@ -48,14 +48,14 @@ public class ControllerUsuario implements IControllerUsuario {
 	}
 
 	@Override
-	public void ingresarOrganizador(String nickname, String nombre, String email, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception {
+	public void ingresarOrganizador(String nickname, String nombre, String email,String password, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		if (mU.existeNickname(nickname)) {
 			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
 		} else if (mU.existeEmail(email)) {
 			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
-			Organizador user = new Organizador(nickname, nombre, email, descripcion, web);
+			Organizador user = new Organizador(nickname, nombre, email,password, descripcion, web);
 			mU.agregarUsuario(user);
 		}
 	}
@@ -177,7 +177,31 @@ public class ControllerUsuario implements IControllerUsuario {
 	   }
    
 	
-   }}
+   }
+   
+  @Override
+  public boolean iniciarSesionNickname(String nickname, String password) {
+	  ManejadorUsuario mU = ManejadorUsuario.getInstance();
+	  Usuario user = mU.obtenerUsuario(nickname);
+	  if (user != null && user.getPassword().equals(password)) {
+		  return true;
+	  }
+	  return false;
+  }
+  
+  @Override
+  public boolean iniciarSesionEmail(String email, String password) {
+	  ManejadorUsuario mU = ManejadorUsuario.getInstance();
+	  Usuario user = mU.obtenerUsuarioPorEmail(email);
+	  if (user != null && user.getPassword().equals(password)) {
+		  return true;
+	  }
+	  return false;
+  }
+
+
+
+}
 	
 
 

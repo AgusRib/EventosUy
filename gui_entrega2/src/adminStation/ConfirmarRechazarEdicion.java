@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
@@ -139,16 +140,38 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 		});
 		
 		btnConfirmar.addActionListener(e -> {
+			String nombreEvento = (String) comboBoxEventos.getSelectedItem();	
 			String nombreEdicion = listaEdicionesPendientes.getSelectedValue();
 			if (nombreEdicion != null) {
-			    ICE.ConfirmarRechazarEdicion(nombreEdicion, true);
+			    ICE.AceptarEdicion(nombreEdicion,nombreEvento);
+			    JOptionPane.showMessageDialog(this, 
+			    	"Edición '" + nombreEdicion + "' confirmada con éxito", 
+			    	"Confirmación exitosa", 
+			    	JOptionPane.INFORMATION_MESSAGE);
+			    refrescarEdiciones(); // Actualizar la lista después de confirmar
+			} else {
+			    JOptionPane.showMessageDialog(this, 
+			    	"Por favor seleccione una edición para confirmar", 
+			    	"Error", 
+			    	JOptionPane.WARNING_MESSAGE);
 			}
 		});
 		
 		btnRechazar.addActionListener(e -> {
+			String nombreEvento = (String) comboBoxEventos.getSelectedItem();
 			String nombreEdicion = listaEdicionesPendientes.getSelectedValue();
 			if (nombreEdicion != null) {
-			    ICE.ConfirmarRechazarEdicion(nombreEdicion, false);
+			    ICE.RechazarEdicion(nombreEdicion,nombreEvento);
+			    JOptionPane.showMessageDialog(this, 
+			    	"Edición '" + nombreEdicion + "' rechazada con éxito", 
+			    	"Rechazo exitoso", 
+			    	JOptionPane.INFORMATION_MESSAGE);
+			    refrescarEdiciones(); // Actualizar la lista después de rechazar
+			} else {
+			    JOptionPane.showMessageDialog(this, 
+			    	"Por favor seleccione una edición para rechazar", 
+			    	"Error", 
+			    	JOptionPane.WARNING_MESSAGE);
 			}
 		});
 				

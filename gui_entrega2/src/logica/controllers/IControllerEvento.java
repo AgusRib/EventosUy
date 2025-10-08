@@ -17,6 +17,7 @@ import logica.dataTypes.DTRegistro;
 import logica.dataTypes.DTTipoRegistro;
 import logica.enumerators.NivelPatrocinio;
 
+
 public interface IControllerEvento{
 	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception;
 	public Set<String> listarEventos();
@@ -26,7 +27,7 @@ public interface IControllerEvento{
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion);
 	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi);
 	public DTTipoRegistro verDetalleTRegistro(String nombreEdi,String nomTRegistro);
-	public void altaTipoDeRegistro(String nombreEdi, String nombre, String descripcion, Float costo, int cupo) throws Exception;
+	public void altaTipoDeRegistro(String nombreEdi, String nombre, String descripcion, Float costo, int cupo) throws excepciones.TipoRegistroExistenteExcepcion,Exception;
 	public DTDetalleEvento verDetalleEvento(String nombreEvento);
 	public Set<String> listarTiposDeRegistro( String nombreEdicion);
 	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL,FechaInicioPREALTA, Exception;
@@ -39,6 +40,12 @@ public interface IControllerEvento{
 	public LocalDate getFechaSistema();
 	public LocalDate setFechaSistema(LocalDate fechaNueva);
 	public String NomEvPorEd(String nomEdi);
-	public void ConfirmarRechazarEdicion(String nombreEdi, boolean aceptar);
+	public void AceptarEdicion(String nomEdi, String nomEv);
+	public void RechazarEdicion(String nomEdi, String nomEv);
+	Set<String> listarEdicionesTodas();
+	Set<String> listarEdicionesConfirmadas(String nombreEvento);
+	Set<String> listarEdicionesPendientes(String nombreEvento);
+	
+	
 }
 

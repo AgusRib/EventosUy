@@ -1,6 +1,9 @@
-package logica;
+package logica.manejadores;
 
 import java.util.HashMap;
+
+import logica.enumerators.EstadoEdicion;
+import logica.models.Edicion;
 
 public class ManejadorEdicion {
 	private static ManejadorEdicion instance;
@@ -62,7 +65,11 @@ public class ManejadorEdicion {
 
 	public void CambioEstado(Edicion edi,EstadoEdicion  nuevoestado) {
 		colEdicionesPendientes.remove(edi.getNombre());
-		colEdicionesConfirmadas.put(edi.getNombre(), edi);
+		if (nuevoestado == EstadoEdicion.Confirmada) {
+			colEdicionesConfirmadas.put(edi.getNombre(), edi);
+		} else if (nuevoestado == EstadoEdicion.Rechazada) {
+			colEdicionesRechazadas.put(edi.getNombre(), edi);
+		}
 		
 	}
 }
