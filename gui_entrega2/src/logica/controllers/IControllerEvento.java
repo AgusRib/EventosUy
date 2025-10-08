@@ -1,5 +1,6 @@
 package logica.controllers;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import excepciones.AsistenteYaRegistrado;
@@ -16,6 +17,7 @@ import logica.dataTypes.DTPatrocinio;
 import logica.dataTypes.DTRegistro;
 import logica.dataTypes.DTTipoRegistro;
 import logica.enumerators.NivelPatrocinio;
+import logica.models.Evento;
 
 
 public interface IControllerEvento{
@@ -25,6 +27,7 @@ public interface IControllerEvento{
 	public Set<String> listarEdiciones(String nombreEvento);
 	public Set<String> listarPatrocinios(String nombreEdi);
 	public DTPatrocinio obtenerPatrocinio(String nombreEdi, String nombreInstitucion);
+	public List<Evento> obtenerEventosRecientes();
 	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi);
 	public DTTipoRegistro verDetalleTRegistro(String nombreEdi,String nomTRegistro);
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, String descripcion, Float costo, int cupo) throws excepciones.TipoRegistroExistenteExcepcion,Exception;
