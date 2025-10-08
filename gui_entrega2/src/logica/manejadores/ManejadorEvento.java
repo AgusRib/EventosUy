@@ -6,6 +6,7 @@ import logica.models.Evento;
 
 
 public class ManejadorEvento{
+	
 	private static ManejadorEvento instance = null;
 	private HashMap<String,Evento> eventos;
 	

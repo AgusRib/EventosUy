@@ -1,8 +1,10 @@
 package logica.models;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import excepciones.AsistenteYaRegistrado;
@@ -345,6 +347,23 @@ public class ControllerEvento implements IControllerEvento{
 		  }
 		}
 		return ediciones;
+	}
+
+	@Override
+	public List<Evento> obtenerEventosRecientes() {
+		ManejadorEvento h_evento = ManejadorEvento.getInstance();
+		Set<String> eventos = h_evento.obtenerEventos().keySet();
+		List<Evento> recientes = new ArrayList<>();
+		
+		int count = 0;
+		//me quedo con las primeras 3, despues hay que ver con cual nos quedamos
+		for (String e : eventos) {
+		    if (count >= 3) break;
+		    recientes.add(h_evento.obtenerEvento(e));
+		    count++;
+		}
+		 
+		return recientes;
 	}
 	
 	
