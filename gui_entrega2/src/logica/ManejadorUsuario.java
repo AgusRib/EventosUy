@@ -2,7 +2,10 @@ package logica;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+
+import logica.models.Asistente;
+import logica.models.Organizador;
+import logica.models.Usuario;
 
 public class ManejadorUsuario {
 	

@@ -2,6 +2,9 @@ package logica;
 
 import java.util.HashMap;
 
+import logica.enumerators.EstadoEdicion;
+import logica.models.Edicion;
+
 public class ManejadorEdicion {
 	private static ManejadorEdicion instance;
 	private HashMap<String, Edicion> colEdicionesIngresadas;

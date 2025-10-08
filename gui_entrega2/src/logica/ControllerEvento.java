@@ -12,6 +12,26 @@ import excepciones.FechaInicioPREALTA;
 import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
+import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTAsistente;
+import logica.dataTypes.DTDetalleEdicion;
+import logica.dataTypes.DTDetalleEvento;
+import logica.dataTypes.DTPatrocinio;
+import logica.dataTypes.DTRegistro;
+import logica.dataTypes.DTTipoRegistro;
+import logica.enumerators.EstadoEdicion;
+import logica.enumerators.NivelPatrocinio;
+import logica.manejadores.ManejadorCategoria;
+import logica.manejadores.ManejadorEvento;
+import logica.models.Asistente;
+import logica.models.Categoria;
+import logica.models.Edicion;
+import logica.models.Organizador;
+import logica.models.Patrocinio;
+import logica.models.Registro;
+import logica.models.TipoRegistro;
+import logica.models.*;
+
 
 
 public class ControllerEvento implements IControllerEvento{
@@ -232,7 +252,8 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo) {
+	public void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, 
+			double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo) {
 	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 	    Edicion ed = mEdi.encontrarEdicion(nombreEdi);
 	    TipoRegistro tr = ed.getTipoRegistro(tipoRegistroGratis);
@@ -289,6 +310,24 @@ public class ControllerEvento implements IControllerEvento{
 		mEdi.CambioEstado(edi,EstadoEdicion.Rechazada);
 		
 		
+	}
+
+	@Override
+	public Set<String> listarEdicionesTodas() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<String> listarEdicionesConfirmadas(String nombreEvento) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<String> listarEdicionesPendientes(String nombreEvento) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
