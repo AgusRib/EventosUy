@@ -3,6 +3,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import logica.models.Edicion;
+
 import java.io.IOException;
 import java.util.Collections;
 
@@ -33,7 +35,7 @@ public class ServletEdicion extends HttpServlet {
                 // Example: get id param and set an attribute for the JSP
                 String id = request.getParameter("id");
                 // In a real app: fetch the object from DB/service by id
-                // Edicion ed = edicionService.findById(id);
+                Edicion ed = edicionService.findById(id);
                 // request.setAttribute("edicion", ed);
                 request.setAttribute("edicionId", id);
                 // Forward to the JSP that will render the detail
