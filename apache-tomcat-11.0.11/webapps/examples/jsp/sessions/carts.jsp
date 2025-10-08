@@ -23,21 +23,22 @@
 %>
 
 
-<FONT size = 5 COLOR="#CC0000">
-<br> You have the following items in your cart:
-<ol>
-<%
+<FONT size=5 COLOR="#CC0000"> <br> You have the following
+	items in your cart:
+	<ol>
+		<%
     Item[] items = cart.getItems();
     for (Item item : items) {
 %>
-<li> <% out.print(util.HTMLFilter.filter(item.getTitle())); %>
-<%
+		<li>
+			<% out.print(util.HTMLFilter.filter(item.getTitle())); %> <%
     }
 %>
-</ol>
+		
+	</ol>
 
 </FONT>
 
 <hr>
-<%@ include file ="shopping.jsp" %>
+<%@ include file="shopping.jsp"%>
 </html>

@@ -22,11 +22,11 @@
    if (percent < 0.5) {
 %>
 
-<jsp:forward page="one.jsp"/>
+<jsp:forward page="one.jsp" />
 
 <% } else { %>
 
-<jsp:forward page="two.html"/>
+<jsp:forward page="two.html" />
 
 <% } %>
 

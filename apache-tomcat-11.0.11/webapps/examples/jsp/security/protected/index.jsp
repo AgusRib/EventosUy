@@ -14,11 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="java.net.URLEncoder" %>
-<%@ page import="java.nio.charset.StandardCharsets" %>
-<%@ page import="java.security.Principal" %>
-<%@ page import="java.util.Enumeration" %>
-<%@ page import="org.apache.catalina.TomcatPrincipal" %>
+<%@ page import="java.net.URLEncoder"%>
+<%@ page import="java.nio.charset.StandardCharsets"%>
+<%@ page import="java.security.Principal"%>
+<%@ page import="java.util.Enumeration"%>
+<%@ page import="org.apache.catalina.TomcatPrincipal"%>
 <%
   if (request.getParameter("logoff") != null) {
     session.invalidate();
@@ -32,64 +32,81 @@
 </head>
 <body bgcolor="white">
 
-You are logged in as remote user
-<b><%= util.HTMLFilter.filter(request.getRemoteUser()) %></b>
-in session <b><%= session.getId() %></b><br><br>
+	You are logged in as remote user
+	<b><%= util.HTMLFilter.filter(request.getRemoteUser()) %></b> in
+	session
+	<b><%= session.getId() %></b>
+	<br>
+	<br>
 
-<%
+	<%
   if (request.getUserPrincipal() != null) {
 %>
-    Your user principal name is
-    <b><%= util.HTMLFilter.filter(request.getUserPrincipal().getName()) %></b>
-    <br><br>
-<%
+	Your user principal name is
+	<b><%= util.HTMLFilter.filter(request.getUserPrincipal().getName()) %></b>
+	<br>
+	<br>
+	<%
   } else {
 %>
-    No user principal could be identified.<br><br>
-<%
+	No user principal could be identified.
+	<br>
+	<br>
+	<%
   }
 %>
 
-<%
+	<%
   String role = request.getParameter("role");
   if (role == null)
     role = "";
   if (role.length() > 0) {
     if (request.isUserInRole(role)) {
 %>
-      You have been granted role
-      <b><%= util.HTMLFilter.filter(role) %></b><br><br>
-<%
+	You have been granted role
+	<b><%= util.HTMLFilter.filter(role) %></b>
+	<br>
+	<br>
+	<%
     } else {
 %>
-      You have <i>not</i> been granted role
-      <b><%= util.HTMLFilter.filter(role) %></b><br><br>
-<%
+	You have
+	<i>not</i> been granted role
+	<b><%= util.HTMLFilter.filter(role) %></b>
+	<br>
+	<br>
+	<%
     }
   }
 %>
 
-To check whether your user name has been granted a particular role,
-enter it here:
-<form method="GET" action='<%= response.encodeURL("index.jsp") %>'>
-<input type="text" name="role" value="<%= util.HTMLFilter.filter(role) %>">
-<input type="submit" >
-</form>
-<br><br>
+	To check whether your user name has been granted a particular role,
+	enter it here:
+	<form method="GET" action='<%= response.encodeURL("index.jsp") %>'>
+		<input type="text" name="role"
+			value="<%= util.HTMLFilter.filter(role) %>"> <input
+			type="submit">
+	</form>
+	<br>
+	<br>
 
-<%
+	<%
   Principal p = request.getUserPrincipal();
   if (!(p instanceof TomcatPrincipal)) {
 %>
-<p>The principal does not support attributes.</p>
-<%
+	<p>The principal does not support attributes.</p>
+	<%
   } else {
     TomcatPrincipal principal = (TomcatPrincipal) p;
 %>
-<p>The principal contains the following attributes:</p>
-<table>
-<tr><th>Name</th><th>Value</th><th>Type</th></tr>
-<%
+	<p>The principal contains the following attributes:</p>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Value</th>
+			<th>Type</th>
+		</tr>
+		<%
     Enumeration<String> names = principal.getAttributeNames();
     while (names.hasMoreElements()) {
       String name = names.nextElement();
@@ -109,21 +126,22 @@ enter it here:
       }
       type = type.replaceFirst("^java\\.lang\\.", "");
 %>
-<tr>
-  <td><%= util.HTMLFilter.filter(name) %></td>
-  <td><%= util.HTMLFilter.filter(String.valueOf(value)) %></td>
-  <td><%= util.HTMLFilter.filter(type) %></td>
-</tr>
-<%
+		<tr>
+			<td><%= util.HTMLFilter.filter(name) %></td>
+			<td><%= util.HTMLFilter.filter(String.valueOf(value)) %></td>
+			<td><%= util.HTMLFilter.filter(type) %></td>
+		</tr>
+		<%
     }
 %>
-</table>
-<%
+	</table>
+	<%
   }
 %>
-<br><br>
+	<br>
+	<br>
 
-<%
+	<%
   // Count the existing attributes
   int sessionAttributeCount = 0;
   Enumeration<String> names = session.getAttributeNames();
@@ -143,54 +161,60 @@ enter it here:
       sessionAttributeCount++;
     } else {
 %>
-<p>Session attribute [<%= util.HTMLFilter.filter(dataName) %>] not added as there are already 10 attributes in the
-session. Delete an attribute before adding another.</p>
-<%
+	<p>
+		Session attribute [<%= util.HTMLFilter.filter(dataName) %>] not added
+		as there are already 10 attributes in the session. Delete an attribute
+		before adding another.
+	</p>
+	<%
     }
   }
 
   if (sessionAttributeCount < 10) {
 %>
-To add some data to the authenticated session, enter it here:
-<form method="GET" action='<%= response.encodeURL("index.jsp") %>'>
-<input type="text" name="dataName">
-<input type="text" name="dataValue">
-<input type="submit" >
-</form>
-<%
+	To add some data to the authenticated session, enter it here:
+	<form method="GET" action='<%= response.encodeURL("index.jsp") %>'>
+		<input type="text" name="dataName"> <input type="text"
+			name="dataValue"> <input type="submit">
+	</form>
+	<%
   } else {
 %>
-<p>You may not add more than 10 attributes to this session.</p>
-<%
+	<p>You may not add more than 10 attributes to this session.</p>
+	<%
   }
 %>
-<br><br>
+	<br>
+	<br>
 
-<p>The authenticated session contains the following attributes:</p>
-<table>
-<tr><th>Name</th><th>Value</th></tr>
-<%
+	<p>The authenticated session contains the following attributes:</p>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Value</th>
+		</tr>
+		<%
   names = session.getAttributeNames();
   while (names.hasMoreElements()) {
     String name = names.nextElement();
     String value = session.getAttribute(name).toString();
 %>
-<tr>
-  <td><%= util.HTMLFilter.filter(name) %></td>
-  <td><%= util.HTMLFilter.filter(value) %></td>
-  <td><a href='<%= response.encodeURL("index.jsp?dataName=" + URLEncoder.encode(name, StandardCharsets.UTF_8)) %>'>delete</a></td>
-</tr>
-<%
+		<tr>
+			<td><%= util.HTMLFilter.filter(name) %></td>
+			<td><%= util.HTMLFilter.filter(value) %></td>
+			<td><a
+				href='<%= response.encodeURL("index.jsp?dataName=" + URLEncoder.encode(name, StandardCharsets.UTF_8)) %>'>delete</a></td>
+		</tr>
+		<%
   }
 %>
-</table>
-<br><br>
-
-If you have configured this application for form-based authentication, you can
-log off by clicking
-<a href='<%= response.encodeURL("index.jsp?logoff=true") %>'>here</a>.
-This should cause you to be returned to the login page after the redirect
-that is performed.
+	</table>
+	<br>
+	<br> If you have configured this application for form-based
+	authentication, you can log off by clicking
+	<a href='<%= response.encodeURL("index.jsp?logoff=true") %>'>here</a>.
+	This should cause you to be returned to the login page after the
+	redirect that is performed.
 
 </body>
 </html>

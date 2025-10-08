@@ -15,30 +15,29 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-  version="1.2">
-<jsp:directive.page contentType="text/html"/>
-<jsp:directive.page import="java.util.Date, java.util.Locale"/>
-<jsp:directive.page import="java.text.*"/>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="1.2">
+	<jsp:directive.page contentType="text/html" />
+	<jsp:directive.page import="java.util.Date, java.util.Locale" />
+	<jsp:directive.page import="java.text.*" />
 
-<jsp:declaration>
+	<jsp:declaration>
   String getDateTimeStr(Locale l) {
     DateFormat df = SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, l);
     return df.format(new Date());
   }
 </jsp:declaration>
 
-<html>
+	<html>
 <head>
-  <title>Example JSP in XML format</title>
+<title>Example JSP in XML format</title>
 </head>
 
 <body>
-This is the output of a simple JSP using XML format.
-<br />
+	This is the output of a simple JSP using XML format.
+	<br />
 
-<div>Use a jsp:scriptlet to loop from 1 to 10: </div>
-<jsp:scriptlet>
+	<div>Use a jsp:scriptlet to loop from 1 to 10:</div>
+	<jsp:scriptlet>
 // Note we need to declare CDATA because we don't escape the less than symbol
 <![CDATA[
   for (int i = 1; i<=10; i++) {
@@ -50,21 +49,22 @@ This is the output of a simple JSP using XML format.
 ]]>
 </jsp:scriptlet>
 
-<!-- Because I omit br's end tag, declare it as CDATA -->
-<![CDATA[
+	<!-- Because I omit br's end tag, declare it as CDATA -->
+	<![CDATA[
   <br><br>
 ]]>
 
-<div align="left">
-  Use a jsp:expression to write the date and time in the browser's locale:
-  <jsp:expression>getDateTimeStr(request.getLocale())</jsp:expression>
-</div>
+	<div align="left">
+		Use a jsp:expression to write the date and time in the browser's
+		locale:
+		<jsp:expression>getDateTimeStr(request.getLocale())</jsp:expression>
+	</div>
 
 
-<jsp:text>
+	<jsp:text>
   &lt;p&gt;This sentence is enclosed in a jsp:text element.&lt;/p&gt;
 </jsp:text>
 
 </body>
-</html>
+	</html>
 </jsp:root>

@@ -1,64 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de Registro - Eventos.uy</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="../assets/css/DetalleRegistro.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-  <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
-  <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
-  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"> <!-- esto hace que se vea la flechita en el hero-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalle de Registro - Eventos.uy</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="stylesheet" href="../assets/css/DetalleRegistro.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+<link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+<link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+<link
+	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+	rel="stylesheet">
+<!-- esto hace que se vea la flechita en el hero-->
 </head>
 <header>
-        <nav class="navbar bg-white shadow-sm">
-            <div class="text-center align-items-center">
-                <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="index.html"><b>Eventos.uy</b></a>
-            </div>
-            <div class="d-flex justify-content-end align-items-center">
-                <div class="dropdown">
-                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                        <img src="../assets/images/IMG-US04.jpeg" alt="JA" class="rounded-circle"
-                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-                        <span>MisEventos</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-      <li><a class="dropdown-item" href="MiPerfil-misEventos.html">Mi perfil</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="../pagesVisitante/index.html" style="color:#dc3545 !important;">Cerrar sesión</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+	<nav class="navbar bg-white shadow-sm">
+		<div class="text-center align-items-center">
+			<a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
+				href="index.html"><b>Eventos.uy</b></a>
+		</div>
+		<div class="d-flex justify-content-end align-items-center">
+			<div class="dropdown">
+				<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
+					href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
+					aria-expanded="false" aria-haspopup="true"> <img
+					src="../assets/images/IMG-US04.jpeg" alt="JA"
+					class="rounded-circle"
+					style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+					<span>MisEventos</span> <i class="bi bi-chevron-down"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end shadow-sm"
+					aria-labelledby="userMenuDropdown">
+					<li><a class="dropdown-item" href="MiPerfil-misEventos.html">Mi
+							perfil</a></li>
+					<li>
+						<hr class="dropdown-divider">
+					</li>
+					<li><a class="dropdown-item text-danger"
+						href="../pagesVisitante/index.html"
+						style="color: #dc3545 !important;">Cerrar sesión</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
 <body>
-    <div class="container d-flex flex-column align-items-center justify-content-center py-4">
-      <div class="card shadow detalle-registro-card">
-        <div class="card-body">
-          <div class="d-flex flex-row align-items-center justify-content-center gap-5 mb-4">
-            <img src="../assets/images/IMG-US01.jpg" alt="Foto Usuario" class="img-fluid rounded-circle detalle-registro-img-usuario">
-            <img src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="Foto Edición" class="img-fluid rounded detalle-registro-img-edicion">
-          </div>
-          <div class="info-evento text-center">
-            <h1 class="mb-3">Detalle de Registro</h1>
-            <div class="mb-2"><strong>Usuario:</strong> atorres</div>
-            <div class="mb-2"><strong>Edición de Evento:</strong> Web Summit 2026</div>
-            <div class="mb-2"><strong>Tipo de Registro:</strong>Estudiante</div>
-            <div class="mb-2"><strong>Fecha de Registro:</strong> 21/08/2025</div>
-            <div class="mb-2"><strong>Costo:</strong> $300</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+	<div
+		class="container d-flex flex-column align-items-center justify-content-center py-4">
+		<div class="card shadow detalle-registro-card">
+			<div class="card-body">
+				<div
+					class="d-flex flex-row align-items-center justify-content-center gap-5 mb-4">
+					<img src="../assets/images/IMG-US01.jpg" alt="Foto Usuario"
+						class="img-fluid rounded-circle detalle-registro-img-usuario">
+					<img
+						src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
+						alt="Foto Edición"
+						class="img-fluid rounded detalle-registro-img-edicion">
+				</div>
+				<div class="info-evento text-center">
+					<h1 class="mb-3">Detalle de Registro</h1>
+					<div class="mb-2">
+						<strong>Usuario:</strong> atorres
+					</div>
+					<div class="mb-2">
+						<strong>Edición de Evento:</strong> Web Summit 2026
+					</div>
+					<div class="mb-2">
+						<strong>Tipo de Registro:</strong>Estudiante
+					</div>
+					<div class="mb-2">
+						<strong>Fecha de Registro:</strong> 21/08/2025
+					</div>
+					<div class="mb-2">
+						<strong>Costo:</strong> $300
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

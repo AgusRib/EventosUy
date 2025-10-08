@@ -15,12 +15,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@page session="false" contentType="text/html; charset=UTF-8" %>
-<%@page import="java.util.Enumeration" %>
-<%@page import="jakarta.servlet.http.HttpSession" %>
-<%@page import="org.apache.catalina.Session" %>
-<%@page import="org.apache.catalina.manager.JspHelper" %>
-<%@page import="org.apache.catalina.util.ContextName" %>
+<%@page session="false" contentType="text/html; charset=UTF-8"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="jakarta.servlet.http.HttpSession"%>
+<%@page import="org.apache.catalina.Session"%>
+<%@page import="org.apache.catalina.manager.JspHelper"%>
+<%@page import="org.apache.catalina.util.ContextName"%>
 <!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -45,142 +45,158 @@
            "?path=" + path + "&version=" + version));
 %>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta http-equiv="pragma" content="no-cache"/><!-- HTTP 1.0 -->
-    <meta http-equiv="cache-control" content="no-cache,must-revalidate"/><!-- HTTP 1.1 -->
-    <meta http-equiv="expires" content="0"/><!-- 0 is an invalid value and should be treated as 'now' -->
-    <meta http-equiv="content-language" content="en"/>
-    <meta name="author" content="Cedrik LIME"/>
-    <meta name="copyright" content="copyright 2005-2025 the Apache Software Foundation"/>
-    <meta name="robots" content="noindex,nofollow,noarchive"/>
-    <title>Sessions Administration: details for <%= currentSessionId %></title>
-    <link href="<%=request.getContextPath()%>/images/favicon.ico" rel="icon" type="image/x-icon" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<!-- HTTP 1.0 -->
+<meta http-equiv="cache-control" content="no-cache,must-revalidate" />
+<!-- HTTP 1.1 -->
+<meta http-equiv="expires" content="0" />
+<!-- 0 is an invalid value and should be treated as 'now' -->
+<meta http-equiv="content-language" content="en" />
+<meta name="author" content="Cedrik LIME" />
+<meta name="copyright"
+	content="copyright 2005-2025 the Apache Software Foundation" />
+<meta name="robots" content="noindex,nofollow,noarchive" />
+<title>Sessions Administration: details for <%= currentSessionId %></title>
+<link href="<%=request.getContextPath()%>/images/favicon.ico" rel="icon"
+	type="image/x-icon" />
 </head>
 <body>
-<% if (currentHttpSession == null) { %>
-   <h1><%=currentSessionId%></h1>
-<% } else { %>
-   <h1>Details for Session <%= currentSessionId %></h1>
+	<% if (currentHttpSession == null) { %>
+	<h1><%=currentSessionId%></h1>
+	<% } else { %>
+	<h1>
+		Details for Session
+		<%= currentSessionId %></h1>
 
-   <table style="text-align: left;" border="0">
-     <tr>
-       <th>Session Id</th>
-       <td><%= currentSessionId %></td>
-     </tr>
-     <tr>
-       <th>Guessed Locale</th>
-       <td><%= JspHelper.guessDisplayLocaleFromSession(currentSession) %></td>
-     </tr>
-     <tr>
-       <th>Guessed User</th>
-       <td><%= JspHelper.guessDisplayUserFromSession(currentSession) %></td>
-     </tr>
-     <tr>
-       <th>Creation Time</th>
-       <td><%= JspHelper.getDisplayCreationTimeForSession(currentSession) %></td>
-     </tr>
-     <tr>
-       <th>Last Accessed Time</th>
-       <td><%= JspHelper.getDisplayLastAccessedTimeForSession(currentSession) %></td>
-     </tr>
-     <tr>
-       <th>Session Max Inactive Interval</th>
-       <td><%= JspHelper.secondsToTimeString(currentSession.getMaxInactiveInterval()) %></td>
-     </tr>
-     <tr>
-       <th>Used Time</th>
-       <td><%= JspHelper.getDisplayUsedTimeForSession(currentSession) %></td>
-     </tr>
-     <tr>
-       <th>Inactive Time</th>
-       <td><%= JspHelper.getDisplayInactiveTimeForSession(currentSession) %></td>
-     </tr>
-     <tr>
-       <th>TTL</th>
-       <td><%= JspHelper.getDisplayTTLForSession(currentSession) %></td>
-     </tr>
-   </table>
+	<table style="text-align: left;" border="0">
+		<tr>
+			<th>Session Id</th>
+			<td><%= currentSessionId %></td>
+		</tr>
+		<tr>
+			<th>Guessed Locale</th>
+			<td><%= JspHelper.guessDisplayLocaleFromSession(currentSession) %></td>
+		</tr>
+		<tr>
+			<th>Guessed User</th>
+			<td><%= JspHelper.guessDisplayUserFromSession(currentSession) %></td>
+		</tr>
+		<tr>
+			<th>Creation Time</th>
+			<td><%= JspHelper.getDisplayCreationTimeForSession(currentSession) %></td>
+		</tr>
+		<tr>
+			<th>Last Accessed Time</th>
+			<td><%= JspHelper.getDisplayLastAccessedTimeForSession(currentSession) %></td>
+		</tr>
+		<tr>
+			<th>Session Max Inactive Interval</th>
+			<td><%= JspHelper.secondsToTimeString(currentSession.getMaxInactiveInterval()) %></td>
+		</tr>
+		<tr>
+			<th>Used Time</th>
+			<td><%= JspHelper.getDisplayUsedTimeForSession(currentSession) %></td>
+		</tr>
+		<tr>
+			<th>Inactive Time</th>
+			<td><%= JspHelper.getDisplayInactiveTimeForSession(currentSession) %></td>
+		</tr>
+		<tr>
+			<th>TTL</th>
+			<td><%= JspHelper.getDisplayTTLForSession(currentSession) %></td>
+		</tr>
+	</table>
 
-   <form method="post" action="<%= submitUrl %>">
-     <div>
-       <input type="hidden" name="sessionId" value="<%= currentSessionId %>" />
-       <input type="hidden" name="action" value="sessionDetail" />
-       <%
+	<form method="post" action="<%= submitUrl %>">
+		<div>
+			<input type="hidden" name="sessionId" value="<%= currentSessionId %>" />
+			<input type="hidden" name="action" value="sessionDetail" />
+			<%
        if ("Primary".equals(request.getParameter("sessionType"))) {
        %>
-         <input type="hidden" name="sessionType" value="Primary" />
-       <%
+			<input type="hidden" name="sessionType" value="Primary" />
+			<%
        }
-       %>    <input type="submit" value="Refresh" />
-     </div>
-   </form>
+       %>
+			<input type="submit" value="Refresh" />
+		</div>
+	</form>
 
-   <div class="error"><%= JspHelper.escapeXml(request.getAttribute("error")) %></div>
-   <div class="message"><%= JspHelper.escapeXml(request.getAttribute("message")) %></div>
+	<div class="error"><%= JspHelper.escapeXml(request.getAttribute("error")) %></div>
+	<div class="message"><%= JspHelper.escapeXml(request.getAttribute("message")) %></div>
 
-   <table style="text-align: left;" border="1" cellpadding="2" cellspacing="2">
-   <% int nAttributes = 0;
+	<table style="text-align: left;" border="1" cellpadding="2"
+		cellspacing="2">
+		<% int nAttributes = 0;
       Enumeration<String> attributeNamesEnumeration = currentHttpSession.getAttributeNames();
       while (attributeNamesEnumeration.hasMoreElements()) {
           attributeNamesEnumeration.nextElement();
           ++nAttributes;
       }
    %>
-       <caption style="font-variant: small-caps;"><%= JspHelper.formatNumber(nAttributes) %> attributes</caption>
-       <thead>
-           <tr>
-               <th>Remove Attribute</th>
-               <th>Attribute name</th>
-               <th>Attribute value</th>
-           </tr>
-       </thead>
-       <%--tfoot>
+		<caption style="font-variant: small-caps;"><%= JspHelper.formatNumber(nAttributes) %>
+			attributes
+		</caption>
+		<thead>
+			<tr>
+				<th>Remove Attribute</th>
+				<th>Attribute name</th>
+				<th>Attribute value</th>
+			</tr>
+		</thead>
+		<%--tfoot>
            <tr>
                <td colspan="3" style="text-align: center;">
                    TODO: set Max Inactive Interval on sessions
                </td>
            </tr>
        </tfoot--%>
-       <tbody>
-   <% attributeNamesEnumeration = currentHttpSession.getAttributeNames();
+		<tbody>
+			<% attributeNamesEnumeration = currentHttpSession.getAttributeNames();
       while (attributeNamesEnumeration.hasMoreElements()) {
           String attributeName = attributeNamesEnumeration.nextElement();
    %>
-           <tr>
-               <td align="center">
-                   <form method="post" action="<%= submitUrl %>">
-                       <div>
-                           <input type="hidden" name="action" value="removeSessionAttribute" />
-                           <input type="hidden" name="sessionId" value="<%= currentSessionId %>" />
-                           <input type="hidden" name="attributeName" value="<%= JspHelper.escapeXml(attributeName) %>" />
-                           <%
+			<tr>
+				<td align="center">
+					<form method="post" action="<%= submitUrl %>">
+						<div>
+							<input type="hidden" name="action" value="removeSessionAttribute" />
+							<input type="hidden" name="sessionId"
+								value="<%= currentSessionId %>" /> <input type="hidden"
+								name="attributeName"
+								value="<%= JspHelper.escapeXml(attributeName) %>" />
+							<%
                              if ("Primary".equals(request.getParameter("sessionType"))) {
                            %>
-                             <input type="submit" value="Remove" />
-                             <input type="hidden" name="sessionType" value="Primary" />
-                           <%
+							<input type="submit" value="Remove" /> <input type="hidden"
+								name="sessionType" value="Primary" />
+							<%
                              } else {
                                out.print("Primary sessions only");
                              }
                            %>
-                       </div>
-                   </form>
-               </td>
-               <td><%= JspHelper.escapeXml(attributeName) %></td>
-               <td><% Object attributeValue = currentHttpSession.getAttribute(attributeName); %><span title="<%= attributeValue == null ? "" : attributeValue.getClass().toString() %>"><%= JspHelper.escapeXml(attributeValue) %></span></td>
-           </tr>
-   <% } // end while %>
-       </tbody>
-   </table>
-<% } // endif%>
+						</div>
+					</form>
+				</td>
+				<td><%= JspHelper.escapeXml(attributeName) %></td>
+				<td>
+					<% Object attributeValue = currentHttpSession.getAttribute(attributeName); %><span
+					title="<%= attributeValue == null ? "" : attributeValue.getClass().toString() %>"><%= JspHelper.escapeXml(attributeValue) %></span>
+				</td>
+			</tr>
+			<% } // end while %>
+		</tbody>
+	</table>
+	<% } // endif%>
 
-<form method="post" action="<%=submitUrl%>">
-  <p style="text-align: center;">
-    <input type="submit" value="Return to session list" />
-  </p>
-</form>
+	<form method="post" action="<%=submitUrl%>">
+		<p style="text-align: center;">
+			<input type="submit" value="Return to session list" />
+		</p>
+	</form>
 
-<%--div style="display: none;">
+	<%--div style="display: none;">
 <p>
     <a href="http://validator.w3.org/check?uri=referer"><img
         src="http://www.w3.org/Icons/valid-html401"

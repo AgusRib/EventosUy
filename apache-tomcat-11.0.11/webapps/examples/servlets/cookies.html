@@ -21,15 +21,23 @@
 </head>
 
 <body bgcolor="#FFFFFF">
-<p><font color="#0000FF"><a href="servlet/CookieExample"><img src="images/execute.gif" align="right" border="0"></a><a href="index.html"><img src="images/return.gif" width="24" height="24" align="right" border="0"></a></font></p>
-<h3>Source Code for Cookie Example<font color="#0000FF"><br>
-  </font> </h3>
-<font color="#0000FF"></font>
-<pre><font color="#0000FF">import</font> java.io.*;
+	<p>
+		<font color="#0000FF"><a href="servlet/CookieExample"><img
+				src="images/execute.gif" align="right" border="0"></a><a
+			href="index.html"><img src="images/return.gif" width="24"
+				height="24" align="right" border="0"></a></font>
+	</p>
+	<h3>
+		Source Code for Cookie Example<font color="#0000FF"><br> </font>
+	</h3>
+	<font color="#0000FF"></font>
+	<pre>
+		<font color="#0000FF">import</font> java.io.*;
 <font color="#0000FF">import</font> jakarta.servlet.*;
 <font color="#0000FF">import</font> jakarta.servlet.http.*;
 
-<font color="#0000FF">public class</font> CookieExample <font color="#0000FF">extends</font> HttpServlet {
+<font color="#0000FF">public class</font> CookieExample <font
+			color="#0000FF">extends</font> HttpServlet {
 
     <font color="#0000FF">public void</font> doGet(HttpServletRequest request, HttpServletResponse response)
     <font color="#0000FF">throws</font> IOException, ServletException
@@ -51,7 +59,8 @@
 
         String name = request.getParameter(&quot;<font color="#009900">cookieName</font>&quot;);
         if (name != null &amp;&amp; name.length() &gt; 0) {
-            String value = request.getParameter(&quot;<font color="#009900">cookieValue</font>&quot;);
+            String value = request.getParameter(&quot;<font
+			color="#009900">cookieValue</font>&quot;);
             Cookie c = new Cookie(name, value);
             response.addCookie(c);
         }

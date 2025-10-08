@@ -1,67 +1,78 @@
 <!DOCTYPE html>
 <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>listarUsuarios</title>
-            <link rel="stylesheet" href="../assets/css/RolVisitante_listarUsuarios.css">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-            <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png"> 
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>listarUsuarios</title>
+<link rel="stylesheet"
+	href="../assets/css/RolVisitante_listarUsuarios.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+<link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">
 
-        </head>
+</head>
 <body>
 
-<header>
-    <div class="conteneder-titulo">
-        <img class="logo" alt="" src="../assets/icons/Logo.png" style="height: 40px">
-        <h1 >
-            <a href="../index.html" style="text-decoration: none; color: inherit;"> Eventos.uy </a>
+	<header>
+		<div class="conteneder-titulo">
+			<img class="logo" alt="" src="../assets/icons/Logo.png"
+				style="height: 40px">
+			<h1>
+				<a href="../index.html"
+					style="text-decoration: none; color: inherit;"> Eventos.uy </a>
 
-        </h1>
-    </div>
-        <nav>
-            <button class="botonIniciarSesion">
-                <div class="header-button">Iniciar sesión</div>
-            </button>
-            <button class="botonRegistrarse">
-                <div class="header-button">Registrarse</div>
-            </button>
-        </nav>
-</header>
+			</h1>
+		</div>
+		<nav>
+			<button class="botonIniciarSesion">
+				<div class="header-button">Iniciar sesión</div>
+			</button>
+			<button class="botonRegistrarse">
+				<div class="header-button">Registrarse</div>
+			</button>
+		</nav>
+	</header>
 
-<div class="contenedor-BuscadorUsuario">
-    <div class="buscadorUsuarios">
-            <input type="search" placeholder="Buscar usuarios registrados" class="barraBusquedaUsuario">
-    <!-- TODO: falta agregar la logica para que cuando toque enter, se busque el usuario -->
-    </div>
-</div>
+	<div class="contenedor-BuscadorUsuario">
+		<div class="buscadorUsuarios">
+			<input type="search" placeholder="Buscar usuarios registrados"
+				class="barraBusquedaUsuario">
+			<!-- TODO: falta agregar la logica para que cuando toque enter, se busque el usuario -->
+		</div>
+	</div>
 
 
-<!-- TODO: linkear cada usuario a su respectivo perfil usando href sobre el texto del nickname-->
-<div class="contenedor-listadoUsuarios">
-    <div class="listadoUsarios">
-            <div class="listadoUsuarios_itemUsuario">
-                    <div class="contenedor-foto">
-                            <img class="foto-usuario" src="../assets/images/IMG-US01.jpg" alt="atorresFoto" style="height: 127px;">
-                    </div>
-                    <div class="contenedor-NickRolUser">
-                            <div class="nickname"><a href="../pages/atorres_ConsultaUsuario.html">atorres</a></div>
-                            <div class="rol">Asistente</div>
-                    </div>
-            </div>
+	<!-- TODO: linkear cada usuario a su respectivo perfil usando href sobre el texto del nickname-->
+	<div class="contenedor-listadoUsuarios">
+		<div class="listadoUsarios">
+			<div class="listadoUsuarios_itemUsuario">
+				<div class="contenedor-foto">
+					<img class="foto-usuario" src="../assets/images/IMG-US01.jpg"
+						alt="atorresFoto" style="height: 127px;">
+				</div>
+				<div class="contenedor-NickRolUser">
+					<div class="nickname">
+						<a href="../pages/atorres_ConsultaUsuario.html">atorres</a>
+					</div>
+					<div class="rol">Asistente</div>
+				</div>
+			</div>
 
-            <div class="listadoUsuarios_itemUsuario">
-                    <div class="contenedor-foto">
-                            <img class="foto-usuario" src="../assets/images/IMG-US04.jpeg" alt="miseventosFoto" style="height: 100px;">
-                    </div>
-                    <div class="contenedor-NickRolUser">
-                            <div class="nickname"><a href="../pages/miseventos_ConsultaUsuario_vistaExterna.html">miseventos</a></div>
-                            <div class="rol">Organizador</div>
-                    </div>
-            </div>
+			<div class="listadoUsuarios_itemUsuario">
+				<div class="contenedor-foto">
+					<img class="foto-usuario" src="../assets/images/IMG-US04.jpeg"
+						alt="miseventosFoto" style="height: 100px;">
+				</div>
+				<div class="contenedor-NickRolUser">
+					<div class="nickname">
+						<a href="../pages/miseventos_ConsultaUsuario_vistaExterna.html">miseventos</a>
+					</div>
+					<div class="rol">Organizador</div>
+				</div>
+			</div>
 
-    </div>
-</div>
+		</div>
+	</div>
 
 </body>
 
