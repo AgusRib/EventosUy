@@ -39,8 +39,6 @@ public class ServletEdicion extends HttpServlet {
         
         switch (path) {
             case "/detalleEdicion": {
-
-				// In a real app: IControllerEvento ICE = new ControllerEvento();
             	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
                 // Example: get id param and set an attribute for the JSP
                 String nombre = request.getParameter("nombre");
@@ -48,16 +46,13 @@ public class ServletEdicion extends HttpServlet {
                 // In a real app: fetch the object from DB/service by id
                 try {
 					DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(nombre);
-					response.getWriter().append(ed.getCiudad());
+	                request.setAttribute("edicion", ed);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					response.getWriter().append(e.getMessage());
 				}
-                // request.setAttribute("edicion", ed);
-                request.setAttribute("edicionId", nombre);
-                // Forward to the JSP that will render the detail
-                //request.getRequestDispatcher("/WEB-INF/pages/detalleEdicion.jsp").forward(request, response);
-                
+                // Forward to the JSP that will render the detail 
+                request.getRequestDispatcher("/WEB-INF/pages/detalleEdicion.jsp").forward(request, response);
                 return;
             }
             case "/AltaEdicion": {
