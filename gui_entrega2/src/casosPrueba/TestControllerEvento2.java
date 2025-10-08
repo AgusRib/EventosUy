@@ -9,11 +9,11 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import logica.DTAsistente;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.IControllerUsuario;
-import logica.ManejadorEvento;
+import logica.controllers.IControllerEvento;
+import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DTAsistente;
+import logica.manejadores.ManejadorEvento;
+import logica.models.Factory;
 
 
 public class TestControllerEvento2 {
@@ -31,7 +31,7 @@ public class TestControllerEvento2 {
 		categorias.add("CatA");
 		
 		try {
-			ICU.ingresarOrganizador("Jorge","Jorge","a","b","c");
+			ICU.ingresarOrganizador("Jorge","Jorge","d","a","b","c");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,12 +53,12 @@ public class TestControllerEvento2 {
 		
 		
 		// Alta de patrocinio
-		ICE.altaPatrocinio("EdTest", "InstTest", logica.NivelPatrocinio.Oro, 1000.0,"pinguinesco", 0, "COD123");
+		ICE.altaPatrocinio("EdTest", "InstTest", logica.enumerators.NivelPatrocinio.Oro, 1000.0,"pinguinesco", 0, "COD123");
 
 		
 		
 		try {
-			ICU.ingresarAsistente("willyrex", "willyrex", "z", "b", LocalDate.of(2000, 1, 1));
+			ICU.ingresarAsistente("willyrex", "willyrex","l", "z", "b", LocalDate.of(2000, 1, 1));
 		}
 		catch (Exception e) {
 			e.printStackTrace();

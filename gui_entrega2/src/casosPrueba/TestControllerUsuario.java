@@ -7,12 +7,12 @@ import java.util.HashSet;
 
 import org.junit.Test;
 
-import logica.DataUsuario;
-import logica.DataUsuario.TipoUsuario;
-import logica.Factory;
-import logica.IControllerUsuario;
-import logica.ManejadorUsuario;
-import logica.Organizador;
+import logica.models.Factory;
+import logica.models.Organizador;
+import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DataUsuario;
+import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.manejadores.ManejadorUsuario;
 
 public class TestControllerUsuario {
 		
@@ -25,15 +25,15 @@ public class TestControllerUsuario {
 		//TEST ALTA DE ASISTENTE
 		try {
 			ICU.altaInstitucion("Instituto Tecnologico", "Instituto de tecnologia de punta", "www.it.com");
-			ICU.ingresarAsistente("ignaciotema", "Ignacio", "ignaciotema@gmail.com", "Tejera", LocalDate.of(2006, 02, 18));
+			ICU.ingresarAsistente("ignaciotema", "Ignacio", "ignaciotema@gmail.com","a", "Tejera", LocalDate.of(2006, 02, 18));
 			ICU.agregarAsistente("ignaciotema", "Instituto Tecnologico");
-			ICU.ingresarAsistente("ignaciotema", "Nombre", "correo@gmail.com", "Apellido", LocalDate.of(2000, 01, 01));
+			ICU.ingresarAsistente("ignaciotema", "Nombre", "correo@gmail.com","a", "Apellido", LocalDate.of(2000, 01, 01));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
-			ICU.ingresarAsistente("otroNick", "Nombre", "ignaciotema@gmail.com", "Apellido", LocalDate.of(2000, 01, 01));
+			ICU.ingresarAsistente("otroNick", "Nombre", "ignaciotema@gmail.com","a", "Apellido", LocalDate.of(2000, 01, 01));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,14 +63,14 @@ public class TestControllerUsuario {
 		
 		//TEST ALTA DE ORGANIZADOR
 		try {
-			ICU.ingresarOrganizador("nachito", "Ignacio", "nachito@gmail.com", "descripcion generica 123", "www.nachito.com");
-			ICU.ingresarOrganizador("nachito", "Nombre", "correo@gmail.com", "descripcion generica 123", "www.nachito.com");
+			ICU.ingresarOrganizador("nachito", "Ignacio", "nachito@gmail.com","a", "descripcion generica 123", "www.nachito.com");
+			ICU.ingresarOrganizador("nachito", "Nombre", "correo@gmail.com","a", "descripcion generica 123", "www.nachito.com");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
-			ICU.ingresarOrganizador("otroNick", "Nombre", "nachito@gmail.com", "Apellido", "www.nachito.com");
+			ICU.ingresarOrganizador("otroNick", "Nombre", "nachito@gmail.com","a", "Apellido", "www.nachito.com");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,14 +83,14 @@ public class TestControllerUsuario {
 	
 		
 		try {
-			ICU.ingresarOrganizador("ignaciotema", "Nombre", "correo232@gmail.com","desc", "www.web.com");
+			ICU.ingresarOrganizador("ignaciotema", "Nombre", "correo232@gmail.com","a","desc", "www.web.com");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
-			ICU.ingresarAsistente("jorge", "Jorge", "jorge@gmail.com", "Gonzalez", LocalDate.of(2005, 05, 05));
+			ICU.ingresarAsistente("jorge", "Jorge", "jorge@gmail.com","a", "Gonzalez", LocalDate.of(2005, 05, 05));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

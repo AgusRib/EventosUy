@@ -3,13 +3,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import logica.Asistente;
-import logica.DTRegistro;
-import logica.Edicion;
-import logica.IControllerEvento;
-import logica.ManejadorEdicion;
-import logica.ManejadorUsuario;
-import logica.Registro;
+import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTRegistro;
+import logica.manejadores.ManejadorEdicion;
+import logica.manejadores.ManejadorUsuario;
+import logica.models.Asistente;
+import logica.models.Edicion;
+import logica.models.Registro;
 
 public class TestDTRegistro {
 	@Test
@@ -22,12 +22,12 @@ public class TestDTRegistro {
 		}
 		
 		
-		IControllerEvento ICE = logica.Factory.getInstance().getControllerEvento();
+		IControllerEvento ICE = logica.models.Factory.getInstance().getControllerEvento();
 		
 		ManejadorEdicion me = ManejadorEdicion.getInstance();
 		Edicion ed = me.encontrarEdicion("Maratón de Montevideo 2025");
 		DTRegistro dt = ICE.infoRegistro(ed.getNombre(),"sofirod");
-		ManejadorUsuario mU= logica.ManejadorUsuario.getInstance();
+		ManejadorUsuario mU= logica.manejadores.ManejadorUsuario.getInstance();
 		Asistente asis = mU.obtenerAsistente("sofirod");
 		Registro reg=asis.getRegistro(ed);
 		

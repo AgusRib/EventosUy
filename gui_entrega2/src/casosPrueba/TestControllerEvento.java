@@ -9,10 +9,10 @@ import org.junit.Test;
 
 import excepciones.EmailRepetido;
 import excepciones.NombreUsuarioExistente;
-import logica.Factory;
-import logica.IControllerEvento;
-import logica.IControllerUsuario;
-import logica.ManejadorEvento;
+import logica.controllers.IControllerEvento;
+import logica.controllers.IControllerUsuario;
+import logica.manejadores.ManejadorEvento;
+import logica.models.Factory;
 
 public class TestControllerEvento {
 	
@@ -57,7 +57,7 @@ public class TestControllerEvento {
 		categoriasSet.add("Categoria2");
 		assertEquals(true, ICE.listarCategorias().equals(categoriasSet));
 		try {
-			ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com", "Muy buenas a todos guapisimos", "www.v777.com");
+			ICU.ingresarOrganizador("Vegetta", "Samuel", "vegetta@gmail.com","passowrd", "Muy buenas a todos guapisimos", "www.v777.com");
 		} catch (NombreUsuarioExistente e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
