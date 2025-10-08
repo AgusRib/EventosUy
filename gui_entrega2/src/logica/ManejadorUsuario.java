@@ -54,6 +54,10 @@ public class ManejadorUsuario {
 	public HashSet<String> obtenerUsuarios() {
 		return new HashSet<String>(usuarios.keySet());
 	}
+	
+	public HashSet<Usuario> obtenerUsuariosObj() {
+		return new HashSet<Usuario>(usuarios.values());
+	}
 
 	public HashSet<String> obtenerAsistentes() {
 		HashSet<String> asistentes = new HashSet<String>();
