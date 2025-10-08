@@ -6,11 +6,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import logica.IControllerUsuario;
-import logica.ControllerUsuario;
-import logica.Usuario;
 import logica.ManejadorUsuario;
+import logica.models.Usuario;
 
 
 /**
