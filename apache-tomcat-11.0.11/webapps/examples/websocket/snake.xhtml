@@ -17,8 +17,9 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>Apache Tomcat WebSocket Examples: Multiplayer Snake</title>
-    <style type="text/css"><![CDATA[
+<title>Apache Tomcat WebSocket Examples: Multiplayer Snake</title>
+<style type="text/css">
+	<![CDATA[
         #playground {
             width: 640px;
             height: 480px;
@@ -49,15 +50,19 @@
     ]]></style>
 </head>
 <body>
-    <div class="noscript"><h2 style="color: #ff0000">Seems your browser doesn't support JavaScript! Websockets rely on JavaScript being enabled. Please enable
-    JavaScript and reload this page!</h2></div>
-    <div style="float: left">
-        <canvas id="playground" width="640" height="480"/>
-    </div>
-    <div id="console-container">
-        <div id="console"/>
-    </div>
-    <script type="text/javascript"><![CDATA[
+	<div class="noscript">
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			JavaScript! Websockets rely on JavaScript being enabled. Please
+			enable JavaScript and reload this page!</h2>
+	</div>
+	<div style="float: left">
+		<canvas id="playground" width="640" height="480" />
+	</div>
+	<div id="console-container">
+		<div id="console" />
+	</div>
+	<script type="text/javascript">
+		<![CDATA[
         "use strict";
 
         var Game = {};

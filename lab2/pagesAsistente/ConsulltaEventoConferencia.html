@@ -1,70 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consulta Evento - Eventos.uy</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
-  <link rel="stylesheet" href="../assets/css/styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-  <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulta Evento - Eventos.uy</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+<link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
 </head>
 
 <body>
-   <header>
-        <nav class="navbar bg-white shadow-sm">
-      <div class="d-flex align-items-center">
-        <a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="index.html">Eventos.uy</a>
-      </div>
-            <div class="d-flex justify-content-end align-items-center">
-                <div class="dropdown">
-                    <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown"
-                        data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                        <img src="../assets/images/IMG-US01.jpg" alt="JA" class="rounded-circle"
-                            style="width:38px; height:38px; object-fit:cover; border:1px solid rgba(0,0,0,.06);">
-                        <span>Ana</span>
-                        <i class="bi bi-chevron-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-            <li><a class="dropdown-item" href="MiPerfil-atorres.html">Mi perfil</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item text-danger" href="../pagesVisitante/index.html" style="color:#dc3545 !important;">Cerrar sesión</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+	<header>
+		<nav class="navbar bg-white shadow-sm">
+			<div class="d-flex align-items-center">
+				<a class="fw-bold text-dark fs-2 ms-4 text-decoration-none"
+					href="index.html">Eventos.uy</a>
+			</div>
+			<div class="d-flex justify-content-end align-items-center">
+				<div class="dropdown">
+					<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
+						href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
+						aria-expanded="false" aria-haspopup="true"> <img
+						src="../assets/images/IMG-US01.jpg" alt="JA"
+						class="rounded-circle"
+						style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+						<span>Ana</span> <i class="bi bi-chevron-down"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
+						aria-labelledby="userMenuDropdown">
+						<li><a class="dropdown-item" href="MiPerfil-atorres.html">Mi
+								perfil</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item text-danger"
+							href="../pagesVisitante/index.html"
+							style="color: #dc3545 !important;">Cerrar sesión</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
 
 
-    <div class="container-fluid px-4 mt-4">
-        <div class="carta-de-eventos mb-4 d-flex justify-content-center">
-            <input type="search" class="busq" placeholder="Buscar eventos, ediciones...">
-        </div>
-    </div>
-    
-    <div class="container-fluid px-4 mt-3">
-  <div class="row">
-    
-    <!-- Columna derecha: categorías estilo index -->
-    <div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
-      <div class="carta-categorias align-items-center h-100">
-        <h3 class="categorias fw-bold">Categorías</h3>
-        <div class="form-check mb-2 d-flex justify-content-center">
-          <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
-          <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
-        </div>
-        <li class="list-group w-100 overflow-auto text-center" multiple>
-            <a href="#" value="tecnologia" class="list-group-item categoria-link">Tecnología</a>
-            <a href="#" value="innovacion" class="list-group-item categoria-link">Innovación</a>
-            <a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
-            <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
-        </li>
-      </div>
-<script>
+	<div class="container-fluid px-4 mt-4">
+		<div class="carta-de-eventos mb-4 d-flex justify-content-center">
+			<input type="search" class="busq"
+				placeholder="Buscar eventos, ediciones...">
+		</div>
+	</div>
+
+	<div class="container-fluid px-4 mt-3">
+		<div class="row">
+
+			<!-- Columna derecha: categorías estilo index -->
+			<div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
+				<div class="carta-categorias align-items-center h-100">
+					<h3 class="categorias fw-bold">Categorías</h3>
+					<div class="form-check mb-2 d-flex justify-content-center">
+						<input class="form-check-input" type="checkbox"
+							id="checkboxEdiciones"> <label
+							class="form-check-label ms-2" for="checkboxEdiciones">Ver
+							ediciones</label>
+					</div>
+					<li class="list-group w-100 overflow-auto text-center" multiple>
+						<a href="#" value="tecnologia"
+						class="list-group-item categoria-link">Tecnología</a> <a href="#"
+						value="innovacion" class="list-group-item categoria-link">Innovación</a>
+						<a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
+						<a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
+					</li>
+				</div>
+				<script>
   // Redirige según el estado del checkbox al hacer click en una categoría
   document.addEventListener('DOMContentLoaded', function() {
     const checkboxEdiciones = document.getElementById('checkboxEdiciones');
@@ -81,85 +96,105 @@
     });
   });
 </script>
-    </div>
-  
-    <!-- Columna izquierda: imagen -->
-    <div class="col-md-4 col-lg-3 col-xl-2 px-5">
-      <img src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" alt="Imagen del Evento" class="img-fluid rounded imagen-evento">
-    </div>
+			</div>
 
-    <!-- Columna central: info del evento -->
-    <div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-sm-3 mt-md-0 info-evento">
-      <h1 class="mb-3">CONFERENCIA DE TECNOLOGÍA</h1>
-      <p class="mb-2"><strong>Sigla:</strong> CONFTEC</p>
-      <p class="mb-4">
-        <strong>Descripción:</strong> Evento sobre innovación y tecnología
-      </p>
-      <p class="mb-2"><strong>Categorías:</strong> Tecnología, Innovación</p>
-      <p class="mb-2"><strong>Fecha:</strong> 10/01/2025</p>
-    </div>
+			<!-- Columna izquierda: imagen -->
+			<div class="col-md-4 col-lg-3 col-xl-2 px-5">
+				<img
+					src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
+					alt="Imagen del Evento" class="img-fluid rounded imagen-evento">
+			</div>
 
-    
+			<!-- Columna central: info del evento -->
+			<div
+				class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-sm-3 mt-md-0 info-evento">
+				<h1 class="mb-3">CONFERENCIA DE TECNOLOGÍA</h1>
+				<p class="mb-2">
+					<strong>Sigla:</strong> CONFTEC
+				</p>
+				<p class="mb-4">
+					<strong>Descripción:</strong> Evento sobre innovación y tecnología
+				</p>
+				<p class="mb-2">
+					<strong>Categorías:</strong> Tecnología, Innovación
+				</p>
+				<p class="mb-2">
+					<strong>Fecha:</strong> 10/01/2025
+				</p>
+			</div>
 
-<!-- Cards de Ediciones - estilo index -->
-<div class="container-fluid px-4 mt-5">
-  <h4 class="titulo-ediciones">Ediciones del Evento</h4>
-  <div class="row g-4">
-    
-    <!-- Card Edición 2026 -->
-    <div class="col-md-6">
-      <a class="text-decoration-none" href="ConsultaDeEdicionTecPunta2026.html" data-hotkey="5" role="button">
-        <div class="carta-edicion p-3">
-          <div class="text-heading mb-2">
-            <div class="search-text-heading fw-bold">Tecnología Punta del Este 2026</div>
-          </div>
-          <div class="avatar-block d-flex">
-            <div class="avatar me-3">
-              <img class="shape-icon rounded" alt="" src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" width="120">
-            </div>
-            <div class="info gap-1">
-              <div class="d-flex align-items-center mb-1">
-                <i class="bi bi-geo-alt-fill mx-2"></i>
-                <div class="description">Punta del Este, Uruguay</div>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bi bi-calendar-fill mx-2"></i>
-                <div class="description">06/04/2026 - 10/04/2026</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
 
-    <!-- Card Edición 2026 web summit -->
-    <div class="col-md-6">
-      <a class="text-decoration-none" href="ConsultaDeEdicionWebSummit2026.html" data-hotkey="5" role="button">
-        <div class="carta-edicion p-3">
-          <div class="text-heading mb-2">
-            <div class="search-text-heading fw-bold">Web Summit 2026 </div>
-          </div>
-          <div class="avatar-block d-flex">
-            <div class="avatar me-3">
-              <img class="shape-icon rounded" alt="" src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" width="120">
-            </div>
-            <div class="info gap-1">
-              <div class="d-flex align-items-center mb-1">
-                <i class="bi bi-geo-alt-fill mx-2"></i>
-                <div class="description">Lisboa, Portugal</div>
-              </div>
-              <div class="d-flex align-items-center">
-                <i class="bi bi-calendar-fill mx-2"></i>
-                <div class="description">13/01/2026 - 01/02/2026</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
-    </div>
-  
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+			<!-- Cards de Ediciones - estilo index -->
+			<div class="container-fluid px-4 mt-5">
+				<h4 class="titulo-ediciones">Ediciones del Evento</h4>
+				<div class="row g-4">
+
+					<!-- Card Edición 2026 -->
+					<div class="col-md-6">
+						<a class="text-decoration-none"
+							href="ConsultaDeEdicionTecPunta2026.html" data-hotkey="5"
+							role="button">
+							<div class="carta-edicion p-3">
+								<div class="text-heading mb-2">
+									<div class="search-text-heading fw-bold">Tecnología Punta
+										del Este 2026</div>
+								</div>
+								<div class="avatar-block d-flex">
+									<div class="avatar me-3">
+										<img class="shape-icon rounded" alt=""
+											src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
+											width="120">
+									</div>
+									<div class="info gap-1">
+										<div class="d-flex align-items-center mb-1">
+											<i class="bi bi-geo-alt-fill mx-2"></i>
+											<div class="description">Punta del Este, Uruguay</div>
+										</div>
+										<div class="d-flex align-items-center">
+											<i class="bi bi-calendar-fill mx-2"></i>
+											<div class="description">06/04/2026 - 10/04/2026</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+
+					<!-- Card Edición 2026 web summit -->
+					<div class="col-md-6">
+						<a class="text-decoration-none"
+							href="ConsultaDeEdicionWebSummit2026.html" data-hotkey="5"
+							role="button">
+							<div class="carta-edicion p-3">
+								<div class="text-heading mb-2">
+									<div class="search-text-heading fw-bold">Web Summit 2026
+									</div>
+								</div>
+								<div class="avatar-block d-flex">
+									<div class="avatar me-3">
+										<img class="shape-icon rounded" alt=""
+											src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
+											width="120">
+									</div>
+									<div class="info gap-1">
+										<div class="d-flex align-items-center mb-1">
+											<i class="bi bi-geo-alt-fill mx-2"></i>
+											<div class="description">Lisboa, Portugal</div>
+										</div>
+										<div class="d-flex align-items-center">
+											<i class="bi bi-calendar-fill mx-2"></i>
+											<div class="description">13/01/2026 - 01/02/2026</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+
+				</div>
+				<script
+					src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </html>
 
 

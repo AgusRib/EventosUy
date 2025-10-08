@@ -24,47 +24,48 @@
 %>
 
 <body bgcolor=<%= cb.getColor1() %>>
-<font size=6 color=<%= cb.getColor2() %>>
-<p>
+	<font size=6 color=<%= cb.getColor2() %>>
+		<p>
 
-<% if (cb.getHint()==true) { %>
+			<% if (cb.getHint()==true) { %>
+		
+		<p>Hint #1: Vampires prey at night!
+		<p>
+		<p>
+			Hint #2: Nancy without the n.
 
-    <p> Hint #1: Vampires prey at night!
-    <p>  <p> Hint #2: Nancy without the n.
+			<% } %>
 
-<% } %>
+			<% if  (cb.getSuccess()==true) { %>
+		
+		<p>
+			CONGRATULATIONS!!
+			<% if  (cb.getHintTaken()==true) { %>
+		
+		<p>
+			( although I know you cheated and peeked into the hints)
 
-<% if  (cb.getSuccess()==true) { %>
+			<% } %>
 
-    <p> CONGRATULATIONS!!
-    <% if  (cb.getHintTaken()==true) { %>
+			<% } %>
+		
+		<p>
+			Total attempts so far:
+			<%= cb.getAttempts() %>
+		<p>
+		<p>
+		<form method=POST action=colrs.jsp>
 
-        <p> ( although I know you cheated and peeked into the hints)
+			Color #1: <input type=text name=color1 size=16> <br>
 
-    <% } %>
+			Color #2: <input type=text name=color2 size=16>
 
-<% } %>
+			<p>
 
-<p> Total attempts so far: <%= cb.getAttempts() %>
-<p>
+				<input type=submit name=action value="Submit"> <input
+					type=submit name=action value="Hint">
+		</form>
 
-<p>
-
-<form method=POST action=colrs.jsp>
-
-Color #1: <input type=text name= color1 size=16>
-
-<br>
-
-Color #2: <input type=text name= color2 size=16>
-
-<p>
-
-<input type=submit name=action value="Submit">
-<input type=submit name=action value="Hint">
-
-</form>
-
-</font>
+	</font>
 </body>
 </html>

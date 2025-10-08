@@ -19,7 +19,8 @@
 <title>Error Page For Examples</title>
 </head>
 <body bgcolor="white">
-Invalid user name and/or password, please try
-<a href='<%= response.encodeURL(application.getContextPath() + "/jsp/security/protected/index.jsp") %>'>again</a>.
+	Invalid user name and/or password, please try
+	<a
+		href='<%= response.encodeURL(application.getContextPath() + "/jsp/security/protected/index.jsp") %>'>again</a>.
 </body>
 </html>

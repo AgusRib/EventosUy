@@ -14,37 +14,31 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="sessions.Item" %>
+<%@ page import="sessions.Item"%>
 <html>
 <head>
 <title>Shopping Cart Example</title>
 </head>
 
 <body bgcolor="white">
-<font size = 5 color="#CC0000">
+	<font size=5 color="#CC0000">
 
-<form type=POST action=carts.jsp>
-<br>
-Please enter item to add or remove:
-<br>
-Select Item:
+		<form type=POST action=carts.jsp>
+			<br> Please enter item to add or remove: <br> Select Item:
 
-<select name="itemId">
-<%
+			<select name="itemId">
+				<%
   for (Item item : Item.values()) {
 %>
-  <option value="<%= item.ordinal() %>"><%= item.getTitle() %></option>
-<%
+				<option value="<%= item.ordinal() %>"><%= item.getTitle() %></option>
+				<%
   }
 %>
-</select>
+			</select> <br> <br> <INPUT TYPE=submit name="submit" value="add">
+			<INPUT TYPE=submit name="submit" value="remove">
 
-<br> <br>
-<INPUT TYPE=submit name="submit" value="add">
-<INPUT TYPE=submit name="submit" value="remove">
+		</form>
 
-</form>
-
-</font>
+	</font>
 </body>
 </html>

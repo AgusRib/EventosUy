@@ -14,7 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page session="false" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page session="false" pageEncoding="UTF-8"
+	contentType="text/html; charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,15 +24,15 @@
 </head>
 <body>
 
-<div style="float: left; padding: 10px;">
-<img src="images/tomcat.gif" alt="" />
-</div>
-<h1>Sample Application JSP Page</h1>
-This is the output of a JSP page that is part of the Hello, World
-application.
+	<div style="float: left; padding: 10px;">
+		<img src="images/tomcat.gif" alt="" />
+	</div>
+	<h1>Sample Application JSP Page</h1>
+	This is the output of a JSP page that is part of the Hello, World
+	application.
 
 
-<%= new String("Hello!") %>
+	<%= new String("Hello!") %>
 
 </body>
 </html>
