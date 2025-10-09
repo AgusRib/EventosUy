@@ -3,10 +3,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.models.Edicion;
+import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTDetalleEdicion;
+import logica.models.Factory;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
+
+import casosPrueba.CargaDatos;
+
 
 /**
  * Servlet implementation class ServletEdicion
@@ -29,18 +36,23 @@ public class ServletEdicion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Use servletPath to determine which mapping was called
         String path = request.getServletPath();
-
+        
         switch (path) {
             case "/detalleEdicion": {
+            	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
                 // Example: get id param and set an attribute for the JSP
-                String id = request.getParameter("id");
+                String nombre = request.getParameter("nombre");
+                response.getWriter().append("Detalle de Edicion: ").append(nombre).append("\n");
                 // In a real app: fetch the object from DB/service by id
-                Edicion ed = edicionService.findById(id);
-                // request.setAttribute("edicion", ed);
-                request.setAttribute("edicionId", id);
-                // Forward to the JSP that will render the detail
-                //request.getRequestDispatcher("/WEB-INF/pages/detalleEdicion.jsp").forward(request, response);
-                response.getWriter().append(id);
+                try {
+					DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(nombre);
+	                request.setAttribute("edicion", ed);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					response.getWriter().append(e.getMessage());
+				}
+                // Forward to the JSP that will render the detail 
+                request.getRequestDispatcher("/WEB-INF/pages/detalleEdicion.jsp").forward(request, response);
                 return;
             }
             case "/AltaEdicion": {
