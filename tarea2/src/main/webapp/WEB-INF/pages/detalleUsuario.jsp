@@ -1,9 +1,9 @@
 <%@page import="java.util.Collection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!-- %@page errorPage="/WEB-INF/errorPages/500.jsp"% -->
 <%@page import="ServletUsuario" %>
 <%@page import="logica.IControllerUsuario" %>
 <%@page import="dataTypes.DataUsuario" %>
+<%@page import="dataTypes.DTOrganizador" %>
 
 
 <!doctype html>
@@ -184,27 +184,34 @@ body.with-collapsed {
 										<div class="nickname">
 											<b><% usuario.getNickname(); %>></b>
 										</div>
-										<div class="rol"><% usuario.getTipo(;) %></div>
+										<div class="rol"><% usuario.getTipo(); %></div>
 									</div>
 								</div>
 								<!-- der: atributos -->
 								<div class="d-flex flex-column contenedor-datosUsuario">
 									<div class="datosUsuario">
 										<div class="nombre">
-											<u>Nombre:</u> MisEventos
+											<u>Nombre:</u> <% usuario.getNombre(); %>>
 										</div>
 										<div class="email">
-											<u>Email:</u> contacto@miseventos.com
+											<u>Email:</u> <% usuario.getEmail(); %>>
 										</div>
 										
-										<% if (\usuario.getTipo()=="Organizador") { %>
+										<% if ( usuario.getTipo()=="Organizador") { %>
 										<div class="fechaNacimiento">
 											<u>Descripción:</u> <% usuario.getDescripcion(); %>
 										</div>
 										<div class="institucion">
-											<u>Web:</u> <a href="https://miseventos.com" target="_blank">https://miseventos.com</a>
+											<u>Web:</u> <a href=" <% usuario.getWeb(); %>" target="_blank"> <% usuario.getWeb(); %></a>
 										</div>
-										<% } else{  %>
+										<% } else {  %>
+										<div class="fechaNacimiento">
+											<u>Fecha de Nacimiento:</u> <% usuario.getFechaNacimiento(); %>
+										</div>
+										<div class="institucion">
+											<u>Institución:</u> <% usuario.getInstitucion(); %>
+										</div>
+										<% } %>
 									</div>
 								</div>
 							</div>
@@ -215,9 +222,7 @@ body.with-collapsed {
 									<div class="mb-2">
 										<a class="action-card" href="ListaEdiciones.html"
 											data-hotkey="2" role="button">
-											<div
-												class="action-icon d-flex align-items-center justify-content-center rounded"
-												style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
+											<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
 												<i class="bi bi-collection-fill"></i>
 											</div>
 											<div class="flex-fill ms-2">
