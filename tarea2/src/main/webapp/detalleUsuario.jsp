@@ -8,9 +8,6 @@
 
 <!doctype html>
 
-<% DataUsuario usuario = (Usuario)
-		request.getAttribute("usuarios"); %>
-
 <html lang="es">
 <head>
 <meta charset="utf-8" />
@@ -159,38 +156,11 @@ body.with-collapsed {
 </head>
 
 <body id="body-pd">
-	<header>
-		<nav class="navbar bg-white shadow-sm">
-			<div class="text-center align-items-center">
-				<a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
-					href="index.html"><b>Eventos.uy</b></a>
-			</div>
-			<div class="d-flex justify-content-end align-items-center">
-				<div class="dropdown">
-					<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
-						href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
-						aria-expanded="false" aria-haspopup="true"> <img
-						src="../assets/images/IMG-US04.jpeg" alt="JA"
-						class="rounded-circle"
-						style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-						<span>usuario.getNombre()</span> <i class="bi bi-chevron-down"></i>
-					</a>
-					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
-						aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="MiPerfil-misEventos.html">Mi
-								perfil</a></li>
-						<li>
-							<hr class="dropdown-divider">
-						</li>
-						<li><a class="dropdown-item text-danger"
-							href="../pagesVisitante/index.html"
-							style="color: #dc3545 !important;">Cerrar sesión</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
-
+	
+<% DataUsuario usuario = (DataUsuario)
+		request.getAttribute("usuarios"); %>
+	String tipo = usuario.getTipo();
+		
 
 	<!-- Contenido -->
 	<main class="contUser" id="mi-cuenta-user">
@@ -212,9 +182,9 @@ body.with-collapsed {
 									</div>
 									<div class="contenedor-NickRolUser text-center">
 										<div class="nickname">
-											<b>miseventos</b>
+											<b><% usuario.getNickname(); %>></b>
 										</div>
-										<div class="rol">Organizador</div>
+										<div class="rol"><% usuario.getTipo(;) %></div>
 									</div>
 								</div>
 								<!-- der: atributos -->
@@ -226,12 +196,15 @@ body.with-collapsed {
 										<div class="email">
 											<u>Email:</u> contacto@miseventos.com
 										</div>
+										
+										<% if (\usuario.getTipo()=="Organizador") { %>
 										<div class="fechaNacimiento">
-											<u>Descripción:</u> Empresa de organizacion de eventos.
+											<u>Descripción:</u> <% usuario.getDescripcion(); %>
 										</div>
 										<div class="institucion">
 											<u>Web:</u> <a href="https://miseventos.com" target="_blank">https://miseventos.com</a>
 										</div>
+										<% } else{  %>
 									</div>
 								</div>
 							</div>
