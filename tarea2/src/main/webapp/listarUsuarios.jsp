@@ -1,8 +1,9 @@
-<%@page import="com.gamebook.model.Usuario"%>
 <%@page import="java.util.Collection"%>
-<%@page import="logica.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page errorPage="/WEB-INF/errorPages/500.jsp"%>
+<!-- %@page errorPage="/WEB-INF/errorPages/500.jsp"% -->
+<%@page import="ServletUsuario" %>
+<%@page import="logica.IControllerUsuario" %>
+<%@page import="dataTypes.DataUsuario" %>
 
 
 <!doctype html>
@@ -38,10 +39,12 @@
 			
 						<div class="col-md-8">
 						<% 
-							HashSet<Usuario> usuarios = (HashSet<Usuario>)
+							Set<DataUsuario> usuarios = (Set<Usuario>)
 									request.getAttribute("usuarios");
 			
-							for(Usuario usuario: usuarios){
+							for(DataUsuario usuario: usuarios){
+								
+								
 						%>
 						
 							<div class="card rounded-5 mb-3">
@@ -56,30 +59,13 @@
 										<div class="col">
 											<div class="card-body ">
 												<h5 class="card-title mb-1"><% usuario.getNickname() %></h5>
-												<p class="card-text text-secondary mb-0">Asistente</p>
+												<p class="card-text text-secondary mb-0"><% usuario.getTipo() %>></p>
 											</div>
 										</div>
 									</div>
 								</a>
 							</div>
 			
-							<div class="card rounded-5 mb-3">
-								<a href="MiPerfil-misEventos.html">
-									<div class="user row g-0 align-items-center">
-										<div class="col-auto">
-											<img src="../assets/images/IMG-US04.jpeg" alt="miseventosFoto"
-												class="img-fluid rounded-circle m-3"
-												style="width: 90px; height: 90px; object-fit: cover;">
-										</div>
-										<div class="col">
-											<div class="card-body">
-												<h5 class="card-title mb-1">miseventos</h5>
-												<p class="card-text text-secondary mb-0">Organizador</p>
-											</div>
-										</div>
-									</div>
-								</a>
-							</div>
 						</div>
 					</div>
 				</main>
@@ -90,35 +76,4 @@
 
 
 </html>
-
-
-	<!-- <div id="listar" class="main">
-		< % 
-				HashSet<Usuario> usuarios = (HashSet<Usuario>)
-						request.getAttribute("usuarios");
-
-				for(Usuario usuario: usuarios){
-			%>
-		<div class="usuario">
-			<img src="media/images/defecto.gif" alt="foto" />
-
-			<div class="derecha">
-				<a class="nombre" href="?usuario=<%= usuario.getEmail()  %>"> <%= usuario.getNombre() %>
-				</a> <span class="email"> <%= usuario.getEmail() %>
-				</span>
-			</div>
-		</div>
-		< % } %>
-	</div>
-
-
-	<jsp:include page="/WEB-INF/template/footer.jsp" /> -->
-
-
-
-
-
-	<!-- TODO: linkear cada usuario a su respectivo perfil usando href sobre el texto del nickname-->
-	
-
 		
