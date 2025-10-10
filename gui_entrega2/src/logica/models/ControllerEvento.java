@@ -92,14 +92,8 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public Set<String> listarPatrocinios(String nombreEdi) {
-		Set<String> listaPat = new LinkedHashSet<>();
-		
-		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
-		listaPat = edi.getPatrocinios();
-		
-		return listaPat;
+	public Set<String> listarPatrocinios(String nombreEdi) {		
+		return ManejadorEdicion.getInstance().encontrarEdicion(nombreEdi).getPatrocinios();
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import=logica.enumerators.* %>
+<%@ page import="logica.enumerators.*" %>
 <header>
 	
 		<nav class="navbar bg-white shadow-sm" style="height: 86px;">

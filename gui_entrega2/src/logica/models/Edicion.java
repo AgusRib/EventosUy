@@ -109,6 +109,7 @@ public class Edicion {
 		if( p==null) return null;
 		else {
 		return new DTPatrocinio(
+				nombreInstitucion,
 		        p.getFecha(),
 		        p.getMonto(),
 		        p.getCodigo(),
@@ -126,7 +127,7 @@ public class Edicion {
 	            nombresTiposRegistros.add(tr.getNombre());
 	        }
 		}
-		Set<String> nombresInstituciones = new LinkedHashSet<>(patrociniosPorInstitucion.keySet());
+		Set<String> nombresInstituciones = patrociniosPorInstitucion.keySet();
 		
 		return new DTDetalleEdicion(
 				this.nombre,
@@ -204,7 +205,7 @@ public class Edicion {
 
 
 	public Set<String> getPatrocinios() {
-		return new LinkedHashSet<>(patrociniosPorInstitucion.keySet());
+		return patrociniosPorInstitucion.keySet();
 	}
 
 

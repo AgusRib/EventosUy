@@ -330,6 +330,11 @@ public class CargarDatos {
 					nivelEnum = NivelPatrocinio.Bronce;
 				}
 				
+				String[] fechaAltaParts = fechaAlta.split("/");
+				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
+				
+				System.out.println("Patrocinio: " + idPat + ", edi: " + nombreEdi + ", inst: " + nombreInst + ", nivel: " + nivelEnum + ", aporte: " + aporte + ", tipoGratis: " + tipoGratis + ", cantReg: " + cantReg + ", codigo: " + codigo + ", fechaAlta: " + fechaAlta);
+				
 				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
 				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta));
 				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);

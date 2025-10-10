@@ -5,14 +5,16 @@ import java.time.LocalDate;
 import logica.enumerators.NivelPatrocinio;
 
 public class DTPatrocinio {
+	private String institucion;
 	private LocalDate fecha;
 	private float monto;
 	private String codigo;
 	private NivelPatrocinio nivelPatrocinio;
     private final String tipoRegistroGratis;   // NUEVO
     private final int cantRegsGratis;
-	public DTPatrocinio(LocalDate fecha, float monto, String codigo, NivelPatrocinio nivelPatrocinio, String tipoRegistroGratis, int cantRegsGratis) {
+	public DTPatrocinio(String institucion, LocalDate fecha, float monto, String codigo, NivelPatrocinio nivelPatrocinio, String tipoRegistroGratis, int cantRegsGratis) {
 		super();
+		this.institucion = institucion;
 		this.fecha = fecha;
 		this.monto = monto;
 		this.codigo = codigo;
@@ -50,6 +52,9 @@ public class DTPatrocinio {
 	public void setNivelPatrocinio(NivelPatrocinio nivelPatrocinio) {
 		this.nivelPatrocinio = nivelPatrocinio;
 	}*/
+	public String getInstitucion() {
+		return institucion;
+	}
 	
 	
 }

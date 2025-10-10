@@ -330,6 +330,9 @@ public class CargaDatos {
 					nivelEnum = NivelPatrocinio.Bronce;
 				}
 				
+				String[] fechaAltaParts = fechaAlta.split("/");
+				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
+				
 				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
 				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta));
 				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);
