@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.models.Factory;
 import logica.dataTypes.DataUsuario;
@@ -80,17 +79,35 @@ public class ServletUsuario extends HttpServlet {
 					try {
 						usr = this.controllerUsuario.infoUsuario(usuario);
 					} catch(UsuarioNoEncontrado ex){
-						response.sendError(404); // el usuario no existe
-						request.getRequestDispatcher("/WEB-INF/errorPages/404.jsp").
-								include(request, response);
+						try {
+							response.sendError(404);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} // el usuario no existe
+						try {
+							request.getRequestDispatcher("/WEB-INF/errorPages/404.jsp").
+									include(request, response);
+						} catch (ServletException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						return;
 					}
 					
 					// setea el usuario
 					request.setAttribute("usuario", usr);
 					
-					request.getRequestDispatcher("/WEB-INF/usuarios/detalleUsuario.jsp").
-							forward(request, response);
+					try {
+						request.getRequestDispatcher("/WEB-INF/usuarios/detalleUsuario.jsp").
+								forward(request, response);
+					} catch (ServletException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 		
 	}
 
@@ -104,9 +121,19 @@ public class ServletUsuario extends HttpServlet {
 				try {
 					usr = this.controllerUsuario.infoUsuario(usuario);
 				} catch(UsuarioNoEncontrado ex){
-					response.sendError(404); // el usuario no existe
-					request.getRequestDispatcher("/WEB-INF/errorPages/404.jsp").
-							include(request, response);
+					try {
+						response.sendError(404);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} // el usuario no existe
+					try {
+						request.getRequestDispatcher("/WEB-INF/errorPages/404.jsp").
+								include(request, response);
+					} catch (ServletException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					return;
 				}
 				
@@ -114,8 +141,16 @@ public class ServletUsuario extends HttpServlet {
 				request.setAttribute("usuario", usr);
 				request.setAttribute("datos", datos);
 				
-				request.getRequestDispatcher("/WEB-INF/usuarios/modificarDatos.jsp").
-						forward(request, response);
+				try {
+					request.getRequestDispatcher("/WEB-INF/usuarios/modificarDatos.jsp").
+							forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	}
 
 	private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
