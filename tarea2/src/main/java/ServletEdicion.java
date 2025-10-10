@@ -27,7 +27,7 @@ import excepciones.FechaInicioPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 
 
-@WebServlet({ "/detalleEdicion", "/altaEdicion", "/altaRegistro", "/listarEdiciones" })
+@WebServlet({ "/detalleEdicion", "/altaEdicion", "/listarEdiciones" })
 public class ServletEdicion extends HttpServlet {
     private static final long serialVersionUID = 1L;
        
@@ -135,40 +135,7 @@ public class ServletEdicion extends HttpServlet {
 			
             return;
         }
-        case "/altaRegistro": {
-        	// Chequear si el usuario es asistente antes de permitir el registro
-        	// TODO Manejar excepciones y mostrar mensajes de error en la JSP
-        	
-        	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
-        	HttpSession session = request.getSession();
-        	
-        	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();	// PARA TESTING
-        	session.setAttribute("usuario", ICU.infoUsuario("msilva"));	// PARA TESTING
-        	
-        	DataUsuario user = (DataUsuario) session.getAttribute("usuario"); 
-        	if (user.getTipo() == TipoUsuario.ASISTENTE) {
-        		try {
-        			// Realizar el alta de registro
-					ICE.elegirAsistenteYTipoRegistro(user.getNickname(), request.getParameter("tipoReg"), request.getParameter("edicion"));
-					ICE.altaRegistro(user.getNickname(), request.getParameter("tipoReg"), request.getParameter("edicion"));
-					
-					// Despachar a JSP con mensaje de exito
-					request.setAttribute("mensaje", "El registro se ha realizado con exito.");
-					request.setAttribute("error", null);
-					
-					request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
-				} catch (Exception e) {
-					// Despachar a JSP con mensaje de error
-					request.setAttribute("error", e.getMessage());
-					request.setAttribute("mensaje", null);
-					
-					request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
-				}
-        	} else {
-        		// Mostrar mensaje de error, el usuario no es asistente
-        	}
-            return;
-    	}
+        
     }
 
 }}
