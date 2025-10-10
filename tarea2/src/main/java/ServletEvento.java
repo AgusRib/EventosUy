@@ -175,9 +175,6 @@ public class ServletEvento extends HttpServlet {
             Part imagenPart = request.getPart("imagen");
             if (imagenPart != null && imagenPart.getSize() > 0) {
                 String nombreoriginal = imagenPart.getSubmittedFileName();
-                System.out.println("DEBUG: Imagen original: " + nombreoriginal);
-                System.out.println("DEBUG: Tamaño imagen: " + imagenPart.getSize());
-                
                 if (nombreoriginal != null && !nombreoriginal.trim().isEmpty()) {
                     // Obtener extensión del archivo
                     String extension = nombreoriginal.contains(".") ? 
@@ -185,56 +182,25 @@ public class ServletEvento extends HttpServlet {
                     
                     // Crear nombre del archivo
                     String nombreImagen = nombre.toLowerCase().replaceAll("[^a-z0-9]", "") + extension;
-                    System.out.println("DEBUG: Nombre imagen final: " + nombreImagen);
                     
                     // Obtener la ruta física real del directorio webapp
                     String rutaWebapp = request.getServletContext().getRealPath("/");
-                    System.out.println("DEBUG: Ruta webapp: " + rutaWebapp);
+                    String rutaImagenes = rutaWebapp + "assets/images/eventos/";
                     
-                    if (rutaWebapp != null) {
-                        String rutaImagenes = rutaWebapp + "assets" + java.io.File.separator + "images" + java.io.File.separator + "eventos" + java.io.File.separator;
-                        System.out.println("DEBUG: Ruta completa imagenes: " + rutaImagenes);
-                        
-                        // Crear directorio si no existe
-                        Path directorioImagenes = Paths.get(rutaImagenes);
-                        if (!Files.exists(directorioImagenes)) {
-                            System.out.println("DEBUG: Creando directorio: " + directorioImagenes);
-                            Files.createDirectories(directorioImagenes);
-                        }
-                        
-                        // Ruta completa del archivo
-                        Path rutaCompleta = Paths.get(rutaImagenes + nombreImagen);
-                        System.out.println("DEBUG: Guardando archivo en: " + rutaCompleta);
-                        
-                        // Guardar archivo
-                        try (InputStream input = imagenPart.getInputStream()) {
-                            Files.copy(input, rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
-                            System.out.println("DEBUG: Imagen guardada exitosamente");
-                        } catch (Exception e) {
-                            System.err.println("ERROR: No se pudo guardar la imagen: " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    } else {
-                        System.err.println("ERROR: No se pudo obtener la ruta real del webapp");
-                        // Fallback: intentar guardar en el directorio de trabajo actual
-                        try {
-                            String rutaFallback = System.getProperty("user.dir") + java.io.File.separator + "webapp" + java.io.File.separator + "assets" + java.io.File.separator + "images" + java.io.File.separator + "eventos" + java.io.File.separator;
-                            Path directorioFallback = Paths.get(rutaFallback);
-                            if (!Files.exists(directorioFallback)) {
-                                Files.createDirectories(directorioFallback);
-                            }
-                            Path rutaCompletaFallback = Paths.get(rutaFallback + nombreImagen);
-                            try (InputStream input = imagenPart.getInputStream()) {
-                                Files.copy(input, rutaCompletaFallback, StandardCopyOption.REPLACE_EXISTING);
-                                System.out.println("DEBUG: Imagen guardada en fallback: " + rutaCompletaFallback);
-                            }
-                        } catch (Exception e) {
-                            System.err.println("ERROR: Fallback también falló: " + e.getMessage());
-                        }
+                    // Crear directorio si no existe
+                    Path directorioImagenes = Paths.get(rutaImagenes);
+                    if (!Files.exists(directorioImagenes)) {
+                        Files.createDirectories(directorioImagenes);
+                    }
+                    
+                    // Ruta completa del archivo
+                    Path rutaCompleta = Paths.get(rutaImagenes + nombreImagen);
+                    
+                    // Guardar archivo
+                    try (InputStream input = imagenPart.getInputStream()) {
+                        Files.copy(input, rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
                     }
                 }
-            } else {
-                System.out.println("DEBUG: No se recibió imagen o está vacía");
             }
             
             LocalDate fechaEvento = (LocalDate) request.getSession().getAttribute("fecha");
