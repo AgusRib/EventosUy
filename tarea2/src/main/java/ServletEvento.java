@@ -1,61 +1,82 @@
-package java;
-
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import excepciones.NombreEventoExcepcion;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
+import logica.dataTypes.DTDetalleEdicion;
+import logica.dataTypes.DTDetalleEvento;
 import logica.models.Factory;
-import logica.dt.DTDetalleEvento;
-import logica.dt.DTDetalleEdicion;
-import excepciones.nombreEventoExcepcion;
 
 /**
  * Servlet implementation class EventosServlet
  */
-@WebServlet("/eventos")
-public class eventos extends HttpServlet {
+@WebServlet({ "/eventos", "/listarEventos", "/detalleEvento", "/altaEvento", "/categorias" })
+@MultipartConfig
+public class ServletEvento extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
     private IControllerEvento controllerEvento;
     private IControllerUsuario controllerUsuario;
     
-   public eventos() {
+   public ServletEvento() {
         super();
         Factory factory = Factory.getInstance();
-        this.controllerEvento = factory.getIControllerEvento();
-        this.controllerUsuario = factory.getIControllerUsuario();
+        this.controllerEvento = factory.getControllerEvento();
+        this.controllerUsuario = factory.getControllerUsuario();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+      
+        String path = request.getServletPath();
         
-        if (action == null || action.equals("listar")) {
-            listarEventos(request, response);
-        } else if (action.equals("detalle")) {
-            mostrarDetalleEvento(request, response);
-        } else if (action.equals("categorias")) {
-            listarCategorias(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
+        switch (path) {
+            case "/eventos":
+            case "/listarEventos": {
+                listarEventos(request, response);
+                return;
+            }
+            case "/detalleEvento": {
+                mostrarDetalleEvento(request, response);
+                return;
+            }
+            case "/categorias": {
+                listarCategorias(request, response);
+                return;
+            }
+            case "/altaEvento": {
+                // Simplemente cargar el formulario - sin redirects
+                request.setAttribute("destino", "altaEvento");
+                request.setAttribute("error", null); // ESTA ES LA LÍNEA QUE FALTABA
+                listarCategorias(request, response);
+                return;
+            }
+            default:
+                break;
         }
+        
+      
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+        String path = request.getServletPath();
         
-        if (action != null && action.equals("crear")) {
+        if (path.equals("/altaEvento")) {
             crearEvento(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
-        }
+        } 
     }
     
     private void listarEventos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -87,7 +108,7 @@ public class eventos extends HttpServlet {
                 java.util.Map<String, Object> eventoInfo = new java.util.HashMap<>();
                 eventoInfo.put("nombre", detalleEvento.getNombre());
                 eventoInfo.put("descripcion", detalleEvento.getDescripcion());
-                eventoInfo.put("imagenEvento", "/images/eventos/" + nombreEvento.toLowerCase() + ".jpg");
+                eventoInfo.put("imagenEvento", "/assets/images/eventos/" + nombreEvento.toLowerCase() + ".jpg");
                 eventosInfo.add(eventoInfo);
             }
         }
@@ -99,7 +120,7 @@ public class eventos extends HttpServlet {
         request.setAttribute("totalEventos", todosLosEventos.size());
         request.setAttribute("eventosFiltrados", eventosFiltrados.size());
         
-        request.getRequestDispatcher("/listarEventos.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/listarEventos.jsp").forward(request, response);
     }
     
     private void mostrarDetalleEvento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -129,7 +150,7 @@ public class eventos extends HttpServlet {
         request.setAttribute("ediciones", edicionesMinimas);
         request.setAttribute("categorias", todasLasCategorias);
         
-        request.getRequestDispatcher("/consultaEventoDinamico.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/consultaEventoDinamico.jsp").forward(request, response);
     }
    
     private void crearEvento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -138,7 +159,7 @@ public class eventos extends HttpServlet {
         String descripcion = request.getParameter("descripcion");
         
         try {
-            // Obtener las categorías seleccionadas desde la request (puede venir como múltiples valores)
+            // Obtener las categorías seleccionadas desde la request
             String[] categoriasArray = request.getParameterValues("categorias");
             Set<String> categorias = new java.util.LinkedHashSet<>();
             if (categoriasArray != null) {
@@ -148,32 +169,131 @@ public class eventos extends HttpServlet {
                     }
                 }
             }
+          
+
+            // Manejar la imagen directamente
+            Part imagenPart = request.getPart("imagen");
+            if (imagenPart != null && imagenPart.getSize() > 0) {
+                String nombreoriginal = imagenPart.getSubmittedFileName();
+                System.out.println("DEBUG: Imagen original: " + nombreoriginal);
+                System.out.println("DEBUG: Tamaño imagen: " + imagenPart.getSize());
+                
+                if (nombreoriginal != null && !nombreoriginal.trim().isEmpty()) {
+                    // Obtener extensión del archivo
+                    String extension = nombreoriginal.contains(".") ? 
+                        nombreoriginal.substring(nombreoriginal.lastIndexOf(".")) : ".jpg";
+                    
+                    // Crear nombre del archivo
+                    String nombreImagen = nombre.toLowerCase().replaceAll("[^a-z0-9]", "") + extension;
+                    System.out.println("DEBUG: Nombre imagen final: " + nombreImagen);
+                    
+                    // Obtener la ruta física real del directorio webapp
+                    String rutaWebapp = request.getServletContext().getRealPath("/");
+                    System.out.println("DEBUG: Ruta webapp: " + rutaWebapp);
+                    
+                    if (rutaWebapp != null) {
+                        String rutaImagenes = rutaWebapp + "assets" + java.io.File.separator + "images" + java.io.File.separator + "eventos" + java.io.File.separator;
+                        System.out.println("DEBUG: Ruta completa imagenes: " + rutaImagenes);
+                        
+                        // Crear directorio si no existe
+                        Path directorioImagenes = Paths.get(rutaImagenes);
+                        if (!Files.exists(directorioImagenes)) {
+                            System.out.println("DEBUG: Creando directorio: " + directorioImagenes);
+                            Files.createDirectories(directorioImagenes);
+                        }
+                        
+                        // Ruta completa del archivo
+                        Path rutaCompleta = Paths.get(rutaImagenes + nombreImagen);
+                        System.out.println("DEBUG: Guardando archivo en: " + rutaCompleta);
+                        
+                        // Guardar archivo
+                        try (InputStream input = imagenPart.getInputStream()) {
+                            Files.copy(input, rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
+                            System.out.println("DEBUG: Imagen guardada exitosamente");
+                        } catch (Exception e) {
+                            System.err.println("ERROR: No se pudo guardar la imagen: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.err.println("ERROR: No se pudo obtener la ruta real del webapp");
+                        // Fallback: intentar guardar en el directorio de trabajo actual
+                        try {
+                            String rutaFallback = System.getProperty("user.dir") + java.io.File.separator + "webapp" + java.io.File.separator + "assets" + java.io.File.separator + "images" + java.io.File.separator + "eventos" + java.io.File.separator;
+                            Path directorioFallback = Paths.get(rutaFallback);
+                            if (!Files.exists(directorioFallback)) {
+                                Files.createDirectories(directorioFallback);
+                            }
+                            Path rutaCompletaFallback = Paths.get(rutaFallback + nombreImagen);
+                            try (InputStream input = imagenPart.getInputStream()) {
+                                Files.copy(input, rutaCompletaFallback, StandardCopyOption.REPLACE_EXISTING);
+                                System.out.println("DEBUG: Imagen guardada en fallback: " + rutaCompletaFallback);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("ERROR: Fallback también falló: " + e.getMessage());
+                        }
+                    }
+                }
+            } else {
+                System.out.println("DEBUG: No se recibió imagen o está vacía");
+            }
             
             LocalDate fechaEvento = (LocalDate) request.getSession().getAttribute("fecha");
             if (fechaEvento == null) {
                 fechaEvento = LocalDate.now();
             }
             
-            controllerEvento.altaEvento(nombre, sigla, fechaEvento, descripcion, categorias);
+            controllerEvento.altaEvento(nombre != null ? nombre.trim() : "", 
+                                      sigla != null ? sigla.trim() : "", 
+                                      fechaEvento, 
+                                      descripcion != null ? descripcion.trim() : "", 
+                                      categorias);
             
-           
-            request.setAttribute("mensaje", "El evento '" + nombre + "' ha sido creado exitosamente.");
-            request.setAttribute("tipoMensaje", "success");
-            request.setAttribute("nombre", nombre);
-            mostrarDetalleEvento(request, response);
+            // Limpiar cualquier dato de error que pueda haber quedado en la sesión
+            request.getSession().removeAttribute("altaEvento_error");
+            request.getSession().removeAttribute("altaEvento_nombre");
+            request.getSession().removeAttribute("altaEvento_sigla");
+            request.getSession().removeAttribute("altaEvento_descripcion");
+            request.getSession().removeAttribute("altaEvento_categorias");
             
-        } catch(nombreEventoExcepcion e) {
+            // Usar redirect para ir al detalle del evento creado
+            response.sendRedirect(request.getContextPath() + "/detalleEvento?nombre=" + 
+                java.net.URLEncoder.encode(nombre, "UTF-8"));
+            
+        } catch(NombreEventoExcepcion e) {
+            // Cargar las categorías para que el JSP pueda mostrar el dropdown
+            Set<String> todasLasCategorias = controllerEvento.listarCategorias();
+            request.setAttribute("categorias", todasLasCategorias);
             
             request.setAttribute("error", "Ya existe un evento con el nombre ingresado.");
             request.setAttribute("nombre", nombre);
             request.setAttribute("sigla", sigla);
             request.setAttribute("descripcion", descripcion);
-            request.getRequestDispatcher("/altaEvento.jsp").forward(request, response);
             
-        }
-        catch (Exception e) {
+            // Preservar categorías seleccionadas
+            String[] categoriasSeleccionadas = request.getParameterValues("categorias");
+            if (categoriasSeleccionadas != null) {
+                request.setAttribute("categoriasSeleccionadas", categoriasSeleccionadas);
+            }
+            
+            request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
+            
+        } catch (Exception e) {
+            // Cargar las categorías también para otros errores
+            Set<String> todasLasCategorias = controllerEvento.listarCategorias();
+            request.setAttribute("categorias", todasLasCategorias);
+            
             request.setAttribute("error", "Error al crear evento: " + e.getMessage());
-            request.getRequestDispatcher("/altaEvento.jsp").forward(request, response);
+            request.setAttribute("nombre", nombre);
+            request.setAttribute("sigla", sigla);
+            request.setAttribute("descripcion", descripcion);
+            
+            // Preservar categorías seleccionadas
+            String[] categoriasSeleccionadas = request.getParameterValues("categorias");
+            if (categoriasSeleccionadas != null) {
+                request.setAttribute("categoriasSeleccionadas", categoriasSeleccionadas);
+            }
+            
+            request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
         }
     }
     
@@ -181,15 +301,19 @@ public class eventos extends HttpServlet {
         Set<String> todasLasCategorias = controllerEvento.listarCategorias();
         request.setAttribute("categorias", todasLasCategorias);
         
-        // Verificar si viene un parámetro que indique dónde mostrar las categorías
+        // Verificar si viene un parámetro o atributo que indique dónde mostrar las categorías
         String destino = request.getParameter("destino");
+        if (destino == null) {
+            destino = (String) request.getAttribute("destino");
+        }
         
         if ("altaEvento".equals(destino)) {
             // Si es para el formulario de alta de evento
-            request.getRequestDispatcher("/altaEvento.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
         } else {
             // Por defecto, mostrar la página de categorías
-            request.getRequestDispatcher("/categorias.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/pages/categorias.jsp").forward(request, response);
         }
     }
+    
 }
