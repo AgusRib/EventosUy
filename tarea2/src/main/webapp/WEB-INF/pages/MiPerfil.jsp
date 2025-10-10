@@ -257,7 +257,7 @@ body.with-collapsed {
 													Modificar mi usuario</strong>
 
 												<div class="text-muted small">Ver y editar datos
-													personales, direccion, web y más.</div>
+													personales, dirección, web y más.</div>
 											</div>
 											<div class="ms-2 text-secondary" aria-hidden="true">
 												<svg xmlns="http://www.w3.org/2000/svg" width="18"

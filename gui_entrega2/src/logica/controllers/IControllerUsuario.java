@@ -6,6 +6,7 @@ import java.util.Set;
 import excepciones.EmailRepetido;
 import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
+import excepciones.UsuarioNoEncontrado;
 import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
@@ -33,7 +34,7 @@ public interface IControllerUsuario {
 	
 	public Set<String> listarOrganizadores();
 	
-	public DataUsuario infoUsuario(String nickname);
+	public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado;
 
 	public Set<String> listarRegistrosAEventos(String nickname);
 

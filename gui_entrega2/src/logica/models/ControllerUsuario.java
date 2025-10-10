@@ -7,6 +7,7 @@ import java.util.Set;
 import excepciones.EmailRepetido;
 import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
+import excepciones.UsuarioNoEncontrado;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
@@ -84,8 +85,13 @@ public class ControllerUsuario implements IControllerUsuario {
 	}
 	
 	@Override
-	public DataUsuario infoUsuario(String nickname) {
+	public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		try {
+			Usuario user = mU.obtenerUsuario(nickname); mU.obtenerUsuario(nickname);
+		} catch (Exception e) {
+			throw new UsuarioNoEncontrado("No existe un usuario con este nickname");
+		}
 		Usuario user = mU.obtenerUsuario(nickname);
 		TipoUsuario tipo;
 		if (user instanceof Asistente) {

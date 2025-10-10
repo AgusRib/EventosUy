@@ -62,7 +62,7 @@ public class ServletUsuario extends HttpServlet {
 		String action = request.getParameter("action");
 		String usuario = request.getParameter("usuario");
 		
-			if (action == null || action.equals("modificarDatos") ) {
+			if ((action == null || action.equals("modificarDatos")&& usuario != null)) {
 				modificarDatos(request, response);
 		} else {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
@@ -155,7 +155,6 @@ public class ServletUsuario extends HttpServlet {
 
 	private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		String usuario = request.getParameter("usuario");
 		
 			// no se seteó el usuario (lista todos los usuarios)
 			
