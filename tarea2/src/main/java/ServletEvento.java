@@ -214,12 +214,7 @@ public class ServletEvento extends HttpServlet {
                                       descripcion != null ? descripcion.trim() : "", 
                                       categorias);
             
-            // Limpiar cualquier dato de error que pueda haber quedado en la sesión
-            request.getSession().removeAttribute("altaEvento_error");
-            request.getSession().removeAttribute("altaEvento_nombre");
-            request.getSession().removeAttribute("altaEvento_sigla");
-            request.getSession().removeAttribute("altaEvento_descripcion");
-            request.getSession().removeAttribute("altaEvento_categorias");
+          
             
             // Usar redirect para ir al detalle del evento creado
             response.sendRedirect(request.getContextPath() + "/detalleEvento?nombre=" + 
