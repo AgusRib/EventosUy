@@ -1,9 +1,11 @@
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -53,7 +55,7 @@ public class CargarDatos {
 
 	//CARGAS
 	public static void cargarUsuarios() throws Exception {
-		BufferedReader brUsuarios = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025Usuarios.csv"));
+		BufferedReader brUsuarios = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025Usuarios.csv"), StandardCharsets.UTF_8));
 
 		IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
 
@@ -96,7 +98,7 @@ public class CargarDatos {
 	
 	
 	public static void cargarInstituciones() throws Exception {
-		BufferedReader brInstituciones = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025Instituciones.csv"));
+		BufferedReader brInstituciones = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025Instituciones.csv"), StandardCharsets.UTF_8));
 
 		IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
 		
@@ -121,7 +123,7 @@ public class CargarDatos {
 	
 	
 	public static void cargarCategorias() throws Exception {
-		BufferedReader brCategorias = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025Categorias.csv"));
+		BufferedReader brCategorias = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025Categorias.csv"), StandardCharsets.UTF_8));
 
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 		
@@ -143,7 +145,7 @@ public class CargarDatos {
 	
 	
 	public static void cargarEventos() throws Exception {
-		BufferedReader brEventos = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025Eventos.csv"));
+		BufferedReader brEventos = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025Eventos.csv"), StandardCharsets.UTF_8));
 
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 		
@@ -160,6 +162,7 @@ public class CargarDatos {
 			String sigla = campos[3];
 			String fechaAlta = campos[4];
 			// Formatear fecha de dd/mm/yyyy a yyyy-mm-dd
+			System.out.println("nombre evento: " + nombre);
 			String[] fechaParts = fechaAlta.split("/");
 			fechaAlta = new String(fechaParts[2] + "-" + fechaParts[1] + "-" + fechaParts[0]);
 			
@@ -167,11 +170,18 @@ public class CargarDatos {
 			
 			HashSet<String> categorias = new HashSet<String>();
 			for (String cat : idCategorias) {
-				categorias.add(buscarLinea(cat.stripLeading(), "/datosPrueba/2025Categorias.csv")[1]);
+				String catId = cat.stripLeading();
+				String[] categoriaEncontrada = buscarLinea(catId, "/datosPrueba/2025Categorias.csv");
+				if (categoriaEncontrada != null) {
+					categorias.add(categoriaEncontrada[1]);
+				}
 			}
 			
 			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias);
 		}
+		
+		System.out.println("Eventos cargados");
+		brEventos.close();
 	}
 	
 	
@@ -181,7 +191,7 @@ public class CargarDatos {
 	public static void cargarEdiciones() {
 		BufferedReader brEdiciones;
 		try {
-			brEdiciones = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025EdicionesEventos.csv"));
+			brEdiciones = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025EdicionesEventos.csv"), StandardCharsets.UTF_8));
 
 			IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 			
@@ -207,6 +217,7 @@ public class CargarDatos {
 				
 				String nombreEvento = buscarLinea(idEve, "/datosPrueba/2025Eventos.csv")[1];
 				String nicknameOrganizador = buscarLinea(idOrg, "/datosPrueba/2025Usuarios.csv")[2];
+			
 				
 				String[] fechaIniParts = fechaIni.split("/");
 				fechaIni = new String(fechaIniParts[2] + "-" + fechaIniParts[1] + "-" + fechaIniParts[0]);
@@ -218,6 +229,12 @@ public class CargarDatos {
 				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
 				
 				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais);
+				if (campos[10].equals("Aceptada")) {
+					ICE.AceptarEdicion(nombre,nombreEvento);
+				}
+			    if (campos[10].equals("Rechazada")) {
+					ICE.RechazarEdicion(nombre,nombreEvento);
+				}
 			
 			}} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -250,7 +267,7 @@ public class CargarDatos {
 		private static void cargarTiposRegistro() {
 			BufferedReader brTiposReg;
 			try {
-				brTiposReg = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025TipoRegistro.csv"));
+				brTiposReg = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025TipoRegistro.csv"), StandardCharsets.UTF_8));
 
 				IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 				
@@ -293,7 +310,7 @@ public class CargarDatos {
 	private static void cargarPatrocinios() {
 		BufferedReader brPatrocinios;
 		try {
-			brPatrocinios = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025Patrocinios.csv"));
+			brPatrocinios = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025Patrocinios.csv"), StandardCharsets.UTF_8));
 
 			IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 			
@@ -330,11 +347,6 @@ public class CargarDatos {
 					nivelEnum = NivelPatrocinio.Bronce;
 				}
 				
-				String[] fechaAltaParts = fechaAlta.split("/");
-				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
-				
-				System.out.println("Patrocinio: " + idPat + ", edi: " + nombreEdi + ", inst: " + nombreInst + ", nivel: " + nivelEnum + ", aporte: " + aporte + ", tipoGratis: " + tipoGratis + ", cantReg: " + cantReg + ", codigo: " + codigo + ", fechaAlta: " + fechaAlta);
-				
 				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
 				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta));
 				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);
@@ -362,7 +374,7 @@ public class CargarDatos {
 	private static void cargarRegistros() {
 		BufferedReader brRegistros;
 		try {
-			brRegistros = new BufferedReader(new FileReader(dataPath + "/datosPrueba/2025Registros.csv"));
+			brRegistros = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "/datosPrueba/2025Registros.csv"), StandardCharsets.UTF_8));
 
 			IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 			
@@ -414,7 +426,7 @@ public class CargarDatos {
 		
 	//UTILS
 	private static String[] buscarLinea(String id, String path) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(dataPath + path));
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + path), StandardCharsets.UTF_8));
 		br.readLine(); // Saltear la primer linea (headers)
 		String linea;
 		while ((linea = br.readLine()) != null) {
