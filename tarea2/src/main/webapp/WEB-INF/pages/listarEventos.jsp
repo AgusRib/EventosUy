@@ -62,12 +62,12 @@
 				</a>
 				<ul class="dropdown-menu dropdown-menu-end shadow-sm"
 					aria-labelledby="userMenuDropdown">
-					<li><a class="dropdown-item" href="<%=request.getContextPath()%>/perfil">Mi perfil</a></li>
+					<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi perfil</a></li>
 					<li>
 						<hr class="dropdown-divider">
 					</li>
 					<li><a class="dropdown-item text-danger"
-						href="<%=request.getContextPath()%>/logout"
+						href="<%=request.getContextPath()%>/autenticator?accion=logout"
 						style="color: #dc3545 !important;">Cerrar sesión</a></li>
 				</ul>
 			</div>
@@ -82,12 +82,12 @@
 			<h2 class="fw-bold my-3">Buscar eventos</h2>
 			
 			<!-- Formulario de búsqueda -->
-			<jsp:include page="componentes/searchbarevento.jsp" />
+			<jsp:include page="../templates/searchbarevento.jsp" />
 			
 			<div class="row row-cols-2 w-100 justify-content-center my-4 gap-5">
 				<div class="align-items-center col-12 col-xl-3 my-3">
 					<h3 class="categorías fw-bold text-center">Categorías</h3>
-					<jsp:include page="componentes/categorias-sidebar.jsp" />
+					<jsp:include page="../templates/categorias-sidebar.jsp" />
 				</div>
 
 				<div class="row container m-2 col-12 col-xl-8">
@@ -157,18 +157,7 @@
 						}
 						%>
 						
-						<!-- Paginación (por ahora estática, se puede implementar después) -->
-						<%if (eventosInfo != null && eventosInfo.size() > 0) { %>
-							<nav class="d-flex justify-content-center mt-5">
-								<ul class="pagination">
-									<li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
-									<li class="page-item active"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
-								</ul>
-							</nav>
-						<%} %>
+						
 
 					</div>
 
@@ -181,31 +170,6 @@
 	</div>
 
 	<script src="<%=request.getContextPath()%>/assets/js/main.js"></script>
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxEdiciones = document.getElementById('checkboxEdiciones');
-            
-            // Manejar el checkbox de ediciones
-            if (checkboxEdiciones) {
-                checkboxEdiciones.addEventListener('change', function() {
-                    if (this.checked) {
-                        // Redirigir a lista de ediciones (cuando esté implementado)
-                        window.location.href = '<%=request.getContextPath()%>/ediciones';
-                    }
-                });
-            }
-            
-            // Función para enviar el formulario de búsqueda al presionar Enter
-            const searchInput = document.querySelector('input[name="nombre"]');
-            if (searchInput) {
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        this.form.submit();
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 
 </html>

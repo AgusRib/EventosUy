@@ -63,13 +63,13 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
 						aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="MiPerfil-atorres.html">Mi
+						<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi
 								perfil</a></li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
 						<li><a class="dropdown-item text-danger"
-							href="../pagesVisitante/index.html"
+							href="<%=request.getContextPath()%>/autenticator?accion=logout"
 							style="color: #dc3545 !important;">Cerrar sesión</a></li>
 					</ul>
 				</div>
@@ -78,7 +78,7 @@
 	</header>
 
 	<div class="container-fluid px-4 mt-4">
-		<jsp:include page="componentes/searchbarevento.jsp" />
+		<jsp:include page="../templates/searchbarevento.jsp" />
 	</div>
 
 	<div class="container-fluid px-4 mt-3">
@@ -86,7 +86,7 @@
 
 			<!-- Columna derecha: categorías usando componente separado -->
 			<div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
-				<jsp:include page="componentes/categorias-sidebar.jsp" />
+				<jsp:include page="../templates/categorias-sidebar.jsp" />
 			</div>
 
 			<!-- Columna izquierda: imagen -->

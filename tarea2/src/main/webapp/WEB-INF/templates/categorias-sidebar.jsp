@@ -3,7 +3,7 @@
 
 <%
     @SuppressWarnings("unchecked")
-    Set<String> categorias = (Set<String>) request.getAttribute("categorias");
+    Set<String> categorias = (Set<String>) request.getSession().getAttribute("categorias");
     String categoriaSeleccionada = (String) request.getAttribute("categoriaSeleccionada");
     String nombreBusqueda = (String) request.getAttribute("nombreBusqueda");
 %>

@@ -1,7 +1,6 @@
-
-
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,11 +25,15 @@ public class ServletHome extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		IControllerEvento iEvento = Factory.getInstance().getControllerEvento();
+		Set<String> categorias = iEvento.listarCategorias();
+		
+		// Obtener la sesión y establecer las categorías como atributo de sesión
+		request.getSession().setAttribute("categorias", categorias);
 		List<Evento> eventosRecientes = iEvento.obtenerEventosRecientes();
 		
 		
 		request.setAttribute("eventos_recientes", eventosRecientes);
-		request.getRequestDispatcher("/home.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);
 	}
 
 	
