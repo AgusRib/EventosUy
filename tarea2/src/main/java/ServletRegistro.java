@@ -74,6 +74,9 @@ public class ServletRegistro extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Falta parámetro 'edicion");
                     return;
                 }
+                
+                String q = request.getParameter("q");
+                String qNorm = q == null ? "" : q.trim().toLowerCase();
 
                 var asistentes = ICE.listarAsistentesAEdicionDeEvento(edicion);
 
@@ -81,16 +84,22 @@ public class ServletRegistro extends HttpServlet {
                 for (var a : asistentes) {
                     DTRegistro r = ICE.infoRegistro(edicion, a.getnickname());
                     if (r != null) {
-                        regs.add(new AbstractMap.SimpleEntry<>(a.getnickname(), r));
+                    	String nick = a.getnickname();
+                        if (qNorm.isEmpty() || (nick != null && nick.toLowerCase().contains(qNorm))) {
+                            regs.add(new AbstractMap.SimpleEntry<>(nick, r));
+                        }
                     }
                 }
 
                 if (regs.isEmpty()) {
-                    request.setAttribute("mensaje", "No hay registros para la edición");
+                    request.setAttribute("mensaje", (qNorm.isEmpty() ?
+                        "No hay registros para la edición" :
+                        "No hubo coincidencias para la búsqueda"));
                 }
 
                 request.setAttribute("edicion", edicion);
                 request.setAttribute("registros", regs);
+                request.setAttribute("q", q == null ? "" : q);
                 request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
                 return;
               }
