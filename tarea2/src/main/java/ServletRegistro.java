@@ -15,9 +15,11 @@ import logica.models.Factory;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import casosPrueba.CargaDatos;
 
@@ -68,25 +70,29 @@ public class ServletRegistro extends HttpServlet {
             }
             case "/listar-registros": {
             	String edicion = request.getParameter("edicion");
-            	if (edicion == null || edicion.isBlank()) {
-            		response.sendError(HttpServletResponse.SC_NOT_FOUND, "Falta parámetro 'edicion");
+                if (edicion == null || edicion.isBlank()) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Falta parámetro 'edicion");
                     return;
-            	}
+                }
+
                 var asistentes = ICE.listarAsistentesAEdicionDeEvento(edicion);
-            	
-                List<DTRegistro> registros = new ArrayList<>();
+
+                List<Map.Entry<String, DTRegistro>> regs = new ArrayList<>();
                 for (var a : asistentes) {
-                  DTRegistro r = ICE.infoRegistro(edicion, a.getnickname());
-                  if (r != null) registros.add(r);
+                    DTRegistro r = ICE.infoRegistro(edicion, a.getnickname());
+                    if (r != null) {
+                        regs.add(new AbstractMap.SimpleEntry<>(a.getnickname(), r));
+                    }
                 }
 
-                if (registros.isEmpty()) {
-                	  request.setAttribute("mensaje", "No hay registros para la edición");
+                if (regs.isEmpty()) {
+                    request.setAttribute("mensaje", "No hay registros para la edición");
                 }
-	        	request.setAttribute("edicion", edicion);
-	        	request.setAttribute("registros", registros);
-	        	request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
 
+                request.setAttribute("edicion", edicion);
+                request.setAttribute("registros", regs);
+                request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
+                return;
               }
             case "/alta-registro": {
             	request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
