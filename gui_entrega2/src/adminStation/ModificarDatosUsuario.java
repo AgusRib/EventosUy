@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import excepciones.UsuarioNoEncontrado;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
@@ -89,7 +90,12 @@ public class ModificarDatosUsuario extends JInternalFrame {
 			// Si es el placeholder, no cargar datos
 			if (selectedIndex > 0) {
 				String nickname = (String) comboBox.getSelectedItem();
-				cargarDatosUsuario(nickname);
+				try {
+					cargarDatosUsuario(nickname);
+				} catch (UsuarioNoEncontrado e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				// Mostrar todos los campos comunes
 				mostrarCamposComunes(true);
 			} else if (selectedIndex == 0) {
@@ -240,7 +246,7 @@ public class ModificarDatosUsuario extends JInternalFrame {
 		mostrarCamposComunes(false);
 	}
 	
-	private void cargarDatosUsuario(String nickname) {
+	private void cargarDatosUsuario(String nickname) throws UsuarioNoEncontrado {
 		// Obtener datos del usuario seleccionado
 		DataUsuario dataUsuario = ICU.infoUsuario(nickname);
 		

@@ -59,9 +59,9 @@ public interface IControllerUsuario {
 	public DTOrganizador infoOrganizador(String nickname);
 	public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception;
 
-	boolean iniciarSesionNickname(String nickname, String password);
+	DataUsuario iniciarSesionNickname(String nickname, String password);
 
-	boolean iniciarSesionEmail(String email, String password);
+	DataUsuario iniciarSesionEmail(String email, String password);
 	
 
 }

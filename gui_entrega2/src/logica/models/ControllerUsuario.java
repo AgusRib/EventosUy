@@ -186,23 +186,23 @@ public class ControllerUsuario implements IControllerUsuario {
    }
    
   @Override
-  public boolean iniciarSesionNickname(String nickname, String password) {
+  public DataUsuario  iniciarSesionNickname(String nickname, String password) {
 	  ManejadorUsuario mU = ManejadorUsuario.getInstance();
 	  Usuario user = mU.obtenerUsuario(nickname);
 	  if (user != null && user.getPassword().equals(password)) {
-		  return true;
+		  return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), (user instanceof Asistente) ? TipoUsuario.ASISTENTE : TipoUsuario.ORGANIZADOR);
 	  }
-	  return false;
+	  return null;
   }
   
   @Override
-  public boolean iniciarSesionEmail(String email, String password) {
+  public DataUsuario iniciarSesionEmail(String email, String password) {
 	  ManejadorUsuario mU = ManejadorUsuario.getInstance();
 	  Usuario user = mU.obtenerUsuarioPorEmail(email);
 	  if (user != null && user.getPassword().equals(password)) {
-		  return true;
+		  return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), (user instanceof Asistente) ? TipoUsuario.ASISTENTE : TipoUsuario.ORGANIZADOR);
 	  }
-	  return false;
+	  return null;
   }
 
 
