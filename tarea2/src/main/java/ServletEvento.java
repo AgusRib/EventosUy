@@ -1,11 +1,13 @@
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Set;
+import java.text.Normalizer;
 
 import excepciones.NombreEventoExcepcion;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,8 @@ import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTDetalleEdicion;
 import logica.dataTypes.DTDetalleEvento;
+import logica.dataTypes.DataUsuario;
+import logica.dataTypes.DataUsuario.TipoUsuario;
 import logica.models.Factory;
 
 /**
@@ -39,8 +43,25 @@ public class ServletEvento extends HttpServlet {
         this.controllerUsuario = factory.getControllerUsuario();
     }
 
+    /**
+     * Normaliza un texto removiendo acentos y convirtiéndolo a minúsculas
+     * para hacer búsquedas insensibles a mayúsculas y acentos
+     */
+    private String normalizeText(String text) {
+        if (text == null) return "";
+        
+        // Convertir a minúsculas
+        String normalized = text.toLowerCase();
+        
+        // Remover acentos y diacríticos
+        normalized = Normalizer.normalize(normalized, Normalizer.Form.NFD);
+        normalized = normalized.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        
+        return normalized;
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      
+        
         String path = request.getServletPath();
         
         switch (path) {
@@ -72,7 +93,8 @@ public class ServletEvento extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getServletPath();
+      
+    	String path = request.getServletPath();
         
         if (path.equals("/altaEvento")) {
             crearEvento(request, response);
@@ -96,11 +118,11 @@ public class ServletEvento extends HttpServlet {
                                detalleEvento.getCategorias().contains(categoria);
             }
             
-            // Filtro por nombre - búsqueda parcial case-insensitive
+            // Filtro por nombre - búsqueda parcial insensible a mayúsculas y acentos
             if (incluirEvento && nombreBusqueda != null && !nombreBusqueda.trim().isEmpty()) {
-                String nombreEventoLower = nombreEvento.toLowerCase();
-                String busquedaLower = nombreBusqueda.trim().toLowerCase();
-                incluirEvento = nombreEventoLower.contains(busquedaLower);
+                String nombreEventoNormalizado = normalizeText(nombreEvento);
+                String busquedaNormalizada = normalizeText(nombreBusqueda.trim());
+                incluirEvento = nombreEventoNormalizado.contains(busquedaNormalizada);
             }
             
             if (incluirEvento) {
@@ -124,10 +146,39 @@ public class ServletEvento extends HttpServlet {
     }
     
     private void mostrarDetalleEvento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+        // TEMPORAL - Para probar roles
+        String testRole = request.getParameter("role");
+        if (testRole != null) {
+            if ("organizador".equals(testRole)) {
+                DataUsuario testUser = new DataUsuario("test", "Test User", "test@test.com", TipoUsuario.ORGANIZADOR);
+                request.getSession().setAttribute("usuario", testUser);
+            } else if ("asistente".equals(testRole)) {
+                DataUsuario testUser = new DataUsuario("test", "Test User", "test@test.com", TipoUsuario.ASISTENTE);
+                request.getSession().setAttribute("usuario", testUser);
+            } else if ("logout".equals(testRole)) {
+                request.getSession().removeAttribute("usuario");
+            }
+        }
+    	
         String nombreEvento = request.getParameter("nombre");
-        String imagenEvento = "/images/eventos/" + nombreEvento.toLowerCase() + ".jpg";
+    	
+
+       System.out.println("Nombre del evento recibido: " + nombreEvento); // Línea de depuración
+        String imagenEvento = "/assets/images/eventos/" + nombreEvento.toLowerCase() + ".jpg";
         DTDetalleEvento detalleEvento = controllerEvento.verDetalleEvento(nombreEvento);
-        Set<String> nombresEdiciones = controllerEvento.listarEdiciones(nombreEvento);
+        Set<String> nombresEdiciones;
+        
+        // Verificar el tipo de usuario para listar ediciones
+        DataUsuario usuario = (DataUsuario) request.getSession().getAttribute("usuario");
+        if (usuario != null && usuario.getTipo() == TipoUsuario.ORGANIZADOR) {
+            // Organizador: listar todas las ediciones (confirmadas y no confirmadas)
+            nombresEdiciones = controllerEvento.listarEdiciones(nombreEvento);
+        } else {
+            // Asistente o no logueado: listar solo ediciones confirmadas
+            nombresEdiciones = controllerEvento.listarEdicionesConfirmadas(nombreEvento);
+        }
+        
         Set<java.util.Map<String, Object>> edicionesMinimas = new java.util.LinkedHashSet<>();
         
         // Para cada nombre de edición, obtener solo los datos que necesitamos
@@ -139,18 +190,24 @@ public class ServletEvento extends HttpServlet {
             edicionMinima.put("pais", detalleEdicion.getPais());
             edicionMinima.put("fechaInicio", detalleEdicion.getFechaInicio());
             edicionMinima.put("fechaFin", detalleEdicion.getFechaFin());
-            edicionMinima.put("imagenEdicion", "/images/ediciones/" + nombreEdicion.toLowerCase() + ".jpg");
+            edicionMinima.put("imagenEdicion", "/assets/images/ediciones/" + nombreEdicion.toLowerCase() + ".jpg");
+            
+            // Incluir estado solo si el usuario es organizador
+            if (usuario != null && usuario.getTipo() == TipoUsuario.ORGANIZADOR) {
+                edicionMinima.put("estado", detalleEdicion.getEstado());
+            }
+            
             edicionesMinimas.add(edicionMinima);
         }
         
-        Set<String> todasLasCategorias = controllerEvento.listarCategorias();
+     
         
         request.setAttribute("evento", detalleEvento);
         request.setAttribute("imagenEvento", imagenEvento);
         request.setAttribute("ediciones", edicionesMinimas);
-        request.setAttribute("categorias", todasLasCategorias);
+     
         
-        request.getRequestDispatcher("/WEB-INF/pages/consultaEventoDinamico.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/pages/detalleEvento.jsp").forward(request, response);
     }
    
     private void crearEvento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -181,7 +238,7 @@ public class ServletEvento extends HttpServlet {
                         nombreoriginal.substring(nombreoriginal.lastIndexOf(".")) : ".jpg";
                     
                     // Crear nombre del archivo
-                    String nombreImagen = nombre.toLowerCase().replaceAll("[^a-z0-9]", "") + extension;
+                    String nombreImagen = nombre.toLowerCase()+ extension;
                     
                     // Obtener la ruta física real del directorio webapp
                     String rutaWebapp = request.getServletContext().getRealPath("/");
@@ -205,7 +262,8 @@ public class ServletEvento extends HttpServlet {
             
             LocalDate fechaEvento = (LocalDate) request.getSession().getAttribute("fecha");
             if (fechaEvento == null) {
-                fechaEvento = LocalDate.now();
+                // Usar fecha hardcodeada en lugar de LocalDate.now()
+                fechaEvento = LocalDate.of(2025, 1, 15);
             }
             
             controllerEvento.altaEvento(nombre != null ? nombre.trim() : "", 
@@ -272,8 +330,8 @@ public class ServletEvento extends HttpServlet {
             // Si es para el formulario de alta de evento
             request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
         } else {
-            // Por defecto, mostrar la página de categorías
-            request.getRequestDispatcher("/WEB-INF/pages/categorias.jsp").forward(request, response);
+            // Por defecto, mostrar el componente sidebar con las categorías cargadas
+            request.getRequestDispatcher("/WEB-INF/pages/componentes/categorias-sidebar.jsp").forward(request, response);
         }
     }
     
