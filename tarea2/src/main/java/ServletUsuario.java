@@ -1,6 +1,22 @@
 import java.io.IOException;
-import java.util.Collection;
+import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.util.Set;
+import java.text.Normalizer;
 
+import excepciones.NombreEventoExcepcion;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +32,7 @@ import excepciones.UsuarioNoEncontrado;
 /**
  * Servlet implementation class Usuarios
  */
-@WebServlet ("/usuarios")
+@WebServlet ( {"/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/MiPerfil"} )
 public class ServletUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private IControllerUsuario controllerUsuario;
@@ -38,7 +54,7 @@ public class ServletUsuario extends HttpServlet {
 	 * @throws IOException if an I/O error occurs
 	 */
     
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UsuarioNoEncontrado {
 		
 		String action = request.getParameter("action");
 		String usuario = request.getParameter("usuario");
@@ -48,7 +64,12 @@ public class ServletUsuario extends HttpServlet {
 		} else if ( action.equals("MiPerfil" )) {
 				//MiPerfil, corresponde a este servlet??
 		} else if ( action.equals("detalleUsuario") ) {
-			detalleUsuario(request, response);
+			try {
+				detalleUsuario(request, response);
+			} catch (UsuarioNoEncontrado e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
 		}
@@ -70,7 +91,7 @@ public class ServletUsuario extends HttpServlet {
     
 	}
 	
-	private void detalleUsuario(HttpServletRequest request, HttpServletResponse response) {
+	private void detalleUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UsuarioNoEncontrado {
 		
 		// ve el perfil de un solo usuario
 		String usuario = request.getParameter("usuario");
@@ -158,7 +179,7 @@ public class ServletUsuario extends HttpServlet {
 		
 			// no se seteó el usuario (lista todos los usuarios)
 			
-			Collection<String> usrs = this.controllerUsuario.listarUsuarios();
+			Set<String> usrs = this.controllerUsuario.listarUsuarios();
 			
 			request.setAttribute("usuarios", usrs);
 			

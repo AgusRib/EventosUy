@@ -88,18 +88,18 @@ public class ControllerUsuario implements IControllerUsuario {
 	public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado {
 		ManejadorUsuario mU = ManejadorUsuario.getInstance();
 		try {
-			Usuario user = mU.obtenerUsuario(nickname); mU.obtenerUsuario(nickname);
+			Usuario user = mU.obtenerUsuario(nickname);
+			TipoUsuario tipo;
+			if ( user instanceof Asistente) {
+				tipo = TipoUsuario.ASISTENTE;
+			} else {
+				tipo = TipoUsuario.ORGANIZADOR;
+			}
+			return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), tipo);
 		} catch (Exception e) {
 			throw new UsuarioNoEncontrado("No existe un usuario con este nickname");
 		}
-		Usuario user = mU.obtenerUsuario(nickname);
-		TipoUsuario tipo;
-		if (user instanceof Asistente) {
-			tipo = TipoUsuario.ASISTENTE;
-		} else {
-			tipo = TipoUsuario.ORGANIZADOR;
-		}
-		return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), tipo);
+		
 	}
 
 	@Override
