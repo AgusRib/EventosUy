@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import excepciones.UsuarioNoEncontrado;
 import logica.models.Factory;
 import logica.models.Usuario;
 import logica.controllers.IControllerEvento;
@@ -235,7 +236,12 @@ public class ConsultaRegistro extends JInternalFrame {
 		listUsuarios.addListSelectionListener(e -> {
 			Fecha.setText("");
 			Costo.setText("");
-			detallesUsuario();
+			try {
+				detallesUsuario();
+			} catch (UsuarioNoEncontrado e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		listUsuarios.setListData(controllerUsr.listarAsistentes().toArray(new String[0]));
 		listUsuarios.setModel(new AbstractListModel() {
@@ -262,7 +268,7 @@ public class ConsultaRegistro extends JInternalFrame {
 
 	}
 
-	private void detallesUsuario() {
+	private void detallesUsuario() throws UsuarioNoEncontrado {
 		String selected = listUsuarios.getSelectedValue();
 		if (selected == null) {
 			return;
@@ -301,7 +307,7 @@ public class ConsultaRegistro extends JInternalFrame {
 	}
 	
 	//TODO: Implementar esto:
-	public void invocacionDesdeConsultaUsuario(Usuario user, String edicion) {
+	public void invocacionDesdeConsultaUsuario(Usuario user, String edicion) throws UsuarioNoEncontrado {
 		refrescar();
 		listUsuarios.setSelectedValue(user.getNickname(), true);
 		listRegistros.setListData(controllerUsr.listarRegistrosAEventos(user.getNickname()).toArray(new String[0]));

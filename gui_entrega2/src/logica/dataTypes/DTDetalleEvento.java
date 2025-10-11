@@ -26,6 +26,9 @@ public class DTDetalleEvento {
 	public String getSigla() {
 		return sigla;
 	}
+	public LocalDate getFechaAlta() {
+		return fechaAlta;
+	}
 	public String getDescripcion() {
 		return descripcion;
 	}

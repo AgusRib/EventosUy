@@ -106,6 +106,9 @@
 					<p class="mb-2">
 						<strong>Sigla:</strong> <%=evento.getSigla()%>
 					</p>
+					<p class="mb-2">
+						<strong>Fecha de creación:</strong> <%=evento.getFechaAlta() != null ? evento.getFechaAlta().format(formatter) : ""%>
+					</p>
 					<p class="mb-4">
 						<strong>Descripción:</strong> <%=evento.getDescripcion()%>
 					</p>

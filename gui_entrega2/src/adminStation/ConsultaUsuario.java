@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import excepciones.UsuarioNoEncontrado;
 import logica.models.Factory;
 import logica.models.Usuario;
 import logica.controllers.IControllerUsuario;
@@ -166,7 +167,12 @@ public class ConsultaUsuario extends JInternalFrame {
 					
 						String usuario = listUsuarios.getSelectedValue();
 						Usuario u = controllerUsr.obtenerUsuario(usuario);
-						cr.invocacionDesdeConsultaUsuario(u, listAsociaciones.getSelectedValue());
+						try {
+							cr.invocacionDesdeConsultaUsuario(u, listAsociaciones.getSelectedValue());
+						} catch (UsuarioNoEncontrado e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						cr.setVisible(true);
 						cr.toFront();
 					}
@@ -189,7 +195,12 @@ public class ConsultaUsuario extends JInternalFrame {
 		listUsuarios.setVisible(true);
 		listUsuarios.setEnabled(true);
 		listUsuarios.addListSelectionListener(e -> {
-			detallesUsuario();
+			try {
+				detallesUsuario();
+			} catch (UsuarioNoEncontrado e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		});
 		listUsuarios.setListData(controllerUsr.listarUsuarios().toArray(new String[0]));
 		listUsuarios.setModel(new AbstractListModel() {
@@ -299,7 +310,7 @@ public class ConsultaUsuario extends JInternalFrame {
 		listUsuarios.setListData(controllerUsr.listarUsuarios().toArray(new String[0]));
 	}
 
-	private void detallesUsuario() {
+	private void detallesUsuario() throws UsuarioNoEncontrado {
 		String selected = listUsuarios.getSelectedValue();
 		if (selected == null) {
 			
