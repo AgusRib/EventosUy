@@ -1,10 +1,9 @@
-<%@page import="java.util.Collection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!-- page import="ServletUsuario" -->
-<%@page import="logica.IControllerUsuario" %>
-<%@page import="dataTypes.DataUsuario" %>
-<%@page import="dataTypes.DTOrganizador" %>
-
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="logica.dataTypes.DataUsuario" %>
+<%@ page import="logica.dataTypes.DTOrganizador" %>
+<%@ page import="logica.dataTypes.DTAsistente" %>
 
 <!doctype html>
 
@@ -155,19 +154,64 @@ body.with-collapsed {
 </style>
 </head>
 
+	<% DataUsuario usuario = (DataUsuario) request.getAttribute("usuarios"); 
+	
+	if (usuario == null) {
+        response.sendRedirect(request.getContextPath() + "/usuario?accion=listar");
+        return;
+    }
+	
+	DataUsuario.TipoUsuario tipo = usuario.getTipo();
+	DTAsistente asis = null;
+	DTOrganizador org = null;
+	
+	if (request.getAttribute("usuarios") instanceof DTOrganizador) {
+		org = (DTOrganizador) request.getAttribute("usuarios");
+	}
+	else {
+		asis = (DTAsistente) request.getAttribute("usuarios");
+	}%>
+
+		<header>
+			<nav class="navbar bg-white shadow-sm">
+				<div class="text-center align-items-center">
+					<a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
+						href="<%=request.getContextPath()%>/eventos"><b>Eventos.uy</b></a>
+				</div>
+				<div class="d-flex justify-content-end align-items-center">
+					<div class="dropdown">
+						<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
+							href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
+							aria-expanded="false" aria-haspopup="true"> 
+							<img src="<%=request.getContextPath()%>/assets/images/IMG-US04.jpeg" alt="Usuario"
+							class="rounded-circle"
+							style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+							<span><%= usuario != null ? usuario.getNombre() : "Usuario"%></span> 
+							<i class="bi bi-chevron-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end shadow-sm"
+							aria-labelledby="userMenuDropdown">
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi perfil</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item text-danger"
+								href="<%=request.getContextPath()%>/autenticator?accion=logout"
+								style="color: #dc3545 !important;">Cerrar sesión</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+
 <body id="body-pd">
 	
-	<% DataUsuario usuario = (DataUsuario)
-		request.getAttribute("usuarios"); 
-	String tipo = usuario.getTipo(); %>
-		
-
 	<!-- Contenido -->
-	<main class="contUser" id="mi-cuenta-user">
+	<main class="contUser" id="cuenta-user">
 		<div class="container-xl ">
 			<div class="row">
 				<!--pa dejar dos cartas en una sola columna y la otra a su izq-->
-				<div class="col-6">
+				<div class="miau">
 
 					<!-- Header perfil -->
 					<section class="card mb-3 bg-light ">
@@ -182,57 +226,46 @@ body.with-collapsed {
 									</div>
 									<div class="contenedor-NickRolUser text-center">
 										<div class="nickname">
-											<b><% usuario.getNickname(); %>></b>
+											<b><%= usuario.getNickname() %></b>
 										</div>
-										<div class="rol"><% usuario.getTipo(); %></div>
+										<div class="rol"><%= usuario.getTipo() %></div>
 									</div>
 								</div>
 								<!-- der: atributos -->
 								<div class="d-flex flex-column contenedor-datosUsuario">
 									<div class="datosUsuario">
 										<div class="nombre">
-											<u>Nombre:</u> <% usuario.getNombre(); %>>
+											<u>Nombre:</u> <%= usuario.getNombre() %>
 										</div>
 										<div class="email">
-											<u>Email:</u> <% usuario.getEmail(); %>>
+											<u>Email:</u> <%= usuario.getEmail() %>
 										</div>
 										
-										<% if ( usuario.getTipo()=="Organizador") { %>
-										<div class="fechaNacimiento">
-											<u>Descripción:</u> <% usuario.getDescripcion(); %>
-										</div>
-										<div class="institucion">
-											<u>Web:</u> <a href=" <% usuario.getWeb(); %>" target="_blank"> <% usuario.getWeb(); %></a>
-										</div>
-										<% } else {  %>
-										<div class="fechaNacimiento">
-											<u>Fecha de Nacimiento:</u> <% usuario.getFechaNacimiento(); %>
-										</div>
-										<div class="institucion">
-											<u>Institución:</u> <% usuario.getInstitucion(); %>
-										</div>
+										<% if (org != null) { %>
+												<div class="fechaNacimiento">
+													<u>Descripción:</u> <%= org.getDescripcion() %>
+												</div>
+												<div class="institucion">
+													<u>Web:</u> <a href=" <%= org.getWeb() %>" target="_blank"> <%= org.getWeb() %></a>
+												</div>
+										<% } else if (asis != null) {  %>
+												<div class="fechaNacimiento">
+													<u>Fecha de Nacimiento:</u> <%= asis.getFechaNacimiento() %>
+												</div>
+												<!-- FALTA IMPLEMENTAR ESTA FUNCION
+												
+												
+												
+												 <div class="institucion">
+													<u>Institución:</u> < %= asis.getInstitucion() %>
+												</div> 
+												
+												
+												
+												
+												-->
 										<% } %>
 									</div>
-								</div>
-							</div>
-							<!-- abajo: CONSULTA REGISTRO -->
-							<div class="mt-4">
-								<div class="contenedor-ediciones">
-
-									<div class="mb-2">
-										<a class="action-card" href="ListaEdiciones.html"
-											data-hotkey="2" role="button">
-											<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
-												<i class="bi bi-collection-fill"></i>
-											</div>
-											<div class="flex-fill ms-2">
-												<h3 class="mb-0 h6 fw-bold">Monitorear ediciones</h3>
-												<p class="mb-0 small text-muted">Permite ver estado de
-													las ediciones y consultar detalles.</p>
-											</div> <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
-										</a>
-									</div>
-
 								</div>
 							</div>
 						</div>
@@ -242,73 +275,6 @@ body.with-collapsed {
 				<!-- cambio de columna -->
 				<div class="col-6 d-flex flex-column gap-3">
 
-
-					<!-- MODIFICAR USUARIO card -->
-					<section class="card mb-3  bg-light">
-						<div class="card-body p-0">
-							<ul class="list-unstyled m-0">
-								<li class="border-top"><a
-									href="ModificarUsuarioOrganizador.html"
-									class="d-grid gap-2 g-0 text-decoration-none p-3 align-items-center list-link"
-									id="mi-perfil-card">
-										<div class="d-flex align-items-center">
-											<div class="flex-fill">
-												<i class="bi bi-pencil-square"></i><strong>
-													Modificar mi usuario</strong>
-
-												<div class="text-muted small">Ver y editar datos
-													personales, direccion, web y más.</div>
-											</div>
-											<div class="ms-2 text-secondary" aria-hidden="true">
-												<svg xmlns="http://www.w3.org/2000/svg" width="18"
-													height="18" fill="currentColor" viewBox="0 0 16 16">
-                      <path
-														d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z" />
-                    </svg>
-											</div>
-										</div>
-								</a></li>
-							</ul>
-						</div>
-					</section>
-
-					<!-- Acciones (redirigen a otras pages) -->
-					<section class="card mb-3 bg-light">
-						<div class="card-body">
-							<div class="mb-3">
-								<h2 class="h6 mb-0 fw-bold">Acciones</h2>
-								<p class="text-muted small mb-0">Registrate a cualquier
-									edición existente.</p>
-							</div>
-
-							<!-- Grid de acciones -->
-							<div class="col actions-grid" role="navigation"
-								aria-label="Acciones de perfil">
-
-
-								<div class="row-4 mb-2">
-									<a class="action-card" href="AltaEvento.html" data-hotkey="3"
-										role="button">
-										<div
-											class="action-icon d-flex align-items-center justify-content-center rounded"
-											style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
-											<i class='bx bx-calendar-plus fs-4' aria-hidden="true"></i>
-										</div>
-										<div class="flex-fill ms-2">
-											<h3 class="mb-0 h6 fw-bold">Alta evento</h3>
-											<p class="mb-0 small text-muted">Crea un nuevo evento con
-												sus datos básicos.</p>
-										</div> <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
-									</a>
-								</div>
-
-							</div>
-
-
-						</div>
-
-
-					</section>
 
 				</div>
 			</div>

@@ -16,7 +16,6 @@ public class DataUsuario {
 	public String getNombre() {
 		return nombre;
 	}
-
 	
 	public String getEmail() {
 		return email;

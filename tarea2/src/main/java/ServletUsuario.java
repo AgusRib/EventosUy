@@ -24,6 +24,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logica.controllers.IControllerUsuario;
 import logica.models.Factory;
+import logica.dataTypes.DTAsistente;
+import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
 import excepciones.UsuarioNoEncontrado;
 // import logica.dataTypes.DataUsuario$TipoUsuario;
@@ -94,7 +96,7 @@ public class ServletUsuario extends HttpServlet {
 	private void detalleUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UsuarioNoEncontrado {
 		
 		// ve el perfil de un solo usuario
-		String usuario = request.getParameter("usuario");
+		String usuario = request.getParameter("usuarios");
 
 					DataUsuario usr;
 					try {
@@ -117,7 +119,13 @@ public class ServletUsuario extends HttpServlet {
 					}
 					
 					// setea el usuario
-					request.setAttribute("usuario", usr);
+					if ( usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR ) {
+						DTOrganizador org = this.controllerUsuario.infoOrganizador(usuario);
+						request.setAttribute("usuarios", org);
+					} else {
+						DTAsistente asis = this.controllerUsuario.infoAsistente(usuario);
+						request.setAttribute("usuarios", asis);
+					}
 					
 					try {
 						request.getRequestDispatcher("/WEB-INF/pages/detalleUsuario.jsp").

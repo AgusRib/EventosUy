@@ -3,7 +3,7 @@ package logica.dataTypes;
 import java.time.LocalDate;
 
 
-public class DTAsistente {
+public class DTAsistente extends DataUsuario {
 	
 	private String nickname;
 	private String nombre;
@@ -12,6 +12,7 @@ public class DTAsistente {
 	private LocalDate fechaNacimiento;
 
 	public DTAsistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento) {
+		super(nickname, nombre, email, TipoUsuario.ASISTENTE);
 		this.nickname = nickname;
 		this.nombre = nombre;
 		this.email = email;
@@ -22,9 +23,6 @@ public class DTAsistente {
 	public String getnickname() {
 		return nickname;
 	}
-
-	
-	
 
 	public String getNombre() {
 		return nombre;
