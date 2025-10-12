@@ -10,11 +10,13 @@ import logica.models.Factory;
 import excepciones.NombreUsuarioExistente;
 import excepciones.EmailRepetido;
 import java.io.IOException;
+import jakarta.servlet.annotation.MultipartConfig;
 
 /**
  * Servlet implementation class ServletAutenticator
  */
 @WebServlet({"/registro", "/iniciosesion", "/cerrarsesion"})
+@MultipartConfig
 public class ServletAutenticator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -31,6 +33,11 @@ public class ServletAutenticator extends HttpServlet {
 		
 		switch (path) {
 			case "/registro": {
+				// Obtener instituciones y pasarlas a la página de registro
+			
+					java.util.Set<String> instituciones = controllerUsuario.listarInstituciones();
+					request.setAttribute("instituciones", instituciones);
+				
 				// Mostrar página de registro
 				request.getRequestDispatcher("/WEB-INF/pages/registro.jsp").forward(request, response);
 				break;
@@ -46,7 +53,7 @@ public class ServletAutenticator extends HttpServlet {
 				if (session != null) {
 					session.invalidate();
 				}
-				response.sendRedirect(request.getContextPath() + "/eventos");
+				response.sendRedirect(request.getContextPath() + "/HomeServlet");
 				break;
 			}
 			default:
@@ -79,18 +86,27 @@ public class ServletAutenticator extends HttpServlet {
 		String apellido = request.getParameter("apellido");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String confirmPassword = request.getParameter("confirmPassword");
+
 		String fechaNacimiento = request.getParameter("fechaNacimiento");
-		String tipoUsuario = request.getParameter("tipoUsuario");
+		
+		// Determinar tipo de usuario basado en los checkboxes
+		String[] tiposUsuario = request.getParameterValues("tipoUsuario");
+		String tipoUsuario = "asistente"; 
+		
+		if (tiposUsuario != null) {
+		
+			for (String tipo : tiposUsuario) {
+				if ("organizador".equals(tipo)) {
+					tipoUsuario = "organizador";
+					break;
+				} else if ("asistente".equals(tipo)) {
+					tipoUsuario = "asistente";
+				}
+			}
+		}
 		
 		try {
-			// Validar que las contraseñas coincidan
-			if (!password.equals(confirmPassword)) {
-				request.setAttribute("error", "Las contraseñas no coinciden.");
-				preservarDatosFormulario(request, nickname, nombre, apellido, email, fechaNacimiento, tipoUsuario);
-				request.getRequestDispatcher("/WEB-INF/pages/registro.jsp").forward(request, response);
-				return;
-			}
+		
 			
 			// Procesar fecha de nacimiento
 			java.time.LocalDate fechaNac = null;
@@ -100,6 +116,11 @@ public class ServletAutenticator extends HttpServlet {
 				} catch (Exception e) {
 					request.setAttribute("error", "Formato de fecha inválido.");
 					preservarDatosFormulario(request, nickname, nombre, apellido, email, fechaNacimiento, tipoUsuario);
+					// Recargar instituciones para mostrar la página
+				
+						java.util.Set<String> instituciones = controllerUsuario.listarInstituciones();
+						request.setAttribute("instituciones", instituciones);
+					
 					request.getRequestDispatcher("/WEB-INF/pages/registro.jsp").forward(request, response);
 					return;
 				}
@@ -108,15 +129,18 @@ public class ServletAutenticator extends HttpServlet {
 			// Registrar usuario
 			if ("organizador".equals(tipoUsuario)) {
 				// Para organizador: nickname, nombre, email, password, descripcion, web
-				String descripcion = ""; // Default empty description
-				String web = ""; // Default empty web
+				String descripcion = request.getParameter("descripcion");
+				String web = request.getParameter("sitioWeb");
+				if (descripcion == null) descripcion = "";
+				if (web == null) web = "";
+				
 				controllerUsuario.ingresarOrganizador(nickname.trim(), nombre.trim(), 
 													  email.trim(), password.trim(), descripcion, web);
 			} else {
 				// Para asistente: nickname, nombre, email, password, apellido, fechaNac
 				controllerUsuario.ingresarAsistente(nickname.trim(), nombre.trim(), 
 												   email.trim(), password.trim(),
-												   apellido.trim(), fechaNac);
+												   apellido != null ? apellido.trim() : "", fechaNac);
 			}
 			
 			// Registro exitoso - redirigir a inicio de sesión
@@ -125,25 +149,47 @@ public class ServletAutenticator extends HttpServlet {
 		} catch (NombreUsuarioExistente e) {
 			request.setAttribute("error", "Ya existe un usuario con ese nickname.");
 			preservarDatosFormulario(request, nickname, nombre, apellido, email, fechaNacimiento, tipoUsuario);
+			// Recargar instituciones para mostrar la página
+			
+				java.util.Set<String> instituciones = controllerUsuario.listarInstituciones();
+				request.setAttribute("instituciones", instituciones);
+			
 			request.getRequestDispatcher("/WEB-INF/pages/registro.jsp").forward(request, response);
 		} catch (EmailRepetido e) {
 			request.setAttribute("error", "Ya existe un usuario con ese email.");
 			preservarDatosFormulario(request, nickname, nombre, apellido, email, fechaNacimiento, tipoUsuario);
+			// Recargar instituciones para mostrar la página
+			try {
+				java.util.Set<String> instituciones = controllerUsuario.listarInstituciones();
+				request.setAttribute("instituciones", instituciones);
+			} catch (Exception ex) {
+				System.err.println("Error obteniendo instituciones: " + ex.getMessage());
+			}
 			request.getRequestDispatcher("/WEB-INF/pages/registro.jsp").forward(request, response);
 		} catch (Exception e) {
 			request.setAttribute("error", "Error al registrar usuario: " + e.getMessage());
 			preservarDatosFormulario(request, nickname, nombre, apellido, email, fechaNacimiento, tipoUsuario);
+			// Recargar instituciones para mostrar la página
+			
+				java.util.Set<String> instituciones = controllerUsuario.listarInstituciones();
+				request.setAttribute("instituciones", instituciones);
+			
 			request.getRequestDispatcher("/WEB-INF/pages/registro.jsp").forward(request, response);
 		}
 	}
 	
 	private void procesarInicioSesion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String nickname = request.getParameter("nickname");
+		String nicknameomail = request.getParameter("nickname");
 		String password = request.getParameter("password");
+	
 		
 		try {
 			// Verificar credenciales y obtener datos del usuario directamente
 			DataUsuario usuario = controllerUsuario.iniciarSesionNickname(nickname.trim(), password.trim());
+			if (usuario == null) {
+				usuario = controllerUsuario.iniciarSesionEmail(nicknameomail.trim(), password.trim());
+				
+			}
 			
 			if (usuario != null) {
 				// Crear sesión y setear el atributo usuario
@@ -151,8 +197,9 @@ public class ServletAutenticator extends HttpServlet {
 				session.setAttribute("usuario", usuario);
 				
 				// Redirigir a la página principal
-				response.sendRedirect(request.getContextPath() + "/eventos");
+				response.sendRedirect(request.getContextPath() + "/HomeServlet");
 			} else {
+				
 				request.setAttribute("error", "Credenciales incorrectas.");
 				request.setAttribute("nickname", nickname);
 				request.getRequestDispatcher("/WEB-INF/pages/iniciosesion.jsp").forward(request, response);
