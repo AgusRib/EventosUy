@@ -6,32 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos.uy</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap"/>
-    <link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">    <!-- Icono de la pestaña -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">    <!-- Icono de la pestaña -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
 <body>
- <header>
-        <nav class="navbar bg-white shadow-sm" style="height: 86px;">
-          
-            <div class="header-auth m-3 d-flex justify-content-end" style="width:100%;">
-                                <a href="InicioDeSesion.html" class="text-decoration-none">
-                                    <button type="button" class="button1 rounded-3">
-                                        <div class="header-button">Iniciar sesión</div>
-                                    </button>
-                                </a>
-                                <a href="RegistroBase.html" class="text-decoration-none">
-                                    <button type="button" class="button2 rounded-3">
-                                        <div class="header-button">Regístrarse</div>
-                                    </button>
-                                </a>
-            </div>
-        </nav>
-    </header>
+	<jsp:include page="../templates/header.jsp"></jsp:include>
 
     <div class="hero-actions">
         <div class="text-content-title">
@@ -40,28 +24,13 @@
         </div>
     </div>
 
-    <img class="section-icon" alt="" src="../assets/images/section-image.jpg">
+    <img class="section-icon" alt="" src="assets/images/section-image.jpg">
     
     <div class="row row-cols-2 row-cols-md-3 w-100 justify-content-center mt-4 dflex">
 
         <div class="carta-categorias align-items-center col-12 col-md-8 col-xl-3 h-100 my-3">
             <h3 class="categorias fw-bold">Categorías</h3>
-            <div class="form-check mb-2 d-flex justify-content-center">
-                <input class="form-check-input" type="checkbox" id="checkboxEdiciones">
-                <label class="form-check-label ms-2" for="checkboxEdiciones">Ver ediciones</label>
-            </div>
-            <li class="list-group w-100 overflow-auto text-center" multiple>
-                <a href="#" value="tecnologia" class="list-group-item categoria-link">Tecnología</a>
-                <a href="#" value="innovacion" class="list-group-item categoria-link">Innovación</a>
-                <a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
-                <a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
-            </li>
-            <div class="d-flex justify-content-center mt-3">
-                <a href="RolVisitante_listarUsuarios.html" class="btn btn-dark rounded-pill px-4 py-2 d-flex align-items-center gap-2 text-white" style="font-weight:500;">
-                    <i class="bi bi-people" style="font-size:1.2rem;color:#fff;"></i>
-                    <span class="text-white">Usuarios</span>
-                </a>
-            </div>
+<jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
         </div>
 
 <script>
@@ -96,7 +65,7 @@
                             </div>
                             <div class="avatar-block">
                                 <div class="avatar">
-                                    <img class="shape-icon" alt="" src="../assets/icons/images.png">
+                                    <img class="shape-icon" alt="" src="assets/icons/images.png">
                                 </div>
                                 <div class="info">
                                     <div class="description">Competencia deportiva anual en la capital</div>
@@ -116,7 +85,7 @@
                             </div>
                             <div class="avatar-block">
                                 <div class="avatar">
-                                    <img class="shape-icon" alt="" src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg">
+                                    <img class="shape-icon" alt="" src="assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg">
                                 </div>
                                 <div class="info">
                                     <div class="description">Evento sobre innovación tecnológica</div>
@@ -146,6 +115,6 @@
         </div>
     </div>
     
-    <script src="../assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
