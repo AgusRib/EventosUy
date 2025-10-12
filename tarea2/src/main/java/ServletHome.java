@@ -15,6 +15,7 @@ import logica.models.Factory;
 @WebServlet("/HomeServlet")
 public class ServletHome extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private boolean primerAcceso = true;
        
    
     public ServletHome() {
@@ -25,12 +26,15 @@ public class ServletHome extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		IControllerEvento iEvento = Factory.getInstance().getControllerEvento();
-		Set<String> categorias = iEvento.listarCategorias();
 		
-		// Obtener la sesión y establecer las categorías como atributo de sesión
-		request.getSession().setAttribute("categorias", categorias);
+		if(primerAcceso) {
+			Set<String> categorias = iEvento.listarCategorias();
+			request.getSession().setAttribute("usuario", null);
+			request.getSession().setAttribute("categorias", categorias);
+			primerAcceso = false;
+		}
+		
 		List<Evento> eventosRecientes = iEvento.obtenerEventosRecientes();
-		
 		
 		request.setAttribute("eventos_recientes", eventosRecientes);
 		request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);
