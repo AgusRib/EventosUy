@@ -260,12 +260,18 @@ public class ServletEvento extends HttpServlet {
                                       descripcion != null ? descripcion.trim() : "", 
                                       categorias);
             
-          
             
-            // Usar redirect para ir al detalle del evento creado
-            response.sendRedirect(request.getContextPath() + "/detalleEvento?nombre=" + 
-                java.net.URLEncoder.encode(nombre, "UTF-8"));
             
+            // Mostrar mensaje de registro exitoso en la misma página de alta (como en altaEdicion)
+            Set<String> todasLasCategorias = controllerEvento.listarCategorias();
+            request.setAttribute("categorias", todasLasCategorias);
+            request.setAttribute("mensaje", "Evento creado exitosamente.");
+            // Preservar valores del formulario por si el usuario quiere crear otra cosa
+            request.setAttribute("nombre", nombre);
+            request.setAttribute("sigla", sigla);
+            request.setAttribute("descripcion", descripcion);
+            request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
+             
         } catch(NombreEventoExcepcion e) {
             // Cargar las categorías para que el JSP pueda mostrar el dropdown
             Set<String> todasLasCategorias = controllerEvento.listarCategorias();

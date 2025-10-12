@@ -31,7 +31,7 @@
 	<% DataUsuario user = (DataUsuario) session.getAttribute("usuario");  %>
 	<jsp:include page="../templates/header.jsp"></jsp:include>
 
-	<div class="container px-4 mt-4">
+	<div class="container px-4 ">
 		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
 	</div>
 	<div class="container px-4 mt-3">
