@@ -137,7 +137,7 @@ public class Edicion {
 				this.fechaAlta,
 				this.ciudad,
 				this.pais,
-				null,
+				organizador.getNickname(),
 				nombresTiposRegistros,
 				nombresInstituciones,
 				this.estado

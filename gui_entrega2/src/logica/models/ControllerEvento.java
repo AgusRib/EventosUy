@@ -110,7 +110,7 @@ public class ControllerEvento implements IControllerEvento{
 		System.out.println(ed);
 		DTDetalleEdicion dtEdi = ed.devolverDT();
 		Organizador org = ed.getOrganizador();
-		dtEdi.setOrganizador(org != null ? org.getNombre() : null);
+		dtEdi.setOrganizador(org != null ? org.getNickname() : null);
 		return dtEdi;
 	}
 

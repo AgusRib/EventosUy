@@ -90,7 +90,7 @@ main.contUser {
 			<!-- Formulario -->
 			<section class="card mb-3">
 				<div class="card-body">
-					<form id="altaEdicionForm" action="${pageContext.request.contextPath}/AltaEdicion" method="post">
+					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getAttribute("nombreEvento") %>" method="post">
 						<div class="mb-3">
 							<label for="nombreEdicion" class="form-label">Nombre de
 								la edición</label> <input type="text" class="form-control"
@@ -130,10 +130,21 @@ main.contUser {
 
 						<div class="mb-3">
 							<label for="imagenEdicion" class="form-label">Imagen de
-								la edición (opcional)</label> <input class="form-control" type="file"
+								la edición (opcionall)</label> <input class="form-control" type="file"
 								id="imagenEdicion" name="imagen" accept="image/*">
 						</div>
-
+						
+						<% if (request.getAttribute("mensaje") != null) {
+							%>						
+						<div class="alert alert-primary" role="alert">
+						  <%= request.getAttribute("mensaje") %>
+						</div>
+						<% } else if (request.getAttribute("error") != null) { %> 						
+							<div class="alert alert-danger" role="alert">
+							  <%= request.getAttribute("error") %>
+							</div>
+						<% } %>
+						
 						<div class="d-flex gap-2">
 							<button type="submit" class="btn btn-primary">Guardar</button>
 							<a href="MiPerfil-misEventos.html" class="btn btn-secondary">Cancelar</a>

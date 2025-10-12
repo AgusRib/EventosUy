@@ -3,22 +3,28 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Set" %>
 <%@ page import="logica.dataTypes.*" %>
+<%@ page import="logica.dataTypes.DataUsuario.TipoUsuario" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Consulta Edición - Eventos.uy</title>
+<title>Consulta Edición</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css">
-<link rel="stylesheet" href="assets/css/index.css">
-<link rel="stylesheet" href="assets/css/consultaEvento.css">
-<link rel="stylesheet" href="assets/css/consultaEdicion.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="../assets/css/styles.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-<link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">
+<link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+<link
+	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+	rel="stylesheet">
+
 </head>
 
 <body>
@@ -72,20 +78,24 @@
 </script>
 			</div>
 			<!-- Imagen de la edición -->
+			<% DTDetalleEdicion edi = (DTDetalleEdicion) request.getAttribute("edicion");%>
 			<div class="col-md-4 col-lg-3 col-xl-2 px-5">
-				<img src="assets/images/IMG-EDEV03.jpeg"
-					alt="Maratón Montevideo 2024" class="img-fluid rounded"
+				<img src="<%= request.getAttribute("imagenEdicion") %>"
+					alt="<%= request.getAttribute("nombre") %>" class="img-fluid rounded"
 					style="width: 180px; height: 180px; object-fit: cover; aspect-ratio: 1/1;">
 			</div>
 			<!-- Información principal de la edición -->
 			<div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
-			<% DTDetalleEdicion edi = (DTDetalleEdicion) request.getAttribute("edicion");%>
 				<h1 class="mb-3"> <%= edi.getNombre() %></h1>
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Organizador:</strong> <a
 						href="pagesVisitante/miseventos_ConsultaUsuario_vistaExterna.html"
 						class="d-flex align-items-center text-decoration-none"> <img
-						src="assets/images/IMG-US04.jpeg" alt="Miseventos"
+						<% 
+						String imagenOrganizador = (String) request.getAttribute("imagenOrganizador");
+						String nombre = (String) request.getAttribute("nombre");
+						%>
+						src="<%= imagenOrganizador %>" alt="<%= edi.getOrganizador() %>"
 						class="rounded-circle me-2"
 						style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
 						<span class="fw-bold text-dark"><%= edi.getOrganizador() %></span>
@@ -115,6 +125,14 @@
 				
 					<div class="d-flex align-items-baseline gap-2">
 						<h5>Tipos de Registro</h5>
+						<% 
+						
+						DataUsuario user = (DataUsuario) session.getAttribute("usuario"); 
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
+						%>
+						<a href="#" class="btn btn-success btn-sm"
+							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
+						</a> <% } %>
 					</div>
 					<div class="accordion" id="accordionTiposRegistro">
 					<% 
@@ -124,17 +142,18 @@
 						%> 	<div class="alert alert-secondary text-center mb-0" role="alert">
 						Aún no existen tipos de registro para esta edición.</div>
 					<%} else { 
+						int i = 0;
 						for (DTTipoRegistro tipoReg : trSet) {
 					%>
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="heading<%= tipoReg.getNombre() %>">
+							<h2 class="accordion-header" id="heading<%= i %>">
 								<button class="accordion-button collapsed" type="button"
-									data-bs-toggle="collapse" data-bs-target="#collapse<%= tipoReg.getNombre() %>"
+									data-bs-toggle="collapse" data-bs-target="#collapse<%= i %>"
 									aria-expanded="false" aria-controls="collapse">
 									<%= tipoReg.getNombre() %></button>
 							</h2>
-							<div id="collapse<%= tipoReg.getNombre() %>" class="accordion-collapse collapse"
-								aria-labelledby="heading<%= tipoReg.getNombre() %>"
+							<div id="collapse<%= i %>" class="accordion-collapse collapse"
+								aria-labelledby="heading<%= i %>"
 								data-bs-parent="#accordionTiposRegistro">
 								<div class="accordion-body registro-info">
 									<p>
@@ -148,13 +167,20 @@
 									</p>
 								</div>
 							</div>
-						</div> <% }} %>
+						</div> <% i++;}} %>
 					</div>
 				</div>
 				<!-- Patrocinios -->
 				<div class="mt-4">
 					<div class="d-flex align-items-baseline gap-2">
 						<h5>Patrocinadores</h5>
+						<% 
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
+						%>
+						<a href="#" class="btn btn-success btn-sm"
+							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>
+						</a> <% } %>
+						
 					</div>
 					<div class="accordion" id="accordionPatrocinadores">
 					<%
@@ -178,10 +204,6 @@
 								data-bs-parent="#accordionPatrocinadores">
 								<div class="accordion-body registro-info">
 									<div class="d-flex align-items-center mb-2">
-										<img
-											src="../assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"
-											alt="Logo Patrocinador"
-											style="width: 40px; height: 40px; object-fit: contain; margin-right: 12px;">
 										<span class="mb-0"
 											style="font-weight: 600; font-size: 1.2rem;"><%= patr.getInstitucion() %></span>
 									</div>
