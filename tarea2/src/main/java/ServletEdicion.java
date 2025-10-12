@@ -28,6 +28,7 @@ import java.util.Set;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
+import excepciones.UsuarioNoEncontrado;
 
 @MultipartConfig
 @WebServlet({ "/detalleEdicion", "/altaEdicion", "/altaRegistro", "/listarEdiciones", "/detalleEdicion/altaEdicion" })
@@ -98,9 +99,55 @@ public class ServletEdicion extends HttpServlet {
                 return;
             }
             case "/listarEdiciones": {
-            	DataUsuario user = (DataUsuario) request.getSession().getAttribute("usuario");  //TODO
+            	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
+            	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
             	
-                request.setAttribute("ediciones", Collections.emptyList());
+            	try {
+					request.getSession().setAttribute("usuario", ICU.infoUsuario("miseventos"));
+				} catch (UsuarioNoEncontrado e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	//TESTING
+            	DataUsuario user = (DataUsuario) request.getSession().getAttribute("usuario"); 
+            	
+            	// Fetch ediciones
+        		Set<DTDetalleEdicion> ediciones = new HashSet<>();
+            	if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
+            		for (String edicion : ICU.listarEdicionesOrganizadas(user.getNickname())) {
+            			
+            			DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+            			ediciones.add(ed);
+            			
+                        // Fetch imagen de ediciones
+                        String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
+                        if (edicionImg != null) {
+                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/" + edicionImg);
+                        } else {
+                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/default.jpg");
+                        }
+            		
+            		} 
+            	
+            	
+            	
+            	} else {
+            		for (String edicion : ICU.listarRegistrosAEventos(user.getNickname())) {
+            			
+            			DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+            			ediciones.add(ed);
+            			
+                        // Fetch imagen de ediciones
+                        String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
+                        if (edicionImg != null) {
+                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/" + edicionImg);
+                        } else {
+                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/default.jpg");
+                        }
+					}
+            	}
+            
+            	
+                request.setAttribute("ediciones", ediciones);
                 request.getRequestDispatcher("/WEB-INF/pages/listarEdiciones.jsp").forward(request, response);
                 return;
             }
