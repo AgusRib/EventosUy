@@ -32,7 +32,7 @@ import excepciones.UsuarioNoEncontrado;
 /**
  * Servlet implementation class Usuarios
  */
-@WebServlet ( {"/pages", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/MiPerfil"} )
+@WebServlet ( {"/pages", "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/MiPerfil"} )
 public class ServletUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private IControllerUsuario controllerUsuario;

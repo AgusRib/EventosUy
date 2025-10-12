@@ -76,7 +76,7 @@
 						<%	if (usuarios.size() > 0) {
 								for(DataUsuario usuario: usuarios){ %>
 									<div class="card rounded-5 mb-3">
-										<a href="/src/main/java/ServletUsuario?action=detalleUsuario&usuario=<%= usuario %>"
+										<a href="<%=request.getContextPath()%>/detalleUsuario?action=detalleUsuario&usuario=<%=java.net.URLEncoder.encode(usuario.getNickname(), "UTF-8")%>"
 											class="text-decoration-none d-block h-100 w-100">
 											<div class="user row g-0 align-items-center">
 												<div class="col-auto">
