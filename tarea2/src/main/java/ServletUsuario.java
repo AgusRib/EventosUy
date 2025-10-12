@@ -32,7 +32,7 @@ import excepciones.UsuarioNoEncontrado;
 /**
  * Servlet implementation class Usuarios
  */
-@WebServlet ( {"/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/MiPerfil"} )
+@WebServlet ( {"/pages", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/MiPerfil"} )
 public class ServletUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private IControllerUsuario controllerUsuario;
@@ -54,7 +54,7 @@ public class ServletUsuario extends HttpServlet {
 	 * @throws IOException if an I/O error occurs
 	 */
     
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, UsuarioNoEncontrado {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String action = request.getParameter("action");
 		String usuario = request.getParameter("usuario");
@@ -120,7 +120,7 @@ public class ServletUsuario extends HttpServlet {
 					request.setAttribute("usuario", usr);
 					
 					try {
-						request.getRequestDispatcher("/WEB-INF/usuarios/detalleUsuario.jsp").
+						request.getRequestDispatcher("/WEB-INF/pages/detalleUsuario.jsp").
 								forward(request, response);
 					} catch (ServletException e) {
 						// TODO Auto-generated catch block
@@ -163,7 +163,7 @@ public class ServletUsuario extends HttpServlet {
 				request.setAttribute("datos", datos);
 				
 				try {
-					request.getRequestDispatcher("/WEB-INF/usuarios/modificarDatos.jsp").
+					request.getRequestDispatcher("/WEB-INF/pages/modificarDatos.jsp").
 							forward(request, response);
 				} catch (ServletException e) {
 					// TODO Auto-generated catch block
@@ -181,10 +181,35 @@ public class ServletUsuario extends HttpServlet {
 			
 			Set<String> usrs = this.controllerUsuario.listarUsuarios();
 			
-			request.setAttribute("usuarios", usrs);
+			try {
+				if (usrs.isEmpty())
+					throw new UsuarioNoEncontrado("No hay usuarios registrados");
+				else {
+					Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
+					for (String u : usrs) {
+						try {
+							DataUsuario usr = this.controllerUsuario.infoUsuario(u);
+							usuarios.add(usr);
+						} catch (UsuarioNoEncontrado e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					
+					request.setAttribute("usuarios", usuarios);
+					
+					request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").
+							forward(request, response);
+				
+				}
+				
+			} catch (UsuarioNoEncontrado e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
-			request.getRequestDispatcher("/WEB-INF/usuarios/listarUsuarios.jsp").
-					forward(request, response);
+			
+			
 	
 	}
 	
