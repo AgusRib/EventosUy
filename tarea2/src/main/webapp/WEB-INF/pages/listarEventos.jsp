@@ -136,7 +136,7 @@
 											<div class="avatar-block">
 												<div class="avatar">
 													<img class="shape-icon" alt="Imagen de <%=nombreEvento%>"
-														src="<%=request.getContextPath()%><%=imagenEvento%>"
+														src="<%=imagenEvento%>"
 														onerror="this.onerror=null;this.src='<%=request.getContextPath()%>/assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'">
 												</div>
 												<div class="info gap-1">

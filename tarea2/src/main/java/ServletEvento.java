@@ -130,7 +130,15 @@ public class ServletEvento extends HttpServlet {
                 java.util.Map<String, Object> eventoInfo = new java.util.HashMap<>();
                 eventoInfo.put("nombre", detalleEvento.getNombre());
                 eventoInfo.put("descripcion", detalleEvento.getDescripcion());
-                eventoInfo.put("imagenEvento", "/assets/images/eventos/" + nombreEvento.toLowerCase() + ".jpg");
+                
+                // Fetch imagen de evento (copiado de ServletEdicion)
+                String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
+                if (eventoImg != null) {
+                    eventoInfo.put("imagenEvento", "uploads/eventos/" + eventoImg);
+                } else {
+                    eventoInfo.put("imagenEvento", "uploads/eventos/default.jpg");
+                }
+                
                 eventosInfo.add(eventoInfo);
             }
         }
@@ -146,64 +154,72 @@ public class ServletEvento extends HttpServlet {
     }
     
     private void mostrarDetalleEvento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-        // TEMPORAL - Para probar roles
-        String testRole = request.getParameter("role");
-        if (testRole != null) {
-            if ("organizador".equals(testRole)) {
-                DataUsuario testUser = new DataUsuario("test", "Test User", "test@test.com", TipoUsuario.ORGANIZADOR);
-                request.getSession().setAttribute("usuario", testUser);
-            } else if ("asistente".equals(testRole)) {
-                DataUsuario testUser = new DataUsuario("test", "Test User", "test@test.com", TipoUsuario.ASISTENTE);
-                request.getSession().setAttribute("usuario", testUser);
-            } else if ("logout".equals(testRole)) {
-                request.getSession().removeAttribute("usuario");
-            }
-        }
-    	
         String nombreEvento = request.getParameter("nombre");
-    	
 
-       System.out.println("Nombre del evento recibido: " + nombreEvento); // Línea de depuración
-        String imagenEvento = "/assets/images/eventos/" + nombreEvento.toLowerCase() + ".jpg";
+        System.out.println("Nombre del evento recibido: " + nombreEvento); // Línea de depuración
+        
         DTDetalleEvento detalleEvento = controllerEvento.verDetalleEvento(nombreEvento);
+        
+        // Fetch imagen de evento (copiado de ServletEdicion)
+        String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
+        if (eventoImg != null) {
+            request.setAttribute("imagenEvento", "uploads/eventos/" + eventoImg);
+        } else {
+            request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
+        }
+        
         Set<String> nombresEdiciones;
         
         // Verificar el tipo de usuario para listar ediciones
         DataUsuario usuario = (DataUsuario) request.getSession().getAttribute("usuario");
-        if (usuario != null && usuario.getTipo() == TipoUsuario.ORGANIZADOR) {
-            // Organizador: listar todas las ediciones (confirmadas y no confirmadas)
-            nombresEdiciones = controllerEvento.listarEdiciones(nombreEvento);
-        } else {
-            // Asistente o no logueado: listar solo ediciones confirmadas
-            nombresEdiciones = controllerEvento.listarEdicionesConfirmadas(nombreEvento);
-        }
+        
+        // Obtener todas las ediciones (confirmadas y no confirmadas)
+        Set<String> todasLasEdiciones = controllerEvento.listarEdiciones(nombreEvento);
+        Set<String> edicionesConfirmadas = controllerEvento.listarEdicionesConfirmadas(nombreEvento);
         
         Set<java.util.Map<String, Object>> edicionesMinimas = new java.util.LinkedHashSet<>();
         
-        // Para cada nombre de edición, obtener solo los datos que necesitamos
-        for (String nombreEdicion : nombresEdiciones) {
+        // Para cada nombre de edición, verificar si debe mostrarse
+        for (String nombreEdicion : todasLasEdiciones) {
             DTDetalleEdicion detalleEdicion = controllerEvento.mostrarDetallesEdicion(nombreEdicion);
-            java.util.Map<String, Object> edicionMinima = new java.util.HashMap<>();
-            edicionMinima.put("nombre", detalleEdicion.getNombre());
-            edicionMinima.put("ciudad", detalleEdicion.getCiudad());
-            edicionMinima.put("pais", detalleEdicion.getPais());
-            edicionMinima.put("fechaInicio", detalleEdicion.getFechaInicio());
-            edicionMinima.put("fechaFin", detalleEdicion.getFechaFin());
-            edicionMinima.put("imagenEdicion", "/assets/images/ediciones/" + nombreEdicion.toLowerCase() + ".jpg");
             
-            // Incluir estado solo si el usuario es organizador
-            if (usuario != null && usuario.getTipo() == TipoUsuario.ORGANIZADOR) {
-                edicionMinima.put("estado", detalleEdicion.getEstado());
+            // Verificar si el usuario es el organizador específico de esta edición
+            boolean esOrganizadorDeEstaEdicion = usuario != null && 
+                                               usuario.getTipo() == TipoUsuario.ORGANIZADOR && 
+                                               usuario.getNickname().equals(detalleEdicion.getOrganizador());
+            
+            // Determinar si mostrar esta edición:
+            // - Si es organizador de esta edición: mostrar siempre
+            // - Si no es organizador de esta edición: mostrar solo si está confirmada
+            boolean mostrarEdicion = esOrganizadorDeEstaEdicion || edicionesConfirmadas.contains(nombreEdicion);
+            
+            if (mostrarEdicion) {
+                java.util.Map<String, Object> edicionMinima = new java.util.HashMap<>();
+                edicionMinima.put("nombre", detalleEdicion.getNombre());
+                edicionMinima.put("ciudad", detalleEdicion.getCiudad());
+                edicionMinima.put("pais", detalleEdicion.getPais());
+                edicionMinima.put("fechaInicio", detalleEdicion.getFechaInicio());
+                edicionMinima.put("fechaFin", detalleEdicion.getFechaFin());
+                
+                // Fetch imagen de edicion (copiado de ServletEdicion)
+                String edicionImg = ManejadorArchivos.buscarArchivo(detalleEdicion.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
+                if (edicionImg != null) {
+                    edicionMinima.put("imagenEdicion", "uploads/ediciones/" + edicionImg);
+                } else {
+                    edicionMinima.put("imagenEdicion", "uploads/ediciones/default.jpg");
+                }
+                
+                // Incluir estado solo si el usuario es el organizador específico de esta edición
+                if (esOrganizadorDeEstaEdicion) {
+                    edicionMinima.put("estado", detalleEdicion.getEstado());
+                }
+                edicionMinima.put("esOrganizadorDeEstaEdicion", esOrganizadorDeEstaEdicion);
+                
+                edicionesMinimas.add(edicionMinima);
             }
-            
-            edicionesMinimas.add(edicionMinima);
         }
         
-     
-        
         request.setAttribute("evento", detalleEvento);
-        request.setAttribute("imagenEvento", imagenEvento);
         request.setAttribute("ediciones", edicionesMinimas);
      
         
@@ -228,37 +244,9 @@ public class ServletEvento extends HttpServlet {
             }
           
 
-            // Manejar la imagen directamente
+            // Manejar la imagen usando ManejadorArchivos
             Part imagenPart = request.getPart("imagen");
-            if (imagenPart != null && imagenPart.getSize() > 0) {
-                String nombreoriginal = imagenPart.getSubmittedFileName();
-                if (nombreoriginal != null && !nombreoriginal.trim().isEmpty()) {
-                    // Obtener extensión del archivo
-                    String extension = nombreoriginal.contains(".") ? 
-                        nombreoriginal.substring(nombreoriginal.lastIndexOf(".")) : ".jpg";
-                    
-                    // Crear nombre del archivo
-                    String nombreImagen = nombre.toLowerCase()+ extension;
-                    
-                    // Obtener la ruta física real del directorio webapp
-                    String rutaWebapp = request.getServletContext().getRealPath("/");
-                    String rutaImagenes = rutaWebapp + "assets/images/eventos/";
-                    
-                    // Crear directorio si no existe
-                    Path directorioImagenes = Paths.get(rutaImagenes);
-                    if (!Files.exists(directorioImagenes)) {
-                        Files.createDirectories(directorioImagenes);
-                    }
-                    
-                    // Ruta completa del archivo
-                    Path rutaCompleta = Paths.get(rutaImagenes + nombreImagen);
-                    
-                    // Guardar archivo
-                    try (InputStream input = imagenPart.getInputStream()) {
-                        Files.copy(input, rutaCompleta, StandardCopyOption.REPLACE_EXISTING);
-                    }
-                }
-            }
+            ManejadorArchivos.guardarArchivo(imagenPart, nombre.toLowerCase(), "eventos", getServletContext());
             
             LocalDate fechaEvento = (LocalDate) request.getSession().getAttribute("fecha");
             if (fechaEvento == null) {

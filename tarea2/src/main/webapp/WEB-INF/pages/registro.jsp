@@ -152,15 +152,26 @@
                 <div id="asistenteFields" style="<%= "organizador".equals(request.getAttribute("tipoUsuario")) ? "display: none;" : "" %>">
                     <div class="mb-3">
                         <input type="text" class="form-control" id="apellido" name="apellido" 
-                               placeholder="Apellido" 
+                               placeholder="Apellido *" 
                                value="<%= request.getAttribute("apellido") != null ? request.getAttribute("apellido") : "" %>" 
-                               autocomplete="off">
+                               required autocomplete="off"
+                               oninvalid="this.setCustomValidity('Por favor ingrese su apellido.')"
+                               oninput="this.setCustomValidity('')">
+                        <div class="invalid-feedback">
+                            Por favor ingrese su apellido.
+                        </div>
                     </div>
                     
                     <div class="mb-3">
                         <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" 
-                               value="<%= request.getAttribute("fechaNacimiento") != null ? request.getAttribute("fechaNacimiento") : "" %>">
-                        <small class="text-muted">Fecha de nacimiento</small>
+                               value="<%= request.getAttribute("fechaNacimiento") != null ? request.getAttribute("fechaNacimiento") : "" %>"
+                               required
+                               oninvalid="this.setCustomValidity('Por favor ingrese su fecha de nacimiento.')"
+                               oninput="validateFechaNacimiento(this)">
+                        <small class="text-muted">Fecha de nacimiento *</small>
+                        <div class="invalid-feedback" id="fechaNacimientoError">
+                            Por favor ingrese una fecha de nacimiento válida.
+                        </div>
                     </div>
                     
                     <!-- Selector de institución -->
@@ -202,21 +213,21 @@
                 <!-- Campos específicos para Organizador -->
                 <div id="organizadorFields" style="<%= !"organizador".equals(request.getAttribute("tipoUsuario")) ? "display: none;" : "" %>">
                     <div class="mb-3">
-                        <label for="descripcion" class="form-label">Una breve descripción de su organización</label>
+                        <label for="descripcion" class="form-label">Una breve descripción de su organización *</label>
                         <textarea class="form-control" name="descripcion" id="descripcion" rows="3"
-                                  autocomplete="off"><%= request.getAttribute("descripcion") != null ? request.getAttribute("descripcion") : "" %></textarea>
+                                  autocomplete="off" required oninvalid="this.setCustomValidity('Por favor ingrese una descripción.')"
+                                  oninput="this.setCustomValidity('')"><%= request.getAttribute("descripcion") != null ? request.getAttribute("descripcion") : "" %></textarea>
+                        <div class="invalid-feedback">
+                            Por favor ingrese una descripción.
+                        </div>
                     </div>
                     
                     <div class="mb-3">
                         <input type="url" class="form-control" id="sitioWeb" name="sitioWeb" 
-                               placeholder="URL a su sitio web" 
+                               placeholder="URL a su sitio web (opcional)" 
                                value="<%= request.getAttribute("sitioWeb") != null ? request.getAttribute("sitioWeb") : "" %>" 
-                               autocomplete="off"
-                               oninvalid="this.setCustomValidity('Por favor ingrese una URL válida.')"
-                               oninput="this.setCustomValidity('')">
-                        <div class="invalid-feedback">
-                            Por favor ingrese una URL válida.
-                        </div>
+                               autocomplete="off">
+                        <small class="text-muted">Campo opcional</small>
                     </div>
                 </div>
 
@@ -230,20 +241,75 @@
     <!-- Solo Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Solo función para toggle de campos de usuario
+        // Función para toggle de campos de usuario y manejo de validaciones
         function toggleUserFields() {
             const tipoAsistente = document.getElementById('tipoAsistente').checked;
             const asistenteFields = document.getElementById('asistenteFields');
             const organizadorFields = document.getElementById('organizadorFields');
             
+            // Campos de asistente
+            const apellidoField = document.getElementById('apellido');
+            const fechaNacimientoField = document.getElementById('fechaNacimiento');
+            
+            // Campos de organizador
+            const descripcionField = document.getElementById('descripcion');
+            const sitioWebField = document.getElementById('sitioWeb');
+            
             if (tipoAsistente) {
+                // Mostrar campos de asistente
                 asistenteFields.style.display = 'block';
                 organizadorFields.style.display = 'none';
+                
+                // Hacer obligatorios los campos de asistente
+                apellidoField.required = true;
+                fechaNacimientoField.required = true;
+                
+                // Hacer opcional los campos de organizador
+                descripcionField.required = false;
+                sitioWebField.required = false;
             } else {
+                // Mostrar campos de organizador
                 asistenteFields.style.display = 'none';
                 organizadorFields.style.display = 'block';
+                
+                // Hacer opcional los campos de asistente
+                apellidoField.required = false;
+                fechaNacimientoField.required = false;
+                
+                // Hacer obligatorio el campo descripción de organizador
+                descripcionField.required = true;
+                sitioWebField.required = false; // Sitio web sigue siendo opcional
             }
         }
+        
+        // Función para validar la fecha de nacimiento
+        function validateFechaNacimiento(input) {
+            const fechaNacimiento = new Date(input.value);
+            const hoy = new Date();
+            
+            // Reiniciar mensajes de error
+            input.setCustomValidity('');
+            document.getElementById('fechaNacimientoError').style.display = 'none';
+            
+            // Validar que la fecha no sea en el futuro
+            if (fechaNacimiento > hoy) {
+                input.setCustomValidity('La fecha de nacimiento no puede ser en el futuro.');
+                document.getElementById('fechaNacimientoError').style.display = 'block';
+            }
+        }
+        
+        // Ejecutar toggle cuando se carga la página para establecer el estado inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleUserFields();
+        });
+        
+        // Script para recargar la página si viene del caché del navegador
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                // Si la página viene del caché del navegador, recargala
+                window.location.reload();
+            }
+        });
     </script>
 </body>
 </html>

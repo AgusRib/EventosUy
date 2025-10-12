@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DataUsuario;
 import logica.models.Factory;
@@ -136,11 +137,19 @@ public class ServletAutenticator extends HttpServlet {
 				
 				controllerUsuario.ingresarOrganizador(nickname.trim(), nombre.trim(), 
 													  email.trim(), password.trim(), descripcion, web);
+				
+				// Guardar imagen de perfil usando ManejadorArchivos
+				Part imagen = request.getPart("imagen");
+				ManejadorArchivos.guardarArchivo(imagen, nickname.toLowerCase(), "usuarios", getServletContext());
 			} else {
 				// Para asistente: nickname, nombre, email, password, apellido, fechaNac
 				controllerUsuario.ingresarAsistente(nickname.trim(), nombre.trim(), 
 												   email.trim(), password.trim(),
 												   apellido != null ? apellido.trim() : "", fechaNac);
+				
+				// Guardar imagen de perfil usando ManejadorArchivos
+				Part imagen = request.getPart("imagen");
+				ManejadorArchivos.guardarArchivo(imagen, nickname.toLowerCase(), "usuarios", getServletContext());
 			}
 			
 			// Registro exitoso - redirigir a inicio de sesión
@@ -185,7 +194,7 @@ public class ServletAutenticator extends HttpServlet {
 		
 		try {
 			// Verificar credenciales y obtener datos del usuario directamente
-			DataUsuario usuario = controllerUsuario.iniciarSesionNickname(nickname.trim(), password.trim());
+			DataUsuario usuario = controllerUsuario.iniciarSesionNickname(nicknameomail.trim(), password.trim());
 			if (usuario == null) {
 				usuario = controllerUsuario.iniciarSesionEmail(nicknameomail.trim(), password.trim());
 				
@@ -201,13 +210,13 @@ public class ServletAutenticator extends HttpServlet {
 			} else {
 				
 				request.setAttribute("error", "Credenciales incorrectas.");
-				request.setAttribute("nickname", nickname);
+				request.setAttribute("nickname", nicknameomail);
 				request.getRequestDispatcher("/WEB-INF/pages/iniciosesion.jsp").forward(request, response);
 			}
 			
 		} catch (Exception e) {
 			request.setAttribute("error", "Error al iniciar sesión: " + e.getMessage());
-			request.setAttribute("nickname", nickname);
+			request.setAttribute("nickname", nicknameomail);
 			request.getRequestDispatcher("/WEB-INF/pages/iniciosesion.jsp").forward(request, response);
 		}
 	}

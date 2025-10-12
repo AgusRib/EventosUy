@@ -52,27 +52,39 @@
 					href="<%=request.getContextPath()%>/eventos">Eventos.uy</a>
 			</div>
 			<div class="d-flex justify-content-end align-items-center">
-				<div class="dropdown">
-					<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
-						href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
-						aria-expanded="false" aria-haspopup="true"> <img
-						src="<%=request.getContextPath()%>/assets/images/IMG-US01.jpg" alt="JA"
-						class="rounded-circle"
-						style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-						<span>Ana</span> <i class="bi bi-chevron-down"></i>
-					</a>
-					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
-						aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi
-								perfil</a></li>
-						<li>
-							<hr class="dropdown-divider">
-						</li>
-						<li><a class="dropdown-item text-danger"
-							href="<%=request.getContextPath()%>/autenticator?accion=logout"
-							style="color: #dc3545 !important;">Cerrar sesión</a></li>
-					</ul>
-				</div>
+				<% if (usuario != null) { %>
+					<div class="dropdown">
+						<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
+							href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
+							aria-expanded="false" aria-haspopup="true"> 
+							<img src="<%=request.getContextPath()%>/assets/images/IMG-US01.jpg" alt="<%=usuario.getNickname().substring(0,1).toUpperCase()%>"
+								class="rounded-circle"
+								style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+							<span><%=usuario.getNombre()%></span> <i class="bi bi-chevron-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end shadow-sm"
+							aria-labelledby="userMenuDropdown">
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi perfil</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a class="dropdown-item text-danger"
+								href="<%=request.getContextPath()%>/cerrarsesion"
+								style="color: #dc3545 !important;">Cerrar sesión</a></li>
+						</ul>
+					</div>
+				<% } else { %>
+					<div class="header-auth m-3">
+						<a href="<%=request.getContextPath()%>/iniciosesion" class="text-decoration-none">
+							<button type="button" class="btn btn-outline-primary me-2">
+								Iniciar sesión
+							</button>
+						</a>
+						<a href="<%=request.getContextPath()%>/registro" class="text-decoration-none">
+							<button type="button" class="btn btn-primary">
+								Regístrarse
+							</button>
+						</a>
+					</div>
+				<% } %>
 			</div>
 		</nav>
 	</header>
@@ -91,7 +103,7 @@
 
 			<!-- Columna izquierda: imagen -->
 			<div class="col-md-4 col-lg-3 col-xl-2 px-5">
-				<img src="<%=request.getContextPath()%><%=imagenEvento%>" 
+				<img src="<%=imagenEvento%>" 
 				     alt="Imagen del Evento <%=evento != null ? evento.getNombre() : ""%>"
 				     class="img-fluid rounded imagen-evento"
 				     onerror="this.onerror=null;this.src='<%=request.getContextPath()%>/assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'">
@@ -137,7 +149,7 @@
 			<div class="d-flex align-items-center mb-2">
 				<h4 class="titulo-ediciones mb-0">Ediciones del Evento</h4>
 				<% if (esOrganizador) { %>
-					<a href="<%=request.getContextPath()%>/AltaEdicion?nombreEvento=<%=evento != null ? java.net.URLEncoder.encode(evento.getNombre(), "UTF-8") : ""%>"
+					<a href="<%=request.getContextPath()%>/detalleEdicion/altaEdicion?nombreEvento=<%=evento != null ? java.net.URLEncoder.encode(evento.getNombre(), "UTF-8") : ""%>"
 					   class="btn btn-success btn-sm ms-2" title="Agregar edición">
 						<i class="bi bi-plus-lg"></i>
 					</a>
@@ -163,12 +175,13 @@
 						java.time.LocalDate fechaFin = (java.time.LocalDate) edicion.get("fechaFin");
 						String imagenEdicion = (String) edicion.get("imagenEdicion");
 						EstadoEdicion estado = (EstadoEdicion) edicion.get("estado");
+						Boolean esOrganizadorDeEstaEdicion = (Boolean) edicion.get("esOrganizadorDeEstaEdicion");
 				%>
 					<div class="col-md-6">
 						<a class="text-decoration-none text-reset"
 							href="<%=request.getContextPath()%>/detalleEdicion?nombre=<%=java.net.URLEncoder.encode(nombreEdicion, "UTF-8")%>">
 							<div class="carta p-4 
-								<% if (esOrganizador && estado != null) { %>
+								<% if (esOrganizadorDeEstaEdicion != null && esOrganizadorDeEstaEdicion && estado != null) { %>
 									<% if (estado == EstadoEdicion.Confirmada) { %>
 										bg-success bg-opacity-10 bg-gradient border-success
 									<% } else if (estado == EstadoEdicion.Rechazada) { %>
@@ -188,7 +201,7 @@
 										<div class="avatar me-3">
 											<img class="shape-icon rounded" 
 											     alt="Imagen de <%=nombreEdicion%>"
-											     src="<%=request.getContextPath()%><%=imagenEdicion%>" 
+											     src="<%=imagenEdicion%>" 
 											     width="120"
 											     onerror="this.onerror=null;this.src='<%=request.getContextPath()%>/assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'">
 										</div>
@@ -206,7 +219,7 @@
 											</div>
 										</div>
 									</div>
-									<% if (esOrganizador && estado != null) { %>
+									<% if (esOrganizadorDeEstaEdicion != null && esOrganizadorDeEstaEdicion && estado != null) { %>
 										<div class="button1 rounded-5 p-3 
 											<% if (estado == EstadoEdicion.Confirmada) { %>
 												bg-success bg-gradient bg-opacity-75 text-white
