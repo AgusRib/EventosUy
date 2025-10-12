@@ -12,8 +12,6 @@ public class ManejadorArchivos {
 
 	public static String buscarArchivo(String nombreArchivo, String carpeta) {
 		File dir = new File(carpeta);
-		System.out.println("Buscando en directorio: " + dir.getAbsolutePath());
-		System.out.println("Buscando archivo: " + nombreArchivo);
         if(!dir.exists() || !dir.isDirectory()) return null;
 
         for(File f : dir.listFiles()) {
@@ -22,7 +20,6 @@ public class ManejadorArchivos {
             int dot = baseName.lastIndexOf(".");
             baseName = baseName.substring(0, dot); // quita extensión
             if(baseName.equals(nombreArchivo)) {
-            	System.out.println("Archivo encontrado: " + f.getAbsolutePath());
                 return f.getName(); // devuelve el nombre con extensión
             }
         }
