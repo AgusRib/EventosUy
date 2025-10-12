@@ -254,6 +254,15 @@ public class ServletEdicion extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/pages/altaEdicion.jsp").forward(request, response);
 			}	
 			catch (Exception e) {
+				// Preserve form field values when there's an error
+				request.setAttribute("nombre", nombre);
+				request.setAttribute("sigla", sigla);
+				request.setAttribute("ciudad", ciudad);
+				request.setAttribute("pais", pais);
+				request.setAttribute("fechaInicio", fechaInicio);
+				request.setAttribute("fechaFin", fechaFin);
+				request.setAttribute("nombreEvento", nombreEvento);
+				
 				request.setAttribute("error", e.getMessage());
 				request.setAttribute("mensaje", null);
 				request.getRequestDispatcher("/WEB-INF/pages/altaEdicion.jsp").forward(request, response);
