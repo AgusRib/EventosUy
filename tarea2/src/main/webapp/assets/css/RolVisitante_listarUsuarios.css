@@ -53,7 +53,8 @@ button {
 .barraBusquedaUsuario {
 	width: 400px;
 	padding: 12px 20px;
-	border: 2px solid #e3e3e3;;
+	border: 2px solid #e3e3e3;
+	;
 	border-radius: 8px;
 	font-size: 16px;
 	font-family: Inter, sans-serif;
