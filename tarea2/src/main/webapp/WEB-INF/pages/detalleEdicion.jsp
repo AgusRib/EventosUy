@@ -16,11 +16,11 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
 	rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
-<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="assets/css/styles.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-<link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+<link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">
 <link
 	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
 	rel="stylesheet">
@@ -28,65 +28,25 @@
 </head>
 
 <body>
-
+	<% DataUsuario user = (DataUsuario) session.getAttribute("usuario");  %>
 	<jsp:include page="../templates/header.jsp"></jsp:include>
 
-	<!-- Columna derecha: categorías (opcional) -->
-
-	<div class="container-fluid px-4 mt-4">
-		<div class="carta-de-eventos mb-4 d-flex justify-content-center">
-			<input type="search" class="search" placeholder="Buscar ediciones...">
-		</div>
+	<div class="container px-4 mt-4">
+		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
 	</div>
-	<div class="container-fluid px-4 mt-3">
+	<div class="container px-4 mt-3">
 		<div class="row pb-4">
-			<!-- Columna derecha: categorías estilo index -->
-			<div class="col-md-3 col-lg-2 col-xl-2 mt-3 mt-md-0">
-				<div class="carta-categorias align-items-center h-100">
-					<h3 class="categorias fw-bold">Categorías</h3>
-					<div class="form-check mb-2 d-flex justify-content-center">
-						<input class="form-check-input" type="checkbox"
-							id="checkboxEdiciones"> <label
-							class="form-check-label ms-2" for="checkboxEdiciones">Ver
-							ediciones</label>
-					</div>
-					<li class="list-group w-100 overflow-auto text-center" multiple>
-						<a href="#" value="tecnologia"
-						class="list-group-item categoria-link">Tecnología</a> <a href="#"
-						value="innovacion" class="list-group-item categoria-link">Innovación</a>
-						<a href="#" value="deporte" class="list-group-item categoria-link">Deporte</a>
-						<a href="#" value="salud" class="list-group-item categoria-link">Salud</a>
-					</li>
-				</div>
-				<!-- ...existing code... -->
-				<script>
-  // Redirige según el estado del checkbox al hacer click en una categoría
-  document.addEventListener('DOMContentLoaded', function() {
-    const checkboxEdiciones = document.getElementById('checkboxEdiciones');
-    const categoriaLinks = document.querySelectorAll('.categoria-link');
-    categoriaLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (checkboxEdiciones.checked) {
-          window.location.href = 'ListaEdiciones.html';
-        } else {
-          window.location.href = 'ListarEventos.html';
-        }
-      });
-    });
-  });
-</script>
-			</div>
-			<!-- Imagen de la edición -->
+			<!-- Imagen de la edición y categorias-->
 			<% DTDetalleEdicion edi = (DTDetalleEdicion) request.getAttribute("edicion");%>
-			<div class="col-md-4 col-lg-3 col-xl-2 px-5">
+			<div class="col-md-3 col-lg-3 col-xl-3 ">
 				<img src="<%= request.getAttribute("imagenEdicion") %>"
 					alt="<%= request.getAttribute("nombre") %>" class="img-fluid rounded"
-					style="width: 180px; height: 180px; object-fit: cover; aspect-ratio: 1/1;">
+					style="width: 100%; height: 180px; object-fit: cover; aspect-ratio: 1/1;">
+					<jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
 			</div>
 			<!-- Información principal de la edición -->
-			<div class="col-md-5 col-lg-7 col-xl-8 mt-3 mt-md-0 info-evento">
-				<h1 class="mb-3"> <%= edi.getNombre() %></h1>
+			<div class="col-md-9 col-lg-9 col-xl-9 mt-3 mt-md-0 info-evento px-5">
+				<h2 class="fw-bold"> <%= edi.getNombre() %></h2>
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Organizador:</strong> <a
 						href="pagesVisitante/miseventos_ConsultaUsuario_vistaExterna.html"
@@ -102,33 +62,75 @@
 					</a>
 				</div>
 				<div class="mb-2 d-flex align-items-center">
+					<% 
+						String imagenEvento = (String) request.getAttribute("imagenEvento");
+						String nombreEvento = (String) request.getAttribute("nombreEvento");
+					%>
+					<strong class="me-2">Evento:</strong> <a
+						href="detalleEvento?nombre=<%= nombreEvento %>"
+						class="d-flex align-items-center text-decoration-none"> <img
+						src="<%= imagenEvento %>" alt="<%= nombreEvento %>"
+						class="rounded-circle me-2"
+						style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+						<span class="fw-bold text-dark"><%= nombreEvento %></span>
+					</a>
+				</div>
+				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Sigla:</strong> <span
 						class="fw-bold text-dark"><%= edi.getSigla() %></span>
 				</div>
-				<p class="mb-2">
+				<div class="mb-2">
 					<strong>Fecha inicio:</strong> <%= edi.getFechaInicio() %>
-				</p>
-				<p class="mb-2">
+				</div>
+				<div class="mb-2">
 					<strong>Fecha fin:</strong> <%= edi.getFechaFin() %>
-				</p>
-				<p class="mb-2">
+				</div>
+				<div class="mb-2">
 					<strong>Fecha alta:</strong> <%= edi.getFechaAlta() %>
-				</p>
-				<p class="mb-2">
+				</div>
+				<div class="mb-2">
 					<strong>País:</strong> <%= edi.getPais() %>
-				</p>
-				<p class="mb-2">
+				</div>
+				<div class="mb-2">
 					<strong>Ciudad:</strong> <%= edi.getCiudad() %>
-				</p>
+				</div>
+				<%
+				boolean esOrganizador = false;
+				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
+					esOrganizador = (boolean) request.getAttribute("esOrganizador");
+					if ((boolean) request.getAttribute("esOrganizador") == true) {
+				%>
+				<div class="mt-4">
+					<a href="ListarRegistrosMaraton2024.html" style="text-decoration: none;">
+						<button class="button2 rounded-3 p-3">
+							<div class="header-button">Ver Registros</div>
+						</button>
+					</a>
+				</div> <% }} else if (user != null) {
+					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
+					%>
+				<div class="mt-4">
+					<a href="RegistroEdicionTECPUNTA.html" style="text-decoration: none;">
+						<button class="btn btn-success rounded-3 p-3">
+							<div class="header-button">Registrarse a la Edicion</div>
+						</button>
+					</a>
+				</div> <% } else { %>
+				<div class="mt-4">
+					<a href="verDetalleRegistroWebSummit.html" style="text-decoration: none;">
+						<button class="button2 rounded-3 p-3">
+							<div class="header-button">Ver detalle del Registro</div>
+						</button>
+					</a>
+				</div> <% }} %>
+
 				<!-- Tipos de registros -->
 				<div class="mt-4">
 				
 					<div class="d-flex align-items-baseline gap-2">
-						<h5>Tipos de Registro</h5>
+						<h5 class="py-2">Tipos de Registro</h5>
 						<% 
-						
-						DataUsuario user = (DataUsuario) session.getAttribute("usuario"); 
-						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 						%>
 						<a href="#" class="btn btn-success btn-sm"
 							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
@@ -155,7 +157,7 @@
 							<div id="collapse<%= i %>" class="accordion-collapse collapse"
 								aria-labelledby="heading<%= i %>"
 								data-bs-parent="#accordionTiposRegistro">
-								<div class="accordion-body registro-info">
+								<div class="accordion-body registro-info ">
 									<p>
 										<strong>Costo:</strong> $<%= tipoReg.getCosto()%>
 									</p>
@@ -173,9 +175,9 @@
 				<!-- Patrocinios -->
 				<div class="mt-4">
 					<div class="d-flex align-items-baseline gap-2">
-						<h5>Patrocinadores</h5>
+						<h5 class="py-2">Patrocinadores</h5>
 						<% 
-						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 						%>
 						<a href="#" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>

@@ -17,6 +17,6 @@
         <input type="search" name="nombre" class="search"
                placeholder="Buscar eventos..." 
                value="<%=valorBusqueda%>"
-               style="width: 35%; min-width: 300px;">
+               style="width:100%; min-width: 300px;">
     </form>
 </div>
