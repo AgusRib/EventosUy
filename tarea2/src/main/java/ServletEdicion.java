@@ -54,6 +54,7 @@ public class ServletEdicion extends HttpServlet {
             	// TODO Manejar excepciones y mostrar mensajes de error en la JSP
             	
             	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
+            	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
                 String nombre = request.getParameter("nombre");
                 
                 try {
@@ -91,6 +92,39 @@ public class ServletEdicion extends HttpServlet {
 	                	request.setAttribute("imagenOrganizador", "uploads/usuarios/default.jpg");
 	                }
 	                
+	                // Fetch nombre evento
+	                String nombreEvento = ICE.NomEvPorEd(nombre);
+	                request.setAttribute("nombreEvento", nombreEvento);
+	                
+	                // Fetch imagen evento
+	                String imagenEvento = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
+	                if (organizadorImg != null) {
+	                	request.setAttribute("imagenEvento", "uploads/eventos/" + imagenEvento);
+	                } else {
+	                	request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
+	                }
+	                
+	                // Fetch si el usuario registrado en la edicion
+	                HttpSession session = request.getSession();
+	                
+	                DataUsuario user = (DataUsuario) session.getAttribute("usuario");
+	                if (user != null && user.getTipo() == TipoUsuario.ASISTENTE) {
+	                	Set<String> edicionesRegistradas = ICU.listarRegistrosAEventos(user.getNickname());
+	                	if (edicionesRegistradas.contains(nombre)) {
+	                		request.setAttribute("usuarioRegistrado", true);
+	                	} else {
+	                		request.setAttribute("usuarioRegistrado", false);
+	                	}
+	                }
+	                
+	                // Fetch si el usuario es organizador de la edicion
+	                if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && user.getNickname().equals(ed.getOrganizador())) {
+	                	request.setAttribute("esOrganizador", true);
+	                } else {
+	                	request.setAttribute("esOrganizador", false);
+	                }
+
+	                
 	                // Despachar a JSP
 	                request.getRequestDispatcher("/WEB-INF/pages/detalleEdicion.jsp").forward(request, response);
 				} catch (Exception e) {
@@ -102,12 +136,6 @@ public class ServletEdicion extends HttpServlet {
             	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
             	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
             	
-            	try {
-					request.getSession().setAttribute("usuario", ICU.infoUsuario("miseventos"));
-				} catch (UsuarioNoEncontrado e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}	//TESTING
             	DataUsuario user = (DataUsuario) request.getSession().getAttribute("usuario"); 
             	
             	// Fetch ediciones
@@ -121,16 +149,18 @@ public class ServletEdicion extends HttpServlet {
                         // Fetch imagen de ediciones
                         String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
                         if (edicionImg != null) {
-                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/" + edicionImg);
+                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/" + edicionImg);
                         } else {
-                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/default.jpg");
+                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/default.jpg");
                         }
+                        
+
             		
             		} 
             	
             	
             	
-            	} else {
+            	} else if (user != null ) {
             		for (String edicion : ICU.listarRegistrosAEventos(user.getNickname())) {
             			
             			DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
@@ -139,9 +169,9 @@ public class ServletEdicion extends HttpServlet {
                         // Fetch imagen de ediciones
                         String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
                         if (edicionImg != null) {
-                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/" + edicionImg);
+                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/" + edicionImg);
                         } else {
-                        	request.setAttribute("imagen" + ed.getNombre(), "uploads/ediciones/default.jpg");
+                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/default.jpg");
                         }
 					}
             	}
@@ -151,12 +181,12 @@ public class ServletEdicion extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/pages/listarEdiciones.jsp").forward(request, response);
                 return;
             }
-    		case "/detalleEdicion/altaEdicion" : {       // EJEMPLO: /detalleEdicion/altaEdicion?nombreEvento=evento1
+    		
+            
+            case "/detalleEdicion/altaEdicion" : {       // EJEMPLO: /detalleEdicion/altaEdicion?nombreEvento=evento1
                 
-                /*
-                IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();      //TESTING
-                request.getSession().setAttribute("usuario", ICU.infoUsuario("miseventos"));	//TESTING
-                */
+                
+                
                 
                 HttpSession session = request.getSession();
                 DataUsuario user = (DataUsuario) session.getAttribute("usuario");

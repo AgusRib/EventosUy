@@ -78,6 +78,15 @@
 				<!-- Mostrar mensaje de error si existe -->
 				<%
 				String error = (String) request.getAttribute("error");
+				String registered = request.getParameter("registered");
+				if ("true".equals(registered)) {
+				%>
+					<div class="alert alert-success" role="alert">
+						<i class="bx bx-check-circle me-2"></i>
+						Registro exitoso. Por favor inicie sesión.
+					</div>
+				<%
+				}
 				if (error != null) {
 				%>
 					<div class="alert alert-danger" role="alert">
@@ -118,5 +127,13 @@
 	</div>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		// Reload the page if it was restored from the browser cache (bfcache)
+		window.addEventListener("pageshow", function(event) {
+			if (event.persisted) {
+				window.location.reload();
+			}
+		});
+	</script>
 </body>
 </html>

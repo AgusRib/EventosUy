@@ -90,60 +90,105 @@ main.contUser {
 			<!-- Formulario -->
 			<section class="card mb-3">
 				<div class="card-body">
-					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getAttribute("nombreEvento") %>" method="post">
+					<!-- Show error message if exists and not from cache -->
+					<% if (request.getAttribute("mensaje") != null) { %>
+						<div class="alert alert-primary" role="alert">
+							<i class="bx bx-check-circle me-2"></i>
+							<%= request.getAttribute("mensaje") %>
+						</div>
+					<% } else if (request.getAttribute("error") != null ) { %>
+						<div class="alert alert-danger" role="alert">
+							<i class="bx bx-error-circle me-2"></i>
+							<%= request.getAttribute("error") %>
+						</div>
+					<% } %>
+
+					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getParameter("nombreEvento") != null ? request.getParameter("nombreEvento") : (request.getAttribute("nombreEvento") != null ? request.getAttribute("nombreEvento") : "") %>" method="post" class="needs-validation" novalidate autocomplete="off">
 						<div class="mb-3">
 							<label for="nombreEdicion" class="form-label">Nombre de
-								la edición</label> <input type="text" class="form-control"
-								id="nombreEdicion" name="nombre" placeholder="Ingrese el nombre" required>
-							<div class="invalid-feedback">Este nombre de edición ya
-								existe. Por favor ingrese otro.</div>
+								la edición <span class="text-danger">*</span></label> 
+							<input type="text" class="form-control"
+								id="nombreEdicion" name="nombre" placeholder="Ingrese el nombre" 
+								value="<%= request.getAttribute("nombre") != null ? (String)request.getAttribute("nombre") : "" %>"
+								required autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese el nombre de la edición.')"
+								oninput="this.setCustomValidity('')">
+							<div class="invalid-feedback">
+								Por favor ingrese el nombre de la edición.
+							</div>
 						</div>
 
 						<div class="mb-3">
-							<label for="siglaEdicion" class="form-label">Sigla</label> <input
-								type="text" class="form-control" id="siglaEdicion" name="sigla"
-								placeholder="Ej: EVT2025-1" required>
+							<label for="siglaEdicion" class="form-label">Sigla <span class="text-danger">*</span></label> 
+							<input type="text" class="form-control" id="siglaEdicion" name="sigla"
+								placeholder="Ej: EVT2025-1" 
+								value="<%= request.getAttribute("sigla") != null ? (String)request.getAttribute("sigla") : "" %>"
+								required autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese la sigla de la edición.')"
+								oninput="this.setCustomValidity('')">
+							<div class="invalid-feedback">
+								Por favor ingrese la sigla de la edición.
+							</div>
 						</div>
 
 						<div class="mb-3">
-							<label for="ciudadEdicion" class="form-label">Ciudad</label> <input
-								type="text" class="form-control" id="ciudadEdicion" name="ciudad"
-								placeholder="Ingrese la ciudad" required>
+							<label for="ciudadEdicion" class="form-label">Ciudad <span class="text-danger">*</span></label> 
+							<input type="text" class="form-control" id="ciudadEdicion" name="ciudad"
+								placeholder="Ingrese la ciudad" 
+								value="<%= request.getAttribute("ciudad") != null ? (String)request.getAttribute("ciudad") : "" %>"
+								required autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese la ciudad.')"
+								oninput="this.setCustomValidity('')">
+							<div class="invalid-feedback">
+								Por favor ingrese la ciudad.
+							</div>
 						</div>
 
 						<div class="mb-3">
-							<label for="paisEdicion" class="form-label">País</label> <input
-								type="text" class="form-control" id="paisEdicion" name="pais"
-								placeholder="Ingrese el país" required>
+							<label for="paisEdicion" class="form-label">País <span class="text-danger">*</span></label> 
+							<input type="text" class="form-control" id="paisEdicion" name="pais"
+								placeholder="Ingrese el país" 
+								value="<%= request.getAttribute("pais") != null ? (String)request.getAttribute("pais") : "" %>"
+								required autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese el país.')"
+								oninput="this.setCustomValidity('')">
+							<div class="invalid-feedback">
+								Por favor ingrese el país.
+							</div>
 						</div>
 
 						<div class="mb-3">
 							<label for="fechaInicio" class="form-label">Fecha de
-								inicio</label> <input type="date" class="form-control" id="fechaInicio" name="fechaInicio"
-								required>
+								inicio <span class="text-danger">*</span></label> 
+							<input type="date" class="form-control" id="fechaInicio" name="fechaInicio"
+								value="<%= request.getAttribute("fechaInicio") != null ? (String)request.getAttribute("fechaInicio") : "" %>"
+								required
+								oninvalid="this.setCustomValidity('Por favor ingrese la fecha de inicio.')"
+								oninput="this.setCustomValidity('')">
+							<div class="invalid-feedback">
+								Por favor ingrese la fecha de inicio.
+							</div>
 						</div>
 
 						<div class="mb-3">
-							<label for="fechaFin" class="form-label">Fecha de fin</label> <input
-								type="date" class="form-control" id="fechaFin" name="fechaFin" required>
+							<label for="fechaFin" class="form-label">Fecha de fin <span class="text-danger">*</span></label> 
+							<input type="date" class="form-control" id="fechaFin" name="fechaFin" 
+								value="<%= request.getAttribute("fechaFin") != null ? (String)request.getAttribute("fechaFin") : "" %>"
+								required
+								oninvalid="this.setCustomValidity('Por favor ingrese la fecha de fin.')"
+								oninput="this.setCustomValidity('')">
+							<div class="invalid-feedback">
+								Por favor ingrese la fecha de fin.
+							</div>
 						</div>
 
 						<div class="mb-3">
 							<label for="imagenEdicion" class="form-label">Imagen de
-								la edición (opcionall)</label> <input class="form-control" type="file"
+								la edición (opcional)</label> 
+							<input class="form-control" type="file"
 								id="imagenEdicion" name="imagen" accept="image/*">
+							<small class="text-muted">Formatos admitidos: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
 						</div>
-						
-						<% if (request.getAttribute("mensaje") != null) {
-							%>						
-						<div class="alert alert-primary" role="alert">
-						  <%= request.getAttribute("mensaje") %>
-						</div>
-						<% } else if (request.getAttribute("error") != null) { %> 						
-							<div class="alert alert-danger" role="alert">
-							  <%= request.getAttribute("error") %>
-							</div>
-						<% } %>
 						
 						<div class="d-flex gap-2">
 							<button type="submit" class="btn btn-primary">Guardar</button>

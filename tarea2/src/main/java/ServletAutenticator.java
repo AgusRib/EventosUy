@@ -153,7 +153,8 @@ public class ServletAutenticator extends HttpServlet {
 			}
 			
 			// Registro exitoso - redirigir a inicio de sesión
-			response.sendRedirect(request.getContextPath() + "/iniciosesion");
+			// Include a flag so the login page can show a success message
+            response.sendRedirect(request.getContextPath() + "/iniciosesion?registered=true");
 			
 		} catch (NombreUsuarioExistente e) {
 			request.setAttribute("error", "Ya existe un usuario con ese nickname.");

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import logica.controllers.IControllerEvento;
 import logica.models.Evento;
 import logica.models.Factory;
+import java.time.LocalDate;
 
 
 @WebServlet("/HomeServlet")
@@ -31,6 +32,7 @@ public class ServletHome extends HttpServlet {
 			Set<String> categorias = iEvento.listarCategorias();
 			request.getSession().setAttribute("usuario", null);
 			request.getSession().setAttribute("categorias", categorias);
+			request.getSession().setAttribute("fecha", LocalDate.now());
 			primerAcceso = false;
 		}
 		
