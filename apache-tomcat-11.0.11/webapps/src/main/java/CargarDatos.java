@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -350,7 +351,8 @@ public class CargarDatos {
 				}
 				
 				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
-				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta));
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta, formatter));
 				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);
 			
 			}} catch (FileNotFoundException e) {

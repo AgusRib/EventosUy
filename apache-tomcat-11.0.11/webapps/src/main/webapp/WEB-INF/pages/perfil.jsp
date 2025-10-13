@@ -3,6 +3,8 @@
 <%@ page import="logica.dataTypes.DataUsuario" %>
 <%@ page import="logica.dataTypes.DTOrganizador" %>
 <%@ page import="logica.dataTypes.DTAsistente" %>
+<%@ page import="jakarta.servlet.http.*" %>
+<%@ page import="jakarta.servlet.*" %>
 <!doctype html>
 <html lang="es">
 <head>
