@@ -109,26 +109,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 	String encodedNick = URLEncoder.encode(nickname == null ? "" : nickname, "UTF-8");
 	%>
 
-	<header>
-		<nav class="navbar bg-white shadow-sm">
-			<div class="d-flex align-items-center">
-				<a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="<%=request.getContextPath()%>/eventos">Eventos.uy</a>
-			</div>
-			<div class="d-flex justify-content-end align-items-center">
-				<div class="dropdown">
-					<a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-						<img src="<%=imagenUsuario%>" alt="user" class="rounded-circle" style="width:38px;height:38px;object-fit:cover;border:1px solid rgba(0,0,0,.06);">
-						<span><%= nickname %></span> <i class="bi bi-chevron-down"></i>
-					</a>
-					<ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="<%=request.getContextPath()%>/perfil">Mi perfil</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item text-danger" href="<%=request.getContextPath()%>/autenticator?accion=logout" style="color:#dc3545 !important;">Cerrar sesión</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-	</header>
+	<jsp:include page="/WEB-INF/templates/header.jsp" /><jsp:include page="../templates/header.jsp"></jsp:include>
 
 	<main class="contUser" id="mi-cuenta-user">
 		<div class="container-xl">

@@ -110,7 +110,7 @@
 					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
 					%>
 				<div class="mt-4">
-					<a href="alta-registro?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
+					<a href="altaRegistro?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
 						<button class="btn btn-success rounded-3 p-3">
 							<div class="header-button">Registrarse a la Edicion</div>
 						</button>

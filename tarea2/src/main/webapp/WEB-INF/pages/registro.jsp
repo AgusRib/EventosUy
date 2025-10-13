@@ -22,25 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
-<header>
-    <nav class="navbar bg-white shadow-sm" style="height: 86px;">
-        <div class="d-flex align-items-center">
-            <a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="<%=request.getContextPath()%>/HomeServlet">Eventos.uy</a>
-        </div>
-        <div class="header-auth m-3">
-            <a href="<%=request.getContextPath()%>/iniciosesion" class="text-decoration-none">
-                <button type="button" class="button1 rounded-3">
-                    <div class="header-button">Iniciar sesión</div>
-                </button>
-            </a>
-            <a href="<%=request.getContextPath()%>/registro" class="text-decoration-none">
-                <button type="button" class="button2 rounded-3">
-                    <div class="header-button">Regístrarse</div>
-                </button>
-            </a>
-        </div>
-    </nav>
-</header>
+<jsp:include page="../templates/header.jsp"></jsp:include>
 
 <body>
     <div class="container d-flex justify-content-center">

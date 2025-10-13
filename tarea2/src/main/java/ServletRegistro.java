@@ -32,7 +32,7 @@ import excepciones.TipoRegistroExistenteExcepcion;
 /**
  * Servlet implementation class ServletEdicion
  */
-@WebServlet({ "/ver-registro", "/listar-registros", "/alta-registro", "/alta-tipo-registro" })
+@WebServlet({ "/ver-registro", "/listar-registros", "/alta-tipo-registro" })
 public class ServletRegistro extends HttpServlet {
     private static final long serialVersionUID = 1L;
        

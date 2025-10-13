@@ -45,49 +45,7 @@
 </head>
 
 <body>
-	<header>
-		<nav class="navbar bg-white shadow-sm">
-			<div class="d-flex align-items-center">
-				<a class="fw-bold text-dark fs-2 ms-4 text-decoration-none"
-					href="<%=request.getContextPath()%>/eventos">Eventos.uy</a>
-			</div>
-			<div class="d-flex justify-content-end align-items-center">
-				<% if (usuario != null) { %>
-					<div class="dropdown">
-						<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
-							href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
-							aria-expanded="false" aria-haspopup="true"> 
-							<img src="<%=request.getContextPath()%>/assets/images/IMG-US01.jpg" alt="<%=usuario.getNickname().substring(0,1).toUpperCase()%>"
-								class="rounded-circle"
-								style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-							<span><%=usuario.getNombre()%></span> <i class="bi bi-chevron-down"></i>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end shadow-sm"
-							aria-labelledby="userMenuDropdown">
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi perfil</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item text-danger"
-								href="<%=request.getContextPath()%>/cerrarsesion"
-								style="color: #dc3545 !important;">Cerrar sesión</a></li>
-						</ul>
-					</div>
-				<% } else { %>
-					<div class="header-auth m-3">
-						<a href="<%=request.getContextPath()%>/iniciosesion" class="text-decoration-none">
-							<button type="button" class="btn btn-outline-primary me-2">
-								Iniciar sesión
-							</button>
-						</a>
-						<a href="<%=request.getContextPath()%>/registro" class="text-decoration-none">
-							<button type="button" class="btn btn-primary">
-								Regístrarse
-							</button>
-						</a>
-					</div>
-				<% } %>
-			</div>
-		</nav>
-	</header>
+	<jsp:include page="../templates/header.jsp"></jsp:include>
 
 	<div class="container-fluid px-4 mt-4">
 		<jsp:include page="../templates/searchbarevento.jsp" />
