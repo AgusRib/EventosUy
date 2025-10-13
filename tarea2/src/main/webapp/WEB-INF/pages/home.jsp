@@ -33,6 +33,14 @@
         <div class="carta-categorias align-items-center col-12 col-md-8 col-xl-3 h-100 my-3">
             <h3 class="categorias fw-bold">Categorías</h3>
             <jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
+            <div class="d-flex justify-content-center mt-3">
+                <a href="<%= request.getContextPath() %>/listarUsuarios"
+                   class="btn btn-dark rounded-pill px-4 py-2 d-flex align-items-center gap-2 text-white"
+                   style="font-weight: 500;"> 
+                    <i class="bi bi-people" style="font-size: 1.2rem; color: #fff;"></i>
+                    <span class="text-white">Usuarios</span>
+                </a>
+            </div>
         </div>
 
 <div class="container col-12 col-md-8">

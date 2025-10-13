@@ -1,6 +1,10 @@
+package main.java;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 
 import excepciones.UsuarioNoEncontrado;
 import jakarta.servlet.ServletException;
@@ -11,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerUsuario;
+import logica.controllers.IControllerEvento;
 import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
@@ -34,8 +39,8 @@ public class ServletUsuario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    	DataUsuario usrSession = (DataUsuario) request.getSession().getAttribute("usuario");
-    	String usuario = usrSession.getNickname();
+        DataUsuario usrSession = (DataUsuario) request.getSession().getAttribute("usuario");
+        String usuario = usrSession != null ? usrSession.getNickname() : null;
         String usuarios = request.getParameter("usuarios");
         String path    = request.getServletPath();
 
@@ -50,10 +55,10 @@ public class ServletUsuario extends HttpServlet {
 
                 if (du.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
                     DTOrganizador org = controllerUsuario.infoOrganizador(usuario);
-                    request.setAttribute("usuarios", org);
+                    request.setAttribute("detalleUsuario", org);
                 } else {
                     DTAsistente asis = controllerUsuario.infoAsistente(usuario);
-                    request.setAttribute("usuarios", asis);
+                    request.setAttribute("detalleUsuario", asis);
                 }
 
                 // Imagen de perfil
@@ -126,6 +131,19 @@ public class ServletUsuario extends HttpServlet {
             throws ServletException, IOException, UsuarioNoEncontrado {
 
         String usuario = request.getParameter("usuarios"); 
+        if (usuario == null || usuario.isBlank()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'usuarios'");
+            return;
+        }
+
+        // If the logged-in user is the same as the requested user, redirect to perfil
+        DataUsuario sessionUser = (DataUsuario) request.getSession().getAttribute("usuario");
+        if (sessionUser != null && sessionUser.getNickname() != null
+                && sessionUser.getNickname().equalsIgnoreCase(usuario)) {
+            response.sendRedirect(request.getContextPath() + "/perfil");
+            return;
+        }
+
         DataUsuario usr;
         try {
             usr = this.controllerUsuario.infoUsuario(usuario);
@@ -135,13 +153,52 @@ public class ServletUsuario extends HttpServlet {
             return;
         }
 
+        // set both the generic DataUsuario and the detailed DTO so JSP can use them
+        request.setAttribute("usuario", usr);
+
         if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
             DTOrganizador org = this.controllerUsuario.infoOrganizador(usuario);
-            request.setAttribute("usuarios", org);
+            request.setAttribute("detalleUsuario", org);
+
+            // also fetch ediciones organizadas (names) to list in the JSP and build image map
+            try {
+                IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+                Set<String> ediciones = this.controllerUsuario.listarEdicionesOrganizadas(usuario);
+                request.setAttribute("ediciones", ediciones);
+
+                Map<String, String> edicionesMap = new HashMap<>();
+                String dirEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
+                if (ediciones != null) {
+                    for (String ed : ediciones) {
+                        String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
+                        if (nombreArchivo != null) {
+                            edicionesMap.put(ed, "uploads/ediciones/" + nombreArchivo);
+                        } else {
+                            edicionesMap.put(ed, "assets/images/SinFoto.jpg");
+                        }
+                    }
+                }
+                request.setAttribute("edicionesMap", edicionesMap);
+
+            } catch (Exception ignore) {
+                request.setAttribute("ediciones", java.util.Collections.emptySet());
+                request.setAttribute("edicionesMap", java.util.Collections.emptyMap());
+            }
         } else {
             DTAsistente asis = this.controllerUsuario.infoAsistente(usuario);
-            request.setAttribute("usuarios", asis);
+            request.setAttribute("detalleUsuario", asis);
         }
+
+        // set imagenUsuario attribute
+        try {
+            String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+            String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
+            if (nombreArchivo != null) {
+                request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
+            } else {
+                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
+            }
+        } catch (Exception ignore) {}
 
         request.getRequestDispatcher("/WEB-INF/pages/detalleUsuario.jsp").forward(request, response);
     }
@@ -149,7 +206,7 @@ public class ServletUsuario extends HttpServlet {
     
     private void perfil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DataUsuario usrSession = (DataUsuario) request.getSession().getAttribute("usuario");
-    	String usuario = usrSession.getNickname();
+        String usuario = usrSession.getNickname();
 
         DataUsuario usr;
         try {
@@ -185,25 +242,57 @@ public class ServletUsuario extends HttpServlet {
     
     private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        String q = trimOrNull(request.getParameter("q"));
+
         Set<String> usrs = this.controllerUsuario.listarUsuarios();
         try {
-            if (usrs.isEmpty())
+            if (usrs == null || usrs.isEmpty())
                 throw new UsuarioNoEncontrado("No hay usuarios registrados");
             else {
                 Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
+                Map<String, String> imgsUsuarios = new java.util.HashMap<>();
+                String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+
                 for (String u : usrs) {
+                    
+                    if (q != null && !q.isBlank()) {
+                        if (!u.toLowerCase().contains(q.toLowerCase())) {
+                            continue;
+                        }
+                    }
+
                     try {
                         DataUsuario usr = this.controllerUsuario.infoUsuario(u);
                         usuarios.add(usr);
+
+                        
+                        try {
+                            String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
+                            if (nombreArchivo != null) {
+                                imgsUsuarios.put(u, "uploads/usuarios/" + nombreArchivo);
+                            } else {
+                                imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
+                            }
+                        } catch (Exception ignore) {
+                            imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
+                        }
+
                     } catch (UsuarioNoEncontrado e) {
                         e.printStackTrace();
                     }
                 }
+
                 request.setAttribute("usuarios", usuarios);
+                request.setAttribute("imgsUsuarios", imgsUsuarios);
+                request.setAttribute("q", q == null ? "" : q);
                 request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
             }
         } catch (UsuarioNoEncontrado e1) {
             e1.printStackTrace();
+            request.setAttribute("usuarios", java.util.Collections.emptySet());
+            request.setAttribute("imgsUsuarios", java.util.Collections.emptyMap());
+            request.setAttribute("q", q == null ? "" : q);
+            request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
         }
     }
 
