@@ -43,37 +43,7 @@
 <link rel="icon" type="image/x-icon" href="<%=request.getContextPath()%>/assets/icons/Logo.png">
 </head>
 
-<header>
-	<nav class="navbar bg-white shadow-sm">
-		<div class="text-center align-items-center">
-			<a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
-				href="<%=request.getContextPath()%>/eventos"><b>Eventos.uy</b></a>
-		</div>
-		<div class="d-flex justify-content-end align-items-center">
-			<div class="dropdown">
-				<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
-					href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
-					aria-expanded="false" aria-haspopup="true"> 
-					<img src="<%=request.getContextPath()%>/assets/images/IMG-US04.jpeg" alt="Usuario"
-					class="rounded-circle"
-					style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-					<span><%=usuario != null ? usuario.getNombre() : "Usuario"%></span> 
-					<i class="bi bi-chevron-down"></i>
-				</a>
-				<ul class="dropdown-menu dropdown-menu-end shadow-sm"
-					aria-labelledby="userMenuDropdown">
-					<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi perfil</a></li>
-					<li>
-						<hr class="dropdown-divider">
-					</li>
-					<li><a class="dropdown-item text-danger"
-						href="<%=request.getContextPath()%>/autenticator?accion=logout"
-						style="color: #dc3545 !important;">Cerrar sesión</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-</header>
+<jsp:include page="../templates/header.jsp"></jsp:include>
 
 <body>
 
@@ -90,7 +60,7 @@
 					<jsp:include page="../templates/categorias-sidebar.jsp" />
 				</div>
 
-				<div class="row container m-2 col-12 col-xl-8">
+				<div class="row container m-2 col-12 col-xl-8 h-100">
 
 					<!-- Mostrar información de filtros -->
 					<%if (eventosFiltrados != null && totalEventos != null) { %>

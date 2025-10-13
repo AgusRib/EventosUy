@@ -49,7 +49,7 @@
 				<h2 class="fw-bold"> <%= edi.getNombre() %></h2>
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Organizador:</strong> <a
-						href="pagesVisitante/miseventos_ConsultaUsuario_vistaExterna.html"
+						href="detalleUsuario?usuarios=<%= edi.getOrganizador() %>"
 						class="d-flex align-items-center text-decoration-none"> <img
 						<% 
 						String imagenOrganizador = (String) request.getAttribute("imagenOrganizador");
@@ -101,7 +101,7 @@
 					if ((boolean) request.getAttribute("esOrganizador") == true) {
 				%>
 				<div class="mt-4">
-					<a href="ListarRegistrosMaraton2024.html" style="text-decoration: none;">
+					<a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
 						<button class="button2 rounded-3 p-3">
 							<div class="header-button">Ver Registros</div>
 						</button>
@@ -110,14 +110,14 @@
 					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
 					%>
 				<div class="mt-4">
-					<a href="RegistroEdicionTECPUNTA.html" style="text-decoration: none;">
+					<a href="alta-registro?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
 						<button class="btn btn-success rounded-3 p-3">
 							<div class="header-button">Registrarse a la Edicion</div>
 						</button>
 					</a>
 				</div> <% } else { %>
 				<div class="mt-4">
-					<a href="verDetalleRegistroWebSummit.html" style="text-decoration: none;">
+					<a href="ver-registro?edicion=<%= edi.getNombre()  %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
 						<button class="button2 rounded-3 p-3">
 							<div class="header-button">Ver detalle del Registro</div>
 						</button>

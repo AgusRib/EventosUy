@@ -15,7 +15,6 @@ import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
 import logica.models.Factory;
-import main.java.ManejadorArchivos;
 
 @MultipartConfig
 @WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })

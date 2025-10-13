@@ -226,23 +226,6 @@
 	</div>
 
 	<script src="assets/js/main.js"></script>
-	<script>
-    // Redirige según el estado del checkbox al hacer click en una categoría
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkboxEdiciones = document.getElementById('checkboxEdiciones');
-        const categoriaLinks = document.querySelectorAll('.categoria-link');
-        categoriaLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (checkboxEdiciones.checked) {
-                    window.location.href = 'ListaEdiciones.html';
-                } else {
-                    window.location.href = 'ListarEventos.html';
-                }
-            });
-        });
-    });
-</script>
 </body>
 
 </html>

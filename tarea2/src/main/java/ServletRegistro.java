@@ -11,7 +11,7 @@ import logica.dataTypes.DTRegistro;
 import logica.dataTypes.DataUsuario;
 import logica.dataTypes.DataUsuario.TipoUsuario;
 import logica.models.Factory;
-import main.java.ManejadorArchivos;
+
 
 import java.io.File;
 import java.io.IOException;

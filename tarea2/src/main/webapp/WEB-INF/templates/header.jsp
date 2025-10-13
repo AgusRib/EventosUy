@@ -57,6 +57,9 @@
 	
 	<header>
 		<nav class="navbar bg-white shadow-sm">
+					<div>
+				<a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="HomeServlet"><b>Eventos.uy</b></a>
+			</div>
 			<div class="text-center align-items-center"></div>
 			<div class="d-flex justify-content-end align-items-center">
 				<div class="dropdown">
@@ -70,7 +73,7 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
 						aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="MiPerfil-atorres.html">Mi
+						<li><a class="dropdown-item" href="perfil">Mi
 								perfil</a></li>
 						<li>
 							<hr class="dropdown-divider">
