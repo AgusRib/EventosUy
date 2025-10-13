@@ -73,7 +73,8 @@ main.contUser { padding:18px; }
 
     <section class="card mb-3">
       <div class="card-body d-flex align-items-center gap-3">
-        <a href="<%= ctx %>/" class="btn btn-light d-flex align-items-center justify-content-center p-2"
+      <% String back =  ed != null ? "detalleEdicion?nombre=" + ed.getNombre() : "HomeServlet"; %>
+        <a href="<%= back  %>" class="btn btn-light d-flex align-items-center justify-content-center p-2"
            style="width:40px; height:40px; border-radius:50%;">
           <i class='bx bx-chevron-left fs-4'></i>
         </a>
