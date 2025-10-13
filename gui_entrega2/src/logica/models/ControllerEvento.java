@@ -336,7 +336,7 @@ public class ControllerEvento implements IControllerEvento{
 		Set<String> ediciones = new LinkedHashSet<>();
 		
 		if(ev != null) {
-		  for (Edicion e : ev.getColEdicionesPendientes()) {
+		  for (Edicion e : ev.getColEdicionesIngresadas()) {
 			  ediciones.add(e.getNombre());
 		  }
 		}

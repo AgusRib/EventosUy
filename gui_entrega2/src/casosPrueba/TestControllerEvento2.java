@@ -6,13 +6,11 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.dataTypes.DTAsistente;
-import logica.manejadores.ManejadorEvento;
 import logica.models.Factory;
 
 
@@ -113,6 +111,5 @@ public class TestControllerEvento2 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		
 	}}

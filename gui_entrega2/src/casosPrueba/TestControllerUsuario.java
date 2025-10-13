@@ -43,6 +43,7 @@ public class TestControllerUsuario {
 		assertEquals(ICU.infoUsuario("ignaciotema").getEmail(), "ignaciotema@gmail.com");
 		assertEquals(ICU.infoUsuario("ignaciotema").getTipo(), TipoUsuario.ASISTENTE);
 		assertEquals(mU.obtenerAsistente("ignaciotema").getInstitucion().getNombre(), "Instituto Tecnologico");
+		assertEquals(ICU.infoUsuario("ignaciotema").getEmail(), ICU.infoUsuario(ManejadorUsuario.getInstance().obtenerUsuarioPorEmail("ignaciotema@gmail.com").getNickname()).getEmail());
 		
 		
 		//TEST ALTA DE INSTITUCION
