@@ -87,7 +87,7 @@ public class ServletUsuario extends HttpServlet {
             }
         }
 
-        // Route by servlet path (endpoints) instead of 'action' param
+  
         switch (path) {
             case "/usuarios":
             case "/listarUsuarios":
@@ -136,7 +136,7 @@ public class ServletUsuario extends HttpServlet {
             return;
         }
 
-        // If the logged-in user is the same as the requested user, redirect to perfil
+        
         DataUsuario sessionUser = (DataUsuario) request.getSession().getAttribute("usuario");
         if (sessionUser != null && sessionUser.getNickname() != null
                 && sessionUser.getNickname().equalsIgnoreCase(usuario)) {
@@ -153,14 +153,14 @@ public class ServletUsuario extends HttpServlet {
             return;
         }
 
-        // set both the generic DataUsuario and the detailed DTO so JSP can use them
+        
         request.setAttribute("usuario", usr);
 
         if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
             DTOrganizador org = this.controllerUsuario.infoOrganizador(usuario);
             request.setAttribute("detalleUsuario", org);
 
-            // also fetch ediciones organizadas (names) to list in the JSP and build image map
+            
             try {
                 IControllerEvento ICE = Factory.getInstance().getControllerEvento();
                 Set<String> ediciones = this.controllerUsuario.listarEdicionesOrganizadas(usuario);
@@ -225,7 +225,7 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("usuario", asis);
         }
 
-        // Set imagenUsuario in request using same pattern as ServletEdicion
+       
         try {
             String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
             String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
@@ -304,6 +304,14 @@ public class ServletUsuario extends HttpServlet {
             return;
         }
 
+        // Debug logging: print incoming parameters to server console
+        // System.out.println("[modificarDatos] start for usuario=" + nickParam);
+        // System.out.println("[modificarDatos] received nombre=" + request.getParameter("nombre")
+        //         + ", apellido=" + request.getParameter("apellido")
+        //         + ", fechaNac=" + request.getParameter("fechaNac")
+        //         + ", descripcion=" + request.getParameter("descripcion")
+        //         + ", web=" + request.getParameter("web"));
+
         DataUsuario usr;
         try {
             usr = this.controllerUsuario.infoUsuario(nickParam);
@@ -314,6 +322,7 @@ public class ServletUsuario extends HttpServlet {
 
         try {
             if (usr.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) {
+                // editing ASISTENTE
                 String nombre     = trimOrNull(request.getParameter("nombre"));
                 String apellido   = trimOrNull(request.getParameter("apellido"));
                 String fechaNacStr= trimOrNull(request.getParameter("fechaNac")); // YYYY-MM-DD
@@ -339,8 +348,10 @@ public class ServletUsuario extends HttpServlet {
                 }
 
                 controllerUsuario.editarAsistente(nickParam, nombre, apellido, fechaNac);
+                // System.out.println("[modificarDatos] editarAsistente called");
 
             } else if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
+                // editing ORGANIZADOR
                 String nombre      = trimOrNull(request.getParameter("nombre"));
                 String descripcion = trimOrNull(request.getParameter("descripcion"));
                 String web         = trimOrNull(request.getParameter("web"));
@@ -356,6 +367,7 @@ public class ServletUsuario extends HttpServlet {
                 }
 
                 controllerUsuario.editarOrganizador(nickParam, nombre, descripcion, web);
+                // System.out.println("[modificarDatos] editarOrganizador called");
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tipo de usuario no soportado");
                 return;
@@ -374,6 +386,7 @@ public class ServletUsuario extends HttpServlet {
                     + "/modificarDatos?usuario="
                     + java.net.URLEncoder.encode(nickParam, java.nio.charset.StandardCharsets.UTF_8)
                     + "&ok=1";
+            // System.out.println("[modificarDatos] redirecting to " + url);
             response.sendRedirect(url);
             return;
 
@@ -381,8 +394,8 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("error", "No se pudieron guardar los cambios: " + e.getMessage());
             request.setAttribute("usuario", usr);
             forwardEditar(request, response);
-        }
-    }
+         }
+     }
 
     
     private static String trimOrNull(String s) {

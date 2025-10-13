@@ -96,7 +96,7 @@ main.contUser { padding: 18px; }
     <!-- Header del formulario -->
     <section class="card mb-3">
       <div class="card-body d-flex align-items-center gap-3">
-        <a href="<%= ctx %>/" class="btn btn-light d-flex align-items-center justify-content-center p-2" style="width:40px;height:40px;border-radius:50%;">
+        <a href="<%= ctx %>/perfil" class="btn btn-light d-flex align-items-center justify-content-center p-2" style="width:40px;height:40px;border-radius:50%;">
           <i class='bx bx-chevron-left fs-4'></i>
         </a>
         <i class="bx bx-user fs-3"></i>
@@ -114,7 +114,7 @@ main.contUser { padding: 18px; }
     <!-- Formulario de edición -->
     <section class="card mb-3">
       <div class="card-body">
-        <form id="modificarPerfilForm" method="post" action="<%= ctx %>/usuarios" enctype="multipart/form-data">
+        <form id="modificarPerfilForm" method="post" action="<%= ctx %>/modificarDatos" enctype="multipart/form-data">
 		  <input type="hidden" name="action" value="modificarDatos">
 		  <input type="hidden" name="usuario" value="<%= nick %>">
 
