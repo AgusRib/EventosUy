@@ -3,8 +3,6 @@
 <%@ page import="logica.dataTypes.DataUsuario" %>
 <%@ page import="logica.dataTypes.DTOrganizador" %>
 <%@ page import="logica.dataTypes.DTAsistente" %>
-<%@ page import="jakarta.servlet.http.*" %>
-<%@ page import="jakarta.servlet.*" %>
 <!doctype html>
 <html lang="es">
 <head>
@@ -62,9 +60,8 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 .text-muted.small { font-size: .85rem; }
 </style>
 </head>
+	<jsp:include page="../templates/header.jsp"/>
 
-<body id="body-pd">
-	<%-- Prepare user data from request attribute set by servlet --%>
 	<%
 	Object uObj = request.getAttribute("usuario");
 	if (uObj == null) {
@@ -111,7 +108,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 	String encodedNick = URLEncoder.encode(nickname == null ? "" : nickname, "UTF-8");
 	%>
 
-	<jsp:include page="/WEB-INF/templates/header.jsp" /><jsp:include page="../templates/header.jsp"></jsp:include>
+<body id="body-pd">
 
 	<main class="contUser" id="mi-cuenta-user">
 		<div class="container-xl">
