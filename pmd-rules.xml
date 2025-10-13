@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Reglas personalizadas PMD"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+                        http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        Conjunto reducido de reglas PMD seleccionadas:
+        AbstractClassWithoutAbstractMethod, LooseCoupling,
+        PackageCase, ShortVariable y UnusedPrivateField.
+    </description>
+
+    <!-- Una clase abstracta sin métodos abstractos -->
+    <rule ref="category/java/design.xml/AbstractClassWithoutAbstractMethod"/>
+
+    <!-- Fomentar el uso de interfaces en lugar de implementaciones concretas -->
+    <rule ref="category/java/design.xml/LooseCoupling"/>
+
+    <!-- Los nombres de los paquetes deben estar en minúsculas -->
+    <rule ref="category/java/codestyle.xml/PackageCase"/>
+
+    <!-- Detectar variables con nombres demasiado cortos -->
+    <rule ref="category/java/codestyle.xml/ShortVariable"/>
+
+    <!-- Detectar campos privados no utilizados -->
+    <rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
+
+</ruleset>
