@@ -4,7 +4,6 @@
 <%
   String ctx = request.getContextPath();
 
-  // Mensajes/valores anteriores (errores)
   String nombre = (String) request.getAttribute("nombre");
   if (nombre == null) nombre = request.getParameter("nombre") == null ? "" : request.getParameter("nombre");
 
@@ -20,7 +19,6 @@
   String error = (String) request.getAttribute("error");
   String mensaje = (String) request.getAttribute("mensaje");
 
-  // Datos para dropdowns
   @SuppressWarnings("unchecked")
   Set<String> eventos = (Set<String>) request.getAttribute("eventos");
   if (eventos == null) eventos = Collections.emptySet();
@@ -32,7 +30,6 @@
   Set<String> ediciones = (Set<String>) request.getAttribute("ediciones");
   if (ediciones == null) ediciones = Collections.emptySet();
 
-  // Preselección de edición: prioridad a request param/attr "edicion"
   String edPreParam = request.getParameter("edicion");
   String edAttr      = (String) request.getAttribute("edicion");
   String edSel       = (edPreParam != null && !edPreParam.isBlank()) ? edPreParam : (edAttr == null ? "" : edAttr);
@@ -65,13 +62,8 @@ body { background:var(--bg); color:var(--text); margin:0; }
 </head>
 
 <body>
-<header>
-  <nav class="navbar bg-white shadow-sm">
-    <div class="text-center align-items-center">
-      <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="<%= ctx %>/"><b>Eventos.uy</b></a>
-    </div>
-  </nav>
-</header>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
+
 
 <main class="py-4">
   <div class="container-xl">

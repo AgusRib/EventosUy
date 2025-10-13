@@ -7,12 +7,12 @@ import logica.models.Edicion;
 
 public class ManejadorEdicion {
 	private static ManejadorEdicion instance;
-	private HashMap<String, Edicion> colEdicionesPendientes;
+	private HashMap<String, Edicion> colEdicionesIngresadas;
 	private HashMap<String, Edicion> colEdicionesConfirmadas;
 	private HashMap<String, Edicion> colEdicionesRechazadas;
 
 	private ManejadorEdicion() {
-		colEdicionesPendientes = new HashMap<String, Edicion>();
+		colEdicionesIngresadas = new HashMap<String, Edicion>();
 		colEdicionesConfirmadas = new HashMap<String, Edicion>();
 		colEdicionesRechazadas = new HashMap<String, Edicion>();
 	}
@@ -26,14 +26,14 @@ public class ManejadorEdicion {
 
 	// Verifica si existe una edición en alguna de las colecciones
 	public boolean existeEdicion(String nombreEdicion) {
-		return colEdicionesPendientes.containsKey(nombreEdicion)
+		return colEdicionesIngresadas.containsKey(nombreEdicion)
 			|| colEdicionesConfirmadas.containsKey(nombreEdicion)
 			|| colEdicionesRechazadas.containsKey(nombreEdicion);
 	}
 
 	// Obtener todas las ediciones Pendientes
 	public HashMap<String,Edicion> obtenerEdicionesPendientes() {
-		return colEdicionesPendientes;
+		return colEdicionesIngresadas;
 	}
 
 	// Obtener todas las ediciones confirmadas
@@ -48,8 +48,8 @@ public class ManejadorEdicion {
 
 	// Buscar una edición por nombre en todas las colecciones
 	public Edicion encontrarEdicion(String nombreEdi) {
-		if (colEdicionesPendientes.containsKey(nombreEdi)) {
-			return colEdicionesPendientes.get(nombreEdi);
+		if (colEdicionesIngresadas.containsKey(nombreEdi)) {
+			return colEdicionesIngresadas.get(nombreEdi);
 		} else if (colEdicionesConfirmadas.containsKey(nombreEdi)) {
 			return colEdicionesConfirmadas.get(nombreEdi);
 		} else if (colEdicionesRechazadas.containsKey(nombreEdi)) {
@@ -60,15 +60,17 @@ public class ManejadorEdicion {
 
 	// Agregar edición a Pendientes
 	public void agregarEdicionIngresada(Edicion nueva) {
-		colEdicionesPendientes.put(nueva.getNombre(), nueva);
+		colEdicionesIngresadas.put(nueva.getNombre(), nueva);
 	}
 
 	public void CambioEstado(Edicion edi,EstadoEdicion  nuevoestado) {
-		colEdicionesPendientes.remove(edi.getNombre());
+		colEdicionesIngresadas.remove(edi.getNombre());
 		if (nuevoestado == EstadoEdicion.Confirmada) {
 			colEdicionesConfirmadas.put(edi.getNombre(), edi);
+			edi.setEstado(EstadoEdicion.Confirmada);
 		} else if (nuevoestado == EstadoEdicion.Rechazada) {
 			colEdicionesRechazadas.put(edi.getNombre(), edi);
+			edi.setEstado(EstadoEdicion.Rechazada);
 		}
 		
 	}

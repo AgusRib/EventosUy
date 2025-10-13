@@ -11,6 +11,7 @@ import logica.dataTypes.DTRegistro;
 import logica.dataTypes.DataUsuario;
 import logica.dataTypes.DataUsuario.TipoUsuario;
 import logica.models.Factory;
+import main.java.ManejadorArchivos;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.io.PrintWriter;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,62 +52,89 @@ public class ServletRegistro extends HttpServlet {
         IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
         
         switch (path) {
-            case "/ver-registro": {
-            	String edicion = request.getParameter("edicion");
-            	String usuario = request.getParameter("usuario");
-            	if (usuario == null || usuario.isBlank()) {
-            		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'usuario'");
-                    return;
-            	}
-            	
-            	DTRegistro registro = ICE.infoRegistro(edicion, usuario);
-            	
-                if (registro == null) {
-                  response.sendError(HttpServletResponse.SC_NOT_FOUND, "Registro no encontrado");
-                  return;
-                }
-            	
-            	request.setAttribute("registro", registro);
-            	request.setAttribute("usuario", usuario);
-            	
-                request.getRequestDispatcher("/WEB-INF/pages/detalleRegistro.jsp").forward(request, response);
-                return;
-            }
-            case "/listar-registros": {
-            	String edicion = request.getParameter("edicion");
-                if (edicion == null || edicion.isBlank()) {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Falta parámetro 'edicion");
-                    return;
-                }
-                
-                String q = request.getParameter("q");
-                String qNorm = q == null ? "" : q.trim().toLowerCase();
-
-                var asistentes = ICE.listarAsistentesAEdicionDeEvento(edicion);
-
-                List<Map.Entry<String, DTRegistro>> regs = new ArrayList<>();
-                for (var a : asistentes) {
-                    DTRegistro r = ICE.infoRegistro(edicion, a.getnickname());
-                    if (r != null) {
-                    	String nick = a.getnickname();
-                        if (qNorm.isEmpty() || (nick != null && nick.toLowerCase().contains(qNorm))) {
-                            regs.add(new AbstractMap.SimpleEntry<>(nick, r));
-                        }
-                    }
-                }
-
-                if (regs.isEmpty()) {
-                    request.setAttribute("mensaje", (qNorm.isEmpty() ?
-                        "No hay registros para la edición" :
-                        "No hubo coincidencias para la búsqueda"));
-                }
-
-                request.setAttribute("edicion", edicion);
-                request.setAttribute("registros", regs);
-                request.setAttribute("q", q == null ? "" : q);
-                request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
-                return;
-              }
+	        case "/ver-registro": {
+	            String edicion = request.getParameter("edicion");
+	            String usuario = request.getParameter("usuario");
+	            if (usuario == null || usuario.isBlank()) {
+	                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'usuario'");
+	                return;
+	            }
+	
+	            DTRegistro registro = ICE.infoRegistro(edicion, usuario);
+	            if (registro == null) {
+	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Registro no encontrado");
+	                return;
+	            }
+	
+	            request.setAttribute("registro", registro);
+	            request.setAttribute("usuario", usuario);
+	
+	            String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+	            String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), baseUsuarios);
+	            if (imgUsuario != null) {
+	                request.setAttribute("imagenUsuario", "uploads/usuarios/" + imgUsuario);
+	            } else {
+	                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
+	            }
+	
+	            String nombreEdicion = (edicion != null && !edicion.isBlank()) ? edicion : registro.getNombreEdicion();
+	            String baseEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
+	            String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), baseEdiciones);
+	            if (imgEdicion != null) {
+	                request.setAttribute("imagenEdicion", "uploads/ediciones/" + imgEdicion);
+	            } else {
+	                request.setAttribute("imagenEdicion", "uploads/ediciones/default.jpg");
+	            }
+	
+	            request.getRequestDispatcher("/WEB-INF/pages/detalleRegistro.jsp").forward(request, response);
+	            return;
+	        }
+	
+	        case "/listar-registros": {
+	            String edicion = request.getParameter("edicion");
+	            if (edicion == null || edicion.isBlank()) {
+	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Falta parámetro 'edicion");
+	                return;
+	            }
+	
+	            String q = request.getParameter("q");
+	            String qNorm = q == null ? "" : q.trim().toLowerCase();
+	
+	            var asistentes = ICE.listarAsistentesAEdicionDeEvento(edicion);
+	
+	            List<Map.Entry<String, DTRegistro>> regs = new ArrayList<>();
+	            for (var a : asistentes) {
+	                DTRegistro r = ICE.infoRegistro(edicion, a.getnickname());
+	                if (r != null) {
+	                    String nick = a.getnickname();
+	                    if (qNorm.isEmpty() || (nick != null && nick.toLowerCase().contains(qNorm))) {
+	                        regs.add(new AbstractMap.SimpleEntry<>(nick, r));
+	                    }
+	                }
+	            }
+	
+	            if (regs.isEmpty()) {
+	                request.setAttribute("mensaje", (qNorm.isEmpty() ?
+	                    "No hay registros para la edición" :
+	                    "No hubo coincidencias para la búsqueda"));
+	            }
+	
+	            Map<String, String> imgsUsuarios = new HashMap<>();
+	            String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+	            for (var e : regs) {
+	                String nick = e.getKey();
+	                String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), baseUsuarios);
+	                imgsUsuarios.put(nick, (img != null) ? ("uploads/usuarios/" + img) : "uploads/usuarios/default.jpg");
+	            }
+	
+	            request.setAttribute("edicion", edicion);
+	            request.setAttribute("registros", regs);
+	            request.setAttribute("q", q == null ? "" : q);
+	            request.setAttribute("imgsUsuarios", imgsUsuarios);
+	
+	            request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
+	            return;
+	        }
             case "/alta-registro": {
             	request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                 return;

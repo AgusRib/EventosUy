@@ -95,7 +95,7 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 		Evento evento = ManejadorEvento.getInstance().obtenerEvento(nomEvento);
 		
 		if(evento != null) {
-			List<Edicion> edicionesPendientes = evento.getColEdicionesPendientes();
+			List<Edicion> edicionesPendientes = evento.getColEdicionesIngresadas();
 			DefaultListModel<String> model = new DefaultListModel<>();
 			
 			for (Edicion edicion : edicionesPendientes) {
@@ -210,7 +210,7 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 	        String nomEvento = (String) comboBoxEventos.getSelectedItem();
 	        Evento evento = ManejadorEvento.getInstance().obtenerEvento(nomEvento);
 	        if (evento != null) {
-	            List<Edicion> edicionesPendientes = evento.getColEdicionesPendientes();
+	            List<Edicion> edicionesPendientes = evento.getColEdicionesIngresadas();
 	            DefaultListModel<String> model = new DefaultListModel<>();
 	            for (Edicion edicion : edicionesPendientes) {
 	                model.addElement(edicion.getNombre());

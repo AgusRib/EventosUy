@@ -152,6 +152,14 @@ public class ServletAutenticator extends HttpServlet {
 				ManejadorArchivos.guardarArchivo(imagen, nickname.toLowerCase(), "usuarios", getServletContext());
 			}
 			
+			String pfp = ManejadorArchivos.buscarArchivo(nickname.toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+			System.out.println("PFP seteada en sesión: " + pfp);
+			if (pfp != null) {
+				request.getSession().setAttribute("pfp", pfp);
+			} else {
+				request.getSession().setAttribute("pfp", "default.png");
+			}
+			
 			// Registro exitoso - redirigir a inicio de sesión
 			// Include a flag so the login page can show a success message
             response.sendRedirect(request.getContextPath() + "/iniciosesion?registered=true");
@@ -205,6 +213,14 @@ public class ServletAutenticator extends HttpServlet {
 				// Crear sesión y setear el atributo usuario
 				HttpSession session = request.getSession();
 				session.setAttribute("usuario", usuario);
+				
+				String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+				System.out.println("PFP seteada en sesión: " + pfp);
+				if (pfp != null) {
+					request.getSession().setAttribute("pfp", pfp);
+				} else {
+					request.getSession().setAttribute("pfp", "default.png");
+				}
 				
 				// Redirigir a la página principal
 				response.sendRedirect(request.getContextPath() + "/HomeServlet");

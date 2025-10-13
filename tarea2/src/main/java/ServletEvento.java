@@ -82,6 +82,8 @@ public class ServletEvento extends HttpServlet {
                 // Simplemente cargar el formulario - sin redirects
                 request.setAttribute("destino", "altaEvento");
                 request.setAttribute("error", null); // ESTA ES LA LÍNEA QUE FALTABA
+                // Clear any previous success message when opening the form
+                request.setAttribute("mensaje", null);
                 listarCategorias(request, response);
                 return;
             }
@@ -265,11 +267,15 @@ public class ServletEvento extends HttpServlet {
             // Mostrar mensaje de registro exitoso en la misma página de alta (como en altaEdicion)
             Set<String> todasLasCategorias = controllerEvento.listarCategorias();
             request.setAttribute("categorias", todasLasCategorias);
+            // Clear any previous error and set success message
+            request.setAttribute("error", null);
             request.setAttribute("mensaje", "Evento creado exitosamente.");
             // Preservar valores del formulario por si el usuario quiere crear otra cosa
             request.setAttribute("nombre", nombre);
             request.setAttribute("sigla", sigla);
             request.setAttribute("descripcion", descripcion);
+            // Ensure no stale category selections remain
+            request.setAttribute("categoriasSeleccionadas", null);
             request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
              
         } catch(NombreEventoExcepcion e) {

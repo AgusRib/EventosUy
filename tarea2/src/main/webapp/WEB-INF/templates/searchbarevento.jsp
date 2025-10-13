@@ -12,11 +12,9 @@
 %>
 
 <!-- Componente de Barra de Búsqueda Reutilizable -->
-<div class="carta-de-eventos mb-4 d-flex justify-content-center">
-    <form action="<%=request.getContextPath()%>/eventos" method="get" class="d-flex w-100 justify-content-center">
-        <input type="search" name="nombre" class="search"
-               placeholder="Buscar eventos..." 
-               value="<%=valorBusqueda%>"
-               style="width:100%; min-width: 300px;">
-    </form>
-</div>
+<form action="<%=request.getContextPath()%>/eventos" method="get" class="w-100">
+    <input type="search" name="nombre" class="search"
+           placeholder="Buscar eventos..." 
+           value="<%=valorBusqueda%>"
+           style="width:100%;">
+</form>

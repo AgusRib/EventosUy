@@ -221,7 +221,7 @@ body.with-collapsed {
 								<!-- izq: foto mas rol -->
 								<div class="d-flex flex-column align-items-center">
 									<div class="contenedor-fotoPerfil mb-2">
-										<img class="foto-usuario" src="../assets/images/IMG-US04.jpeg"
+										<img class="foto-usuario" src="../assets/images/IMG-<%= usuario.getNickname() %>>.jpeg"
 											alt="miseventosFoto" style="height: 127px;">
 									</div>
 									<div class="contenedor-NickRolUser text-center">
@@ -272,11 +272,7 @@ body.with-collapsed {
 					</section>
 
 				</div>
-				<!-- cambio de columna -->
-				<div class="col-6 d-flex flex-column gap-3">
-
-
-				</div>
+				
 			</div>
 		</div>
 	</main>

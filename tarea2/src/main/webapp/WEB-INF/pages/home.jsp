@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="logica.dataTypes.*" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,70 +32,40 @@
 
         <div class="carta-categorias align-items-center col-12 col-md-8 col-xl-3 h-100 my-3">
             <h3 class="categorias fw-bold">Categorías</h3>
-<jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
+            <jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
         </div>
 
-<script>
-    // Redirige según el estado del checkbox al hacer click en una categoría
-    document.addEventListener('DOMContentLoaded', function() {
-        const checkboxEdiciones = document.getElementById('checkboxEdiciones');
-        const categoriaLinks = document.querySelectorAll('.categoria-link');
-        categoriaLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (checkboxEdiciones.checked) {
-                    window.location.href = 'ListaEdiciones.html';
-                } else {
-                    window.location.href = 'ListarEventos.html';
-                }
-            });
-        });
-    });
-</script>
-
-<div class="container row col-12 col-md-8">
+<div class="container col-12 col-md-8">
    <div class="row container m-2">
+   		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
             <div class="row gx-0 g-xl-2 gy-2">
-                <input type="search" class="search col-12 p-3 mb-4" placeholder="Buscar eventos, ediciones...">
                 
-                <!-- Card Evento 1 -->
-                 <div class="col-xl-6">
-                    <a class="text-decoration-none" href="ConsulltaEventoMaraton.html" data-hotkey="5" role="button">      
-                        <div class="carta p-4">
-                            <div class="text-heading">
-                                <div class="search-text-heading">Maratón de Montevideo</div>
-                            </div>
-                            <div class="avatar-block">
-                                <div class="avatar">
-                                    <img class="shape-icon" alt="" src="assets/icons/images.png">
-                                </div>
-                                <div class="info">
-                                    <div class="description">Competencia deportiva anual en la capital</div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card Evento 2 -->
-                
-                    <div class="col-xl-6">
-                        <a class="text-decoration-none" href="ConsulltaEventoConferencia.html" data-hotkey="5" role="button">
-                        <div class="carta p-4">
-                            <div class="text-heading">
-                                <div class="search-text-heading">Conferencia de Tecnología</div>
-                            </div>
-                            <div class="avatar-block">
-                                <div class="avatar">
-                                    <img class="shape-icon" alt="" src="assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg">
-                                </div>
-                                <div class="info">
-                                    <div class="description">Evento sobre innovación tecnológica</div>
-                                </div>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
+			<% 
+			List<DTDetalleEvento> eventos = (List<DTDetalleEvento>) request.getAttribute("eventos_recientes");
+			for (DTDetalleEvento evento : eventos) { %>
+				<div class="col-xl-6">
+				<a class="text-decoration-none" href="detalleEvento?nombre=<%= evento.getNombre() %>"
+					data-hotkey="5" role="button">
+					<div class="carta p-4">
+						<div class="text-heading">
+							<div class="search-text-heading"><%= evento.getNombre() %></div>
+						</div>
+						<div class="avatar-block">
+							<div class="avatar">
+								<img class="shape-icon" alt=""
+									src="<%= request.getAttribute(evento.getNombre()) %>">
+							</div>
+							<div class="info">
+								<div class="description"> <%= evento.getDescripcion() %> </div>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+			<%
+			}
+			
+			%>
 
                 
 

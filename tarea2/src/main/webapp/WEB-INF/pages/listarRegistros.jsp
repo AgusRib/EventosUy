@@ -4,6 +4,7 @@
 <%@ page import="logica.dataTypes.DTRegistro" %>
 
 <%
+  String ctx = request.getContextPath();
   String edicion = (String) request.getAttribute("edicion");
   String q = (String) request.getAttribute("q");
   if (q == null) q = "";
@@ -12,6 +13,10 @@
       (List<Map.Entry<String, DTRegistro>>) request.getAttribute("registros");
   String mensaje = (String) request.getAttribute("mensaje");
   if (registros == null) registros = java.util.Collections.emptyList();
+
+  @SuppressWarnings("unchecked")
+  Map<String,String> imgsUsuarios = (Map<String,String>) request.getAttribute("imgsUsuarios");
+  if (imgsUsuarios == null) imgsUsuarios = java.util.Collections.emptyMap();
 %>
 
 <!DOCTYPE html>
@@ -26,17 +31,9 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/styles.css">
 <link rel="icon" type="image/x-icon" href="<%= request.getContextPath() %>/assets/icons/Logo.png">
 </head>
-<body>
 
-<header>
-  <nav class="navbar bg-white shadow-sm">
-    <div class="text-center align-items-center">
-      <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="<%= request.getContextPath() %>/">
-        <b>Eventos.uy</b>
-      </a>
-    </div>
-  </nav>
-</header>
+<body>
+<jsp:include page="/WEB-INF/templates/header.jsp" />
 
 <div class="container my-4">
   <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
@@ -70,15 +67,17 @@
       <% for (Map.Entry<String, DTRegistro> e : registros) {
            String nick = e.getKey();
            DTRegistro r = e.getValue();
-           String verDetalleUrl = request.getContextPath() + "/ver-registro"
-             + "?edicion=" + URLEncoder.encode(edicion == null ? "" : edicion, "UTF-8")
-             + "&usuario=" + URLEncoder.encode(nick == null ? "" : nick, "UTF-8");
+           String verDetalleUrl = ctx + "/ver-registro"
+               + "?edicion=" + URLEncoder.encode(edicion == null ? "" : edicion, "UTF-8")
+               + "&usuario=" + URLEncoder.encode(nick == null ? "" : nick, "UTF-8");
+
+           String imgRel = imgsUsuarios.get(nick);
+           if (imgRel == null || imgRel.isBlank()) imgRel = "uploads/usuarios/default.jpg";
       %>
-        <div class="listadoUsuarios_itemUsuario"
-             style="border-radius:1rem; padding:1rem; display:flex; align-items:center; gap:1rem; border:1px solid #ddd; margin-bottom:1rem;">
+        <div class="listadoUsuarios_itemUsuario" style="border-radius:1rem; padding:1rem; display:flex; align-items:center; gap:1rem; border:1px solid #ddd; margin-bottom:1rem;">
           <div class="contenedor-foto">
             <img class="foto-usuario"
-                 src="<%= request.getContextPath() %>/assets/images/IMG-US01.jpg"
+                 src="<%= ctx %>/<%= imgRel %>"
                  alt="<%= nick %>"
                  style="height:127px; width:127px; object-fit:cover; border-radius:50%; border:1px solid #ddd;">
           </div>
