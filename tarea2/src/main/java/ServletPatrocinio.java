@@ -1,10 +1,10 @@
-
 import java.io.IOException;
 import java.util.Set;
 
 import excepciones.NombreInstiExistente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +18,7 @@ import logica.models.Factory;
  * Servlet implementation class ServletPatrocinio
  */
 @WebServlet({"/altaInstitucion","/altaPatrocinio"})
+@MultipartConfig
 public class ServletPatrocinio extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,17 +43,20 @@ public class ServletPatrocinio extends HttpServlet {
                 String nombreInstitucion = request.getParameter("nombreInstitucion");
                 DTPatrocinio patrocinio = ICE.obtenerPatrocinio(nombreEdicion, nombreInstitucion);
                 request.setAttribute("patrocinio", patrocinio);
-                request.getRequestDispatcher("/detallePatrocinio.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/pages//detallePatrocinio.jsp").forward(request, response);
             } catch (Exception e) {
                 // Handle exceptions - set error message and forward to error page
                 request.setAttribute("error", "Error al obtener detalles del patrocinio: " + e.getMessage());
-                request.getRequestDispatcher("/error.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/pages//error.jsp").forward(request, response);
             }
             break;
             
         case "/altaInstitucion":
-        	request.getRequestDispatcher("/altaInstitucion.jsp").forward(request, response);
-            break;
+        	// Imitate AltaEvento: ensure mensaje and error are initialized so the JSP can show/clear alerts
+        	request.setAttribute("mensaje", null);
+        	request.setAttribute("error", null);
+        	request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
+             break;
             
         case "/altaPatrocinio":
         	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
@@ -63,7 +67,7 @@ public class ServletPatrocinio extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            request.getRequestDispatcher("/altaPatrocinio.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/pages//altaPatrocinio.jsp").forward(request, response);
             break;
     }
     }
@@ -75,7 +79,8 @@ public class ServletPatrocinio extends HttpServlet {
     	//	void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, 
     	//  double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo);
 
-    	
+    
+    
     	switch(path) {
     		
 			case "/altaPatrocinio":
@@ -101,15 +106,31 @@ public class ServletPatrocinio extends HttpServlet {
 				
 				try {
 					ICU.altaInstitucion(nombreInsti, desc, web);
+					// success: imitate AltaEvento behaviour — set mensaje and clear error, preserve fields
+					request.setAttribute("mensaje", "Institución creada exitosamente.");
+					request.setAttribute("error", null);
+					request.setAttribute("nombre", nombreInsti);
+					request.setAttribute("descripcion", desc);
+					request.setAttribute("url", web);
+					request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
 				} catch (NombreInstiExistente e) {
 					request.setAttribute("error", "El nombre de la institucion ya existe");
+					// preserve values
+					request.setAttribute("nombre", nombreInsti);
+					request.setAttribute("descripcion", desc);
+					request.setAttribute("url", web);
+					request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
 				} catch (Exception e) {
 					e.printStackTrace();
+					request.setAttribute("error", "Error al crear la institución: " + e.getMessage());
+					request.setAttribute("nombre", nombreInsti);
+					request.setAttribute("descripcion", desc);
+					request.setAttribute("url", web);
+					request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
 				}
-				request.getRequestDispatcher("/altaInstitucion").forward(request, response);
 				break;
 	    		
-    	}
+     	}
     }
     
 }

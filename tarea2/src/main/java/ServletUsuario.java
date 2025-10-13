@@ -15,7 +15,8 @@ import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
 import logica.models.Factory;
-import main.java.ManejadorArchivos;
+
+// ManejadorArchivos is in the default package; do not import a default-package class
 
 @MultipartConfig
 @WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })
@@ -167,6 +168,17 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("usuario", asis);
         }
 
+        // Set imagenUsuario in request using same pattern as ServletEdicion
+        try {
+            String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+            String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
+            if (nombreArchivo != null) {
+                request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
+            } else {
+                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
+            }
+        } catch (Exception ignore) {}
+
         request.getRequestDispatcher("/WEB-INF/pages/perfil.jsp").forward(request, response);
     }
 
@@ -268,7 +280,7 @@ public class ServletUsuario extends HttpServlet {
                 }
             } catch (Exception ignore) { /* no cortar el flujo por imagen */ }
 
-            // Redirect back to modificarDatos con mensaje ok
+            // Redirect back to modificarDatos with success message
             String url = request.getContextPath()
                     + "/modificarDatos?usuario="
                     + java.net.URLEncoder.encode(nickParam, java.nio.charset.StandardCharsets.UTF_8)

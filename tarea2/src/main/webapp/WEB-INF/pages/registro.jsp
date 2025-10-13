@@ -187,7 +187,8 @@
                                     String institucionSeleccionada = (String) request.getAttribute("institucion");
                                     if (instituciones != null && !instituciones.isEmpty()) {
                                         for (String institucion : instituciones) {
-                                            String selectedStyle = institucion.equals(institucionSeleccionada) ? "background-color: #e7f3ff;" : "";
+                                            // Use Objects.equals to safely compare potentially-null strings
+                                            String selectedStyle = java.util.Objects.equals(institucion, institucionSeleccionada) ? "background-color: #e7f3ff;" : "";
                                 %>
                                     <li class="categoria-item" style="<%= selectedStyle %>" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;" data-value="<%= institucion %>">
                                         <%= institucion %>
