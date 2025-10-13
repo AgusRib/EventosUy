@@ -22,42 +22,42 @@ public class ControllerUsuario implements IControllerUsuario {
 	@Override
 	public void ingresarAsistente(String nickname, String nombre, String email,String password, String apellido,
 			LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		if (mU.existeNickname(nickname)) {
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		if (mUser.existeNickname(nickname)) {
 			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
-		} else if (mU.existeEmail(email)) {
+		} else if (mUser.existeEmail(email)) {
 			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
 			Asistente user = new Asistente(nickname, nombre, email,password, apellido, fechaNac);
-			mU.agregarUsuario(user);
+			mUser.agregarUsuario(user);
 		}
 	}
 
 	@Override
 	public Set<String> listarInstituciones() {
-		ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
-		return mI.obtenerInstituciones();
+		ManejadorInstitucion mInsti = ManejadorInstitucion.getInstance();
+		return mInsti.obtenerInstituciones();
 	}
 
 	@Override
 	public void agregarAsistente(String nicknameAsistente, String nombreInstitucion) {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
-		Asistente asistente = mU.obtenerAsistente(nicknameAsistente);
-		asistente.setInstitucion(mI.obtenerInstitucion(nombreInstitucion));
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		ManejadorInstitucion mInsti = ManejadorInstitucion.getInstance();
+		Asistente asistente = mUser.obtenerAsistente(nicknameAsistente);
+		asistente.setInstitucion(mInsti.obtenerInstitucion(nombreInstitucion));
 
 	}
 
 	@Override
 	public void ingresarOrganizador(String nickname, String nombre, String email,String password, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		if (mU.existeNickname(nickname)) {
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		if (mUser.existeNickname(nickname)) {
 			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
-		} else if (mU.existeEmail(email)) {
+		} else if (mUser.existeEmail(email)) {
 			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
 			Organizador user = new Organizador(nickname, nombre, email,password, descripcion, web);
-			mU.agregarUsuario(user);
+			mUser.agregarUsuario(user);
 		}
 	}
 
@@ -68,10 +68,10 @@ public class ControllerUsuario implements IControllerUsuario {
 	
 	
 	public Set<String> listarOrganizadores() {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
 		Set<String> organizadores = new HashSet<>();
-		for (String nick: mU.obtenerUsuarios()) {
-			if (mU.obtenerUsuario(nick) instanceof Organizador) {
+		for (String nick: mUser.obtenerUsuarios()) {
+			if (mUser.obtenerUsuario(nick) instanceof Organizador) {
 				organizadores.add(nick);
 			}
 		}
@@ -86,9 +86,9 @@ public class ControllerUsuario implements IControllerUsuario {
 	
 	@Override
 	public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
 		try {
-			Usuario user = mU.obtenerUsuario(nickname);
+			Usuario user = mUser.obtenerUsuario(nickname);
 			TipoUsuario tipo;
 			if ( user instanceof Asistente) {
 				tipo = TipoUsuario.ASISTENTE;
@@ -104,14 +104,14 @@ public class ControllerUsuario implements IControllerUsuario {
 
 	@Override
 	public Usuario obtenerUsuario(String usuario) {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		return mU.obtenerUsuario(usuario);
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		return mUser.obtenerUsuario(usuario);
 	}
 	
 	@Override
 	public Set<String> listarRegistrosAEventos(String nickname) {
-		ManejadorUsuario mI = ManejadorUsuario.getInstance();
-		Asistente asistente = mI.obtenerAsistente(nickname);
+		ManejadorUsuario mInsti = ManejadorUsuario.getInstance();
+		Asistente asistente = mInsti.obtenerAsistente(nickname);
 		Set<Registro> regs = asistente.getRegistros();
 		Set<String> nombresRegistros= new HashSet<>();
 		for (Registro reg: regs) {
@@ -122,8 +122,8 @@ public class ControllerUsuario implements IControllerUsuario {
 	
 	@Override
 	public Set<String> listarEdicionesOrganizadas(String nickname) {
-		ManejadorUsuario mI = ManejadorUsuario.getInstance();
-		Organizador org = mI.obtenerOrganizador(nickname);
+		ManejadorUsuario mInsti = ManejadorUsuario.getInstance();
+		Organizador org = mInsti.obtenerOrganizador(nickname);
 		return org.getEdiciones();
 	}
 	
@@ -132,8 +132,8 @@ public class ControllerUsuario implements IControllerUsuario {
 	
 	@Override
 	public DTAsistente infoAsistente(String nickname) {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		Asistente user = mU.obtenerAsistente(nickname);
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		Asistente user = mUser.obtenerAsistente(nickname);
 		DTAsistente dtA;
 		if (user.getInstitucion() != null) {
 			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento());
@@ -146,23 +146,23 @@ public class ControllerUsuario implements IControllerUsuario {
 	
 	@Override
 	public DTOrganizador infoOrganizador(String nickname) {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		Organizador user = mU.obtenerOrganizador(nickname);
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		Organizador user = mUser.obtenerOrganizador(nickname);
 		DTOrganizador dtO = new DTOrganizador(user.getNickname(), user.getNombre(), user.getEmail(), user.getDescripcion(), user.getWeb());
 		return dtO;
 	}
 	@Override
 	public void editarAsistente(String nick,String nom, String apellido, LocalDate fdef) {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		Asistente user = mU.obtenerAsistente(nick);
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		Asistente user = mUser.obtenerAsistente(nick);
 		user.setApellido(apellido);
 		user.setFechaNacimiento(fdef);
 		user.setNombre(nom);}
 	
 	@Override
 	public void editarOrganizador(String nick,String nom, String descripcion, String web) {
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		Organizador user = mU.obtenerOrganizador(nick);
+		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+		Organizador user = mUser.obtenerOrganizador(nick);
 		user.setDescripcion(descripcion);
 		user.setWeb(web);
 		user.setNombre(nom);}
@@ -174,12 +174,12 @@ public class ControllerUsuario implements IControllerUsuario {
 
    @Override
    public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception {
-	   ManejadorInstitucion mI = ManejadorInstitucion.getInstance();
-	   if (mI.obtenerInstitucion(nombre) != null) {
+	   ManejadorInstitucion mInsti = ManejadorInstitucion.getInstance();
+	   if (mInsti.obtenerInstitucion(nombre) != null) {
 		   throw new NombreInstiExistente("Ya existe una institucion con este nombre");
 	   } else {
 		   Institucion institucion = new Institucion(nombre, descripcion, web);
-		   mI.agregarInstitucion(institucion);
+		   mInsti.agregarInstitucion(institucion);
 	   }
    
 	
@@ -187,8 +187,8 @@ public class ControllerUsuario implements IControllerUsuario {
    
   @Override
   public DataUsuario  iniciarSesionNickname(String nickname, String password) {
-	  ManejadorUsuario mU = ManejadorUsuario.getInstance();
-	  Usuario user = mU.obtenerUsuario(nickname);
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario user = mUser.obtenerUsuario(nickname);
 	  if (user != null && user.getPassword().equals(password)) {
 		  return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), (user instanceof Asistente) ? TipoUsuario.ASISTENTE : TipoUsuario.ORGANIZADOR);
 	  }
@@ -197,8 +197,8 @@ public class ControllerUsuario implements IControllerUsuario {
   
   @Override
   public DataUsuario iniciarSesionEmail(String email, String password) {
-	  ManejadorUsuario mU = ManejadorUsuario.getInstance();
-	  Usuario user = mU.obtenerUsuarioPorEmail(email);
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario user = mUser.obtenerUsuarioPorEmail(email);
 	  if (user != null && user.getPassword().equals(password)) {
 		  return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), (user instanceof Asistente) ? TipoUsuario.ASISTENTE : TipoUsuario.ORGANIZADOR);
 	  }

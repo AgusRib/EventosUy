@@ -7,11 +7,11 @@ public class DTTipoRegistro {
 	private int cupo;
 	
 	
-	public DTTipoRegistro(String nombre, String descripcion, float d, int cupo) {
+	public DTTipoRegistro(String nombre, String descripcion, float cost, int cupo) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.costo = d;
+		this.costo = cost;
 		this.cupo = cupo;
 	}
 	

@@ -104,18 +104,18 @@ public class Edicion {
 	}
 	
 	public DTPatrocinio getPatrocinio(String nombreInstitucion) {
-		Patrocinio p = patrociniosPorInstitucion.get(nombreInstitucion);
+		Patrocinio pat = patrociniosPorInstitucion.get(nombreInstitucion);
 		
-		if( p==null) return null;
+		if( pat==null) return null;
 		else {
 		return new DTPatrocinio(
 				nombreInstitucion,
-		        p.getFecha(),
-		        p.getMonto(),
-		        p.getCodigo(),
-		        p.getNivelPatrocinio(),
-		        p.getTipoRegistroGratis(),
-		        p.getCantRegsGratis()
+		        pat.getFecha(),
+		        pat.getMonto(),
+		        pat.getCodigo(),
+		        pat.getNivelPatrocinio(),
+		        pat.getTipoRegistroGratis(),
+		        pat.getCantRegsGratis()
 		 );}
 	}
 	
@@ -171,13 +171,13 @@ public class Edicion {
 		return true;
 	}
 
-	public void crearRegistro(Asistente as, String tipoReg) {
+	public void crearRegistro(Asistente asis, String tipoReg) {
 		
 		TipoRegistro treg = this.getTipoRegistro(tipoReg);
 		treg.restarCupo();
-		Registro nReg = new Registro(as, treg, this);
+		Registro nReg = new Registro(asis, treg, this);
 		this.registros.add(nReg);
-		as.addRegistro(nReg);
+		asis.addRegistro(nReg);
 		return;
 	}
 

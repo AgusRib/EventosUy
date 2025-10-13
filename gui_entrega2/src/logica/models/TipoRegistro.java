@@ -55,8 +55,8 @@ public class TipoRegistro {
 	
 	public DTTipoRegistro infoTipoRegistro() {
 		
-		DTTipoRegistro dt = new DTTipoRegistro(nombre, descripcion, costo, cupo);
-		return dt;
+		DTTipoRegistro dtTReg = new DTTipoRegistro(nombre, descripcion, costo, cupo);
+		return dtTReg;
 		
 	}
 	
