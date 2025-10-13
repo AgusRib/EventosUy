@@ -1,45 +1,28 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.Set" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page import="logica.dataTypes.DataUsuario" %>
 <%@ page import="logica.dataTypes.DTOrganizador" %>
 <%@ page import="logica.dataTypes.DTAsistente" %>
-
 <!doctype html>
-
 <html lang="es">
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Detalle de Usuario - Eventos.uy</title>
+<title>MiPerfil - Eventos.uy</title>
 
-
-<link
-	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
-	rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
-<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/styles.css">
 
-
-<link rel="stylesheet"
-	href="../assets/css/RolVisitante_listarUsuarios.css">
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-<link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-
-<!-- Bootstrap Icons CDN -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-	rel="stylesheet">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/RolVisitante_listarUsuarios.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
+<link rel="icon" type="image/x-icon" href="<%=request.getContextPath()%>/assets/icons/Logo.png">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
 <style>
 :root {
@@ -55,6 +38,7 @@
 }
 
 body {
+	font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Titillium Web", Arial, sans-serif;
 	background: var(--bg);
 	color: var(--text);
 	margin: 0;
@@ -63,330 +47,205 @@ body {
 }
 
 /* main container spacing */
-main.contUser {
-	padding: 18px;
-}
+main.contUser { padding: 18px; }
+.container-xl { max-width: 1200px; }
+.card { border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.avatar { width: 127px; height: 127px; border-radius: 50%; object-fit: cover; background: #fff; }
+.action-card { display: flex; gap: 12px; align-items: center; background: #fcfcff; border: 1px solid var(--border); border-radius: 10px; padding: 12px; text-decoration: none; color: inherit; transition: background .12s ease, transform .06s ease; }
+.action-card:hover { background: #f6f7ff; border-color: #dfe3ff; transform: translateY(-1px); }
 
-.container-xl {
-	max-width: 1200px;
-}
+body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
+@media ( max-width : 767.98px) { body { padding-left: var(--sidebar-w-collapsed); } .avatar { width: 96px; height: 96px; } .col-md-5, .col-md-7 { flex: 0 0 100%; max-width:100%; } }
 
-/* card tweaks */
-.card {
-	border: 1px solid var(--border);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow);
-}
-
-/* avatar */
-.avatar {
-	width: 64px;
-	height: 64px;
-	border-radius: 50%;
-	border: 2px solid var(--accent-weak);
-	object-fit: cover;
-	background: #fff;
-}
-
-/* actions grid */
-.action-card {
-	display: flex;
-	gap: 12px;
-	align-items: center;
-	background: #fcfcff;
-	border: 1px solid var(--border);
-	border-radius: 10px;
-	padding: 12px;
-	text-decoration: none;
-	color: inherit;
-	transition: background .12s ease, transform .06s ease;
-}
-
-.action-card:hover {
-	background: #f6f7ff;
-	border-color: #dfe3ff;
-	transform: translateY(-1px);
-}
-
-/* collapsed styles */
-body.with-collapsed {
-	padding-left: var(--sidebar-w-collapsed);
-}
-
-.sidebar.collapsed .nav-text {
-	display: none;
-}
-
-.sidebar.collapsed .nav-link {
-	justify-content: center;
-}
-
-.sidebar.collapsed .nav-icon {
-	margin-right: 0 !important;
-}
-
-/* responsive */
-@media ( max-width : 767.98px) {
-	body {
-		padding-left: var(--sidebar-w-collapsed);
-	}
-	.sidebar {
-		width: var(--sidebar-w-collapsed);
-	}
-}
-
-.action-card {
-	min-width: 0;
-}
-/*.actions-grid .col-12 { display:flex; }*/
-.action-card {
-	width: 100%;
-}
-
-.row {
-	display: flex !important;
-	flex-wrap: nowrap !important; /* evita que salten de línea */
-}
-
-.row>[class*="col-"] {
-	flex: 0 0 auto; /* que respeten su ancho */
-}
+.text-muted.small { font-size: .85rem; }
 </style>
 </head>
 
-	<% DataUsuario usuario = (DataUsuario) request.getAttribute("usuarios"); 
-	
-	if (usuario == null) {
-        response.sendRedirect(request.getContextPath() + "/usuario?accion=listar");
-        return;
-    }
-	
-	DataUsuario.TipoUsuario tipo = usuario.getTipo();
-	DTAsistente asis = null;
-	DTOrganizador org = null;
-	
-	if (request.getAttribute("usuarios") instanceof DTOrganizador) {
-		org = (DTOrganizador) request.getAttribute("usuarios");
-	}
-	else {
-		asis = (DTAsistente) request.getAttribute("usuarios");
-	}%>
-
-		<header>
-			<nav class="navbar bg-white shadow-sm">
-				<div class="text-center align-items-center">
-					<a class="fw-bold text-dark fs-2 m-4 text-decoration-none"
-						href="<%=request.getContextPath()%>/eventos"><b>Eventos.uy</b></a>
-				</div>
-				<div class="d-flex justify-content-end align-items-center">
-					<div class="dropdown">
-						<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
-							href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
-							aria-expanded="false" aria-haspopup="true"> 
-							<img src="<%=request.getContextPath()%>/assets/images/IMG-US04.jpeg" alt="Usuario"
-							class="rounded-circle"
-							style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-							<span><%= usuario != null ? usuario.getNombre() : "Usuario"%></span> 
-							<i class="bi bi-chevron-down"></i>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end shadow-sm"
-							aria-labelledby="userMenuDropdown">
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/usuario?accion=perfil">Mi perfil</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li><a class="dropdown-item text-danger"
-								href="<%=request.getContextPath()%>/autenticator?accion=logout"
-								style="color: #dc3545 !important;">Cerrar sesión</a></li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-		</header>
-
 <body id="body-pd">
-	
-	<!-- Contenido -->
-	<main class="contUser" id="cuenta-user">
-		<div class="container-xl ">
-			<div class="row">
-				<!--pa dejar dos cartas en una sola columna y la otra a su izq-->
-				<div class="miau">
+	<%-- Prepare user data from request attribute set by servlet --%>
+	<%
+	Object uObj = request.getAttribute("usuario");
+	if (uObj == null) {
+		// If not set, try session user (defensive)
+		DataUsuario su = (DataUsuario) request.getSession().getAttribute("usuario");
+		if (su == null) {
+			response.sendRedirect(request.getContextPath() + "/login");
+			return;
+		}
+		uObj = su;
+	}
 
-					<!-- Header perfil -->
-					<section class="card mb-3 bg-light ">
+	DTOrganizador org = null;
+	DTAsistente asis = null;
+	String nickname = null;
+	String nombre = null;
+	String apellido = null;
+	String email = null;
+	String descripcion = null;
+	String web = null;
+	
+	if (uObj instanceof DTOrganizador) {
+		org = (DTOrganizador) uObj;
+		nickname = org.getNickname();
+		nombre = org.getNombre();
+		email = org.getEmail();
+		descripcion = org.getDescripcion();
+		web = org.getWeb();
+	} else if (uObj instanceof DTAsistente) {
+		asis = (DTAsistente) uObj;
+		nickname = asis.getNickname();
+		nombre = asis.getNombre();
+		apellido = asis.getapellido();
+		email = asis.getEmail();
+	}
+
+	String imagenUsuario = (String) request.getAttribute("imagenUsuario");
+	if (imagenUsuario == null || imagenUsuario.isBlank()) {
+		imagenUsuario = request.getContextPath() + "/assets/images/IMG-US04.jpeg";
+	} else if (!imagenUsuario.startsWith(request.getContextPath())) {
+		imagenUsuario = request.getContextPath() + "/" + imagenUsuario.replaceAll("^/+", "");
+	}
+
+	String encodedNick = URLEncoder.encode(nickname == null ? "" : nickname, "UTF-8");
+	%>
+
+	<header>
+		<nav class="navbar bg-white shadow-sm">
+			<div class="d-flex align-items-center">
+				<a class="fw-bold text-dark fs-2 ms-4 text-decoration-none" href="<%=request.getContextPath()%>/eventos">Eventos.uy</a>
+			</div>
+			<div class="d-flex justify-content-end align-items-center">
+				<div class="dropdown">
+					<a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+						<img src="<%=imagenUsuario%>" alt="user" class="rounded-circle" style="width:38px;height:38px;object-fit:cover;border:1px solid rgba(0,0,0,.06);">
+						<span><%= nickname %></span> <i class="bi bi-chevron-down"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
+						<li><a class="dropdown-item" href="<%=request.getContextPath()%>/perfil">Mi perfil</a></li>
+						<li><hr class="dropdown-divider"></li>
+						<li><a class="dropdown-item text-danger" href="<%=request.getContextPath()%>/autenticator?accion=logout" style="color:#dc3545 !important;">Cerrar sesión</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<main class="contUser" id="mi-cuenta-user">
+		<div class="container-xl">
+			<div class="row">
+				<div class="col-6">
+					<section class="card mb-3 bg-light">
 						<div class="card-body">
-							<div
-								class="d-flex align-items-center justify-content-between gap-4">
-								<!-- izq: foto mas rol -->
+							<div class="d-flex align-items-center justify-content-between gap-4">
 								<div class="d-flex flex-column align-items-center">
 									<div class="contenedor-fotoPerfil mb-2">
-										<img class="foto-usuario" src="../assets/images/IMG-US04.jpeg"
-											alt="<%= usuario.getNickname() %>>Foto" style="height: 127px;">
+										<img class="foto-usuario avatar" src="<%=imagenUsuario%>" alt="fotoPerfil" style="height:127px;">
 									</div>
 									<div class="contenedor-NickRolUser text-center">
-										<div class="nickname">
-											<b><%= usuario.getNickname() %></b>
-										</div>
-										<div class="rol"><%= usuario.getTipo() %></div>
+										<div class="nickname"><b><%= nickname %></b></div>
+										<div class="rol"><%= (org!=null) ? "Organizador" : "Asistente" %></div>
 									</div>
 								</div>
-								<!-- der: atributos -->
 								<div class="d-flex flex-column contenedor-datosUsuario">
 									<div class="datosUsuario">
-										<div class="nombre">
-											<u>Nombre:</u> <%= usuario.getNombre() %>
-										</div>
-										<div class="email">
-											<u>Email:</u> <%= usuario.getEmail() %>
-										</div>
-										
+										<div class="nombre"><u>Nombre:</u> <%= nombre %></div>
+										<% if (asis != null) { %>
+											<div class="apellido"><u>Apellido:</u> <%= apellido %></div>
+										<% } %>
+										<div class="email"><u>Email:</u> <%= email %></div>
 										<% if (org != null) { %>
-												<div class="fechaNacimiento">
-													<u>Descripción:</u> <%= org.getDescripcion() %>
-												</div>
-												<div class="institucion">
-													<u>Web:</u> <a href=" <%= org.getWeb() %>" target="_blank"> <%= org.getWeb() %></a>
-												</div>
-										<% } else if (asis != null) {  %>
-												<div class="fechaNacimiento">
-													<u>Fecha de Nacimiento:</u> <%= asis.getFechaNacimiento() %>
-												</div>
-												<!-- FALTA IMPLEMENTAR ESTA FUNCION
-												A
-												AAAAAAAAAAAA
-												A
-												 <div class="institucion">
-													<u>Institución:</u> < %= asis.getInstitucion() %>
-												</div> 
-												A
-												A
-												AAAAAAAAAAAAA
-												A
-												-->
+											<div class="fechaNacimiento"><u>Descripción:</u> <%= descripcion %></div>
+											<div class="institucion"><u>Web:</u> <a href="<%= web %>" target="_blank"><%= web %></a></div>
+										<% } else { %>
+											<div class="fechaNacimiento"><u>Fecha de Nacimiento:</u> <%= asis.getFechaNacimiento() %></div>
 										<% } %>
 									</div>
 								</div>
 							</div>
-							
-							<% if (org != null) { %>
-							<!-- abajo: CONSULTA DE EDICIONES ORGA -->
+
 							<div class="mt-4">
 								<div class="contenedor-ediciones">
-
-									<div class="mb-2">
-										<a class="action-card" href="<%=request.getContextPath()%>/listarEdiciones?action=listarEdiciones&usuario=<%=java.net.URLEncoder.encode(usuario.getNickname(), "UTF-8")%>"
-											data-hotkey="2" role="button">
-											<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
-												<i class="bi bi-collection-fill"></i>
-											</div>
-											<div class="flex-fill ms-2">
-												<h3 class="mb-0 h6 fw-bold">Monitorear ediciones</h3>
-												<p class="mb-0 small text-muted">Permite ver estado de
-													las ediciones y consultar detalles.</p>
-											</div> <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
-										</a>
-									</div>
-
-								</div>
-							</div>
-							<% } else if (asis != null) {  %>
-							<!-- abajo: CONSULTA DE REGISTROS ASIS -->
-							<div class="mt-4">
-								<div class="contenedor-ediciones">
-
-									<div class="mb-2">
-										<a class="action-card" href="<%=request.getContextPath()%>/listarEdiciones?action=listarEdiciones&usuario=<%=java.net.URLEncoder.encode(usuario.getNickname(), "UTF-8")%>"
-											data-hotkey="2" role="button">
-											<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
-												<i class="bi bi-collection-fill"></i>
-											</div>
-											<div class="flex-fill ms-2">
-												<h3 class="mb-0 h6 fw-bold">Monitorear registros</h3>
-												<p class="mb-0 small text-muted">Permite ver y consultar los registros a ediciones de eventoss.</p>
-											</div> <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
-										</a>
-									</div>
-
-								</div>
-							</div>
-							<% } %>
-							
-						</div>
-					</section>
-
-
-
-				</div>
-				<!-- cambio de columna -->
-				<div class="col-6 d-flex flex-column gap-3">
-
-
-					<!-- MODIFICAR USUARIO card -->
-					<section class="card mb-3  bg-light">
-						<div class="card-body p-0">
-							<ul class="list-unstyled m-0">
-								<li class="border-top"><a
-									href="<%=request.getContextPath()%>/modificarUsuario?action=modificarUsuario&usuarios=<%=java.net.URLEncoder.encode(usuario.getNickname(), "UTF-8")%>"
-									class="d-grid gap-2 g-0 text-decoration-none p-3 align-items-center list-link"
-									id="mi-perfil-card">
-										<div class="d-flex align-items-center">
-											<div class="flex-fill">
-												<i class="bi bi-pencil-square"></i><strong>
-													Modificar mi usuario</strong>
-
-												<div class="text-muted small">Ver y editar datos
-													personales, direccion, web y más.</div>
-											</div>
-											<div class="ms-2 text-secondary" aria-hidden="true">
-												<svg xmlns="http://www.w3.org/2000/svg" width="18"
-													height="18" fill="currentColor" viewBox="0 0 16 16">
-                      <path
-														d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z" />
-                    </svg>
+									<% if (org != null) { %>
+										<div class="mb-2">
+											<a class="action-card" href="<%=request.getContextPath()%>/listarEdiciones" data-hotkey="2" role="button">
+												<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
+													<i class="bi bi-collection-fill"></i>
+												</div>
+												<div class="flex-fill ms-2">
+													<h3 class="mb-0 h6 fw-bold">Monitorear ediciones</h3>
+													<p class="mb-0 small text-muted">Permite ver estado de las ediciones y consultar detalles.</p>
+												</div>
+												<i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+											</a>
+										</div>
+									<% } else { %>
+										<div class="mt-4">
+											<div class="contenedor-ediciones">
+												<!-- For assistants show a direct action card to list editions called 'Mis Registros' -->
+												<div class="mb-2">
+													<a class="action-card" href="<%=request.getContextPath()%>/listarEdiciones" data-hotkey="2" role="button">
+														<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
+															<i class="bi bi-collection-fill"></i>
+														</div>
+														<div class="flex-fill ms-2">
+															<h3 class="mb-0 h6 fw-bold">Mis Registros</h3>
+															<p class="mb-0 small text-muted">Ver y administrar mis registros en las ediciones.</p>
+														</div>
+														<i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+													</a>
+												</div>
 											</div>
 										</div>
-								</a></li>
+									<% } %>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+
+				<div class="col-6 d-flex flex-column gap-3">
+					<section class="card mb-3 bg-light">
+						<div class="card-body p-0">
+							<ul class="list-unstyled m-0">
+								<li class="border-top">
+									<a href="<%=request.getContextPath()%>/modificarDatos?usuario=<%=encodedNick%>" class="d-grid gap-2 g-0 text-decoration-none p-3 align-items-center list-link" id="mi-perfil-card">
+										<div class="d-flex align-items-center">
+											<div class="flex-fill">
+												<i class="bi bi-pencil-square"></i><strong> Modificar mi usuario</strong>
+												<div class="text-muted small">Ver y editar datos personales, direccion, web y más.</div>
+											</div>
+											<div class="ms-2 text-secondary" aria-hidden="true">
+												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/></svg>
+											</div>
+									</div>
+									</a>
+								</li>
 							</ul>
 						</div>
 					</section>
 
 					<% if (org != null) { %>
-		
-					<!-- Acciones (redirigen a otras pages) -->
 					<section class="card mb-3 bg-light">
 						<div class="card-body">
-							<div class="mb-3">
-								<h2 class="h6 mb-0 fw-bold">Acciones</h2>
-								<p class="text-muted small mb-0">Registrate a cualquier
-									edición existente.</p>
-							</div>
-
-							<!-- Grid de acciones -->
-							<div class="col actions-grid" role="navigation"
-								aria-label="Acciones de perfil">
-
-
+							<div class="mb-3"><h2 class="h6 mb-0 fw-bold">Acciones</h2><p class="text-muted small mb-0">Registrate a cualquier edición existente.</p></div>
+							<div class="col actions-grid" role="navigation" aria-label="Acciones de perfil">
 								<div class="row-4 mb-2">
-									<a class="action-card" href="AltaEvento.html" data-hotkey="3"
-										role="button">
-										<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width: 44px; height: 44px; border: 1px solid var(--border); background: #fff">
-											<i class='bx bx-calendar-plus fs-4' aria-hidden="true"></i>
-										</div>
-										<div class="flex-fill ms-2">
-											<h3 class="mb-0 h6 fw-bold">Alta evento</h3>
-											<p class="mb-0 small text-muted">Crea un nuevo evento con
-												sus datos básicos.</p>
-										</div> <i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+									<a class="action-card" href="<%=request.getContextPath()%>/altaEvento" data-hotkey="3" role="button">
+										<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff"><i class='bx bx-calendar-plus fs-4' aria-hidden="true"></i></div>
+										<div class="flex-fill ms-2"><h3 class="mb-0 h6 fw-bold">Alta evento</h3><p class="mb-0 small text-muted">Crea un nuevo evento con sus datos básicos.</p></div>
+										<i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
 									</a>
 								</div>
-
+								<!-- New action: Alta institución for organizers -->
+								<div class="row-4 mb-2">
+									<a class="action-card" href="<%=request.getContextPath()%>/altaInstitucion" data-hotkey="4" role="button">
+										<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff"><i class='bx bx-building fs-4' aria-hidden="true"></i></div>
+										<div class="flex-fill ms-2"><h3 class="mb-0 h6 fw-bold">Alta institución</h3><p class="mb-0 small text-muted">Registrar una nueva institución colaboradora.</p></div>
+										<i class="bx bx-right-arrow-alt fs-4 text-secondary"></i>
+									</a>
+								</div>
 							</div>
-
-
 						</div>
-
-
 					</section>
 					<% } %>
 
@@ -395,34 +254,29 @@ body.with-collapsed {
 		</div>
 	</main>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-    (function () {
-      const toggle = document.getElementById('header-toggle');
-      const sidebar = document.getElementById('nav-bar-perfil');
-      const body = document.getElementById('body-pd');
+	(function () {
+	  var toggle = document.getElementById('header-toggle');
+	  var sidebar = document.getElementById('nav-bar-perfil');
+	  var body = document.getElementById('body-pd');
 
-      if (toggle && sidebar) {
-        toggle.addEventListener('click', () => {
-          const isCollapsed = sidebar.classList.toggle('collapsed');
-          // keep body padding in sync for layout
-          document.body.classList.toggle('with-collapsed');
-          // aria
-          toggle.setAttribute('aria-expanded', String(!isCollapsed));
-        });
-      }
+	  if (toggle && sidebar) {
+	    toggle.addEventListener('click', function(){
+	      var isCollapsed = sidebar.classList.toggle('collapsed');
+	      document.body.classList.toggle('with-collapsed');
+	      toggle.setAttribute('aria-expanded', String(!isCollapsed));
+	    });
+	  }
 
-      // Optional: keyboard hotkeys 1..6 to focus respective action cards
-      document.addEventListener('keydown', (e) => {
-        if ((e.key >= '1' && e.key <= '6') && !e.altKey && !e.ctrlKey && !e.metaKey) {
-          const selector = `[data-hotkey="${e.key}"]`;
-          const el = document.querySelector(selector);
-          if (el) el.click();
-        }
-      });
-    }());
-  </script>
+	  document.addEventListener('keydown', function(e){
+	    if (e && e.key >= '1' && e.key <= '6' && !e.altKey && !e.ctrlKey && !e.metaKey) {
+	      var selector = '[data-hotkey="' + e.key + '"]';
+	      var el = document.querySelector(selector);
+	      if (el) el.click();
+	    }
+	  });
+	}());
+	</script>
 </body>
 </html>

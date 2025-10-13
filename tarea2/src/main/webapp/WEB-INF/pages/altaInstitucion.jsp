@@ -66,7 +66,7 @@ main.contUser {
 </style>
 </head>
 
-<jsp:include page="/WEB-INF/templates/header.jsp/">
+<jsp:include page="/WEB-INF/templates/header.jsp" />
 
 <body id="body-pd">
 	<main class="contUser">
@@ -87,12 +87,28 @@ main.contUser {
 			<!-- Formulario -->
 			<section class="card mb-3">
 				<div class="card-body">
-					<form id="altaInstitucionForm" action="/lab2/ServletPatrocinio" method="post" enctype="multipart/form-data">
+					<!-- Show messages if present (imitate AltaEvento.jsp) -->
+					<% if (request.getAttribute("mensaje") != null ) { %>
+                        <div class="alert alert-primary" role="alert">
+                            <i class="bx bx-check-circle me-2"></i>
+                            <%= request.getAttribute("mensaje") %>
+                        </div>
+                    <% } else if (request.getAttribute("error") != null ) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bx bx-error-circle me-2"></i>
+                            <%= request.getAttribute("error") %>
+                        </div>
+                    <% } %>
+
+					<form id="altaInstitucionForm" action="${pageContext.request.contextPath}/altaInstitucion" method="post" enctype="multipart/form-data">
 
 						<div class="mb-3">
 							<label for="nombreInstitucion" class="form-label">Nombre</label>
 							<input type="text" class="form-control" id="nombreInstitucion" name="nombre"
-								placeholder="Ingrese el nombre" required>
+								placeholder="Ingrese el nombre" required
+								value="<%= request.getAttribute("nombre") != null ? (String)request.getAttribute("nombre") : "" %>"
+								oninvalid="this.setCustomValidity('Por favor ingrese el nombre de la institución.')"
+								oninput="this.setCustomValidity('')">
 							<div class="invalid-feedback">Este nombre ya está en uso.
 								Por favor ingrese otro.</div>
 						</div>
@@ -100,14 +116,19 @@ main.contUser {
 						<div class="mb-3">
 							<label for="descripcionInstitucion" class="form-label" >Descripción</label>
 							<textarea class="form-control" id="descripcionInstitucion" name="descripcion"
-								rows="3" placeholder="Ingrese la descripción" required></textarea>
+								rows="3" placeholder="Ingrese la descripción" required
+								oninvalid="this.setCustomValidity('Por favor ingrese la descripción de la institución.')"
+								oninput="this.setCustomValidity('')"><%= request.getAttribute("descripcion") != null ? (String)request.getAttribute("descripcion") : "" %></textarea>
 						</div>
 
 						<div class="mb-3">
 							<label for="sitioWebInstitucion" class="form-label" >Sitio
 								web</label> <input type="url" class="form-control" name="url"
 								id="sitioWebInstitucion" placeholder="https://www.ejemplo.com"
-								required>
+								required
+								value="<%= request.getAttribute("url") != null ? (String)request.getAttribute("url") : "" %>"
+								oninvalid="this.setCustomValidity('Por favor ingrese la URL del sitio web.')"
+								oninput="this.setCustomValidity('')">
 						</div>
 
 						<div class="mb-3">

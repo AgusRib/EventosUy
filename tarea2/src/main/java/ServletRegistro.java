@@ -135,10 +135,6 @@ public class ServletRegistro extends HttpServlet {
 	            request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
 	            return;
 	        }
-            case "/alta-registro": {
-            	request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
-                return;
-            }
             case "/alta-tipo-registro": {    			
     			var eventos = ICE.listarEventos();
     			request.setAttribute("eventos", eventos);
@@ -166,39 +162,7 @@ public class ServletRegistro extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String path = request.getServletPath();
 	    	
-	    if ("/alta-registro".equals(path)) {
-	    	// Chequear si el usuario es asistente antes de permitir el registro
-	    	// TODO Manejar excepciones y mostrar mensajes de error en la JSP
-	    	
-	    	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
-	    	HttpSession session = request.getSession();
-	    	
-	    	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();	// PARA TESTING
-	    	
-	    	
-	    	DataUsuario user = (DataUsuario) session.getAttribute("usuario"); 
-	    	if (user.getTipo() == TipoUsuario.ASISTENTE) {
-	    		try {
-	    			// Realizar el alta de registro
-					ICE.elegirAsistenteYTipoRegistro(user.getNickname(), request.getParameter("tipoReg"), request.getParameter("edicion"));
-					
-					// Despachar a JSP con mensaje de exito
-					request.setAttribute("mensaje", "El registro se ha realizado con exito.");
-					request.setAttribute("error", null);
-					
-					request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
-				} catch (Exception e) {
-					// Despachar a JSP con mensaje de error
-					request.setAttribute("error", e.getMessage());
-					request.setAttribute("mensaje", null);
-					
-					request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
-				}
-	    	} else {
-	    		request.setAttribute("error", "El usuario no es asistente");
-	    	}
-	        return;
-		} else if ("/alta-tipo-registro".equals(path)) {
+	    if ("/alta-tipo-registro".equals(path)) {
 			IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
 			
 			String edicion = request.getParameter("edicion");

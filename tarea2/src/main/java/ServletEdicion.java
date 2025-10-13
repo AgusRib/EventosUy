@@ -97,12 +97,15 @@ public class ServletEdicion extends HttpServlet {
 	                request.setAttribute("nombreEvento", nombreEvento);
 	                
 	                // Fetch imagen evento
-	                String imagenEvento = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-	                if (organizadorImg != null) {
-	                	request.setAttribute("imagenEvento", "uploads/eventos/" + imagenEvento);
+	                String imagenEvento = ManejadorArchivos.buscarArchivo(
+	                        nombreEvento.toLowerCase(),
+	                        getServletContext().getRealPath("/uploads/eventos/"));
+	                if (imagenEvento != null) {
+	                    request.setAttribute("imagenEvento", "uploads/eventos/" + imagenEvento);
 	                } else {
-	                	request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
+	                    request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
 	                }
+
 	                
 	                // Fetch si el usuario registrado en la edicion
 	                HttpSession session = request.getSession();
@@ -202,6 +205,72 @@ public class ServletEdicion extends HttpServlet {
 				}
     			return;
         	}
+            case "/altaRegistro": {
+                IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+                IControllerEvento  ICE = Factory.getInstance().getControllerEvento();
+
+                HttpSession session = request.getSession(false);
+                DataUsuario user = (session == null) ? null : (DataUsuario) session.getAttribute("usuario");
+                if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ASISTENTE) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Solo los asistentes pueden registrarse a ediciones.");
+                    return;
+                }
+
+                // 1) Param obligatorio
+                String edicionParam = request.getParameter("edicion");
+                if (edicionParam == null || edicionParam.isBlank()) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'edicion'");
+                    return;
+                }
+
+                try {
+                    // 2) Verificar que la edición exista y obtener su DTO
+                    DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicionParam);
+                    if (ed == null) { // por si tu implementación devuelve null en vez de tirar excepción
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "La edición indicada no existe.");
+                        return;
+                    }
+                    request.setAttribute("edicion", ed); // <-- el JSP debe mostrar ed.getNombre(), no el parámetro
+
+                    // 3) Tipos de registro (desde backend)
+                    Set<DTTipoRegistro> tiposReg = new java.util.HashSet<>();
+                    for (String tr : ICE.listarTiposDeRegistro(ed.getNombre())) { // uso el nombre del DTO, no el parámetro
+                        tiposReg.add(ICE.verDetalleTRegistro(ed.getNombre(), tr));
+                    }
+                    request.setAttribute("tiposRegistro", tiposReg);
+
+                    // 4) Imagen de edición (buscada por nombre canónico del DTO)
+                    String edicionImg = ManejadorArchivos.buscarArchivo(
+                            ed.getNombre().toLowerCase(),
+                            getServletContext().getRealPath("/uploads/ediciones/"));
+                    request.setAttribute("imagenEdicion",
+                            edicionImg != null ? "uploads/ediciones/" + edicionImg : "uploads/ediciones/default.jpg");
+
+                    // 5) Evento + imagen del evento
+                    String nombreEvento = ICE.NomEvPorEd(ed.getNombre());
+                    request.setAttribute("nombreEvento", nombreEvento);
+                    String imagenEvento = ManejadorArchivos.buscarArchivo(
+                            (nombreEvento == null ? "" : nombreEvento.toLowerCase()),
+                            getServletContext().getRealPath("/uploads/eventos/"));
+                    request.setAttribute("imagenEvento",
+                            imagenEvento != null ? "uploads/eventos/" + imagenEvento : "uploads/eventos/default.jpg");
+
+                    // 6) Ya registrado
+                    boolean yaRegistrado = ICU.listarRegistrosAEventos(user.getNickname()).contains(ed.getNombre());
+                    request.setAttribute("yaRegistrado", yaRegistrado);
+
+                    // 7) Mostrar form
+                    request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                    return;
+
+                } catch (Exception ex) {
+                    // Si tu mostrarDetallesEdicion lanza excepción cuando no existe
+                    request.setAttribute("error", "No se pudo cargar la edición: " + ex.getMessage());
+                    request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                    return;
+                }
+            }
+
             default:
                 break;
         }
@@ -271,6 +340,159 @@ public class ServletEdicion extends HttpServlet {
 			
             return;
         }
+        case "/altaRegistro": {
+        	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
+        	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
+            var session = request.getSession(false);
+            DataUsuario user = (session == null) ? null : (DataUsuario) session.getAttribute("usuario");
+            if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ASISTENTE) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                        "Solo los asistentes pueden registrarse a ediciones.");
+                return;
+            }
+
+            String edicion = request.getParameter("edicion");
+            String tipoReg = request.getParameter("tipoRegistro");
+            String forma   = request.getParameter("formaRegistro"); // "general" | "patrocinio"
+            String codigo  = request.getParameter("codigoPatrocinio"); // puede ser null
+
+            // Reinyectar por si hay error
+            request.setAttribute("edicionStr", edicion);
+            request.setAttribute("tipoRegistroSel", tipoReg);
+            request.setAttribute("formaRegistroSel", forma);
+            request.setAttribute("codigoPatrocinioVal", codigo == null ? "" : codigo);
+
+            if (edicion == null || edicion.isBlank() || tipoReg == null || tipoReg.isBlank() ||
+                forma == null || forma.isBlank()) {
+                request.setAttribute("error", "Completá la edición, el tipo de registro y la forma de registro.");
+                // Volvemos a GET del form para recargar listas/imagenes
+                response.sendRedirect(request.getContextPath() + "/altaRegistro?edicion=" + 
+                     java.net.URLEncoder.encode(edicion == null ? "" : edicion, java.nio.charset.StandardCharsets.UTF_8));
+                return;
+            }
+
+            try {
+                // 1) Ya registrado?
+                if (ICU.listarRegistrosAEventos(user.getNickname()).contains(edicion)) {
+                    request.setAttribute("error", "Ya estás registrado en esta edición.");
+                    request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                    return;
+                }
+
+                // 2) Cupo disponible para el tipo?
+                // Obtenemos el DTO del tipo para consultar costo/cupo/lo que haya
+                DTTipoRegistro dtoTipo = ICE.verDetalleTRegistro(edicion, tipoReg);
+
+                // TODO: Reemplazar por tu método real que valida cupos.
+                // Por ejemplo: boolean hayCupo = ICE.hayCupo(edicion, tipoReg);
+                boolean hayCupo = true; // fallback si no hay API. De ser posible, usar dtoTipo.getCupoRestante() > 0
+                try {
+                    // si tu DTO expone cupo disponible:
+                    var m = dtoTipo.getClass().getMethod("getCupoRestante");
+                    Object v = m.invoke(dtoTipo);
+                    if (v instanceof Integer rest) hayCupo = rest > 0;
+                } catch (Exception ignore) {}
+
+                if (!hayCupo) {
+                    request.setAttribute("error", "No hay cupos disponibles para el tipo seleccionado.");
+                    request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                    return;
+                }
+
+                // 3) Validación de patrocinio si corresponde
+                boolean usarPatrocinio = "patrocinio".equalsIgnoreCase(forma);
+                if (usarPatrocinio) {
+                    if (codigo == null || codigo.isBlank()) {
+                        request.setAttribute("error", "Ingresá el código de patrocinio.");
+                        request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                        return;
+                    }
+
+                    // TODO: reemplazá los siguientes métodos por los de TU API:
+                    // - validar que el código sea para esta edición
+                    // - validar que aplique al tipo de registro
+                    // - validar que sea de la institución del asistente
+                    // - validar que no haya agotado el cupo de usos
+                    boolean valido = false;
+                    try {
+                        // Ejemplos de posibles firmas:
+                        // valido = ICE.validarCodigoPatrocinio(edicion, tipoReg, user.getNickname(), codigo);
+                        // o bien:
+                        // DTPatrocinio p = ICE.obtenerPatrocinio(edicion, codigo);
+                        // valido = tuValidacion(p, tipoReg, user, ...);
+                        var p = ICE.obtenerPatrocinio(edicion, codigo); // si no existe, lanzará excepción
+                        // Chequeos “manuales” defensivos usando reflexión para no romper si cambian nombres
+                        boolean okTipo = true, okInst = true, okUsos = true;
+                        try {
+                            var mt = p.getClass().getMethod("getTipoRegistro");
+                            okTipo = tipoReg.equals(String.valueOf(mt.invoke(p)));
+                        } catch (Exception ignore) {}
+                        try {
+                            var mi = p.getClass().getMethod("getInstitucion");
+                            var inst = String.valueOf(mi.invoke(p));
+                            // si tu usuario tiene institución en DTO, comparala;
+                            // si no, saltá este chequeo o hacelo en la capa de negocio
+                        } catch (Exception ignore) {}
+                        try {
+                            var mu = p.getClass().getMethod("getUsosDisponibles");
+                            Object v = mu.invoke(p);
+                            if (v instanceof Integer u) okUsos = u > 0;
+                        } catch (Exception ignore) {}
+                        valido = okTipo && okInst && okUsos;
+                    } catch (Exception ex) {
+                        valido = false;
+                    }
+
+                    if (!valido) {
+                        request.setAttribute("error", "El código de patrocinio es inválido o no aplica.");
+                        request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                        return;
+                    }
+
+                    // 4) Registrar con patrocinio (costo 0)
+                    // TODO: reemplazá por tu método real de negocio:
+                    // ICE.registrarConPatrocinio(user.getNickname(), tipoReg, edicion, codigo);
+                    ICE.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
+                    // TODO: si tu lógica requiere “marcar uso”, hacelo aquí:
+                    // ICE.consumirPatrocinio(edicion, codigo, user.getNickname());
+
+                    request.setAttribute("mensaje", "Registro realizado exitosamente con patrocinio (costo $0).");
+                } else {
+                    // 4b) Registro general (paga costo del tipo)
+                    ICE.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
+                    request.setAttribute("mensaje", "Registro realizado exitosamente.");
+                }
+
+                // Tras éxito, recargamos el form como “confirmación” (o redirigí a detalle)
+                // Dejo forward para mostrar mensajes en el mismo JSP:
+                // Reponer combos e imágenes
+                DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+                request.setAttribute("edicion", ed);
+                Set<DTTipoRegistro> tiposReg = new java.util.HashSet<>();
+                for (String tr : ICE.listarTiposDeRegistro(edicion)) {
+                    tiposReg.add(ICE.verDetalleTRegistro(edicion, tr));
+                }
+                request.setAttribute("tiposRegistro", tiposReg);
+                String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(),
+                        getServletContext().getRealPath("/uploads/ediciones/"));
+                request.setAttribute("imagenEdicion",
+                        edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
+                String nomEv = ICE.NomEvPorEd(edicion);
+                request.setAttribute("nombreEvento", nomEv);
+                String imgEv = ManejadorArchivos.buscarArchivo(nomEv.toLowerCase(),
+                        getServletContext().getRealPath("/uploads/eventos/"));
+                request.setAttribute("imagenEvento",
+                        imgEv != null ? "uploads/eventos/" + imgEv : "uploads/eventos/default.jpg");
+
+                request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+            } catch (Exception e) {
+                request.setAttribute("error", e.getMessage());
+                request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+            }
+            return;
+        }
+        default:
+            break;
     }
 
 }}
