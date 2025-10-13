@@ -39,7 +39,7 @@ public class ServletPatrocinio extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
     
-    //doget
+    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String path = request.getServletPath();
     	String nombreEdicion = request.getParameter("nombreEdicion");
@@ -54,14 +54,14 @@ public class ServletPatrocinio extends HttpServlet {
                 request.setAttribute("patrocinio", patrocinio);
                 request.getRequestDispatcher("/WEB-INF/pages//detallePatrocinio.jsp").forward(request, response);
             } catch (Exception e) {
-                // Handle exceptions - set error message and forward to error page
+                
                 request.setAttribute("error", "Error al obtener detalles del patrocinio: " + e.getMessage());
                 request.getRequestDispatcher("/WEB-INF/pages//error.jsp").forward(request, response);
             }
             break;
             
         case "/altaInstitucion":
-        	// Imitate AltaEvento: ensure mensaje and error are initialized so the JSP can show/clear alerts
+        	
         	request.setAttribute("mensaje", null);
         	request.setAttribute("error", null);
         	request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
@@ -73,19 +73,19 @@ public class ServletPatrocinio extends HttpServlet {
             try {
                 Set<String> instituciones = ICU.listarInstituciones();
                 request.setAttribute("instituciones", instituciones);
-                // also populate tipos de registro for the selected edition so the JSP can render options
+               
                 try {
                     if (nombreEdicion != null && !nombreEdicion.isEmpty()) {
                         Set<String> tipos = ICE.listarTiposDeRegistro(nombreEdicion);
                         request.setAttribute("tiposRegistro", tipos);
                     }
                 } catch (Exception e) {
-                    // ignore; JSP will handle empty tiposRegistro
+                   
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // provide the session 'fecha' to the JSP (formatted via toString())
+          
             Object sessFecha = request.getSession().getAttribute("fecha");
             if (sessFecha != null) {
                 request.setAttribute("fecha", sessFecha.toString());
@@ -101,19 +101,18 @@ public class ServletPatrocinio extends HttpServlet {
         String path = request.getServletPath();
         IControllerEvento ICE = Factory.getInstance().getControllerEvento();
         IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
-        //	void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, 
-        //  double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo);
+    
 
         switch(path) {
 
             case "/altaPatrocinio": {
                 String nombreEdi = request.getParameter("edicion");
-                // fallback: sometimes the JSP sets the edition in the session instead of the form
+           
                 if (nombreEdi == null || nombreEdi.isEmpty()) {
                     Object s = request.getSession().getAttribute("nombreEdicion");
                     if (s != null) nombreEdi = s.toString();
                 }
-                // debug: print which implementation of IControllerEvento we're using
+              
                 System.out.println("DEBUG ICE impl: " + (ICE != null ? ICE.getClass().getName() : "<null-controller>") + ", nombreEdi='" + nombreEdi + "'");
                 String institucion = request.getParameter("institucion");
                 NivelPatrocinio nivel = null;
@@ -124,11 +123,11 @@ public class ServletPatrocinio extends HttpServlet {
                 int cantidadGratis = 0;
                 try { cantidadGratis = Integer.parseInt(request.getParameter("cantGratis")); } catch (Exception ex) { cantidadGratis = 0; }
                 String codigo = request.getParameter("codigo");
-                // If the form included a 'fecha' hidden field, set it in session as LocalDate so controller can use it
+             
                 
                 ICE.setFechaSistema((LocalDate)request.getSession().getAttribute("fecha"));
 
-                // preserve form values so the JSP can re-populate
+               
                 request.setAttribute("edicion", nombreEdi);
                 request.setAttribute("institucion", institucion);
                 request.setAttribute("nivelPatrocinio", request.getParameter("nivelPatrocinio"));
@@ -147,10 +146,10 @@ public class ServletPatrocinio extends HttpServlet {
                 }
 
                 try {
-                    // 1) Check existing patrocinio for this edition and institution
+                   
                     boolean existe = false;
                     try {
-                        // Prefer asking for the patrocinio directly; the controller should return null if none exists
+                      
                         System.out.println("DEBUG: comprobando existencia de patrocinio por obtenerPatrocinio(edicion, institucion)");
                         System.out.println("DEBUG institucion recibida='" + institucion + "', nombreEdi='" + nombreEdi + "'");
                         if (institucion != null && !institucion.trim().isEmpty()) {
@@ -173,7 +172,7 @@ public class ServletPatrocinio extends HttpServlet {
                         System.out.println("DEBUG listarPatrocinios: excepción al listar => " + ex.getMessage());
                     }
 
-                    // 2) Compute cost of gratis registrations and check 20% rule
+                    
                     boolean excedePorcentaje = false;
                     float costoTipo = 0.0f;
                     try {
@@ -181,7 +180,7 @@ public class ServletPatrocinio extends HttpServlet {
                             DTTipoRegistro dttr = ICE.verDetalleTRegistro(nombreEdi, tipoRegistroGratis);
                             if (dttr != null) costoTipo = dttr.getCosto();
                         }
-                    } catch (Exception ignore) { /* if cannot obtain type, keep costoTipo = 0 */ }
+                    } catch (Exception ignore) { }
 
                     double costoTotalGratis = costoTipo * (double) cantidadGratis;
                     if (aporteEconomico <= 0.0 && cantidadGratis > 0) {
@@ -193,7 +192,7 @@ public class ServletPatrocinio extends HttpServlet {
                     if (existe) {
                         request.setAttribute("error", "Ya existe un patrocinio de la institución '" + institucion + "' para la edición '" + nombreEdi + "'. Puede editarlo o cancelar.");
                         request.setAttribute("permitirEditar", true);
-                        // also re-populate list of instituciones and tipos para el formulario
+
                         try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
                         try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
                         request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
@@ -206,7 +205,7 @@ public class ServletPatrocinio extends HttpServlet {
                         request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                         break;
                     } else {
-                        // All checks passed: register patrocinio (controller will set fecha actual internally)
+                     
                         try {
                             ICE.altaPatrocinio(nombreEdi, institucion, nivel, aporteEconomico, tipoRegistroGratis, cantidadGratis, codigo);
                            
@@ -252,16 +251,16 @@ public class ServletPatrocinio extends HttpServlet {
             }
 
             case "/altaInstitucion": {
-                // altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception;
+               
                 String nombreInsti = request.getParameter("nombre");
                 String desc = request.getParameter("descripcion");
                 String web = request.getParameter("url");
                 Part imagenInsti = null;
-                try { imagenInsti = request.getPart("imagen"); } catch (Exception e) { /* may be no multipart or part */ }
+                try { imagenInsti = request.getPart("imagen"); } catch (Exception e) {  }
 
                 try {
                     ICU.altaInstitucion(nombreInsti, desc, web);
-                    // try to save uploaded image (if provided) like ServletEdicion does
+                 
                    
                       
                             ManejadorArchivos.guardarArchivo(imagenInsti, nombreInsti, "instituciones", getServletContext());
@@ -275,7 +274,7 @@ public class ServletPatrocinio extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
                 } catch (NombreInstiExistente e) {
                     request.setAttribute("error", "El nombre de la institucion ya existe");
-                    // preserve values
+                 
                     request.setAttribute("nombre", nombreInsti);
                     request.setAttribute("descripcion", desc);
                     request.setAttribute("url", web);
