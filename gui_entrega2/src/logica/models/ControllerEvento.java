@@ -336,7 +336,7 @@ public class ControllerEvento implements IControllerEvento{
 		Set<String> ediciones = new LinkedHashSet<>();
 		
 		if(ev != null) {
-		  for (Edicion e : ev.getColEdicionesIngresadas()) {
+		  for (Edicion e : ev.getColEdicionesPendientes()) {
 			  ediciones.add(e.getNombre());
 		  }
 		}
@@ -344,16 +344,16 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public List<Evento> obtenerEventosRecientes() {
+	public List<DTDetalleEvento> obtenerEventosRecientes() {
 		ManejadorEvento h_evento = ManejadorEvento.getInstance();
 		Set<String> eventos = h_evento.obtenerEventos().keySet();
-		List<Evento> recientes = new ArrayList<>();
+		List<DTDetalleEvento> recientes = new ArrayList<>();
 		
 		int count = 0;
-		//me quedo con las primeras 3, despues hay que ver con cual nos quedamos
+		//me quedo con las primeras 4, despues hay que ver con cual nos quedamos
 		for (String e : eventos) {
-		    if (count >= 3) break;
-		    recientes.add(h_evento.obtenerEvento(e));
+		    if (count >= 4) break;
+		    recientes.add(h_evento.obtenerEvento(e).devolverDT());
 		    count++;
 		}
 		 
