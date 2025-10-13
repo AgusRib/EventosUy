@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logica.controllers.IControllerUsuario;
 import logica.models.Factory;
+import main.java.ManejadorArchivos;
 import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
@@ -34,6 +35,7 @@ import excepciones.UsuarioNoEncontrado;
 /**
  * Servlet implementation class Usuarios
  */
+@MultipartConfig
 @WebServlet ( {"/pages", "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/MiPerfil"} )
 public class ServletUsuario extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -79,6 +81,16 @@ public class ServletUsuario extends HttpServlet {
 		            DTAsistente asis = controllerUsuario.infoAsistente(usuario);
 		            request.setAttribute("usuarios", asis);
 		        }
+		        String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+		        String nombreArchivo = ManejadorArchivos.buscarArchivo(
+		                usuario.toLowerCase(),
+		                dirUsuarios
+		        );
+		        if (nombreArchivo != null) {
+		            request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
+		        } else {
+		            request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
+		        }
 
 		        if ("1".equals(request.getParameter("ok"))) {
 		            request.setAttribute("mensaje", "Modificaciones realizadas exitosamente.");
@@ -121,7 +133,7 @@ public class ServletUsuario extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action  = request.getParameter("action");
         String usuario = request.getParameter("usuario");
-
+        
         if ("modificarDatos".equals(action) && usuario != null && !usuario.isBlank()) {
             modificarDatos(request, response);
             return;
@@ -238,6 +250,14 @@ public class ServletUsuario extends HttpServlet {
 	        } else {
 	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tipo de usuario no soportado");
 	            return;
+	        }
+	        try {
+	            Part avatar = request.getPart("avatar");
+	            if (avatar != null && avatar.getSize() > 0) {
+	                ManejadorArchivos.guardarArchivo(avatar, nickParam, "usuarios", getServletContext());
+	            }
+	        } catch (Exception ignore) {
+	            // xd
 	        }
 
 	        String url = request.getContextPath() 

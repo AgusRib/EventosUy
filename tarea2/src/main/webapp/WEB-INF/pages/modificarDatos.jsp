@@ -88,29 +88,8 @@ main.contUser { padding: 18px; }
 </style>
 </head>
 
-<header>
-  <nav class="navbar bg-white shadow-sm">
-    <div class="text-center align-items-center">
-      <a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="<%= ctx %>/"><b>Eventos.uy</b></a>
-    </div>
-    <div class="d-flex justify-content-end align-items-center">
-      <div class="dropdown">
-        <a class="d-flex align-items-center text-decoration-none gap-2 m-3" href="#" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-          <img src="<%= ctx %>/assets/images/IMG-US04.jpeg" alt="user" class="rounded-circle" style="width:38px;height:38px;object-fit:cover;border:1px solid rgba(0,0,0,.06);">
-          <span>MisEventos</span>
-          <i class="bi bi-chevron-down"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userMenuDropdown">
-          <li><a class="dropdown-item" href="#">Mi perfil</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger" href="<%= ctx %>/" style="color:#dc3545!important;">Cerrar sesión</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
-
 <body id="body-pd">
+<jsp:include page="/WEB-INF/templates/header.jsp" />
 <main class="contUser">
   <div class="container-xl">
 
@@ -135,16 +114,16 @@ main.contUser { padding: 18px; }
     <!-- Formulario de edición -->
     <section class="card mb-3">
       <div class="card-body">
-        <form id="modificarPerfilForm" method="post" action="<%= ctx %>/usuarios">
-          <!-- Accion y usuario -->
-          <input type="hidden" name="action" value="modificarDatos">
-          <input type="hidden" name="usuario" value="<%= nick %>">
+        <form id="modificarPerfilForm" method="post" action="<%= ctx %>/usuarios" enctype="multipart/form-data">
+		  <input type="hidden" name="action" value="modificarDatos">
+		  <input type="hidden" name="usuario" value="<%= nick %>">
 
-          <!-- (Opcional) avatar solo visual - no se procesa en el servlet -->
           <div class="mb-3 text-center">
-            <img id="avatarPreview" src="<%= ctx %>/assets/images/IMG-US04.jpeg" alt="Avatar" class="avatar-preview mb-2">
-            <input class="form-control" type="file" id="avatarInput" accept="image/*">
-          </div>
+			  <img id="avatarPreview"
+			       src="<%= ctx %>/<%= (request.getAttribute("imagenUsuario") != null ? request.getAttribute("imagenUsuario") : "uploads/usuarios/default.jpg") %>"
+			       alt="Avatar" class="avatar-preview mb-2">
+			  <input class="form-control" type="file" id="avatarInput" name="avatar" accept="image/*">
+		  </div>
 
           <% if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) { %>
             <!-- ASISTENTE -->
