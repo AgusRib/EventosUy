@@ -33,7 +33,6 @@ public class ServletUsuario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String action  = request.getParameter("action");
         String usuario = request.getParameter("usuario");
         String usuarios = request.getParameter("usuarios");
         String path    = request.getServletPath();
@@ -81,29 +80,39 @@ public class ServletUsuario extends HttpServlet {
             }
         }
 
-        if (action == null || "listarUsuarios".equals(action)) {
-            listarUsuarios(request, response);
-        } else if ("perfil".equals(action) || ("detalleUsuario".equals(action) && usuario != null && usuario.equals(usuarios))) {
-            perfil(request, response);
-        } else if ("detalleUsuario".equals(action)) {
-            try {
-                detalleUsuario(request, response);
-            } catch (UsuarioNoEncontrado e) {
-                e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
-            }
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
+        // Route by servlet path (endpoints) instead of 'action' param
+        switch (path) {
+            case "/usuarios":
+            case "/listarUsuarios":
+                listarUsuarios(request, response);
+                break;
+
+            case "/perfil":
+                perfil(request, response);
+                break;
+
+            case "/detalleUsuario":
+                try {
+                    detalleUsuario(request, response);
+                } catch (UsuarioNoEncontrado e) {
+                    e.printStackTrace();
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
+                }
+                break;
+
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
+                break;
         }
     }
 
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action  = request.getParameter("action");
         String usuario = request.getParameter("usuario");
+        String path = request.getServletPath();
 
-        if ("modificarDatos".equals(action) && usuario != null && !usuario.isBlank()) {
+        if ("/modificarDatos".equals(path) && usuario != null && !usuario.isBlank()) {
             modificarDatos(request, response);
             return;
         }
@@ -137,7 +146,8 @@ public class ServletUsuario extends HttpServlet {
 
     
     private void perfil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String usuario = request.getParameter("usuario");
+        DataUsuario usrSession = (DataUsuario) request.getSession().getAttribute("usuario");
+    	String usuario = usrSession.getNickname();
 
         DataUsuario usr;
         try {
