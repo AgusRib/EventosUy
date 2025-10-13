@@ -19,24 +19,12 @@
   String error = (String) request.getAttribute("error");
   String mensaje = (String) request.getAttribute("mensaje");
 
-  @SuppressWarnings("unchecked")
-  Set<String> eventos = (Set<String>) request.getAttribute("eventos");
-  if (eventos == null) eventos = Collections.emptySet();
 
-  String eventoSel = (String) request.getAttribute("eventoSel");
-  if (eventoSel == null) eventoSel = request.getParameter("evento");
-
-  @SuppressWarnings("unchecked")
-  Set<String> ediciones = (Set<String>) request.getAttribute("ediciones");
-  if (ediciones == null) ediciones = Collections.emptySet();
-
-  String edPreParam = request.getParameter("edicion");
-  String edAttr      = (String) request.getAttribute("edicion");
-  String edSel       = (edPreParam != null && !edPreParam.isBlank()) ? edPreParam : (edAttr == null ? "" : edAttr);
-
-  String volverUrl = (edSel == null || edSel.isBlank())
+  String ed = (String) request.getAttribute("edicion");
+  
+  String volverUrl = (ed == null || ed.isBlank())
       ? (ctx + "/")
-      : (ctx + "/detalleEdicion?nombre=" + URLEncoder.encode(edSel, "UTF-8"));
+      : (ctx + "/detalleEdicion?nombre=" + URLEncoder.encode(ed, "UTF-8"));
 %>
 <!doctype html>
 <html lang="es">
@@ -83,51 +71,10 @@ body { background:var(--bg); color:var(--text); margin:0; }
     <% if (error != null) { %><div class="alert alert-danger"><%= error %></div><% } %>
     <% if (mensaje != null) { %><div class="alert alert-success"><%= mensaje %></div><% } %>
 
-    <!-- Selección de EVENTO (GET para encadenar ediciones) -->
-    <section class="card mb-3">
-      <div class="card-body">
-        <form method="get" action="<%= ctx %>/alta-tipo-registro" class="row g-3">
-          <div class="col-12 col-md-6">
-            <label for="eventoSelect" class="form-label">Evento</label>
-            <select id="eventoSelect" name="evento" class="form-select" required onchange="this.form.submit()">
-              <option value="" disabled <%= (eventoSel==null || eventoSel.isBlank() ? "selected" : "") %>>Seleccioná un evento</option>
-              <% for (String ev : eventos) { 
-                   String sel = (ev != null && ev.equals(eventoSel)) ? "selected" : "";
-              %>
-                <option value="<%= ev %>" <%= sel %>><%= ev %></option>
-              <% } %>
-            </select>
-          </div>
-          <%-- Si querés mantener valores ya tipeados al cambiar evento --%>
-          <input type="hidden" name="nombre" value="<%= nombre %>">
-          <input type="hidden" name="descripcion" value="<%= descripcion %>">
-          <input type="hidden" name="costo" value="<%= costo %>">
-          <input type="hidden" name="cupo" value="<%= cupo %>">
-        </form>
-      </div>
-    </section>
-
     <!-- Form final (POST) -->
     <section class="card mb-3">
       <div class="card-body">
-        <form id="tipoRegistroForm" method="post" action="<%= ctx %>/alta-tipo-registro" accept-charset="UTF-8">
-          
-          <!-- Ediciones dependientes del evento -->
-          <div class="mb-3">
-            <label for="edicionSelect" class="form-label">Edición</label>
-            <select id="edicionSelect" name="edicion" class="form-select" <%= (eventoSel==null || eventoSel.isBlank()) ? "disabled" : "required" %>>
-              <% if (eventoSel==null || eventoSel.isBlank()) { %>
-                <option value="">Elegí primero un evento</option>
-              <% } else { %>
-                <option value="" disabled <%= (edSel==null || edSel.isBlank() ? "selected" : "") %>>Seleccioná una edición</option>
-                <% for (String ed : ediciones) {
-                     String sel = (ed != null && ed.equals(edSel)) ? "selected" : "";
-                %>
-                  <option value="<%= ed %>" <%= sel %>><%= ed %></option>
-                <% } %>
-              <% } %>
-            </select>
-          </div>
+        <form id="tipoRegistroForm" method="post" action="<%= ctx %>/alta-tipo-registro?edicion=<%= ed %>" accept-charset="UTF-8">
 
           <div class="mb-3">
             <label for="nombreTipo" class="form-label">Nombre</label>
@@ -151,7 +98,7 @@ body { background:var(--bg); color:var(--text); margin:0; }
           </div>
 
           <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary" <%= (eventoSel==null || eventoSel.isBlank()) ? "disabled" : "" %>>Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
             <a href="<%= volverUrl %>" class="btn btn-secondary">Cancelar</a>
           </div>
         </form>

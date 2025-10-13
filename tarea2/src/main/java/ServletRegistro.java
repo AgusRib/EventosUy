@@ -136,15 +136,9 @@ public class ServletRegistro extends HttpServlet {
 	            return;
 	        }
             case "/alta-tipo-registro": {    			
-    			var eventos = ICE.listarEventos();
-    			request.setAttribute("eventos", eventos);
-    			
-    			String eventoSel = request.getParameter("evento");
-    		    if (eventoSel != null && !eventoSel.isBlank()) {
-    		        var ediciones = ICE.listarEdiciones(eventoSel);
-    		        request.setAttribute("ediciones", ediciones);
-    		        request.setAttribute("eventoSel", eventoSel);
-    		    }
+
+    			String edicion = request.getParameter("edicion");
+		        request.setAttribute("edicion", edicion);
     			
     		    request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
     		    return;
@@ -171,16 +165,7 @@ public class ServletRegistro extends HttpServlet {
 		    String costoS  = request.getParameter("costo");
 		    String cupoS   = request.getParameter("cupo");
 		    
-		    if (edicion == null || edicion.isBlank() || nombre == null || nombre.isBlank() || desc == null || desc.isBlank() || costoS == null || costoS.isBlank() || cupoS == null || cupoS.isBlank()) {
-		        request.setAttribute("error", "Completa todos los campos.");
-		        request.setAttribute("edicion", edicion);
-		        request.setAttribute("nombre", nombre);
-		        request.setAttribute("descripcion", desc);
-		        request.setAttribute("costo", costoS);
-		        request.setAttribute("cupo", cupoS);
-		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
-		        return;
-		    }
+
 		    try {
 		    	Float costo = Float.parseFloat(costoS.replace(",", "."));
 		    	int cupo = Integer.parseInt(cupoS);
@@ -189,7 +174,7 @@ public class ServletRegistro extends HttpServlet {
 		    	}
 		    	ICE.altaTipoDeRegistro(edicion, nombre, desc, costo, cupo);
 		    	
-		    	String url = request.getContextPath() + "/detalleEdicion?nombre=" + URLEncoder.encode(edicion, java.nio.charset.StandardCharsets.UTF_8);
+		    	String url = request.getContextPath() + "/detalleEdicion?nombre=" + edicion;
 		    	response.sendRedirect(url);
 		    	return;
 		    } catch (NumberFormatException nfe) {

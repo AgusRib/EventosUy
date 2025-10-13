@@ -132,7 +132,7 @@
 						<% 
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 						%>
-						<a href="#" class="btn btn-success btn-sm"
+						<a href="/tarea2/alta-tipo-registro?edicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
 						</a> <% } %>
 					</div>

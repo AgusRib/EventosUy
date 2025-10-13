@@ -78,7 +78,8 @@ main.contUser {
 			<!-- Header del formulario con botón volver -->
 			<section class="card mb-3">
 				<div class="card-body d-flex align-items-center gap-3">
-					<a href="MiPerfil-misEventos.html"
+				<% String back = request.getParameter("nombreEvento") != null ? "/tarea2/detalleEvento?nombre=" + request.getParameter("nombreEvento") : "HomeServlet"; %>
+					<a href="<%= back %>"
 						class="btn btn-light d-flex align-items-center justify-content-center p-2"
 						style="width: 40px; height: 40px; border-radius: 50%;"> <i
 						class='bx bx-chevron-left fs-4'></i>
@@ -103,7 +104,7 @@ main.contUser {
 						</div>
 					<% } %>
 
-					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getParameter("nombreEvento") != null ? request.getParameter("nombreEvento") : (request.getAttribute("nombreEvento") != null ? request.getAttribute("nombreEvento") : "") %>" method="post" class="needs-validation" autocomplete="off">
+					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getParameter("nombreEvento") != null ? request.getParameter("nombreEvento") : "" %>" method="post" class="needs-validation" autocomplete="off">
 						<div class="mb-3">
 							<label for="nombreEdicion" class="form-label">Nombre de
 								la edición <span class="text-danger">*</span></label> 
@@ -192,7 +193,7 @@ main.contUser {
 						
 						<div class="d-flex gap-2">
 							<button type="submit" class="btn btn-primary">Guardar</button>
-							<a href="MiPerfil-misEventos.html" class="btn btn-secondary">Cancelar</a>
+							<a href="<%= back %>" class="btn btn-secondary">Cancelar</a>
 						</div>
 					</form>
 				</div>

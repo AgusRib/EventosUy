@@ -300,13 +300,7 @@ public class ServletEdicion extends HttpServlet {
 			Part imagen = request.getPart("imagen");
 			String nombreEvento = request.getParameter("nombreEvento");
 			String organizador = user.getNickname();
-			
-			/*
-			request.getSession().setAttribute("fecha", LocalDate.now());	//TESTING
-			IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();      //TESTING
-			session.setAttribute("usuario", ICU.infoUsuario("miseventos"));	//TESTING
-			*/
-			
+
 			
 			try {
 				if (user.getTipo() != TipoUsuario.ORGANIZADOR) {
