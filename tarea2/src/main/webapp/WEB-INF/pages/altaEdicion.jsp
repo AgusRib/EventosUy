@@ -103,7 +103,7 @@ main.contUser {
 						</div>
 					<% } %>
 
-					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getParameter("nombreEvento") != null ? request.getParameter("nombreEvento") : (request.getAttribute("nombreEvento") != null ? request.getAttribute("nombreEvento") : "") %>" method="post" class="needs-validation" novalidate autocomplete="off">
+					<form id="altaEdicionForm" enctype="multipart/form-data" action="${pageContext.request.contextPath}/altaEdicion?nombreEvento=<%= request.getParameter("nombreEvento") != null ? request.getParameter("nombreEvento") : (request.getAttribute("nombreEvento") != null ? request.getAttribute("nombreEvento") : "") %>" method="post" class="needs-validation" autocomplete="off">
 						<div class="mb-3">
 							<label for="nombreEdicion" class="form-label">Nombre de
 								la edición <span class="text-danger">*</span></label> 

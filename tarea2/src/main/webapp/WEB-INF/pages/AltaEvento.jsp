@@ -124,19 +124,20 @@ main
 			<section class="card mb-3">
 				<div class="card-body">
 					<!-- Show error message if exists and not from cache -->
-					<% if (request.getAttribute("mensaje") != null) { %>
-						<div class="alert alert-primary" role="alert">
-							<i class="bx bx-check-circle me-2"></i>
-							<%= request.getAttribute("mensaje") %>
-						</div>
-					<% } else if (request.getAttribute("error") != null ) { %>
-						<div class="alert alert-danger" role="alert">
-							<i class="bx bx-error-circle me-2"></i>
-							<%= request.getAttribute("error") %>
-						</div>
-					<% } %>
+					<% if (request.getAttribute("mensaje") != null ) { %>
+                        <div class="alert alert-primary" role="alert">
+                            <i class="bx bx-check-circle me-2"></i>
+                            <%= request.getAttribute("mensaje") %>
+                        </div>
+                    <% } else if (request.getAttribute("error") != null ) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bx bx-error-circle me-2"></i>
+                            
+                            <%= request.getAttribute("error") %>
+                        </div>
+                    <% } %>
 
-					<form id="altaEventoForm" action="${pageContext.request.contextPath}/altaEvento" method="post" enctype="multipart/form-data" class="needs-validation" novalidate autocomplete="off">
+					<form id="altaEventoForm" action="${pageContext.request.contextPath}/altaEvento" method="post" enctype="multipart/form-data" class="needs-validation"  autocomplete="off">
 
 						<div class="mb-3">
 							<label for="nombreEvento" class="form-label">Nombre del evento <span class="text-danger">*</span></label> 
@@ -144,7 +145,9 @@ main
 								name="nombre"
 								placeholder="Ingrese el nombre" 
 								value="<%=  request.getAttribute("nombre") != null ? (String)request.getAttribute("nombre") : "" %>"
-								required autocomplete="off">
+								required autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese el nombre del evento.')"
+								oninput="this.setCustomValidity('')">
 							<div class="invalid-feedback">
 								Por favor ingrese el nombre del evento.
 							</div>
@@ -156,7 +159,9 @@ main
 								name="sigla"
 								placeholder="Ej: EVT2025" 
 								value="<%= request.getAttribute("sigla") != null ? (String)request.getAttribute("sigla") : "" %>"
-								required autocomplete="off">
+								required autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese la sigla del evento.')"
+								oninput="this.setCustomValidity('')">
 							<div class="invalid-feedback">
 								Por favor ingrese la sigla del evento.
 							</div>
@@ -166,12 +171,18 @@ main
 							<label for="descripcionEvento" class="form-label">Descripción</label>
 							<textarea class="form-control" id="descripcionEvento" 
 								name="descripcion"
-								rows="3" placeholder="Ingrese la descripción del evento" autocomplete="off"><%=  request.getAttribute("descripcion") != null ? (String)request.getAttribute("descripcion") : "" %></textarea>
+								required autocomplete="off"
+								rows="3" placeholder="Ingrese la descripción del evento" autocomplete="off"
+								oninvalid="this.setCustomValidity('Por favor ingrese la descripción del evento.')"
+								oninput="this.setCustomValidity('')"><%=  request.getAttribute("descripcion") != null ? (String)request.getAttribute("descripcion") : "" %></textarea>
+							<div class="invalid-feedback">
+								Por favor ingrese la descripción del evento.
+							</div>
 						</div>
 
 						<div class="mb-3">
 							<label for="categoriasEvento" class="form-label">Categorías <span class="text-danger">*</span></label>
-							<select class="form-select" id="categoriasEvento" name="categorias" multiple required>
+							<select class="form-select" id="categoriasEvento" name="categorias" multiple required oninvalid="this.setCustomValidity('Por favor seleccione al menos una categoría.')" oninput="this.setCustomValidity('')">
 								<%
 									java.util.Set<String> categorias = (java.util.Set<String>) request.getAttribute("categorias");
 									String[] categoriasSeleccionadas = (String[]) request.getAttribute("categoriasSeleccionadas");
