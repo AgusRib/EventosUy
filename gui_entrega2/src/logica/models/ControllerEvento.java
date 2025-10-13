@@ -258,17 +258,29 @@ public class ControllerEvento implements IControllerEvento{
 	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
 	    TipoRegistro tr = edi.getTipoRegistro(tipoRegistroGratis);
-	    double costoUnit = tr.getCosto();
-	    double costoGratis = costoUnit * cantidadGratis;
-	    double limite = aporteEconomico * 0.20;
-	    Patrocinio p = new Patrocinio(
-	            fechaSistema,
-	            (int) Math.round(aporteEconomico),
-	            codigo,
-	            cantidadGratis,
-	            nivel,
-	            tipoRegistroGratis
-	    );
+	    
+	    Patrocinio p;
+	    if (tr == null) {
+	    	p = new Patrocinio(
+		            fechaSistema,
+		            (int) Math.round(aporteEconomico),
+		            codigo,
+		            0,
+		            nivel,
+		            tipoRegistroGratis
+		    );
+	    } else {
+		    p = new Patrocinio(
+		            fechaSistema,
+		            (int) Math.round(aporteEconomico),
+		            codigo,
+		            cantidadGratis,
+		            nivel,
+		            tipoRegistroGratis
+		    );
+	    }
+	    
+
 	    edi.agregarPatrocinio(institucion, p);
 	}
 

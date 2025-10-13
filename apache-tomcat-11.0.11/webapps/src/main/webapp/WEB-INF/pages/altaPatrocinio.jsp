@@ -22,8 +22,8 @@
 	<link
 		href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap"
 		rel="stylesheet">
-	<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
-	<link rel="stylesheet" href="../assets/css/styles.css">
+	<link rel="stylesheet" href="assets/css/ConsultaEvento.css">
+	<link rel="stylesheet" href="assets/css/styles.css">
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
 	
@@ -79,7 +79,7 @@
 		<div class="container-xl">
 
 			<!-- Header del formulario -->
-			<section class="card mb-3">
+			<section class="card my-3">
 				<div class="card-body d-flex align-items-center gap-3">
 					<%
 					    // determine edition from request param or session
@@ -114,7 +114,7 @@
 			<% } %>
 
 			<!-- Formulario -->
-			<section class="card mb-3">
+			<section class="card mb-3 p-5">
 				 <%-- Hidden edicion field comes from session (set by previous flow) --%>
                     <input type="hidden" name="edicion" value="<%= nombreEdicion != null ? nombreEdicion : "" %>" />
                     <%-- include session fecha so the POST can send it back; servlet stores it in session as LocalDate --%>

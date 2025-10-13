@@ -1,4 +1,3 @@
-package main.java;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -379,6 +378,13 @@ public class ServletUsuario extends HttpServlet {
                 Part avatar = request.getPart("avatar");
                 if (avatar != null && avatar.getSize() > 0) {
                     ManejadorArchivos.guardarArchivo(avatar, nickParam, "usuarios", getServletContext());
+    				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+    				System.out.println("PFP seteada en sesión: " + pfp);
+    				if (pfp != null) {
+    					request.getSession().setAttribute("pfp", pfp);
+    				} else {
+    					request.getSession().setAttribute("pfp", "default.png");
+    				}
                 }
             } catch (Exception ignore) { /* no cortar el flujo por imagen */ }
 

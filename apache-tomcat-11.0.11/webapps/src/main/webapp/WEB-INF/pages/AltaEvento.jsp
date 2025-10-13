@@ -22,8 +22,8 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/ConsultaEvento.css">
-<link rel="stylesheet" href="../assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="assets/css/styles.css">
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
 
@@ -81,7 +81,7 @@ main
 			<!-- Header del formulario con botón volver -->
 			<section class="card mb-3">
 				<div class="card-body d-flex align-items-center gap-3">
-					<a href="ConsultaUsuario"
+					<a href="perfil"
 						class="btn btn-light d-flex align-items-center justify-content-center p-2"
 						style="width: 40px; height: 40px; border-radius: 50%;"> <i
 						class='bx bx-chevron-left fs-4'></i>
@@ -188,7 +188,7 @@ main
 
 						<div class="d-flex gap-2">
 							<button type="submit" class="btn btn-primary">Guardar</button>
-							<a href="MiPerfil-misEventos.html" class="btn btn-secondary">Cancelar</a>
+							<a href="perfil" class="btn btn-secondary">Cancelar</a>
 						</div>
 					</form>
 				</div>

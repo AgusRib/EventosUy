@@ -179,7 +179,7 @@
 						<% 
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 						%>
-						<a href="#" class="btn btn-success btn-sm"
+						<a href="altaPatrocinio?nombreEdicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>
 						</a> <% } %>
 						

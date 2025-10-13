@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/ConsultaEvento.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="assets/css/styles.css">
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/RolVisitante_listarUsuarios.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
@@ -119,7 +119,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 							<div class="d-flex align-items-center justify-content-between gap-4">
 								<div class="d-flex flex-column align-items-center">
 									<div class="contenedor-fotoPerfil mb-2">
-										<img class="foto-usuario avatar" src="<%=imagenUsuario%>" alt="fotoPerfil" style="height:127px;">
+										<img class="foto-usuario" src="<%=imagenUsuario%>" alt="fotoPerfil" style="height:127px;">
 									</div>
 									<div class="contenedor-NickRolUser text-center">
 										<div class="nickname"><b><%= nickname %></b></div>
