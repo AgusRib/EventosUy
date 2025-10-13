@@ -21,13 +21,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import java.net.*;
+
 import casosPrueba.CargaDatos;
+import excepciones.TipoRegistroExistenteExcepcion;
 
 
 /**
  * Servlet implementation class ServletEdicion
  */
-@WebServlet({ "/ver-registro", "/listar-registros", "/alta-registro" })
+@WebServlet({ "/ver-registro", "/listar-registros", "/alta-registro", "/alta-tipo-registro" })
 public class ServletRegistro extends HttpServlet {
     private static final long serialVersionUID = 1L;
        
@@ -107,6 +110,20 @@ public class ServletRegistro extends HttpServlet {
             	request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                 return;
             }
+            case "/alta-tipo-registro": {    			
+    			var eventos = ICE.listarEventos();
+    			request.setAttribute("eventos", eventos);
+    			
+    			String eventoSel = request.getParameter("evento");
+    		    if (eventoSel != null && !eventoSel.isBlank()) {
+    		        var ediciones = ICE.listarEdiciones(eventoSel);
+    		        request.setAttribute("ediciones", ediciones);
+    		        request.setAttribute("eventoSel", eventoSel);
+    		    }
+    			
+    		    request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+    		    return;
+            }
             default:
                 break;
         }
@@ -128,7 +145,7 @@ public class ServletRegistro extends HttpServlet {
 	    	HttpSession session = request.getSession();
 	    	
 	    	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();	// PARA TESTING
-	    	session.setAttribute("usuario", ICU.infoUsuario("msilva"));	// PARA TESTING
+	    	
 	    	
 	    	DataUsuario user = (DataUsuario) session.getAttribute("usuario"); 
 	    	if (user.getTipo() == TipoUsuario.ASISTENTE) {
@@ -152,6 +169,66 @@ public class ServletRegistro extends HttpServlet {
 	    		request.setAttribute("error", "El usuario no es asistente");
 	    	}
 	        return;
+		} else if ("/alta-tipo-registro".equals(path)) {
+			IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
+			
+			String edicion = request.getParameter("edicion");
+			String nombre  = request.getParameter("nombre");
+			String desc    = request.getParameter("descripcion");
+		    String costoS  = request.getParameter("costo");
+		    String cupoS   = request.getParameter("cupo");
+		    
+		    if (edicion == null || edicion.isBlank() || nombre == null || nombre.isBlank() || desc == null || desc.isBlank() || costoS == null || costoS.isBlank() || cupoS == null || cupoS.isBlank()) {
+		        request.setAttribute("error", "Completa todos los campos.");
+		        request.setAttribute("edicion", edicion);
+		        request.setAttribute("nombre", nombre);
+		        request.setAttribute("descripcion", desc);
+		        request.setAttribute("costo", costoS);
+		        request.setAttribute("cupo", cupoS);
+		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+		        return;
+		    }
+		    try {
+		    	Float costo = Float.parseFloat(costoS.replace(",", "."));
+		    	int cupo = Integer.parseInt(cupoS);
+		    	if (costo < 0 || cupo <= 0) {
+		    		throw new IllegalArgumentException("Costo y cupo deben ser positivos");
+		    	}
+		    	ICE.altaTipoDeRegistro(edicion, nombre, desc, costo, cupo);
+		    	
+		    	String url = request.getContextPath() + "/detalleEdicion?nombre=" + URLEncoder.encode(edicion, java.nio.charset.StandardCharsets.UTF_8);
+		    	response.sendRedirect(url);
+		    	return;
+		    } catch (NumberFormatException nfe) {
+		    	request.setAttribute("error", "Formato numérico inválido en costo o cupo.");
+		        request.setAttribute("edicion", edicion);
+		        request.setAttribute("nombre", nombre);
+		        request.setAttribute("descripcion", desc);
+		        request.setAttribute("costo", costoS);
+		        request.setAttribute("cupo", cupoS);
+		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+		        return;
+		    } catch (TipoRegistroExistenteExcepcion e) {
+		    	request.setAttribute("error", e.getMessage());
+		        request.setAttribute("edicion", edicion);
+		        request.setAttribute("nombre", nombre);
+		        request.setAttribute("descripcion", desc);
+		        request.setAttribute("costo", costoS);
+		        request.setAttribute("cupo", cupoS);
+		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+		        return;
+			} catch (Exception e) {
+				request.setAttribute("error", "Error al dar de alta el tipo de registro: " + e.getMessage());
+		        request.setAttribute("edicion", edicion);
+		        request.setAttribute("nombre", nombre);
+		        request.setAttribute("descripcion", desc);
+		        request.setAttribute("costo", costoS);
+		        request.setAttribute("cupo", cupoS);
+		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+		        return;
+			}
+				
+			
 		}
         
    }
