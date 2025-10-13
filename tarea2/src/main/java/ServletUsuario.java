@@ -33,7 +33,8 @@ public class ServletUsuario extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String usuario = request.getParameter("usuario");
+    	DataUsuario usrSession = (DataUsuario) request.getSession().getAttribute("usuario");
+    	String usuario = usrSession.getNickname();
         String usuarios = request.getParameter("usuarios");
         String path    = request.getServletPath();
 
@@ -123,7 +124,7 @@ public class ServletUsuario extends HttpServlet {
     private void detalleUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UsuarioNoEncontrado {
 
-        String usuario = request.getParameter("usuarios"); // OJO: aquí usa 'usuarios'
+        String usuario = request.getParameter("usuarios"); 
         DataUsuario usr;
         try {
             usr = this.controllerUsuario.infoUsuario(usuario);
