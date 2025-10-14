@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import excepciones.NombreEventoExcepcion;
 import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
 import logica.manejadores.ManejadorCategoria;
 import logica.manejadores.ManejadorEdicion;
@@ -122,12 +123,12 @@ public class TestEstadoEdiciones {
 		ICE.altaEvento("evento3", "E3", LocalDate.of(2023, 3, 1), "Descripción del evento 3", categorias);
 		ICE.altaEvento("evento4", "E4", LocalDate.of(2023, 4, 1), "Descripción del evento 4", categorias);
 
-		List<Evento> recientes = ICE.obtenerEventosRecientes();
+		List<DTDetalleEvento> recientes = ICE.obtenerEventosRecientes();
 		assertEquals(3, recientes.size());
 
 		
 		Set<String> nombresEventos = new HashSet<>();
-		for (Evento ev : recientes) {
+		for (DTDetalleEvento ev : recientes) {
 		    nombresEventos.add(ev.getNombre());
 		}
 
