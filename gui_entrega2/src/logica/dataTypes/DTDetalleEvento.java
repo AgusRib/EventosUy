@@ -10,7 +10,7 @@ public class DTDetalleEvento {
 	private String descripcion;
 	private HashSet<String>  categorias;
 	private HashSet<String> ediciones;
-	public DTDetalleEvento(String nombre,String sigla, LocalDate fecha, String descripcion, HashSet<String> categorias,
+	public DTDetalleEvento(String nombre, String sigla, LocalDate fecha, String descripcion, HashSet<String> categorias,
 			HashSet<String> hashSet) {
 		super();
 		this.nombre = nombre;

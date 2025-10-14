@@ -29,7 +29,7 @@ public class Edicion {
 	private EstadoEdicion estado;
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
-			String ciudad, String pais,Evento evento,Organizador organizador) {
+			String ciudad, String pais, Evento evento, Organizador organizador) {
 		super();
 		this.nombre = nombre;
 		this.sigla = sigla;
@@ -106,7 +106,7 @@ public class Edicion {
 	public DTPatrocinio getPatrocinio(String nombreInstitucion) {
 		Patrocinio pat = patrociniosPorInstitucion.get(nombreInstitucion);
 		
-		if( pat==null) return null;
+		if (pat==null) return null;
 		else {
 		return new DTPatrocinio(
 				nombreInstitucion,
@@ -116,7 +116,8 @@ public class Edicion {
 		        pat.getNivelPatrocinio(),
 		        pat.getTipoRegistroGratis(),
 		        pat.getCantRegsGratis()
-		 );}
+						);
+		}
 	}
 	
 
@@ -183,9 +184,9 @@ public class Edicion {
 
 	public boolean existeTipoRegistro(String nombreTRegis) {
 		
-		if(this.tiposRegistro != null) {
+		if (this.tiposRegistro != null) {
 			for (TipoRegistro tipoRegistro : tiposRegistro) {
-				if(tipoRegistro.getNombre() == nombreTRegis) {
+				if (tipoRegistro.getNombre() == nombreTRegis) {
 					return true;
 				}
 			}
@@ -194,8 +195,8 @@ public class Edicion {
 	}
 	
 	
-	public void crearTRegistro(String nom,String desc,Float costo, int cupo) {
-		TipoRegistro newTRegistro = new TipoRegistro(nom,desc,costo,cupo);
+	public void crearTRegistro(String nom, String desc, Float costo, int cupo) {
+		TipoRegistro newTRegistro = new TipoRegistro(nom, desc, costo, cupo);
 		tiposRegistro.add(newTRegistro);
 	}
 	

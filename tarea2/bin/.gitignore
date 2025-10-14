@@ -1,1 +1,5 @@
-/main/
+/build/
+.classpath
+.project
+.settings/
+tarea2/bin/

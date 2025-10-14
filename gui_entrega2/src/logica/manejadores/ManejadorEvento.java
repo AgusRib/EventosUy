@@ -8,7 +8,7 @@ import logica.models.Evento;
 public class ManejadorEvento{
 	
 	private static ManejadorEvento instance = null;
-	private HashMap<String,Evento> eventos;
+	private HashMap<String, Evento> eventos;
 	
 	public static ManejadorEvento getInstance() {
 		if (instance == null) {
@@ -22,7 +22,7 @@ public class ManejadorEvento{
 	}
 	
 	
-	public HashMap<String,Evento> obtenerEventos() {
+	public HashMap<String, Evento> obtenerEventos() {
 		return eventos;
 	}
 	

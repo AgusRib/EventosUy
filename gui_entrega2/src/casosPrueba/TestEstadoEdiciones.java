@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import excepciones.NombreEventoExcepcion;
 import logica.controllers.IControllerEvento;
+import logica.dataTypes.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
 import logica.manejadores.ManejadorCategoria;
 import logica.manejadores.ManejadorEdicion;
@@ -76,8 +77,8 @@ public class TestEstadoEdiciones {
 	    assertTrue(e2 != null && e2.getNombre().equals("edicion2") && e2.getEstado() == EstadoEdicion.Ingresada);
 	    assertTrue(e3 != null && e3.getNombre().equals("edicion3") && e3.getEstado() == EstadoEdicion.Ingresada);
 		
-		h_edicion.CambioEstado(e2, EstadoEdicion.Rechazada);
-		h_edicion.CambioEstado(e3, EstadoEdicion.Confirmada);
+		h_edicion.cambioEstado(e2, EstadoEdicion.Rechazada);
+		h_edicion.cambioEstado(e3, EstadoEdicion.Confirmada);
 		
 		assertTrue(e1.getEstado() == EstadoEdicion.Ingresada);
 		assertTrue(e2.getEstado() == EstadoEdicion.Rechazada);
@@ -98,11 +99,11 @@ public class TestEstadoEdiciones {
 				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest"); //estado = ingresada
 		
 		//checkeamos que se obtenga correctamente el evento a partir de la edicion
-		assertEquals("test", ICE.NomEvPorEd("EdTest"));
+		assertEquals("test", ICE.nomEvPorEd("EdTest"));
 		
 		//checkeamos que se pueda aceptar y rechazar una edicion
-		ICE.AceptarEdicion("EdTest","test");
-		ICE.RechazarEdicion("EdTest2","test");
+		ICE.aceptarEdicion("EdTest","test");
+		ICE.rechazarEdicion("EdTest2","test");
 		
 		// verificamos los cambios de estado
 		Edicion edTest = h_edicion.encontrarEdicion("EdTest");
@@ -122,12 +123,12 @@ public class TestEstadoEdiciones {
 		ICE.altaEvento("evento3", "E3", LocalDate.of(2023, 3, 1), "Descripción del evento 3", categorias);
 		ICE.altaEvento("evento4", "E4", LocalDate.of(2023, 4, 1), "Descripción del evento 4", categorias);
 
-		List<Evento> recientes = ICE.obtenerEventosRecientes();
+		List<DTDetalleEvento> recientes = ICE.obtenerEventosRecientes();
 		assertEquals(3, recientes.size());
 
 		
 		Set<String> nombresEventos = new HashSet<>();
-		for (Evento ev : recientes) {
+		for (DTDetalleEvento ev : recientes) {
 		    nombresEventos.add(ev.getNombre());
 		}
 

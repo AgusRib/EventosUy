@@ -376,7 +376,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     
     
     public void invocacionDesdeConsultaUsuario(String edicion) {
-    	String evento=controllerEvento.NomEvPorEd(edicion);
+    	String evento=controllerEvento.nomEvPorEd(edicion);
     	
     	cbxListadoDeEventos.setSelectedItem(evento);
     	actualizarEdicionesPara(evento);

@@ -143,7 +143,7 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 			String nombreEvento = (String) comboBoxEventos.getSelectedItem();	
 			String nombreEdicion = listaEdicionesPendientes.getSelectedValue();
 			if (nombreEdicion != null) {
-			    ICE.AceptarEdicion(nombreEdicion,nombreEvento);
+			    ICE.aceptarEdicion(nombreEdicion,nombreEvento);
 			    JOptionPane.showMessageDialog(this, 
 			    	"Edición '" + nombreEdicion + "' confirmada con éxito", 
 			    	"Confirmación exitosa", 
@@ -161,7 +161,7 @@ public class ConfirmarRechazarEdicion extends JInternalFrame {
 			String nombreEvento = (String) comboBoxEventos.getSelectedItem();
 			String nombreEdicion = listaEdicionesPendientes.getSelectedValue();
 			if (nombreEdicion != null) {
-			    ICE.RechazarEdicion(nombreEdicion,nombreEvento);
+			    ICE.rechazarEdicion(nombreEdicion,nombreEvento);
 			    JOptionPane.showMessageDialog(this, 
 			    	"Edición '" + nombreEdicion + "' rechazada con éxito", 
 			    	"Rechazo exitoso", 

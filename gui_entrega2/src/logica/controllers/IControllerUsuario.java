@@ -16,11 +16,11 @@ public interface IControllerUsuario {
 	 
 	//ALTAS
 	public void ingresarAsistente(String nickname, 
-			String nombre, String email,String password,
-			String apellido, LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception;
+			String nombre, String email, String password,
+			String apellido, LocalDate fechaNac) throws NombreUsuarioExistente, EmailRepetido, Exception;
 	
 	public void ingresarOrganizador(String nickname, String nombre, 
-			String email,String password, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception;
+			String email, String password, String descripcion, String web) throws NombreUsuarioExistente, EmailRepetido, Exception;
 	
 
 	
@@ -50,7 +50,7 @@ public interface IControllerUsuario {
 
 	public Usuario obtenerUsuario(String usuario);
 
-	public void editarAsistente(String nick,String nombre,String apellido, LocalDate fechaNac);
+	public void editarAsistente(String nick, String nombre, String apellido, LocalDate fechaNac);
 	public void editarOrganizador(String nick, String nombre,  String descripcion, String web);
 	
 	

@@ -32,17 +32,17 @@ public class ManejadorEdicion {
 	}
 
 	// Obtener todas las ediciones Pendientes
-	public HashMap<String,Edicion> obtenerEdicionesPendientes() {
+	public HashMap<String, Edicion> obtenerEdicionesPendientes() {
 		return colEdicionesIngresadas;
 	}
 
 	// Obtener todas las ediciones confirmadas
-	public HashMap<String,Edicion> obtenerEdicionesConfirmadas() {
+	public HashMap<String, Edicion> obtenerEdicionesConfirmadas() {
 		return colEdicionesConfirmadas;
 	}
 
 	// Obtener todas las ediciones rechazadas
-	public HashMap<String,Edicion> obtenerEdicionesRechazadas() {
+	public HashMap<String, Edicion> obtenerEdicionesRechazadas() {
 		return colEdicionesRechazadas;
 	}
 
@@ -63,7 +63,7 @@ public class ManejadorEdicion {
 		colEdicionesIngresadas.put(nueva.getNombre(), nueva);
 	}
 
-	public void CambioEstado(Edicion edi,EstadoEdicion  nuevoestado) {
+	public void cambioEstado(Edicion edi, EstadoEdicion nuevoestado) {
 		colEdicionesIngresadas.remove(edi.getNombre());
 		if (nuevoestado == EstadoEdicion.Confirmada) {
 			colEdicionesConfirmadas.put(edi.getNombre(), edi);
