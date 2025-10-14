@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="logica.dataTypes.DTRegistro" %>
+<%@ page import="logica.data_types.DTRegistro" %>
 <%
   String ctx = request.getContextPath();
   DTRegistro reg = (DTRegistro) request.getAttribute("registro");

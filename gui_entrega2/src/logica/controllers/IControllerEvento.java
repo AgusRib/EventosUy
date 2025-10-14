@@ -10,12 +10,12 @@ import excepciones.NombreEventoExcepcion;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTDetalleEdicion;
-import logica.dataTypes.DTDetalleEvento;
-import logica.dataTypes.DTPatrocinio;
-import logica.dataTypes.DTRegistro;
-import logica.dataTypes.DTTipoRegistro;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTDetalleEvento;
+import logica.data_types.DTPatrocinio;
+import logica.data_types.DTRegistro;
+import logica.data_types.DTTipoRegistro;
 import logica.enumerators.NivelPatrocinio;
 
 /**. 

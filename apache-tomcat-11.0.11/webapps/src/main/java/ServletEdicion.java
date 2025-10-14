@@ -8,11 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTDetalleEdicion;
-import logica.dataTypes.DTPatrocinio;
-import logica.dataTypes.DTTipoRegistro;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTPatrocinio;
+import logica.data_types.DTTipoRegistro;
+import logica.data_types.DataUsuario;
 import logica.models.Factory;
 import jakarta.servlet.http.Part;
 

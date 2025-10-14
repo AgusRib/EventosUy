@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import logica.dataTypes.DTDetalleEvento;
+import logica.data_types.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
 
 public class Evento{

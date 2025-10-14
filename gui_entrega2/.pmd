@@ -353,18 +353,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>ForLoopsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>IfElseStmtsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>IfStmtsMustUseBraces</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
             <name>NoElseReturn</name>
             <ruleset>Code Style</ruleset>
         </rule>
@@ -378,10 +366,6 @@
         </rule>
         <rule>
             <name>UnreachableCode</name>
-            <ruleset>Code Style</ruleset>
-        </rule>
-        <rule>
-            <name>WhileLoopsMustUseBraces</name>
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
@@ -403,10 +387,6 @@
         <rule>
             <name>FunctionNameTooShort</name>
             <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>OverrideBothEqualsAndHashcode</name>
-            <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
             <name>InvalidDependencyTypes</name>
@@ -453,10 +433,6 @@
             <ruleset>Code Style</ruleset>
         </rule>
         <rule>
-            <name>CyclomaticComplexity</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>ExcessiveMethodLength</name>
             <ruleset>Design</ruleset>
         </rule>
@@ -473,31 +449,11 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>ExcessiveParameterList</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>ExcessiveTypeLength</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>NcssMethodCount</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>NcssObjectCount</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>NPathComplexity</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>TooManyFields</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>TooManyMethods</name>
             <ruleset>Design</ruleset>
         </rule>
         <rule>
@@ -541,20 +497,8 @@
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>
-            <name>AvoidReassigningParameters</name>
-            <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
             <name>UnusedMacroParameter</name>
             <ruleset>Best Practices</ruleset>
-        </rule>
-        <rule>
-            <name>AvoidDeeplyNestedIfStmts</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
-            <name>CollapsibleIfStatements</name>
-            <ruleset>Design</ruleset>
         </rule>
         <rule>
             <name>ExcessiveTemplateLength</name>
@@ -570,10 +514,6 @@
         </rule>
         <rule>
             <name>EmptyForeachStmt</name>
-            <ruleset>Error Prone</ruleset>
-        </rule>
-        <rule>
-            <name>EmptyIfStmt</name>
             <ruleset>Error Prone</ruleset>
         </rule>
         <rule>

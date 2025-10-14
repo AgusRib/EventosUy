@@ -1,6 +1,6 @@
 package logica.models;
 
-import logica.dataTypes.DTTipoRegistro;
+import logica.data_types.DTTipoRegistro;
 
 public class TipoRegistro {
 	private String nombre;

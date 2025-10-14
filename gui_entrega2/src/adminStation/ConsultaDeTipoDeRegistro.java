@@ -7,7 +7,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTTipoRegistro;
+import logica.data_types.DTTipoRegistro;
 
 import java.util.Set;
 

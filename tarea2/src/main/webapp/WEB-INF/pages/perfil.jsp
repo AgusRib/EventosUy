@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.dataTypes.DataUsuario" %>
-<%@ page import="logica.dataTypes.DTOrganizador" %>
-<%@ page import="logica.dataTypes.DTAsistente" %>
+<%@ page import="logica.data_types.DataUsuario" %>
+<%@ page import="logica.data_types.DTOrganizador" %>
+<%@ page import="logica.data_types.DTAsistente" %>
 <!doctype html>
 <html lang="es">
 <head>

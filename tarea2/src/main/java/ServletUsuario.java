@@ -16,15 +16,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerUsuario;
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
 import logica.models.Factory;
-<<<<<<< HEAD
-=======
 
 // ManejadorArchivos is in the default package; do not import a default-package class
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57
+//gitlab.fing.edu.uy/tprog/tpgr57
 
 @MultipartConfig
 @WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })

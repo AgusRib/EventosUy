@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTRegistro;
+import logica.data_types.DTRegistro;
 import logica.manejadores.ManejadorEdicion;
 import logica.manejadores.ManejadorUsuario;
 import logica.models.Asistente;

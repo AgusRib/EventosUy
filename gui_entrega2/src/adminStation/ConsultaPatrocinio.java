@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTPatrocinio;
+import logica.data_types.DTPatrocinio;
 
 @SuppressWarnings("serial")
 public class ConsultaPatrocinio extends JInternalFrame {

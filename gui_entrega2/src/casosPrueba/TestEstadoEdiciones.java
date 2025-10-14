@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import excepciones.NombreEventoExcepcion;
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTDetalleEvento;
+import logica.data_types.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
 import logica.manejadores.ManejadorCategoria;
 import logica.manejadores.ManejadorEdicion;

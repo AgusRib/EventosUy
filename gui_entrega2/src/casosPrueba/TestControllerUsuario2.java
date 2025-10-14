@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import excepciones.NombreInstiExistente;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
 import logica.manejadores.ManejadorInstitucion;
 import logica.manejadores.ManejadorUsuario;
 import logica.models.Asistente;

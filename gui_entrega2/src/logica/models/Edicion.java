@@ -7,10 +7,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTDetalleEdicion;
-import logica.dataTypes.DTPatrocinio;
-import logica.dataTypes.DTTipoRegistro;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTPatrocinio;
+import logica.data_types.DTTipoRegistro;
 import logica.enumerators.EstadoEdicion;
 
 public class Edicion {

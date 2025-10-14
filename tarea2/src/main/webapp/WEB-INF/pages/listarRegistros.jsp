@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.dataTypes.DTRegistro" %>
+<%@ page import="logica.data_types.DTRegistro" %>
 
 <%
   String ctx = request.getContextPath();

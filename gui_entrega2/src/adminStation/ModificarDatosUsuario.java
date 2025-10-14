@@ -16,9 +16,9 @@ import javax.swing.JTextField;
 
 import excepciones.UsuarioNoEncontrado;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
 
 public class ModificarDatosUsuario extends JInternalFrame {
     private static ModificarDatosUsuario instance = null;

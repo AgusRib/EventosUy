@@ -9,10 +9,10 @@ import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
 import excepciones.UsuarioNoEncontrado;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 import logica.manejadores.ManejadorInstitucion;
 import logica.manejadores.ManejadorUsuario;
 
