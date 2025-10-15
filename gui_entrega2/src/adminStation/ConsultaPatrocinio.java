@@ -163,25 +163,33 @@ public class ConsultaPatrocinio extends JInternalFrame {
 
     
 	public void invocacionDesdeConsultaDeEdicion(String nivel, String edicion, String evento) {
+		// Refrescar y seleccionar evento/edición
 		refrescar();
-		cbEventos.setSelectedItem(evento);
-		cbEdiciones.setSelectedItem(edicion);
-		onEdicionChange();
-		onPatrocinioSeleccionado(new ListSelectionEvent(lstPatrocinios, 0, 0, false));
-		
-        modeloPat.clear();
-        limpiarDetalle();
-        if (edicion != null) {
-            Set<String> instituciones = controller.listarPatrocinios(edicion);
-            if (instituciones != null) {
-                for (String inst : instituciones) {
-                	if (controller.obtenerPatrocinio(edicion, inst).getNivelPatrocinio().name().equals(nivel))
-                	modeloPat.addElement(inst);
-                }
-            }
-        }
-		
-		
-		
+		if (evento != null) cbEventos.setSelectedItem(evento);
+		if (edicion != null) cbEdiciones.setSelectedItem(edicion);
+		// Asegurarse de que el modelo de lista esté vacío antes de rellenar con el filtro
+		modeloPat.clear();
+		if (edicion != null) {
+			Set<String> instituciones = controller.listarPatrocinios(edicion);
+			if (instituciones != null) {
+				for (String inst : instituciones) {
+					try {
+						DTPatrocinio p = controller.obtenerPatrocinio(edicion, inst);
+						if (p != null && p.getNivelPatrocinio() != null && p.getNivelPatrocinio().name().equalsIgnoreCase(nivel)) {
+							modeloPat.addElement(inst);
+						}
+					} catch (Exception ex) {
+						// ignore malformed entry
+					}
+				}
+			}
+		}
+		// Si hay resultados, seleccionar el primero para que se muestren los detalles
+		if (modeloPat.getSize() > 0) {
+			lstPatrocinios.setSelectedIndex(0);
+			// onPatrocinioSeleccionado será invocado por el listener de selección
+		} else {
+			limpiarDetalle();
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package main.java;
+
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,11 +20,7 @@ import logica.dataTypes.DTAsistente;
 import logica.dataTypes.DTOrganizador;
 import logica.dataTypes.DataUsuario;
 import logica.models.Factory;
-<<<<<<< HEAD
-=======
 
-// ManejadorArchivos is in the default package; do not import a default-package class
->>>>>>> branch 'main' of https://gitlab.fing.edu.uy/tprog/tpgr57
 
 @MultipartConfig
 @WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })

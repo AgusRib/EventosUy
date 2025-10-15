@@ -133,8 +133,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         editorTiposRegCombo.setToolTipText("Elegí un tipo de registro");
         editorTiposRegCombo.addActionListener(e -> {
             if (tblDetallesDeEdicion.isEditing()) tblDetallesDeEdicion.getCellEditor().stopCellEditing();
-            
-            
+
             String tipo = (String) editorTiposRegCombo.getSelectedItem();
             String evento = (String) cbxListadoDeEventos.getSelectedItem();
             String edicion = (String) cbxListadoDeEdiciones.getSelectedItem();
@@ -143,14 +142,16 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 return;
             }
 
-           tblDetallesDeEdicion.setValueAt(PLACEHOLDER_REG_TIPO, 0, 7);
+           // reset placeholder in the "Tipo de registros" column (index 8)
+           tblDetallesDeEdicion.setValueAt(PLACEHOLDER_REG_TIPO, 0, 8);
            llamarAConsultaDeTipoDeRegistro(tipo, edicion, evento);
 
-           
         });
 
-        TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(7);
-        colTipoReg.setCellEditor(new DefaultCellEditor(editorTiposRegCombo));
+        TableColumn colTipoReg = tblDetallesDeEdicion.getColumnModel().getColumn(8);
+        DefaultCellEditor regEditor = new DefaultCellEditor(editorTiposRegCombo);
+        regEditor.setClickCountToStart(1); // abrir con un click
+        colTipoReg.setCellEditor(regEditor);
 
         // Editor combo en columna "Patrocinios"
         editorTiposPatCombo = new JComboBox<>();
@@ -183,7 +184,8 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
                 ex.printStackTrace();
             }
             
-            tblDetallesDeEdicion.setValueAt(PLACEHOLDER_REG_TIPO, 0, 8);
+            // reset placeholder in the "Patrocinios" column (index 9)
+            tblDetallesDeEdicion.setValueAt(PLACEHOLDER_PAT_TIPO, 0, 9);
             llamarAConsultaDePatrocinio(nivel, edicion, evento);
 
             
@@ -193,8 +195,10 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
         
         
 
-        TableColumn colPat = tblDetallesDeEdicion.getColumnModel().getColumn(8);
-        colPat.setCellEditor(new DefaultCellEditor(editorTiposPatCombo));
+        TableColumn colPat = tblDetallesDeEdicion.getColumnModel().getColumn(9);
+        DefaultCellEditor patEditor = new DefaultCellEditor(editorTiposPatCombo);
+        patEditor.setClickCountToStart(1); // abrir con un click
+        colPat.setCellEditor(patEditor);
 
         //listeners
         alCambiarEvento();
