@@ -53,15 +53,10 @@ public class ManejadorUsuario {
 	}
 	
 	public Usuario obtenerUsuario(String nickname) {
-		try {
-			if (!existeNickname(nickname)) {
-				throw new Exception("No existe un usuario con este nickname");
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		return usuarios.get(nickname);
+	    if (!existeNickname(nickname)) {
+	        throw new IllegalArgumentException("No existe un usuario con este nickname");
+	    }
+	    return usuarios.get(nickname);
 	}
 	
 	public Set<String> obtenerUsuarios() {
