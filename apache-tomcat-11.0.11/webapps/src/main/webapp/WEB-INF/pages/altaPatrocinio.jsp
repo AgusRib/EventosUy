@@ -120,75 +120,84 @@
                     <%-- include session fecha so the POST can send it back; servlet stores it in session as LocalDate --%>
                     <input type="hidden" name="fecha" value="<%= request.getAttribute("fecha") != null ? request.getAttribute("fecha") : "" %>" />
 
+                    <%-- Determinar si hay tipos de registro disponibles para la edición --%>
+                    <%
+                        Set<String> tiposDisponibles = (Set<String>) request.getAttribute("tiposRegistro");
+                        boolean noHayTipos = (tiposDisponibles == null || tiposDisponibles.isEmpty());
+                    %>
+
+                    <% if (noHayTipos) { %>
+                        <div class="alert alert-danger">No existen tipos de registro para la edición seleccionada. No es posible registrar un patrocinio hasta que exista al menos un tipo de registro para la edición.</div>
+                    <% } %>
+
                     <!-- session fecha is kept as hidden input; not displayed to the user -->
 
-                    <div class="mb-3">
-					<label for="institucion" class="form-label">Seleccionar una institución</label>
-				    <select class="form-control" id="institucion" name="institucion" required>
-				        <option value="" disabled><%= request.getAttribute("institucion") == null ? "Seleccione una institución" : "Seleccione una institución" %></option>
-				      	<%
-				      		Set<String> instituciones = (Set<String>)request.getAttribute("instituciones");
-					        String selInst = (String) request.getAttribute("institucion");
-					        if(instituciones != null) {
-					         for(String insti : instituciones) {
-					      %>
-					      <option value="<%=insti%>" <%= insti.equals(selInst) ? "selected" : "" %>><%=insti%></option>
-					      
-					      <%
-					         }
-					        }
-				      	%>
-				     
-				    </select>
-				</div>
-				<div class="mb-3">
-				    <label for="nivelPatrocinio" class="form-label">Nivel de patrocinio</label>
-				    <select class="form-select" id="nivelPatrocinio" name="nivelPatrocinio" required>
-				        <option value="">-- Seleccione nivel --</option>
-				        <option value="Platino" <%= "Platino".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Platino</option>
-				        <option value="Oro" <%= "Oro".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Oro</option>
-				        <option value="Plata" <%= "Plata".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Plata</option>
-				        <option value="Bronce" <%= "Bronce".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Bronce</option>
-				    </select>
-				</div>
-				<div class="mb-3">
-				    <label for="aporteEconomico" class="form-label">Aporte económico</label>
-				    <input type="number" class="form-control" id="aporteEconomico" name="aporte" placeholder="0.00" min="0" step="0.01" value="<%= request.getAttribute("aporte") != null ? request.getAttribute("aporte") : "" %>" required>
-				</div>
-				<div class="mb-3">
-				    <label for="tipoRegistroGratis" class="form-label">Tipo de registro gratuito (opcional)</label>
-				    <select class="form-select" id="tipoRegistroGratis" name="tipoRegGratis">
-				        <option value="">-- Ninguno --</option>
-				        <%
-				            Set<String> tipos = (Set<String>) request.getAttribute("tiposRegistro");
-				            String selTipo = (String) request.getAttribute("tipoRegGratis");
-				            if (tipos != null) {
-				                for (String t : tipos) {
-				        %>
-				        <option value="<%=t%>" <%= t.equals(selTipo)?"selected":"" %>><%=t%></option>
-				        <%
-				                }
-				            }
-				        %>
-				    </select>
-				</div>
-				<div class="mb-3">
-				    <label for="registrosGratuitos" class="form-label">Cantidad de registros gratuitos</label>
-				    <input type="number" class="form-control" id="registrosGratuitos" name="cantGratis" placeholder="0" min="0" value="<%= request.getAttribute("cantGratis") != null ? request.getAttribute("cantGratis") : "0" %>">
-				    <div class="form-text">No puede superar el 20% del aporte económico.</div>
-				</div>
-				<div class="mb-3">
-				    <label for="codigoPatrocinio" class="form-label">Código de patrocinio</label>
-				    <input type="text" class="form-control" id="codigoPatrocinio" name="codigo" placeholder="Ingrese el código" value="<%= request.getAttribute("codigo") != null ? request.getAttribute("codigo") : "" %>">
-				</div>
-				<div class="d-flex gap-2">
-                             <button type="submit" class="btn btn-primary">Registrar</button>
-                             <a href="<%= (nombreEdicion != null && !nombreEdicion.isEmpty()) ? (request.getContextPath() + "/detalleEdicion?nombre=" + URLEncoder.encode(nombreEdicion, "UTF-8")) : (request.getContextPath() + "/ServletUsuario") %>" class="btn btn-secondary">Cancelar</a>
+                     <div class="mb-3">
+                     <label for="institucion" class="form-label">Seleccionar una institución</label>
+                     <select class="form-control" id="institucion" name="institucion" required>
+                         <option value="" disabled><%= request.getAttribute("institucion") == null ? "Seleccione una institución" : "Seleccione una institución" %></option>
+                        <%
+				Set<String> instituciones = (Set<String>)request.getAttribute("instituciones");
+                             String selInst = (String) request.getAttribute("institucion");
+                             if(instituciones != null) {
+                              for(String insti : instituciones) {
+                           %>
+                           <option value="<%=insti%>" <%= insti.equals(selInst) ? "selected" : "" %>><%=insti%></option>
+                           
+                           <%
+                              	 }
+                             }
+                        %>
+                     </select>
+                 </div>
+                 <div class="mb-3">
+                     <label for="nivelPatrocinio" class="form-label">Nivel de patrocinio</label>
+                     <select class="form-select" id="nivelPatrocinio" name="nivelPatrocinio" required>
+                         <option value="">-- Seleccione nivel --</option>
+                         <option value="Platino" <%= "Platino".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Platino</option>
+                         <option value="Oro" <%= "Oro".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Oro</option>
+                         <option value="Plata" <%= "Plata".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Plata</option>
+                         <option value="Bronce" <%= "Bronce".equals(request.getAttribute("nivelPatrocinio"))?"selected":"" %>>Bronce</option>
+                     </select>
+                 </div>
+                 <div class="mb-3">
+                     <label for="aporteEconomico" class="form-label">Aporte económico</label>
+                     <input type="number" class="form-control" id="aporteEconomico" name="aporte" placeholder="0.00" min="0" step="0.01" value="<%= request.getAttribute("aporte") != null ? request.getAttribute("aporte") : "" %>" required>
+                 </div>
+                 <div class="mb-3">
+                     <label for="tipoRegistroGratis" class="form-label">Tipo de registro gratuito (opcional)</label>
+                    <select class="form-select" id="tipoRegistroGratis" name="tipoRegGratis" <%= noHayTipos ? "disabled" : "required" %> >
+                         <option value="">-- Ninguno --</option>
+                         <%
+                            Set<String> tipos = (Set<String>) request.getAttribute("tiposRegistro");
+                            String selTipo = (String) request.getAttribute("tipoRegGratis");
+                            if (tipos != null) {
+                                for (String t : tipos) {
+                         %>
+                         <option value="<%=t%>" <%= t.equals(selTipo)?"selected":"" %>><%=t%></option>
+                         <%
+                                 }
+                             }
+                         %>
+                     </select>
+                 </div>
+                 <div class="mb-3">
+                     <label for="registrosGratuitos" class="form-label">Cantidad de registros gratuitos</label>
+                    <input type="number" class="form-control" id="registrosGratuitos" name="cantGratis" placeholder="0" min="0" value="<%= request.getAttribute("cantGratis") != null ? request.getAttribute("cantGratis") : "0" %>" required>
+                     <div class="form-text">No puede superar el 20% del aporte económico.</div>
+                 </div>
+                 <div class="mb-3">
+                     <label for="codigoPatrocinio" class="form-label">Código de patrocinio</label>
+                    <input type="text" class="form-control" id="codigoPatrocinio" name="codigo" placeholder="Ingrese el código" value="<%= request.getAttribute("codigo") != null ? request.getAttribute("codigo") : "" %>" required>
+                 </div>
+                <div class="d-flex gap-2">
++                             <button type="submit" class="btn btn-primary" <%= noHayTipos ? "disabled" : "" %> >Registrar</button>
+                              <a href="<%= (nombreEdicion != null && !nombreEdicion.isEmpty()) ? (request.getContextPath() + "/detalleEdicion?nombre=" + URLEncoder.encode(nombreEdicion, "UTF-8")) : (request.getContextPath() + "/ServletUsuario") %>" class="btn btn-secondary">Cancelar</a>
                          </div>
-                </section>
-            </div>
-    </main>
-    </form>
+                 </section>
+             </div>
+     </main>
+     </form>
  
 	<script>
     document.addEventListener('DOMContentLoaded', function() {
