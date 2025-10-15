@@ -55,12 +55,12 @@ public class Registro {
 	
 	/*public void setCosto(int costo) {
 		this.costo = costo;
-	}
+	}*/
 
 
 	public TipoRegistro getTipoReg() {
 		return tipoReg;
-	}*/
+	}
 
 
 	public void setTipoReg(TipoRegistro tipoReg) {

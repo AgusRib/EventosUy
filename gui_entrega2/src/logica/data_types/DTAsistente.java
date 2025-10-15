@@ -14,7 +14,7 @@ public class DTAsistente extends DataUsuario {
 	private LocalDate fechaNacimiento;
 	private String institucion;
 
-	public DTAsistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento,String institucion) {
+	public DTAsistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento, String institucion) {
 		super(nickname, nombre, email, TipoUsuario.ASISTENTE);
 		this.nickname = nickname;
 		this.nombre = nombre;
