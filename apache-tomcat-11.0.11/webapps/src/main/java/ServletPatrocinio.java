@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.util.Set;
 import java.net.URLEncoder;
@@ -16,9 +15,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.data_types.DTPatrocinio;
-import logica.data_types.DataUsuario;
-import logica.data_types.DTTipoRegistro;
+import logica.dataTypes.DTPatrocinio;
+import logica.dataTypes.DataUsuario;
+import logica.dataTypes.DTTipoRegistro;
 import logica.enumerators.NivelPatrocinio;
 import logica.models.Factory;
 
@@ -126,7 +125,7 @@ public class ServletPatrocinio extends HttpServlet {
                 
                 ICE.setFechaSistema((LocalDate)request.getSession().getAttribute("fecha"));
 
-               
+                
                 request.setAttribute("edicion", nombreEdi);
                 request.setAttribute("institucion", institucion);
                 request.setAttribute("nivelPatrocinio", request.getParameter("nivelPatrocinio"));
@@ -145,10 +144,53 @@ public class ServletPatrocinio extends HttpServlet {
                 }
 
                 try {
-                   
+                    // Server-side validations that cannot be bypassed from the JSP
+                    // 1) There must be tipos de registro for the edition
+                    Set<String> tiposDisponibles = null;
+                    try {
+                        if (nombreEdi != null && !nombreEdi.isEmpty()) tiposDisponibles = ICE.listarTiposDeRegistro(nombreEdi);
+                    } catch (Exception ignore) { }
+                    if (tiposDisponibles == null || tiposDisponibles.isEmpty()) {
+                        request.setAttribute("error", "No existen tipos de registro para la edición seleccionada. No es posible registrar un patrocinio hasta que exista al menos un tipo de registro para la edición.");
+                        try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
+                        request.setAttribute("tiposRegistro", tiposDisponibles);
+                        request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
+                        break;
+                    }
+
+                    // 2) All form fields are required (server-side): institucion, nivelPatrocinio, aporte, tipoRegGratis, cantGratis, codigo
+                    String aporteParam = request.getParameter("aporte");
+                    String tipoRegGratisParam = request.getParameter("tipoRegGratis");
+                    String cantGratisParam = request.getParameter("cantGratis");
+                    String codigoParam = request.getParameter("codigo");
+                    if (institucion == null || institucion.trim().isEmpty() || nivel == null || aporteParam == null || aporteParam.trim().isEmpty() || tipoRegGratisParam == null || tipoRegGratisParam.trim().isEmpty() || cantGratisParam == null || cantGratisParam.trim().isEmpty() || codigoParam == null || codigoParam.trim().isEmpty()) {
+                        request.setAttribute("error", "Todos los campos del formulario son obligatorios.");
+                        try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
+                        try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
+                        request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
+                        break;
+                    }
+
+                    // 3) The cantidad de registros gratuitos cannot exceed the cupo of the selected tipo (checked in servlet)
+                    try {
+                        if (tipoRegGratisParam != null && !tipoRegGratisParam.isEmpty()) {
+                            DTTipoRegistro detalleTipo = ICE.verDetalleTRegistro(nombreEdi, tipoRegGratisParam);
+                            if (detalleTipo != null) {
+                                int cupo = detalleTipo.getCupo();
+                                if (cantidadGratis > cupo) {
+                                    request.setAttribute("error", "La cantidad de registros gratuitos (" + cantidadGratis + ") no puede ser mayor al cupo del tipo de registro escogido (" + cupo + ").");
+                                    try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
+                                    try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
+                                    request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
+                                    break;
+                                }
+                            }
+                        }
+                    } catch (Exception ignore) { }
+
                     boolean existe = false;
                     try {
-                      
+                       
                         System.out.println("DEBUG: comprobando existencia de patrocinio por obtenerPatrocinio(edicion, institucion)");
                         System.out.println("DEBUG institucion recibida='" + institucion + "', nombreEdi='" + nombreEdi + "'");
                         if (institucion != null && !institucion.trim().isEmpty()) {
