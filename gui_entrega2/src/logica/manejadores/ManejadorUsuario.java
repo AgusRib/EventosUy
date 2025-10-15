@@ -60,6 +60,7 @@ public class ManejadorUsuario {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
 		return usuarios.get(nickname);
 	}
 	
