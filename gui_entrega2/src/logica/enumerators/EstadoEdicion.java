@@ -5,3 +5,4 @@ public enum EstadoEdicion {
 	Confirmada,
 	Rechazada
 }
+

@@ -5,3 +5,4 @@ public enum RolUsuario {
 	ORGANIZADOR,
 	ASISTENTE
 }
+

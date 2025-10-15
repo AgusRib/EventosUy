@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import logica.data_types.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
@@ -71,8 +72,8 @@ public class Evento{
 	}
 
 	
-	public HashSet<String> getEdiciones() {
-		HashSet<String> eds = new HashSet<String>();
+	public Set<String> getEdiciones() {
+		Set<String> eds = new HashSet<String>();
 		for (Edicion edi : this.colEdicionesConfirmadas) {
 			eds.add(edi.getNombre());
 		}
@@ -85,8 +86,8 @@ public class Evento{
 		return eds;
 	}
 
-	public HashSet<String> getCategorias() {
-		HashSet<String> cats = new HashSet<String>();
+	public Set<String> getCategorias() {
+		Set<String> cats = new HashSet<String>();
 		for (Categoria cat : this.colCategorias) {
 			cats.add(cat.getNombre());
 		}

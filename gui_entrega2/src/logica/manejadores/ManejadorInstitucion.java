@@ -2,13 +2,15 @@ package logica.manejadores;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import logica.models.Institucion;
 
 public class ManejadorInstitucion {
 	
 	private static ManejadorInstitucion instance = null;
-	private HashMap<String, Institucion> instituciones;
+	private Map<String, Institucion> instituciones;
 	
 	public static ManejadorInstitucion getInstance() {
 		if (instance == null) {
@@ -32,7 +34,7 @@ public class ManejadorInstitucion {
 	
 	/**Retorna un HashSet con los nombres de las instituciones registradas.
 	 * */
-	public HashSet<String> obtenerInstituciones() {
+	public Set<String> obtenerInstituciones() {
 		return new HashSet<String>(instituciones.keySet());
 	}
 	

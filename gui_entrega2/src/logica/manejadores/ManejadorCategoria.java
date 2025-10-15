@@ -6,7 +6,7 @@ import logica.models.Categoria;
 
 public class ManejadorCategoria {
  	private static ManejadorCategoria instance = null;
- 	private HashSet<Categoria> categorias;
+ 	private Set<Categoria> categorias;
  	
  	private ManejadorCategoria() {
  		categorias = new HashSet<Categoria>();
@@ -19,7 +19,7 @@ public class ManejadorCategoria {
 		return instance;
 	}
 	
-	public HashSet<Categoria> getCategorias() {
+	public Set<Categoria> getCategorias() {
 		return categorias;
 	}
 	
