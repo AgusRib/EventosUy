@@ -94,7 +94,7 @@ public class ServletEdicion extends HttpServlet {
 	                }
 	                
 	                // Fetch nombre evento
-	                String nombreEvento = ICE.NomEvPorEd(nombre);
+	                String nombreEvento = ICE.nomEvPorEd(nombre);
 	                request.setAttribute("nombreEvento", nombreEvento);
 	                
 	                // Fetch imagen evento
@@ -248,7 +248,7 @@ public class ServletEdicion extends HttpServlet {
                             edicionImg != null ? "uploads/ediciones/" + edicionImg : "uploads/ediciones/default.jpg");
 
                     // 5) Evento + imagen del evento
-                    String nombreEvento = ICE.NomEvPorEd(ed.getNombre());
+                    String nombreEvento = ICE.nomEvPorEd(ed.getNombre());
                     request.setAttribute("nombreEvento", nombreEvento);
                     String imagenEvento = ManejadorArchivos.buscarArchivo(
                             (nombreEvento == null ? "" : nombreEvento.toLowerCase()),
@@ -447,7 +447,7 @@ public class ServletEdicion extends HttpServlet {
                         getServletContext().getRealPath("/uploads/ediciones/"));
                 request.setAttribute("imagenEdicion",
                         edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
-                String nomEv = ICE.NomEvPorEd(edicion);
+                String nomEv = ICE.nomEvPorEd(edicion);
                 request.setAttribute("nombreEvento", nomEv);
                 String imgEv = ManejadorArchivos.buscarArchivo(nomEv.toLowerCase(),
                         getServletContext().getRealPath("/uploads/eventos/"));

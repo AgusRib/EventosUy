@@ -1,10 +1,10 @@
 package logica.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import excepciones.AsistenteYaRegistrado;
@@ -36,7 +36,7 @@ public class ControllerEvento implements IControllerEvento{
 	@Override
 	public Set<String> listarEventos() {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
-		HashMap<String, Evento> eventos = mEventos.obtenerEventos(); 
+		Map<String, Evento> eventos = mEventos.obtenerEventos(); 
 		Set<String> nomEventos = new LinkedHashSet<>();
 		for (Evento eve : eventos.values()) {
 			nomEventos.add(eve.getNombre());
@@ -47,7 +47,7 @@ public class ControllerEvento implements IControllerEvento{
 	@Override
 	public Set<String> listarEdicionesTodas(){
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		HashMap<String, Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
+		Map<String, Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
 		ediciones.putAll(mEdi.obtenerEdicionesConfirmadas());
 		ediciones.putAll(mEdi.obtenerEdicionesRechazadas());
 		Set<String> nomEdiciones = new LinkedHashSet<>();
@@ -57,7 +57,7 @@ public class ControllerEvento implements IControllerEvento{
 		return nomEdiciones;
 	}
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion,Set<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception {
 		
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
 		if (mEventos.existeEvento(nombre)) {

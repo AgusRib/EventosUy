@@ -1,12 +1,13 @@
 package logica.models;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Organizador extends Usuario {
 
     private String descripcion;
     private String web;
-    private HashSet<String> ediciones = new HashSet<String>();
+    private Set<String> ediciones = new HashSet<String>();
 	
     //GETTERS Y SETTERS
     public String getDescripcion() {
@@ -22,7 +23,7 @@ public class Organizador extends Usuario {
 		this.web = web;
 	}
 	
-    public HashSet<String> getEdiciones() {
+    public Set<String> getEdiciones() {
 		return ediciones;
 	}
     
@@ -44,10 +45,6 @@ public class Organizador extends Usuario {
 		super(nickname, nombre, email, password);
 		this.descripcion = descripcion;
 		this.web = web;
-	}
-	
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 	
 }

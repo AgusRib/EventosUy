@@ -2,6 +2,8 @@ package logica.manejadores;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import logica.models.Asistente;
 import logica.models.Organizador;
@@ -10,8 +12,8 @@ import logica.models.Usuario;
 public class ManejadorUsuario {
 	
 	private static ManejadorUsuario instance = null;
-	private HashMap<String, Usuario> usuarios;
-	private HashSet<String> emails;
+	private Map<String, Usuario> usuarios;
+	private Set<String> emails;
 	
 	public static ManejadorUsuario getInstance() {
 		if (instance == null) {
@@ -58,15 +60,16 @@ public class ManejadorUsuario {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
 		return usuarios.get(nickname);
 	}
 	
-	public HashSet<String> obtenerUsuarios() {
+	public Set<String> obtenerUsuarios() {
 		return new HashSet<String>(usuarios.keySet());
 	}
 
-	public HashSet<String> obtenerAsistentes() {
-		HashSet<String> asistentes = new HashSet<String>();
+	public Set<String> obtenerAsistentes() {
+		Set<String> asistentes = new HashSet<String>();
 		for (Usuario u : usuarios.values()) {
 			if (u instanceof Asistente) {
 				asistentes.add(u.getNickname());
@@ -75,8 +78,8 @@ public class ManejadorUsuario {
 		return asistentes;
 	}
 	
-	public HashSet<String> obtenerOrganizadores() {
-		HashSet<String> organizadores = new HashSet<String>();
+	public Set<String> obtenerOrganizadores() {
+		Set<String> organizadores = new HashSet<String>();
 		for (Usuario u : usuarios.values()) {
 			if (u instanceof Organizador) {
 				organizadores.add(u.getNickname());

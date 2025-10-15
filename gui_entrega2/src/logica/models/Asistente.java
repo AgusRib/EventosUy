@@ -71,8 +71,4 @@ public class Asistente extends Usuario {
 		return dtasis;
 	}
 	
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
 }

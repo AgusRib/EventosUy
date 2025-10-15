@@ -1,6 +1,8 @@
 package logica.manejadores;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import logica.models.Evento;
 
@@ -8,7 +10,7 @@ import logica.models.Evento;
 public class ManejadorEvento{
 	
 	private static ManejadorEvento instance = null;
-	private HashMap<String, Evento> eventos;
+	private Map<String, Evento> eventos;
 	
 	public static ManejadorEvento getInstance() {
 		if (instance == null) {
@@ -22,11 +24,11 @@ public class ManejadorEvento{
 	}
 	
 	
-	public HashMap<String, Evento> obtenerEventos() {
+	public Map<String, Evento> obtenerEventos() {
 		return eventos;
 	}
 	
-	public HashSet<String> obtenerNombresEventos() {
+	public Set<String> obtenerNombresEventos() {
 		return new HashSet<String>(eventos.keySet());
 	}
 	

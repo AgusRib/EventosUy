@@ -1,15 +1,16 @@
 package logica.manejadores;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import logica.enumerators.EstadoEdicion;
 import logica.models.Edicion;
 
 public class ManejadorEdicion {
 	private static ManejadorEdicion instance;
-	private HashMap<String, Edicion> colEdicionesIngresadas;
-	private HashMap<String, Edicion> colEdicionesConfirmadas;
-	private HashMap<String, Edicion> colEdicionesRechazadas;
+	private Map<String, Edicion> colEdicionesIngresadas;
+	private Map<String, Edicion> colEdicionesConfirmadas;
+	private Map<String, Edicion> colEdicionesRechazadas;
 
 	private ManejadorEdicion() {
 		colEdicionesIngresadas = new HashMap<String, Edicion>();
@@ -32,17 +33,17 @@ public class ManejadorEdicion {
 	}
 
 	// Obtener todas las ediciones Pendientes
-	public HashMap<String, Edicion> obtenerEdicionesPendientes() {
+	public Map<String, Edicion> obtenerEdicionesPendientes() {
 		return colEdicionesIngresadas;
 	}
 
 	// Obtener todas las ediciones confirmadas
-	public HashMap<String, Edicion> obtenerEdicionesConfirmadas() {
+	public Map<String, Edicion> obtenerEdicionesConfirmadas() {
 		return colEdicionesConfirmadas;
 	}
 
 	// Obtener todas las ediciones rechazadas
-	public HashMap<String, Edicion> obtenerEdicionesRechazadas() {
+	public Map<String, Edicion> obtenerEdicionesRechazadas() {
 		return colEdicionesRechazadas;
 	}
 
