@@ -1,4 +1,9 @@
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -6,29 +11,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.data_types.DTDetalleEdicion;
 import logica.data_types.DTPatrocinio;
 import logica.data_types.DTTipoRegistro;
 import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 import logica.models.Factory;
-import jakarta.servlet.http.Part;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import excepciones.FechaInicioPOSTFINAL;
-import excepciones.FechaInicioPREALTA;
-import excepciones.NombreEdicionExistenteExcepcion;
-import excepciones.UsuarioNoEncontrado;
 
 @MultipartConfig
 @WebServlet({ "/detalleEdicion", "/altaEdicion", "/altaRegistro", "/listarEdiciones", "/detalleEdicion/altaEdicion" })
@@ -93,7 +84,7 @@ public class ServletEdicion extends HttpServlet {
 	                }
 	                
 	                // Fetch nombre evento
-	                String nombreEvento = ICE.NomEvPorEd(nombre);
+	                String nombreEvento = ICE.nomEvPorEd(nombre);
 	                request.setAttribute("nombreEvento", nombreEvento);
 	                
 	                // Fetch imagen evento
@@ -247,7 +238,7 @@ public class ServletEdicion extends HttpServlet {
                             edicionImg != null ? "uploads/ediciones/" + edicionImg : "uploads/ediciones/default.jpg");
 
                     // 5) Evento + imagen del evento
-                    String nombreEvento = ICE.NomEvPorEd(ed.getNombre());
+                    String nombreEvento = ICE.nomEvPorEd(ed.getNombre());
                     request.setAttribute("nombreEvento", nombreEvento);
                     String imagenEvento = ManejadorArchivos.buscarArchivo(
                             (nombreEvento == null ? "" : nombreEvento.toLowerCase()),
@@ -471,7 +462,7 @@ public class ServletEdicion extends HttpServlet {
                         getServletContext().getRealPath("/uploads/ediciones/"));
                 request.setAttribute("imagenEdicion",
                         edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
-                String nomEv = ICE.NomEvPorEd(edicion);
+                String nomEv = ICE.nomEvPorEd(edicion);
                 request.setAttribute("nombreEvento", nomEv);
                 String imgEv = ManejadorArchivos.buscarArchivo(nomEv.toLowerCase(),
                         getServletContext().getRealPath("/uploads/eventos/"));

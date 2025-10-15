@@ -233,10 +233,10 @@ public class CargarDatos {
 				
 				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais);
 				if (campos[10].equals("Aceptada")) {
-					ICE.AceptarEdicion(nombre,nombreEvento);
+					ICE.aceptarEdicion(nombre,nombreEvento);
 				}
 			    if (campos[10].equals("Rechazada")) {
-					ICE.RechazarEdicion(nombre,nombreEvento);
+					ICE.rechazarEdicion(nombre,nombreEvento);
 				}
 			
 			}} catch (FileNotFoundException e) {
