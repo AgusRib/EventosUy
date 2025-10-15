@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -324,7 +323,7 @@ public class CargarDatos {
 					continue;
 				
 				String[] campos = linea.split(";");
-							
+						
 				String idPat = campos[0];
 				String idEdi = campos[1];
 				String idInst = campos[2];
@@ -350,8 +349,8 @@ public class CargarDatos {
 					nivelEnum = NivelPatrocinio.Bronce;
 				}
 				
-				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				// CSV fecha formato dd/MM/yyyy -> parse correctamente
+				java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
 				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta, formatter));
 				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);
 			
@@ -573,6 +572,4 @@ public class CargarDatos {
 	    }
 	    return null;
 	}
-
-
 }
