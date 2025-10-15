@@ -9,10 +9,10 @@ import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
 import excepciones.UsuarioNoEncontrado;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 import logica.manejadores.ManejadorInstitucion;
 import logica.manejadores.ManejadorUsuario;
 
@@ -20,15 +20,15 @@ import logica.manejadores.ManejadorUsuario;
 public class ControllerUsuario implements IControllerUsuario {
 
 	@Override
-	public void ingresarAsistente(String nickname, String nombre, String email,String password, String apellido,
-			LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception {
+	public void ingresarAsistente(String nickname, String nombre, String email, String password, String apellido,
+			LocalDate fechaNac) throws NombreUsuarioExistente, EmailRepetido, Exception {
 		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
 		if (mUser.existeNickname(nickname)) {
 			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
 		} else if (mUser.existeEmail(email)) {
 			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
-			Asistente user = new Asistente(nickname, nombre, email,password, apellido, fechaNac);
+			Asistente user = new Asistente(nickname, nombre, email, password, apellido, fechaNac);
 			mUser.agregarUsuario(user);
 		}
 	}
@@ -49,14 +49,14 @@ public class ControllerUsuario implements IControllerUsuario {
 	}
 
 	@Override
-	public void ingresarOrganizador(String nickname, String nombre, String email,String password, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception {
+	public void ingresarOrganizador(String nickname, String nombre, String email, String password, String descripcion, String web) throws NombreUsuarioExistente, EmailRepetido, Exception {
 		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
 		if (mUser.existeNickname(nickname)) {
 			throw new NombreUsuarioExistente("Ya existe un usuario con este nickname");
 		} else if (mUser.existeEmail(email)) {
 			throw new EmailRepetido("Ya existe un usuario con este email");
 		} else {
-			Organizador user = new Organizador(nickname, nombre, email,password, descripcion, web);
+			Organizador user = new Organizador(nickname, nombre, email, password, descripcion, web);
 			mUser.agregarUsuario(user);
 		}
 	}
@@ -87,16 +87,17 @@ public class ControllerUsuario implements IControllerUsuario {
 	@Override
 	public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado {
 		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
-		try {
-			Usuario user = mUser.obtenerUsuario(nickname);
+		Usuario user = mUser.obtenerUsuario(nickname);
+		if (user != null) {
 			TipoUsuario tipo;
 			if ( user instanceof Asistente) {
 				tipo = TipoUsuario.ASISTENTE;
 			} else {
 				tipo = TipoUsuario.ORGANIZADOR;
 			}
+			
 			return new DataUsuario(user.getNickname(), user.getNombre(), user.getEmail(), tipo);
-		} catch (Exception e) {
+		} else {
 			throw new UsuarioNoEncontrado("No existe un usuario con este nickname");
 		}
 		
@@ -152,20 +153,22 @@ public class ControllerUsuario implements IControllerUsuario {
 		return dtO;
 	}
 	@Override
-	public void editarAsistente(String nick,String nom, String apellido, LocalDate fdef) {
+	public void editarAsistente(String nick, String nom, String apellido, LocalDate fdef) {
 		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
 		Asistente user = mUser.obtenerAsistente(nick);
 		user.setApellido(apellido);
 		user.setFechaNacimiento(fdef);
-		user.setNombre(nom);}
+		user.setNombre(nom);
+	}
 	
 	@Override
-	public void editarOrganizador(String nick,String nom, String descripcion, String web) {
+	public void editarOrganizador(String nick, String nom, String descripcion, String web) {
 		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
 		Organizador user = mUser.obtenerOrganizador(nick);
 		user.setDescripcion(descripcion);
 		user.setWeb(web);
-		user.setNombre(nom);}
+		user.setNombre(nom);
+		}
 	
 		
 	

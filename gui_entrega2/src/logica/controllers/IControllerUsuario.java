@@ -7,20 +7,20 @@ import excepciones.EmailRepetido;
 import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
 import excepciones.UsuarioNoEncontrado;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
 import logica.models.Usuario;
 
 public interface IControllerUsuario {
 	 
 	//ALTAS
 	public void ingresarAsistente(String nickname, 
-			String nombre, String email,String password,
-			String apellido, LocalDate fechaNac) throws NombreUsuarioExistente,EmailRepetido, Exception;
+			String nombre, String email, String password,
+			String apellido, LocalDate fechaNac) throws NombreUsuarioExistente, EmailRepetido, Exception;
 	
 	public void ingresarOrganizador(String nickname, String nombre, 
-			String email,String password, String descripcion, String web) throws NombreUsuarioExistente,EmailRepetido, Exception;
+			String email, String password, String descripcion, String web) throws NombreUsuarioExistente, EmailRepetido, Exception;
 	
 
 	
@@ -50,7 +50,7 @@ public interface IControllerUsuario {
 
 	public Usuario obtenerUsuario(String usuario);
 
-	public void editarAsistente(String nick,String nombre,String apellido, LocalDate fechaNac);
+	public void editarAsistente(String nick, String nombre, String apellido, LocalDate fechaNac);
 	public void editarOrganizador(String nick, String nombre,  String descripcion, String web);
 	
 	

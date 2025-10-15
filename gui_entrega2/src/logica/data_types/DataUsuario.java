@@ -1,4 +1,6 @@
-package logica.dataTypes;
+package logica.data_types;
+
+import logica.dataTypes.TipoUsuario;
 
 public class DataUsuario {
 	

@@ -1,3 +1,4 @@
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,11 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTDetalleEdicion;
-import logica.dataTypes.DTPatrocinio;
-import logica.dataTypes.DTTipoRegistro;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTPatrocinio;
+import logica.data_types.DTTipoRegistro;
+import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 import logica.models.Factory;
 import jakarta.servlet.http.Part;
 
@@ -366,19 +367,15 @@ public class ServletEdicion extends HttpServlet {
             }
 
             try {
-                // 1) Ya registrado?
                 if (ICU.listarRegistrosAEventos(user.getNickname()).contains(edicion)) {
                     request.setAttribute("error", "Ya estás registrado en esta edición.");
                     request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                     return;
                 }
 
-                // 2) Cupo disponible para el tipo?
                 // Obtenemos el DTO del tipo para consultar costo/cupo/lo que haya
                 DTTipoRegistro dtoTipo = ICE.verDetalleTRegistro(edicion, tipoReg);
 
-                // TODO: Reemplazar por tu método real que valida cupos.
-                // Por ejemplo: boolean hayCupo = ICE.hayCupo(edicion, tipoReg);
                 boolean hayCupo = true; // fallback si no hay API. De ser posible, usar dtoTipo.getCupoRestante() > 0
                 try {
                     // si tu DTO expone cupo disponible:
@@ -393,7 +390,6 @@ public class ServletEdicion extends HttpServlet {
                     return;
                 }
 
-                // 3) Validación de patrocinio si corresponde
                 boolean usarPatrocinio = "patrocinio".equalsIgnoreCase(forma);
                 if (usarPatrocinio) {
                     if (codigo == null || codigo.isBlank()) {
@@ -402,20 +398,11 @@ public class ServletEdicion extends HttpServlet {
                         return;
                     }
 
-                    // TODO: reemplazá los siguientes métodos por los de TU API:
-                    // - validar que el código sea para esta edición
-                    // - validar que aplique al tipo de registro
-                    // - validar que sea de la institución del asistente
-                    // - validar que no haya agotado el cupo de usos
+                   
                     boolean valido = false;
                     try {
-                        // Ejemplos de posibles firmas:
-                        // valido = ICE.validarCodigoPatrocinio(edicion, tipoReg, user.getNickname(), codigo);
-                        // o bien:
-                        // DTPatrocinio p = ICE.obtenerPatrocinio(edicion, codigo);
-                        // valido = tuValidacion(p, tipoReg, user, ...);
-                        var p = ICE.obtenerPatrocinio(edicion, codigo); // si no existe, lanzará excepción
-                        // Chequeos “manuales” defensivos usando reflexión para no romper si cambian nombres
+                        
+                        var p = ICE.obtenerPatrocinio(edicion, codigo); 
                         boolean okTipo = true, okInst = true, okUsos = true;
                         try {
                             var mt = p.getClass().getMethod("getTipoRegistro");
@@ -424,8 +411,6 @@ public class ServletEdicion extends HttpServlet {
                         try {
                             var mi = p.getClass().getMethod("getInstitucion");
                             var inst = String.valueOf(mi.invoke(p));
-                            // si tu usuario tiene institución en DTO, comparala;
-                            // si no, saltá este chequeo o hacelo en la capa de negocio
                         } catch (Exception ignore) {}
                         try {
                             var mu = p.getClass().getMethod("getUsosDisponibles");
@@ -443,23 +428,14 @@ public class ServletEdicion extends HttpServlet {
                         return;
                     }
 
-                    // 4) Registrar con patrocinio (costo 0)
-                    // TODO: reemplazá por tu método real de negocio:
-                    // ICE.registrarConPatrocinio(user.getNickname(), tipoReg, edicion, codigo);
                     ICE.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
-                    // TODO: si tu lógica requiere “marcar uso”, hacelo aquí:
-                    // ICE.consumirPatrocinio(edicion, codigo, user.getNickname());
 
                     request.setAttribute("mensaje", "Registro realizado exitosamente con patrocinio (costo $0).");
                 } else {
-                    // 4b) Registro general (paga costo del tipo)
                     ICE.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
                     request.setAttribute("mensaje", "Registro realizado exitosamente.");
                 }
 
-                // Tras éxito, recargamos el form como “confirmación” (o redirigí a detalle)
-                // Dejo forward para mostrar mensajes en el mismo JSP:
-                // Reponer combos e imágenes
                 DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
                 request.setAttribute("edicion", ed);
                 Set<DTTipoRegistro> tiposReg = new java.util.HashSet<>();

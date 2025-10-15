@@ -40,10 +40,10 @@ import java.util.Set;
 public class ConsultaEdicionDeEvento extends JInternalFrame {
 	private static ConsultaEdicionDeEvento instance = null;
 	public static interface AbrirRegistros {
-	    void open(String evento, String edicion, logica.dataTypes.DTTipoRegistro registro);
+	    void open(String evento, String edicion, logica.data_types.DTTipoRegistro registro);
 	}
 	public static interface AbrirPatrocinios {
-	    void open(String evento, String edicion, String nivel, java.util.List<logica.dataTypes.DTPatrocinio> patrociniosDelNivel);
+	    void open(String evento, String edicion, String nivel, java.util.List<logica.data_types.DTPatrocinio> patrociniosDelNivel);
 	}
 
 	
@@ -168,9 +168,9 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
             }
 
             try {
-                java.util.List<logica.dataTypes.DTPatrocinio> lista = new java.util.ArrayList<>();
+                java.util.List<logica.data_types.DTPatrocinio> lista = new java.util.ArrayList<>();
                 for (String inst : controllerEvento.listarPatrocinios(edicion)) {
-                    logica.dataTypes.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
+                    logica.data_types.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
                     if (p != null && p.getNivelPatrocinio().name().equalsIgnoreCase(nivel)) {
                         lista.add(p);
                     }
@@ -276,7 +276,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	    }
 	
 	    try {
-	        logica.dataTypes.DTDetalleEdicion dt = controllerEvento.mostrarDetallesEdicion(edicion);
+	        logica.data_types.DTDetalleEdicion dt = controllerEvento.mostrarDetallesEdicion(edicion);
 	        if (dt != null) {
 	            Object[] fila = new Object[]{
 	                dt.getNombre(),
@@ -336,7 +336,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
 	        if (instituciones !=null){
 	        for (String inst : instituciones) {
 	            try {
-	                logica.dataTypes.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
+	                logica.data_types.DTPatrocinio p = controllerEvento.obtenerPatrocinio(edicion, inst);
 	                if (p != null && p.getNivelPatrocinio().name() != null) niveles.add(p.getNivelPatrocinio().name());
 	            } catch (Exception ex) {
 	                ex.printStackTrace();
@@ -380,7 +380,7 @@ public class ConsultaEdicionDeEvento extends JInternalFrame {
     
     
     public void invocacionDesdeConsultaUsuario(String edicion) {
-    	String evento=controllerEvento.NomEvPorEd(edicion);
+    	String evento=controllerEvento.nomEvPorEd(edicion);
     	
     	cbxListadoDeEventos.setSelectedItem(evento);
     	actualizarEdicionesPara(evento);

@@ -16,11 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerUsuario;
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
 import logica.models.Factory;
-
 
 @MultipartConfig
 @WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })
@@ -302,14 +301,6 @@ public class ServletUsuario extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'usuario'");
             return;
         }
-
-        // Debug logging: print incoming parameters to server console
-        // System.out.println("[modificarDatos] start for usuario=" + nickParam);
-        // System.out.println("[modificarDatos] received nombre=" + request.getParameter("nombre")
-        //         + ", apellido=" + request.getParameter("apellido")
-        //         + ", fechaNac=" + request.getParameter("fechaNac")
-        //         + ", descripcion=" + request.getParameter("descripcion")
-        //         + ", web=" + request.getParameter("web"));
 
         DataUsuario usr;
         try {

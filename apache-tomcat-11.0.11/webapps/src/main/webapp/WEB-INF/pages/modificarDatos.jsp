@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="logica.dataTypes.*" %>
+<%@ page import="logica.data_types.*" %>
 <%@ page import="java.time.LocalDate" %>
 
 <%

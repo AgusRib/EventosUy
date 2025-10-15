@@ -14,9 +14,9 @@ import logica.models.Factory;
 import logica.models.Usuario;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTRegistro;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DTRegistro;
+import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 
 import javax.swing.AbstractListModel;
 import javax.swing.border.CompoundBorder;

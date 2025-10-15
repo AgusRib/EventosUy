@@ -2,7 +2,6 @@ package logica.manejadores;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 import logica.models.Asistente;
 import logica.models.Organizador;
@@ -56,8 +55,8 @@ public class ManejadorUsuario {
 			if (!existeNickname(nickname)) {
 				throw new Exception("No existe un usuario con este nickname");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return usuarios.get(nickname);
 	}

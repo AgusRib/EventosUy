@@ -1,5 +1,4 @@
 
-
 import java.io.IOException;
 import java.util.Set;
 import java.net.URLEncoder;
@@ -17,9 +16,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTPatrocinio;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DTTipoRegistro;
+import logica.data_types.DTPatrocinio;
+import logica.data_types.DataUsuario;
+import logica.data_types.DTTipoRegistro;
 import logica.enumerators.NivelPatrocinio;
 import logica.models.Factory;
 

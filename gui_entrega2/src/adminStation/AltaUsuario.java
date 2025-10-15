@@ -64,7 +64,7 @@ public class AltaUsuario extends JInternalFrame {
 		
 		setTitle("Alta de Usuario");
 		setClosable(true);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 350);
 		getContentPane().setLayout(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -96,7 +96,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(lblEmail);
 
 		btnAsistente = new JRadioButton("Asistente");
-		btnAsistente.setBounds(150, 97, 100, 23);
+		btnAsistente.setBounds(150, 129, 100, 23);
 		btnAsistente.setSelected(true);
 		btnAsistente.addActionListener(e -> {
 			verFormAsistente(btnAsistente.isSelected());
@@ -105,7 +105,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(btnAsistente);
 		
 		btnOrganizador = new JRadioButton("Organizador");
-		btnOrganizador.setBounds(250, 97, 100, 23);
+		btnOrganizador.setBounds(250, 129, 100, 23);
 		btnOrganizador.setSelected(false);
 		btnOrganizador.addActionListener(e -> {
 			verFormOrganizador(btnOrganizador.isSelected());
@@ -119,29 +119,29 @@ public class AltaUsuario extends JInternalFrame {
 		buttonGroup.add(btnAsistente);
 		
 		lblApellido = new JLabel("Apellido:");
-		lblApellido.setBounds(10, 130, 100, 14);
+		lblApellido.setBounds(10, 162, 100, 14);
 		getContentPane().add(lblApellido);
 		
 		txtApellido = new JTextField();
-		txtApellido.setBounds(150, 127, 200, 20);
+		txtApellido.setBounds(150, 159, 200, 20);
 		getContentPane().add(txtApellido);
 		
 		lbltxtFechaNac = new JLabel("Fecha de Nacimiento:");
-		lbltxtFechaNac.setBounds(10, 161, 150, 14);
+		lbltxtFechaNac.setBounds(10, 193, 150, 14);
 		getContentPane().add(lbltxtFechaNac);
 		
 		txtFechaNac = new JTextField();
-		txtFechaNac.setBounds(150, 158, 200, 20);
+		txtFechaNac.setBounds(150, 190, 200, 20);
 		getContentPane().add(txtFechaNac);
 		
 		// Etiqueta de ayuda para el formato de fecha
         lblFormatoFecha = new JLabel("Formato: yyyy-MM-dd");
-        lblFormatoFecha.setBounds(150, 180, 200, 14);
+        lblFormatoFecha.setBounds(150, 212, 200, 14);
         getContentPane().add(lblFormatoFecha);
 		
 		
 		txtInstitucion = new JLabel("Institucion:");
-		txtInstitucion.setBounds(10, 208, 100, 14);
+		txtInstitucion.setBounds(10, 240, 100, 14);
 		getContentPane().add(txtInstitucion);
 		
 		cmBxInstitucion = new JComboBox<String>();
@@ -150,24 +150,24 @@ public class AltaUsuario extends JInternalFrame {
 			cmBxInstitucion.addItem(inst);
 		}
 		
-		cmBxInstitucion.setBounds(150, 205, 200, 20);
+		cmBxInstitucion.setBounds(150, 237, 200, 20);
 		getContentPane().add(cmBxInstitucion);
 		
 		
 		lblDescripcion = new JLabel("Descripcion:");
-		lblDescripcion.setBounds(10, 130, 100, 14);
+		lblDescripcion.setBounds(10, 162, 100, 14);
 		getContentPane().add(lblDescripcion);
 		
 		txtDescripcion = new JTextField();
-		txtDescripcion.setBounds(150, 127, 200, 51);
+		txtDescripcion.setBounds(150, 159, 200, 51);
 		getContentPane().add(txtDescripcion);
 		
 		lblWeb = new JLabel("Web:");
-		lblWeb.setBounds(10, 208, 100, 14);
+		lblWeb.setBounds(10, 240, 100, 14);
 		getContentPane().add(lblWeb);
 		
 		txtWeb = new JTextField();
-		txtWeb.setBounds(150, 205, 200, 20);
+		txtWeb.setBounds(150, 237, 200, 20);
 		getContentPane().add(txtWeb);
 		
 		JLabel lblPassword = new JLabel("Password:");
@@ -179,7 +179,7 @@ public class AltaUsuario extends JInternalFrame {
 		getContentPane().add(txtPassword);
 		
 		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(150, 236, 89, 23);
+		btnAceptar.setBounds(150, 269, 89, 23);
 		getContentPane().add(btnAceptar);
 		btnAceptar.addActionListener(a -> {
 			try {
@@ -241,7 +241,7 @@ public class AltaUsuario extends JInternalFrame {
 		});
 		
 		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setBounds(261, 236, 89, 23);
+		btnCancelar.setBounds(250, 269, 89, 23);
 		getContentPane().add(btnCancelar);
 		btnCancelar.addActionListener(e -> {
 			this.setVisible(false);

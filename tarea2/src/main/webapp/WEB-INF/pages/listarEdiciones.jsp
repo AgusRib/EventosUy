@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="logica.dataTypes.DataUsuario" %>
-    <%@ page import="logica.dataTypes.DataUsuario.TipoUsuario" %>
-    <%@ page import="logica.dataTypes.DTDetalleEdicion" %>
+    <%@ page import="logica.data_types.DataUsuario" %>
+    <%@ page import="logica.data_types.DataUsuario.TipoUsuario" %>
+    <%@ page import="logica.data_types.DTDetalleEdicion" %>
     <%@ page import="logica.enumerators.EstadoEdicion" %>
     <%@ page import="java.util.Set" %>
 <!DOCTYPE html>

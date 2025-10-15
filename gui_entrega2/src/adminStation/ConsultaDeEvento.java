@@ -21,7 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTDetalleEvento;
+import logica.data_types.DTDetalleEvento;
 
 
 @SuppressWarnings("serial")

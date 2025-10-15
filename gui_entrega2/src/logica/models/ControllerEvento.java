@@ -15,12 +15,12 @@ import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTDetalleEdicion;
-import logica.dataTypes.DTDetalleEvento;
-import logica.dataTypes.DTPatrocinio;
-import logica.dataTypes.DTRegistro;
-import logica.dataTypes.DTTipoRegistro;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTDetalleEvento;
+import logica.data_types.DTPatrocinio;
+import logica.data_types.DTRegistro;
+import logica.data_types.DTTipoRegistro;
 import logica.enumerators.EstadoEdicion;
 import logica.enumerators.NivelPatrocinio;
 import logica.manejadores.ManejadorCategoria;
@@ -31,12 +31,12 @@ import logica.manejadores.ManejadorUsuario;
 
 public class ControllerEvento implements IControllerEvento{
 	
-	public static LocalDate fechaSistema = LocalDate.now();
+	private static LocalDate fechaSistema = LocalDate.now();
 	
 	@Override
 	public Set<String> listarEventos() {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
-		HashMap<String,Evento> eventos = mEventos.obtenerEventos(); 
+		HashMap<String, Evento> eventos = mEventos.obtenerEventos(); 
 		Set<String> nomEventos = new LinkedHashSet<>();
 		for (Evento eve : eventos.values()) {
 			nomEventos.add(eve.getNombre());
@@ -45,9 +45,9 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public Set<String>listarEdicionesTodas(){
+	public Set<String> listarEdicionesTodas(){
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		HashMap<String,Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
+		HashMap<String, Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
 		ediciones.putAll(mEdi.obtenerEdicionesConfirmadas());
 		ediciones.putAll(mEdi.obtenerEdicionesRechazadas());
 		Set<String> nomEdiciones = new LinkedHashSet<>();
@@ -60,8 +60,9 @@ public class ControllerEvento implements IControllerEvento{
 	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion,Set<String> categorias)throws NombreEventoExcepcion, Exception {
 		
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
-		if (mEventos.existeEvento(nombre)) {throw new Exception("El evento ya existe");}
-		else {
+		if (mEventos.existeEvento(nombre)) {
+			throw new Exception("El evento ya existe");
+		}else {
 			Evento nuevoEvento= new Evento(nombre, sigla, fechaAlta, descripcion);
 			ManejadorCategoria mCategoria = ManejadorCategoria.getInstance();
 			for (String cat : categorias) {
@@ -70,6 +71,7 @@ public class ControllerEvento implements IControllerEvento{
 			mEventos.agregarEvento(nuevoEvento);
 		}
 	}
+		
 	
 	@Override
 	public Set<String> listarCategorias() {
@@ -85,7 +87,7 @@ public class ControllerEvento implements IControllerEvento{
 		Evento eve = h_evento.obtenerEvento(nombreEvento);
 		Set<String> ediciones = new LinkedHashSet<>();
 		
-		if(eve != null) {
+		if (eve != null) {
 		  ediciones = eve.getEdiciones();
 		}
 		return ediciones;
@@ -127,8 +129,8 @@ public class ControllerEvento implements IControllerEvento{
 		
 		ManejadorEdicion h_edicion = ManejadorEdicion.getInstance();
 		Edicion edi = h_edicion.encontrarEdicion(nombreEdi);
-		if(!edi.existeTipoRegistro(nombre)) {
-			edi.crearTRegistro(nombre,desc,costo,cupo);
+		if (!edi.existeTipoRegistro(nombre)) {
+			edi.crearTRegistro(nombre, desc, costo, cupo);
 		} else {
 			throw new excepciones.TipoRegistroExistenteExcepcion("Ya existe un tipo registro con este nombre");
 		}
@@ -150,9 +152,9 @@ public class ControllerEvento implements IControllerEvento{
 	    Set<String> tiposReg = new HashSet<>();
 	    if (edi == null) {
 	        return tiposReg; // o lanzar una excepción si prefieres
-	    };
-	    for (TipoRegistro tr : edi.getTiposRegistro()) {
-	    	tiposReg.add(tr.getNombre());
+	    }
+	    for (TipoRegistro tipo_reg : edi.getTiposRegistro()) {
+	    	tiposReg.add(tipo_reg.getNombre());
 	    }
 		return tiposReg;
 	}
@@ -162,8 +164,8 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(edicion);
 		
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		Asistente usu = mU.obtenerAsistente(usuario);
+		ManejadorUsuario mUsuer = ManejadorUsuario.getInstance();
+		Asistente usu = mUsuer.obtenerAsistente(usuario);
 		
 		Registro reg = usu.getRegistro(edi);
 		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto());
@@ -171,33 +173,33 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion,FechaInicioPOSTFINAL,FechaInicioPREALTA, Exception {
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		if(mEdi.existeEdicion(nombre)) throw new NombreEdicionExistenteExcepcion("Ya existe una edicion con el nombre: " + nombre);
-		if(fechaInicio.isAfter(fechaFin)) throw new FechaInicioPOSTFINAL("La fecha de inicio no puede ser posterior a la fecha de finalizacion");
-		if(fechaInicio.isBefore(fechaAlta)) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta de edicion");
+		if (mEdi.existeEdicion(nombre)) throw new NombreEdicionExistenteExcepcion("Ya existe una edicion con el nombre: " + nombre);
+		if (fechaInicio.isAfter(fechaFin)) throw new FechaInicioPOSTFINAL("La fecha de inicio no puede ser posterior a la fecha de finalizacion");
+		if (fechaInicio.isBefore(fechaAlta)) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta de edicion");
 		
 		ManejadorEvento mEve = ManejadorEvento.getInstance();
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
+		ManejadorUsuario mUsuer = ManejadorUsuario.getInstance();
 		Evento eve = mEve.obtenerEvento(nombreEvento);
 		
-		if(eve == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
-		if(fechaInicio.isBefore(eve.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta del evento");
-		if(fechaAlta.isBefore(eve.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de alta de edicion no puede ser anterior a la fecha de alta del evento");
+		if  (eve == null) throw new IllegalArgumentException("No existe el evento: " + nombreEvento);
+		if (fechaInicio.isBefore(eve.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de inicio no puede ser anterior a la fecha de alta del evento");
+		if (fechaAlta.isBefore(eve.getFechaAlta())) throw new FechaInicioPREALTA(" La fecha de alta de edicion no puede ser anterior a la fecha de alta del evento");
 		
-		Organizador org = mU.obtenerOrganizador(nicknameOrganizador);
+		Organizador org = mUsuer.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
 
-		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais,eve,org);
+		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais, eve, org);
 		eve.agregarEdicion(nueva); 
 		mEdi.agregarEdicionIngresada(nueva);
 		
 	}
 	
-	public void ConfirmarRechazarEdicion(String nombreEdi, boolean aceptar) {
+	public void confirmarRechazarEdicion(String nombreEdi, boolean aceptar) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
-		if(aceptar && edi.getEstado() == EstadoEdicion.Ingresada) {
+		if (aceptar && edi.getEstado() == EstadoEdicion.Ingresada) {
 			edi.setEstado(EstadoEdicion.Confirmada);
 			mEdi.agregarEdicionIngresada(edi);
 		} else {
@@ -220,18 +222,18 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno,AsistenteYaRegistrado, Exception { 
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
 		//asumo que nomEdi viene de la interfaz en memoria
 			
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
 		Evento eve = edi.getEvento();
-		if(eve.getFechaAlta().isAfter(fechaSistema)) throw new FechaRegPREALTA("La edicion no se encuentra habilitada para registros.");
+		if (eve.getFechaAlta().isAfter(fechaSistema)) throw new FechaRegPREALTA("La edicion no se encuentra habilitada para registros.");
 		
 		
-		if(!edi.verificarCupoTipoReg(tipoReg)) throw new CupoLLeno("No hay cupo disponible para el tipo de registro seleccionado.");
+		if (!edi.verificarCupoTipoReg(tipoReg)) throw new CupoLLeno("No hay cupo disponible para el tipo de registro seleccionado.");
 			
-	    if(!edi.verificarRegistros(nickAsistente)) throw new AsistenteYaRegistrado("El asistente ya se encuentra registrado en la edicion seleccionada.");
+	    if (!edi.verificarRegistros(nickAsistente)) throw new AsistenteYaRegistrado("El asistente ya se encuentra registrado en la edicion seleccionada.");
 		
 		
 		
@@ -246,10 +248,10 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
 		
-		ManejadorUsuario mU = ManejadorUsuario.getInstance();
-		Asistente as = mU.obtenerAsistente(nickAsistente);
+		ManejadorUsuario mUsuer = ManejadorUsuario.getInstance();
+		Asistente asis = mUsuer.obtenerAsistente(nickAsistente);
 		
-		edi.crearRegistro(as,tipoReg);
+		edi.crearRegistro(asis, tipoReg);
 		return;
 	}
 	
@@ -257,11 +259,11 @@ public class ControllerEvento implements IControllerEvento{
 	public void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo) {
 	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
-	    TipoRegistro tr = edi.getTipoRegistro(tipoRegistroGratis);
+	    TipoRegistro tipo_reg = edi.getTipoRegistro(tipoRegistroGratis);
 	    
-	    Patrocinio p;
-	    if (tr == null) {
-	    	p = new Patrocinio(
+	    Patrocinio pat;
+	    if (tipo_reg == null) {
+	    	pat = new Patrocinio(
 		            fechaSistema,
 		            (int) Math.round(aporteEconomico),
 		            codigo,
@@ -270,7 +272,7 @@ public class ControllerEvento implements IControllerEvento{
 		            tipoRegistroGratis
 		    );
 	    } else {
-		    p = new Patrocinio(
+		    pat = new Patrocinio(
 		            fechaSistema,
 		            (int) Math.round(aporteEconomico),
 		            codigo,
@@ -281,7 +283,7 @@ public class ControllerEvento implements IControllerEvento{
 	    }
 	    
 
-	    edi.agregarPatrocinio(institucion, p);
+	    edi.agregarPatrocinio(institucion, pat);
 	}
 
 	@Override
@@ -294,45 +296,45 @@ public class ControllerEvento implements IControllerEvento{
 		return fechaSistema = fechaNueva;
 	}
 	
-	public String NomEvPorEd(String nomEdi) {
+	public String nomEvPorEd(String nomEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
 		Evento eve = edi.getEvento();
 		return eve.getNombre();
 	}
 	@Override
-	public void AceptarEdicion(String nomedi, String nomev) {
+	public void aceptarEdicion(String nomedi, String nomev) {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
 		Evento eve = mEventos.obtenerEvento(nomev);
 		Edicion edi = eve.getEdicion(nomedi);
 		edi.setEstado(EstadoEdicion.Confirmada);
-		eve.CambioEstado(edi,EstadoEdicion.Confirmada);
+		eve.cambioEstado(edi, EstadoEdicion.Confirmada);
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		mEdi.CambioEstado(edi,EstadoEdicion.Confirmada);
+		mEdi.cambioEstado(edi, EstadoEdicion.Confirmada);
 		
 		
 	}
 	@Override
-	public void RechazarEdicion(String nomedi, String nomev) {
+	public void rechazarEdicion(String nomedi, String nomev) {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
 		Evento eve = mEventos.obtenerEvento(nomev);
 		Edicion edi = eve.getEdicion(nomedi);
 		edi.setEstado(EstadoEdicion.Rechazada);
-		eve.CambioEstado(edi,EstadoEdicion.Rechazada);
+		eve.cambioEstado(edi, EstadoEdicion.Rechazada);
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-		mEdi.CambioEstado(edi,EstadoEdicion.Rechazada);
+		mEdi.cambioEstado(edi, EstadoEdicion.Rechazada);
 		
 		
 	}
 	
 	@Override
-	public Set<String>listarEdicionesConfirmadas(String nombreEvento) {
+	public Set<String> listarEdicionesConfirmadas(String nombreEvento) {
 		
 		ManejadorEvento h_evento = ManejadorEvento.getInstance();
 		Evento eve = h_evento.obtenerEvento(nombreEvento);
 		Set<String> ediciones = new LinkedHashSet<>();
 		
-		if(eve != null) {
+		if (eve != null) {
 		  for (Edicion edi : eve.getColEdicionesConfirmadas()) {
 			  ediciones.add(edi.getNombre());
 		  }
@@ -347,7 +349,7 @@ public class ControllerEvento implements IControllerEvento{
 		Evento eve = h_evento.obtenerEvento(nombreEvento);
 		Set<String> ediciones = new LinkedHashSet<>();
 		
-		if(eve != null) {
+		if (eve != null) {
 		  for (Edicion edi : eve.getColEdicionesIngresadas()) {
 			  ediciones.add(edi.getNombre());
 		  }

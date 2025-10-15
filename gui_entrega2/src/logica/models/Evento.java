@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import logica.dataTypes.DTDetalleEvento;
+import logica.data_types.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
 
 public class Evento{
@@ -18,7 +18,7 @@ public class Evento{
 	private List<Edicion> colEdicionesRechazadas;
 	private List<Categoria> colCategorias;
 
-	public Evento(String nombre,String sigla, LocalDate fecha, String descripcion) {
+	public Evento(String nombre, String sigla,  LocalDate fecha, String descripcion) {
 		this.nombre = nombre;
 		this.fechaAlta = fecha;
 		this.sigla = sigla;
@@ -120,7 +120,7 @@ public class Evento{
 		return colCategorias;
 	}
 
-	public void CambioEstado(Edicion edi,EstadoEdicion  nuevoestado) {
+	public void cambioEstado(Edicion edi, EstadoEdicion  nuevoestado) {
 		colEdicionesIngresadas.remove(edi);
 		if (nuevoestado == EstadoEdicion.Rechazada) colEdicionesRechazadas.add(edi);
 		if (nuevoestado == EstadoEdicion.Confirmada)colEdicionesConfirmadas.add(edi);
