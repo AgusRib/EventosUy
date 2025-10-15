@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import casosPrueba.CargaDatos;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.manejadores.ManejadorUsuario;
 import logica.models.Factory;
 
 public class Main {
