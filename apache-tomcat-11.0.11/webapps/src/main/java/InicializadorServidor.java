@@ -10,15 +10,8 @@ import jakarta.servlet.annotation.WebListener;
 public class InicializadorServidor implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-    	System.out.println("Servidor iniciado — cargando recursos...");
-		
-    	try {
-			CargarDatos.cargarDatos(sce.getServletContext().getRealPath("/WEB-INF"));
-			System.out.println("Carga de datos iniciales completada.");
-		} catch (Exception e) {
-			System.err.println("Error al cargar datos iniciales: " + e.getMessage());
-		}
-    }
+    	System.out.println("Servidor iniciado — cargando recursos...");}
+	
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
