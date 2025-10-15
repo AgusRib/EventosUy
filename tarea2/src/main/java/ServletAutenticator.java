@@ -158,7 +158,7 @@ public class ServletAutenticator extends HttpServlet {
 			if (pfp != null) {
 				request.getSession().setAttribute("pfp", pfp);
 			} else {
-				request.getSession().setAttribute("pfp", "default.png");
+				request.getSession().setAttribute("pfp", "default.jpg");
 			}
 			
 			// Registro exitoso - redirigir a inicio de sesión
