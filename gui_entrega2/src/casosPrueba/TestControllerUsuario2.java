@@ -56,7 +56,7 @@ public class TestControllerUsuario2{
 		
 		Asistente as= (Asistente) mU.obtenerUsuario("sofirod");
 		DTAsistente dtas= ICU.infoAsistente("sofirod");
-		DTAsistente dtas2= new DTAsistente(as.getNickname(), as.getNombre(), as.getEmail(), as.getApellido(), as.getFechaNacimiento());
+		DTAsistente dtas2= new DTAsistente(as.getNickname(), as.getNombre(), as.getEmail(), as.getApellido(), as.getFechaNacimiento(), as.getInstitucion().getNombre());
 		assertEquals(true, dtas.getNombre().equals(dtas2.getNombre()));
 		assertEquals(true, dtas.getapellido().equals(dtas2.getapellido()));
 		assertEquals(true, dtas.getEmail().equals(dtas2.getEmail()));

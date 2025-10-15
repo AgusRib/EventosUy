@@ -67,7 +67,7 @@ public class Asistente extends Usuario {
 	
 	public DTAsistente infoAsist() {
 		//para evitar los getters podriamos hacer que Usuario sea protected 
-		DTAsistente dtasis = new DTAsistente(this.getNickname(), this.getNombre(), this.getEmail(), this.apellido, this.fechaNacimiento);
+		DTAsistente dtasis = new DTAsistente(this.getNickname(), this.getNombre(), this.getEmail(), this.apellido, this.fechaNacimiento, (this.institucion != null) ? this.institucion.getNombre() : null);
 		return dtasis;
 	}
 	

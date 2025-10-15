@@ -137,9 +137,9 @@ public class ControllerUsuario implements IControllerUsuario {
 		Asistente user = mUser.obtenerAsistente(nickname);
 		DTAsistente dtA;
 		if (user.getInstitucion() != null) {
-			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento());
+			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento(), user.getInstitucion().getNombre());
 		} else {
-			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento());
+			dtA = new DTAsistente(user.getNickname(), user.getNombre(), user.getEmail(), user.getApellido(), user.getFechaNacimiento(), null);
 		}
 		return dtA;
 	}
@@ -207,10 +207,20 @@ public class ControllerUsuario implements IControllerUsuario {
 	  }
 	  return null;
   }
+  
+  @Override
+  public String obtenerInstitucionAsistente(String nickname) {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Asistente as = mUser.obtenerAsistente(nickname);
+	  if (as.getInstitucion() != null) {
+		  return as.getInstitucion().getNombre();
+	  } else {
+		  return null;
+	  }
 
 
 
-}
+}}
 	
 
 

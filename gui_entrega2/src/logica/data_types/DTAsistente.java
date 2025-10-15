@@ -12,14 +12,16 @@ public class DTAsistente extends DataUsuario {
 	private String email;
 	private String apellido;
 	private LocalDate fechaNacimiento;
+	private String institucion;
 
-	public DTAsistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento) {
+	public DTAsistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento,String institucion) {
 		super(nickname, nombre, email, TipoUsuario.ASISTENTE);
 		this.nickname = nickname;
 		this.nombre = nombre;
 		this.email = email;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
+		
 	}
 
 	public String getnickname() {
@@ -46,5 +48,9 @@ public class DTAsistente extends DataUsuario {
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-}
+
+
+   public String getInstitucion() {
+		return institucion;
+	}}
 

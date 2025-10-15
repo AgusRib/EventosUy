@@ -62,6 +62,8 @@ public interface IControllerUsuario {
 	DataUsuario iniciarSesionNickname(String nickname, String password);
 
 	DataUsuario iniciarSesionEmail(String email, String password);
+
+	String obtenerInstitucionAsistente(String nickname);
 	
 
 }
