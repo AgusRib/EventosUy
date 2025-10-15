@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import logica.dataTypes.DTAsistente;
+import logica.data_types.DTAsistente;
 
 public class Asistente extends Usuario {
 	

@@ -6,7 +6,7 @@ public abstract class Usuario {
 	protected String nombre;
 	private String email;
 	private String password;
-	
+
 	public String getNickname() {
 		return nickname;
 	}

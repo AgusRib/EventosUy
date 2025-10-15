@@ -20,8 +20,8 @@ import excepciones.UsuarioNoEncontrado;
 import logica.models.Factory;
 import logica.models.Usuario;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 
 
 

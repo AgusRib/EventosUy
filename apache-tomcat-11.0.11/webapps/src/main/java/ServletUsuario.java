@@ -18,9 +18,9 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import logica.controllers.IControllerUsuario;
 import logica.controllers.IControllerEvento;
-import logica.dataTypes.DTAsistente;
-import logica.dataTypes.DTOrganizador;
-import logica.dataTypes.DataUsuario;
+import logica.data_types.DTAsistente;
+import logica.data_types.DTOrganizador;
+import logica.data_types.DataUsuario;
 import logica.models.Factory;
 
 @MultipartConfig

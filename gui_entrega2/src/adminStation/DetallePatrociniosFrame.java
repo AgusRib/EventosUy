@@ -15,13 +15,13 @@ public class DetallePatrociniosFrame extends JInternalFrame {
     private final String evento;
     private final String edicion;
     private final String nivel; // String elegido en el combo (p.ej. "ORO")
-    private final List<logica.dataTypes.DTPatrocinio> patrocinios;
+    private final List<logica.data_types.DTPatrocinio> patrocinios;
 
     private JTable table;
     private JLabel lblResumen;
 
     public DetallePatrociniosFrame(String evento, String edicion, String nivel,
-                                   List<logica.dataTypes.DTPatrocinio> patrociniosDelNivel) {
+                                   List<logica.data_types.DTPatrocinio> patrociniosDelNivel) {
         super("Patrocinios - Nivel " + nivel, true, true, true, true);
         this.evento = evento;
         this.edicion = edicion;
@@ -95,7 +95,7 @@ public class DetallePatrociniosFrame extends JInternalFrame {
         int count = 0;
 
         if (patrocinios != null) {
-            for (logica.dataTypes.DTPatrocinio p : patrocinios) {
+            for (logica.data_types.DTPatrocinio p : patrocinios) {
                 String fecha = p.getFecha() != null ? p.getFecha().format(df) : "";
                 String monto = nf.format(p.getMonto());
                 String codigo = safe(p.getCodigo());

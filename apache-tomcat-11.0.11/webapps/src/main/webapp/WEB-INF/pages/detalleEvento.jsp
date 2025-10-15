@@ -2,9 +2,9 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="logica.dataTypes.DTDetalleEvento" %>
+<%@ page import="logica.data_types.DTDetalleEvento" %>
 <%@ page import="logica.enumerators.EstadoEdicion" %>
-<%@ page import="logica.dataTypes.DataUsuario.TipoUsuario" %>
+<%@ page import="logica.data_types.DataUsuario.TipoUsuario" %>
 
 <%
     DTDetalleEvento evento = (DTDetalleEvento) request.getAttribute("evento");
@@ -13,7 +13,7 @@
     Set<Map<String, Object>> ediciones = (Set<Map<String, Object>>) request.getAttribute("ediciones");
     
     // Obtener información del usuario para determinar si es organizador
-    logica.dataTypes.DataUsuario usuario = (logica.dataTypes.DataUsuario) request.getSession().getAttribute("usuario");
+    logica.data_types.DataUsuario usuario = (logica.data_types.DataUsuario) request.getSession().getAttribute("usuario");
     boolean esOrganizador = usuario != null && usuario.getTipo() == TipoUsuario.ORGANIZADOR;
     
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

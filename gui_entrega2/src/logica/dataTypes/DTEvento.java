@@ -1,1 +1,1 @@
-package logica.dataTypes;
+package logica.data_types;

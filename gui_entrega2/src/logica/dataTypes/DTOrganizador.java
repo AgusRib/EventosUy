@@ -1,4 +1,4 @@
-package logica.dataTypes;
+package logica.data_types;
 
 
 public class DTOrganizador extends DataUsuario {

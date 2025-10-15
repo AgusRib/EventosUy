@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DataUsuario;
+import logica.data_types.DataUsuario;
 import logica.models.Factory;
 import excepciones.NombreUsuarioExistente;
 import excepciones.EmailRepetido;

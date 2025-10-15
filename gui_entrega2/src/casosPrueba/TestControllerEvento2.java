@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTAsistente;
+import logica.data_types.DTAsistente;
 import logica.models.Factory;
 
 

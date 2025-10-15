@@ -1,4 +1,4 @@
-package logica.dataTypes;
+package logica.data_types;
 
 import java.time.LocalDate;
 import java.util.HashSet;

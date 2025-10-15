@@ -19,10 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
-import logica.dataTypes.DTDetalleEdicion;
-import logica.dataTypes.DTDetalleEvento;
-import logica.dataTypes.DataUsuario;
-import logica.dataTypes.DataUsuario.TipoUsuario;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTDetalleEvento;
+import logica.data_types.DataUsuario;
+import logica.data_types.DataUsuario.TipoUsuario;
 import logica.models.Factory;
 
 /**

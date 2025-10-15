@@ -2,9 +2,9 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.dataTypes.DataUsuario" %>
-<%@ page import="logica.dataTypes.DTOrganizador" %>
-<%@ page import="logica.dataTypes.DTAsistente" %>
+<%@ page import="logica.data_types.DataUsuario" %>
+<%@ page import="logica.data_types.DTOrganizador" %>
+<%@ page import="logica.data_types.DTAsistente" %>
 
 <!doctype html>
 

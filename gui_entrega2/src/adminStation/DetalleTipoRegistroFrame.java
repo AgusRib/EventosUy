@@ -11,9 +11,9 @@ public class DetalleTipoRegistroFrame extends JInternalFrame {
 
     private final String evento;
     private final String edicion;
-    private final logica.dataTypes.DTTipoRegistro dto;
+    private final logica.data_types.DTTipoRegistro dto;
 
-    public DetalleTipoRegistroFrame(String evento, String edicion, logica.dataTypes.DTTipoRegistro dto) {
+    public DetalleTipoRegistroFrame(String evento, String edicion, logica.data_types.DTTipoRegistro dto) {
         super("Detalle de Tipo de Registro", true, true, true, true);
         this.evento = evento;
         this.edicion = edicion;

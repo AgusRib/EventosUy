@@ -1,4 +1,4 @@
-package logica.dataTypes;
+package logica.data_types;
 
 public class DTTipoRegistro {
 	private String nombre;
@@ -46,8 +46,8 @@ public class DTTipoRegistro {
 	
 	public DTTipoRegistro infoTipoRegistro() {
 		
-		DTTipoRegistro dt = new DTTipoRegistro(nombre, descripcion, costo, cupo);
-		return dt;
+		DTTipoRegistro dtTipoRegistro = new DTTipoRegistro(nombre, descripcion, costo, cupo);
+		return dtTipoRegistro;
 		
 	}
 }

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logica.controllers.IControllerEvento;
 import logica.dataTypes.DTDetalleEvento;
+import logica.data_types.DTDetalleEvento;
+import logica.models.Evento;
 import logica.models.Factory;
 
 
