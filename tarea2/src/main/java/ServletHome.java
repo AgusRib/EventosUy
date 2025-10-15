@@ -1,7 +1,6 @@
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,9 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import logica.controllers.IControllerEvento;
 import logica.dataTypes.DTDetalleEvento;
-import logica.models.Evento;
 import logica.models.Factory;
-import java.time.LocalDate;
 
 
 @WebServlet("/HomeServlet")
