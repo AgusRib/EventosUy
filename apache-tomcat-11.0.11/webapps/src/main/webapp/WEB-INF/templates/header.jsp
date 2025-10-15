@@ -67,7 +67,7 @@
 					<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
 						href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
 						aria-expanded="false" aria-haspopup="true"> <img
-						src="uploads/usuarios/<%= session.getAttribute("pfp") %>" alt="JA"
+						src="uploads/usuarios/<%= session.getAttribute("pfp") %>" 
 						class="rounded-circle"
 						style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
 						<span><%= user.getNombre() %></span> <i class="bi bi-chevron-down"></i>

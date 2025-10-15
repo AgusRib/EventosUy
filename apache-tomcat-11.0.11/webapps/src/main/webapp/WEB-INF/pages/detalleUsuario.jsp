@@ -262,7 +262,7 @@ body.with-collapsed {
                                 String imgEd = (edicionesMap != null) ? edicionesMap.get(ed) : null;
                         %>
                                 <div class="contenedor-edicion d-flex align-items-center gap-2 mb-2">
-                                    <a href="<%= request.getContextPath() %>/detalleEdicion?nombre=<%= URLEncoder.encode(ed, "UTF-8") %>">
+                                    <a href="<%= request.getContextPath() %>/detalleEdicion?nombre=<%= URLEncoder.encode(ed, "UTF-8") %>" style="display:inline-block;width:64px;height:64px;">
                                         <img class="foto-edicion" src="<%= request.getContextPath() %>/<%= imgEd != null ? imgEd : "assets/images/SinFoto.jpg" %>" alt="edicion" style="width:64px;height:64px;object-fit:cover;display:inline-block;vertical-align:middle;">
                                     </a>
                                     <div class="nombreEdicion" style="margin-left:6px;">
