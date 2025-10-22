@@ -192,14 +192,14 @@ body.with-collapsed {
 		<div class="container-xl ">
 			<div class="row">
 				<!--pa dejar dos cartas en una sola columna y la otra a su izq-->
-				<div class="miau">
+				<div class="col-10 mb-3 mb-lg-0">
 
 					<!-- Header perfil -->
 					<section class="card mb-3 bg-light ">
 						<!-- make card-body a centered flex container so inner row is centered horizontally and vertically -->
-                        <div class="card-body d-flex justify-content-center align-items-center" style="min-height:160px;">
-							<div class="d-flex align-items-center gap-3">
-                                <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <div class="card-body align-items-center d-flex justify-content-between gap-4 " style="min-height:180px;">
+							<div class="d-flex align-items-center d-flex justify-content-between gap-4">
+                                <div class="d-flex align-items-center gap-3 flex-wrap col-4" id="fotoCarnet">
                                     <div class="contenedor-fotoPerfil mb-0">
                                         <img class="foto-usuario avatar" src="<%= request.getContextPath() %>/<%= imagenUsuario != null ? imagenUsuario : "uploads/usuarios/default.jpg" %>"
                                             alt="<%= usuario.getNickname() %>" style="height: 127px; width:127px;">
@@ -211,7 +211,7 @@ body.with-collapsed {
                                         <div class="rol"><%= usuario.getTipo() %></div>
                                     </div>
                                 </div>
-                                <div class="d-flex flex-column contenedor-datosUsuario text-start">
+                                <div class="d-flex flex-column contenedor-datosUsuario text-start col-4" id="datos">
                                      <div class="datosUsuario">
                                         <div class="nombre">
                                             <u>Nombre:</u> <%= usuario.getNombre() %>

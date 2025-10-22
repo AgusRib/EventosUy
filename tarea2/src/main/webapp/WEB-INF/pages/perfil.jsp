@@ -113,7 +113,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 	<main class="contUser" id="mi-cuenta-user">
 		<div class="container-xl">
 			<div class="row">
-				<div class="col-6">
+				<div class="col-12 col-md-6 mb-3 mb-lg-0">
 					<section class="card mb-3 bg-light">
 						<div class="card-body">
 							<div class="d-flex align-items-center justify-content-between gap-4">
@@ -188,7 +188,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 					</section>
 				</div>
 
-				<div class="col-6 d-flex flex-column gap-3">
+				<div class="col-12 col-md-6 d-flex flex-column gap-3">
 					<section class="card mb-3 bg-light">
 						<div class="card-body p-0">
 							<ul class="list-unstyled m-0">
