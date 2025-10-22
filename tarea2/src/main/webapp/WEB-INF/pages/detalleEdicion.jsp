@@ -5,6 +5,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="logica.data_types.*" %>
 <%@ page import="logica.data_types.DataUsuario.TipoUsuario" %>
+<%@ page import="java.time.LocalDate" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -109,14 +110,18 @@
 					</a>
 				</div> <% }} else if (user != null) {
 					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
-					%>
+						if (((LocalDate) session.getAttribute("fecha")).isAfter(edi.getFechaFin()) ) {
+					%> 
+					<div class="alert alert-secondary text-center mb-0" role="alert">
+						Esta edición ya finalizó.</div>
+					<% } else { %>
 				<div class="mt-4">
 					<a href="altaRegistro?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
 						<button class="btn btn-success rounded-3 p-3">
 							<div class="header-button">Registrarse a la Edicion</div>
 						</button>
 					</a>
-				</div> <% } else { %>
+				</div> <% }} else { %>
 				<div class="mt-4">
 					<a href="ver-registro?edicion=<%= edi.getNombre()  %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
 						<button class="button2 rounded-3 p-3">
@@ -131,7 +136,7 @@
 					<div class="d-flex align-items-baseline gap-2">
 						<h5 class="py-2">Tipos de Registro</h5>
 						<% 
-						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador && ((LocalDate) session.getAttribute("fecha")).isBefore(edi.getFechaFin())) {
 						%>
 						<a href="/tarea2/alta-tipo-registro?edicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
@@ -178,7 +183,7 @@
 					<div class="d-flex align-items-baseline gap-2">
 						<h5 class="py-2">Patrocinadores</h5>
 						<% 
-						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador && ((LocalDate) session.getAttribute("fecha")).isBefore(edi.getFechaFin())) {
 						%>
 						<a href="altaPatrocinio?nombreEdicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>
@@ -198,11 +203,11 @@
 						<div class="accordion-item">
 							<h2 class="accordion-header">
 								<button class="accordion-button collapsed" type="button"
-									data-bs-toggle="collapse" data-bs-target="#<%= patr.getCodigo() %>"
-									aria-expanded="false" aria-controls="<%= patr.getCodigo() %>">
+									data-bs-toggle="collapse" data-bs-target="#collapse<%= patr.getCodigo() %>"
+									aria-expanded="false" aria-controls="collapse<%= patr.getCodigo() %>">
 									<%= patr.getInstitucion() %></button>
 							</h2>
-							<div id="<%= patr.getCodigo() %>" class="accordion-collapse collapse"
+							<div id="collapse<%= patr.getCodigo() %>" class="accordion-collapse collapse"
 								aria-labelledby="headingPatro"
 								data-bs-parent="#accordionPatrocinadores">
 								<div class="accordion-body registro-info">
