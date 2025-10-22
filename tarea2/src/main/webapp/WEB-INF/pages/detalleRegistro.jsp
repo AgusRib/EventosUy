@@ -62,12 +62,6 @@
           <strong>Costo:</strong> $<%= reg.getCosto() %>
         </div>
 
-        <div class="mt-4">
-          <a class="btn btn-outline-secondary"
-             href="<%= ctx %>/listar-registros?edicion=<%= java.net.URLEncoder.encode(nombreEdicion == null ? "" : nombreEdicion, java.nio.charset.StandardCharsets.UTF_8) %>">
-            Volver al listado
-          </a>
-        </div>
       </div>
 
     </div>

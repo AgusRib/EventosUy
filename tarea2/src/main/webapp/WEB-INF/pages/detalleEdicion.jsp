@@ -1,3 +1,4 @@
+<%@page import="jdk.internal.org.jline.terminal.TerminalBuilder.SystemOutput"%>
 <%@page import="java.util.HashSet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -51,29 +52,29 @@
 					<strong class="me-2">Organizador:</strong> <a
 						href="detalleUsuario?usuarios=<%= edi.getOrganizador() %>"
 						class="d-flex align-items-center text-decoration-none"> <img
-						<% 
-						String imagenOrganizador = (String) request.getAttribute("imagenOrganizador");
-						String nombre = (String) request.getAttribute("nombre");
-						%>
-						src="<%= imagenOrganizador %>" alt="<%= edi.getOrganizador() %>"
-						class="rounded-circle me-2"
-						style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-						<span class="fw-bold text-dark"><%= edi.getOrganizador() %></span>
-					</a>
+					<% 
+					String imagenOrganizador = (String) request.getAttribute("imagenOrganizador");
+					String nombre = (String) request.getAttribute("nombre");
+					%>
+					src="<%= imagenOrganizador %>" alt="<%= edi.getOrganizador() %>"
+					class="rounded-circle me-2"
+					style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+					<span class="fw-bold text-dark"><%= edi.getOrganizador() %></span>
+				</a>
 				</div>
 				<div class="mb-2 d-flex align-items-center">
 					<% 
-						String imagenEvento = (String) request.getAttribute("imagenEvento");
-						String nombreEvento = (String) request.getAttribute("nombreEvento");
+					String imagenEvento = (String) request.getAttribute("imagenEvento");
+					String nombreEvento = (String) request.getAttribute("nombreEvento");
 					%>
 					<strong class="me-2">Evento:</strong> <a
 						href="detalleEvento?nombre=<%= nombreEvento %>"
 						class="d-flex align-items-center text-decoration-none"> <img
-						src="<%= imagenEvento %>" alt="<%= nombreEvento %>"
-						class="rounded-circle me-2"
-						style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
-						<span class="fw-bold text-dark"><%= nombreEvento %></span>
-					</a>
+					src="<%= imagenEvento %>" alt="<%= nombreEvento %>"
+					class="rounded-circle me-2"
+					style="width: 32px; height: 32px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
+					<span class="fw-bold text-dark"><%= nombreEvento %></span>
+				</a>
 				</div>
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Sigla:</strong> <span
@@ -151,7 +152,7 @@
 							<h2 class="accordion-header" id="heading<%= i %>">
 								<button class="accordion-button collapsed" type="button"
 									data-bs-toggle="collapse" data-bs-target="#collapse<%= i %>"
-									aria-expanded="false" aria-controls="collapse">
+									aria-expanded="false" aria-controls="collapse<%= i %>">
 									<%= tipoReg.getNombre() %></button>
 							</h2>
 							<div id="collapse<%= i %>" class="accordion-collapse collapse"
@@ -179,7 +180,7 @@
 						<% 
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 						%>
-						<a href="#" class="btn btn-success btn-sm"
+						<a href="altaPatrocinio?nombreEdicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>
 						</a> <% } %>
 						
@@ -237,10 +238,8 @@
 			</div>
 		</div>
 	</div>
-
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
-

@@ -12,13 +12,10 @@
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-	crossorigin="anonymous"></script>
+
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
-<link rel="icon" type="image/x-icon" href="../assets/icons/Logo.png">
+<link rel="icon" type="image/x-icon" href="assets/icons/Logo.png">
 <!-- Icono de la pestaña -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -27,10 +24,8 @@
 	crossorigin="anonymous">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-	crossorigin="anonymous"></script>	
+	<link rel="stylesheet" href="assets/css/styles.css">
+	
 	
 <% 
 	DataUsuario user = (DataUsuario) session.getAttribute("usuario");
@@ -66,7 +61,7 @@
 					<a class="d-flex align-items-center text-decoration-none gap-2 m-3"
 						href="#" id="userMenuDropdown" data-bs-toggle="dropdown"
 						aria-expanded="false" aria-haspopup="true"> <img
-						src="uploads/usuarios/<%= session.getAttribute("pfp") %>" alt="JA"
+						src="uploads/usuarios/<%= session.getAttribute("pfp") %>" 
 						class="rounded-circle"
 						style="width: 38px; height: 38px; object-fit: cover; border: 1px solid rgba(0, 0, 0, .06);">
 						<span><%= user.getNombre() %></span> <i class="bi bi-chevron-down"></i>

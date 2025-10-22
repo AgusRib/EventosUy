@@ -1,33 +1,19 @@
+import java.io.IOException;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import excepciones.TipoRegistroExistenteExcepcion;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import logica.controllers.IControllerEvento;
-import logica.controllers.IControllerUsuario;
-import logica.data_types.DTDetalleEdicion;
 import logica.data_types.DTRegistro;
-import logica.data_types.DataUsuario;
-import logica.data_types.DataUsuario.TipoUsuario;
 import logica.models.Factory;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import java.net.*;
-
-import casosPrueba.CargaDatos;
-import excepciones.TipoRegistroExistenteExcepcion;
 
 
 /**

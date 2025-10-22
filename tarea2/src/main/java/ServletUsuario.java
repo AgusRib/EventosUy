@@ -1,5 +1,4 @@
 
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
@@ -14,6 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import logica.controllers.IControllerUsuario;
 import logica.controllers.IControllerEvento;
 import logica.data_types.DTAsistente;
@@ -302,6 +304,14 @@ public class ServletUsuario extends HttpServlet {
             return;
         }
 
+        // Debug logging: print incoming parameters to server console
+        // System.out.println("[modificarDatos] start for usuario=" + nickParam);
+        // System.out.println("[modificarDatos] received nombre=" + request.getParameter("nombre")
+        //         + ", apellido=" + request.getParameter("apellido")
+        //         + ", fechaNac=" + request.getParameter("fechaNac")
+        //         + ", descripcion=" + request.getParameter("descripcion")
+        //         + ", web=" + request.getParameter("web"));
+
         DataUsuario usr;
         try {
             usr = this.controllerUsuario.infoUsuario(nickParam);
@@ -368,6 +378,13 @@ public class ServletUsuario extends HttpServlet {
                 Part avatar = request.getPart("avatar");
                 if (avatar != null && avatar.getSize() > 0) {
                     ManejadorArchivos.guardarArchivo(avatar, nickParam, "usuarios", getServletContext());
+    				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+    				System.out.println("PFP seteada en sesión: " + pfp);
+    				if (pfp != null) {
+    					request.getSession().setAttribute("pfp", pfp);
+    				} else {
+    					request.getSession().setAttribute("pfp", "default.png");
+    				}
                 }
             } catch (Exception ignore) { /* no cortar el flujo por imagen */ }
 

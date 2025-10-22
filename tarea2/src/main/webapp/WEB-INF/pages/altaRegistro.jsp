@@ -164,7 +164,7 @@ main.contUser { padding:18px; }
             <button type="submit" class="btn btn-primary" <%= yaRegistrado ? "disabled" : "" %>>
               Registrar
             </button>
-            <a href="<%= ctx %>/" class="btn btn-secondary">Cancelar</a>
+            <a href="<%= back  %>" class="btn btn-secondary">Cancelar</a>
           </div>
         </form>
       </div>

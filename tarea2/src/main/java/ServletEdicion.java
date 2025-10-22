@@ -1,4 +1,3 @@
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -360,15 +359,16 @@ public class ServletEdicion extends HttpServlet {
             if (edicion == null || edicion.isBlank() || tipoReg == null || tipoReg.isBlank() ||
                 forma == null || forma.isBlank()) {
                 request.setAttribute("error", "Completá la edición, el tipo de registro y la forma de registro.");
-                // Volvemos a GET del form para recargar listas/imagenes
-                response.sendRedirect(request.getContextPath() + "/altaRegistro?edicion=" + 
-                     java.net.URLEncoder.encode(edicion == null ? "" : edicion, java.nio.charset.StandardCharsets.UTF_8));
+                // Instead of redirecting (which loses attributes), populate the attributes and forward so the combobox stays filled
+                populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                 return;
             }
 
             try {
                 if (ICU.listarRegistrosAEventos(user.getNickname()).contains(edicion)) {
                     request.setAttribute("error", "Ya estás registrado en esta edición.");
+                    populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
                     request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                     return;
                 }
@@ -386,6 +386,7 @@ public class ServletEdicion extends HttpServlet {
 
                 if (!hayCupo) {
                     request.setAttribute("error", "No hay cupos disponibles para el tipo seleccionado.");
+                    populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
                     request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                     return;
                 }
@@ -394,36 +395,70 @@ public class ServletEdicion extends HttpServlet {
                 if (usarPatrocinio) {
                     if (codigo == null || codigo.isBlank()) {
                         request.setAttribute("error", "Ingresá el código de patrocinio.");
+                        populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
                         request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                         return;
                     }
 
                    
-                    boolean valido = false;
+                    boolean valido = true;
                     try {
-                        
-                        var p = ICE.obtenerPatrocinio(edicion, codigo); 
-                        boolean okTipo = true, okInst = true, okUsos = true;
-                        try {
-                            var mt = p.getClass().getMethod("getTipoRegistro");
-                            okTipo = tipoReg.equals(String.valueOf(mt.invoke(p)));
-                        } catch (Exception ignore) {}
-                        try {
-                            var mi = p.getClass().getMethod("getInstitucion");
-                            var inst = String.valueOf(mi.invoke(p));
-                        } catch (Exception ignore) {}
-                        try {
-                            var mu = p.getClass().getMethod("getUsosDisponibles");
-                            Object v = mu.invoke(p);
-                            if (v instanceof Integer u) okUsos = u > 0;
-                        } catch (Exception ignore) {}
-                        valido = okTipo && okInst && okUsos;
+                        // 'obtenerPatrocinio' expects (edicion, nombreInstitucion).
+                        // The form provides a codigo de patrocinio, so search the patrocinios of the edicion
+                        // and find the DTPatrocinio whose codigo matches the provided codigo.
+                        DTPatrocinio p = null;
+                        for (String inst : ICE.listarPatrocinios(edicion)) {
+                            DTPatrocinio cand = ICE.obtenerPatrocinio(edicion, inst);
+                            if (cand != null && codigo.equals(cand.getCodigo())) {
+                                p = cand;
+                                break;
+                            }
+                        }
+
+                        if (p == null) {
+                            valido = false;
+                        } else {
+                            // Validate tipo de registro
+                            boolean okTipo = true;
+                            try {
+                                okTipo = tipoReg.equals(p.getTipoRegistroGratis());
+                            } catch (Exception ignore) { okTipo = false; }
+
+                            // Obtener institución del patrocinio mediante el DTO
+                            String instName = "";
+                            try {
+                                instName = (p.getInstitucion() == null) ? "" : String.valueOf(p.getInstitucion());
+                            } catch (Exception ignore) { instName = ""; }
+
+                            // Obtener institución del asistente mediante el controller
+                            String userInstName = "";
+                            try {
+                                String inst = ICU.obtenerInstitucionAsistente(user.getNickname());
+                                userInstName = (inst == null) ? "" : inst;
+                            } catch (Exception e) {
+                                userInstName = "";
+                            }
+
+                            // Si la institución no coincide, mensaje específico
+                            if (!instName.equals(userInstName)) {
+                                request.setAttribute("error", "El código de patrocinio no corresponde a tu institución.");
+                                populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                                request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
+                                return;
+                            }
+
+                            // Si el tipo o los usos no son válidos, mensaje genérico
+                            if (!okTipo ) {
+                                valido = false;
+                            }
+                        }
                     } catch (Exception ex) {
                         valido = false;
                     }
 
                     if (!valido) {
                         request.setAttribute("error", "El código de patrocinio es inválido o no aplica.");
+                        populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
                         request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                         return;
                     }
@@ -457,12 +492,58 @@ public class ServletEdicion extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
             } catch (Exception e) {
                 request.setAttribute("error", e.getMessage());
+                // Ensure tiposRegistro and images are present when forwarding on exception
+                populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
                 request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
             }
             return;
         }
         default:
-            break;
+            break;}
     }
 
-}}
+    // Helper: populate attributes required by altaRegistro.jsp so the combobox and images keep their values on errors
+    private void populateAltaRegistroAttributes(HttpServletRequest request, String edicion, DataUsuario user, IControllerEvento ICE, IControllerUsuario ICU) {
+        try {
+            if (edicion == null) {
+                request.setAttribute("edicion", null);
+                request.setAttribute("tiposRegistro", Collections.emptySet());
+                request.setAttribute("imagenEdicion", "uploads/ediciones/default.jpg");
+                request.setAttribute("nombreEvento", "");
+                request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
+                request.setAttribute("yaRegistrado", false);
+                return;
+            }
+
+            DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+            request.setAttribute("edicion", ed);
+
+            Set<DTTipoRegistro> tiposReg = new HashSet<>();
+            for (String tr : ICE.listarTiposDeRegistro(ed.getNombre())) {
+                tiposReg.add(ICE.verDetalleTRegistro(ed.getNombre(), tr));
+            }
+            request.setAttribute("tiposRegistro", tiposReg);
+
+            String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
+            request.setAttribute("imagenEdicion", edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
+
+            String nomEv = ICE.nomEvPorEd(edicion);
+            request.setAttribute("nombreEvento", nomEv == null ? "" : nomEv);
+            String imgEv = ManejadorArchivos.buscarArchivo((nomEv == null ? "" : nomEv).toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
+            request.setAttribute("imagenEvento", imgEv != null ? "uploads/eventos/" + imgEv : "uploads/eventos/default.jpg");
+
+            boolean yaRegistrado = false;
+            try {
+                yaRegistrado = ICU.listarRegistrosAEventos(user.getNickname()).contains(edicion);
+            } catch (Exception ignore) {}
+            request.setAttribute("yaRegistrado", yaRegistrado);
+        } catch (Exception e) {
+            request.setAttribute("edicion", null);
+            request.setAttribute("tiposRegistro", Collections.emptySet());
+            request.setAttribute("imagenEdicion", "uploads/ediciones/default.jpg");
+            request.setAttribute("nombreEvento", "");
+            request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
+            request.setAttribute("yaRegistrado", false);
+        }
+    }
+}

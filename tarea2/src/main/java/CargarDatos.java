@@ -1,12 +1,13 @@
-
-
 import java.io.BufferedReader;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,8 +30,8 @@ import logica.models.Usuario;
 
 public class CargarDatos {
 	private static String dataPath;
-	public static void cargarDatos(String dataPath) throws Exception {
-		CargarDatos.dataPath = dataPath;
+	public static void cargarDatos(String dPath) throws Exception {
+		CargarDatos.dataPath = dPath;
 		
 		cargarInstituciones();
 		cargarUsuarios();
@@ -322,7 +323,7 @@ public class CargarDatos {
 					continue;
 				
 				String[] campos = linea.split(";");
-							
+						
 				String idPat = campos[0];
 				String idEdi = campos[1];
 				String idInst = campos[2];
@@ -348,8 +349,9 @@ public class CargarDatos {
 					nivelEnum = NivelPatrocinio.Bronce;
 				}
 				
-				//TODO: SetFechaActual(LocalDate.parse(fechaAlta));	
-				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta));
+				// CSV fecha formato dd/MM/yyyy -> parse correctamente
+				java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				Factory.getInstance().getControllerEvento().setFechaSistema(LocalDate.parse(fechaAlta, formatter));
 				ICE.altaPatrocinio(nombreEdi, nombreInst, nivelEnum, aporte, tipoGratis, cantReg, codigo);
 			
 			}} catch (FileNotFoundException e) {
@@ -570,6 +572,4 @@ public class CargarDatos {
 	    }
 	    return null;
 	}
-
-
 }

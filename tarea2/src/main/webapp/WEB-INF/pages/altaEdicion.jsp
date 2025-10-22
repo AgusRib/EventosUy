@@ -91,7 +91,6 @@ main.contUser {
 			<!-- Formulario -->
 			<section class="card mb-3">
 				<div class="card-body">
-					<!-- Show error message if exists and not from cache -->
 					<% if (request.getAttribute("mensaje") != null) { %>
 						<div class="alert alert-primary" role="alert">
 							<i class="bx bx-check-circle me-2"></i>

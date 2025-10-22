@@ -15,8 +15,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/ConsultaEvento.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/ConsultaEvento.css">
+<link rel="stylesheet" href="assets/css/styles.css">
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/RolVisitante_listarUsuarios.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap" />
@@ -60,9 +60,8 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 .text-muted.small { font-size: .85rem; }
 </style>
 </head>
+	<jsp:include page="../templates/header.jsp"/>
 
-<body id="body-pd">
-	<%-- Prepare user data from request attribute set by servlet --%>
 	<%
 	Object uObj = request.getAttribute("usuario");
 	if (uObj == null) {
@@ -109,7 +108,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 	String encodedNick = URLEncoder.encode(nickname == null ? "" : nickname, "UTF-8");
 	%>
 
-	<jsp:include page="/WEB-INF/templates/header.jsp" /><jsp:include page="../templates/header.jsp"></jsp:include>
+<body id="body-pd">
 
 	<main class="contUser" id="mi-cuenta-user">
 		<div class="container-xl">
@@ -120,7 +119,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 							<div class="d-flex align-items-center justify-content-between gap-4">
 								<div class="d-flex flex-column align-items-center">
 									<div class="contenedor-fotoPerfil mb-2">
-										<img class="foto-usuario avatar" src="<%=imagenUsuario%>" alt="fotoPerfil" style="height:127px;">
+										<img class="foto-usuario" src="<%=imagenUsuario%>" alt="fotoPerfil" style="height:127px;">
 									</div>
 									<div class="contenedor-NickRolUser text-center">
 										<div class="nickname"><b><%= nickname %></b></div>

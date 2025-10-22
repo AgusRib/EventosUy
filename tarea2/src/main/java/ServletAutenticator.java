@@ -1,9 +1,5 @@
-import java.io.IOException;
 
-import excepciones.EmailRepetido;
-import excepciones.NombreUsuarioExistente;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +9,10 @@ import jakarta.servlet.http.Part;
 import logica.controllers.IControllerUsuario;
 import logica.data_types.DataUsuario;
 import logica.models.Factory;
+import excepciones.NombreUsuarioExistente;
+import excepciones.EmailRepetido;
+import java.io.IOException;
+import jakarta.servlet.annotation.MultipartConfig;
 
 /**
  * Servlet implementation class ServletAutenticator
