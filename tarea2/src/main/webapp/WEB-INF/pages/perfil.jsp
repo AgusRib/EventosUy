@@ -139,7 +139,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 										<% } else { %>
 											<div class="fechaNacimiento"><u>Fecha de Nacimiento:</u> <%= asis.getFechaNacimiento() %></div>
 										<% } %>
-										<% if (asis.getInstitucion() != null && !asis.getInstitucion().isBlank()) { %>
+										<% if (asis != null && asis.getInstitucion() != null && !asis.getInstitucion().isBlank()) { %>
                                                 <div class="institucion">
                                                     <u>Institución:</u> <%= asis.getInstitucion() %>
                                                 </div>
