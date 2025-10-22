@@ -148,6 +148,8 @@ public class ServletAutenticator extends HttpServlet {
 												   email.trim(), password.trim(),
 												   apellido != null ? apellido.trim() : "", fechaNac);
 				
+				controllerUsuario.agregarAsistente(nickname.trim(),request.getParameter("institucion").trim());
+				
 				// Guardar imagen de perfil usando ManejadorArchivos
 				Part imagen = request.getPart("imagen");
 				ManejadorArchivos.guardarArchivo(imagen, nickname.toLowerCase(), "usuarios", getServletContext());
