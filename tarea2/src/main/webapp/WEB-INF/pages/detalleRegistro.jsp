@@ -26,7 +26,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Usá rutas con contextPath para que no fallen según la URL actual -->
   <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/styles.css">
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/DetalleRegistro.css">
+  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/detalleregistro.css">
   <link rel="icon" type="image/x-icon" href="<%= request.getContextPath() %>/assets/icons/Logo.png">
 </head>
 <body>
