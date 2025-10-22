@@ -235,11 +235,11 @@ body.with-collapsed {
                                                 <u>Apellido:</u> <%= asis.getapellido() %>
                                             </div>
                                         
-                                            <% /* if (asis.getInstitucion() != null && !asis.getInstitucion().isBlank()) { %>
+                                            <% if (asis.getInstitucion() != null && !asis.getInstitucion().isBlank()) { %>
                                                 <div class="institucion">
                                                     <u>Institución:</u> <%= asis.getInstitucion() %>
                                                 </div>
-                                            <% } */ %>
+                                            <% } %>
                                         <% } %>
                                     </div>
                                 </div>
