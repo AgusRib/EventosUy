@@ -304,14 +304,6 @@ public class ServletUsuario extends HttpServlet {
             return;
         }
 
-        // Debug logging: print incoming parameters to server console
-        // System.out.println("[modificarDatos] start for usuario=" + nickParam);
-        // System.out.println("[modificarDatos] received nombre=" + request.getParameter("nombre")
-        //         + ", apellido=" + request.getParameter("apellido")
-        //         + ", fechaNac=" + request.getParameter("fechaNac")
-        //         + ", descripcion=" + request.getParameter("descripcion")
-        //         + ", web=" + request.getParameter("web"));
-
         DataUsuario usr;
         try {
             usr = this.controllerUsuario.infoUsuario(nickParam);
@@ -322,7 +314,6 @@ public class ServletUsuario extends HttpServlet {
 
         try {
             if (usr.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) {
-                // editing ASISTENTE
                 String nombre     = trimOrNull(request.getParameter("nombre"));
                 String apellido   = trimOrNull(request.getParameter("apellido"));
                 String fechaNacStr= trimOrNull(request.getParameter("fechaNac")); // YYYY-MM-DD
@@ -348,10 +339,8 @@ public class ServletUsuario extends HttpServlet {
                 }
 
                 controllerUsuario.editarAsistente(nickParam, nombre, apellido, fechaNac);
-                // System.out.println("[modificarDatos] editarAsistente called");
 
             } else if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
-                // editing ORGANIZADOR
                 String nombre      = trimOrNull(request.getParameter("nombre"));
                 String descripcion = trimOrNull(request.getParameter("descripcion"));
                 String web         = trimOrNull(request.getParameter("web"));
@@ -367,13 +356,11 @@ public class ServletUsuario extends HttpServlet {
                 }
 
                 controllerUsuario.editarOrganizador(nickParam, nombre, descripcion, web);
-                // System.out.println("[modificarDatos] editarOrganizador called");
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tipo de usuario no soportado");
                 return;
             }
 
-            // Guardar avatar si vino adjunto
             try {
                 Part avatar = request.getPart("avatar");
                 if (avatar != null && avatar.getSize() > 0) {
@@ -386,14 +373,12 @@ public class ServletUsuario extends HttpServlet {
     					request.getSession().setAttribute("pfp", "default.png");
     				}
                 }
-            } catch (Exception ignore) { /* no cortar el flujo por imagen */ }
+            } catch (Exception ignore) {  }
 
-            // Redirect back to modificarDatos with success message
             String url = request.getContextPath()
                     + "/modificarDatos?usuario="
                     + java.net.URLEncoder.encode(nickParam, java.nio.charset.StandardCharsets.UTF_8)
                     + "&ok=1";
-            // System.out.println("[modificarDatos] redirecting to " + url);
             response.sendRedirect(url);
             return;
 

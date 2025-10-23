@@ -88,9 +88,20 @@
                     <input type="password" class="form-control" id="password" name="password" 
                            placeholder="Contraseña *" required autocomplete="off" minlength="6"
                            oninvalid="if(this.validity.valueMissing) this.setCustomValidity('Por favor ingrese una contraseña.'); else if(this.validity.tooShort) this.setCustomValidity('La contraseña debe tener al menos 6 caracteres.');"
-                           oninput="this.setCustomValidity('')">
+                           oninput="this.setCustomValidity(''); validatePasswordMatch();">
                     <div class="invalid-feedback">
                         La contraseña debe tener al menos 6 caracteres.
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" 
+                           placeholder="Confirmar contraseña *" required autocomplete="off" minlength="6"
+                           oninvalid="if(this.validity.valueMissing) this.setCustomValidity('Por favor ingrese una contraseña.'); else if(this.validity.tooShort) this.setCustomValidity('La contraseña debe tener al menos 6 caracteres.');
+                           else if(this.value != document.getElementById('password').value) this.setCustomValidity('La contraseña no coincide.');"
+                           oninput="validatePasswordMatch()">
+                    <div class="invalid-feedback">
+                        La contraseña no coincide.
                     </div>
                 </div>
                 
@@ -224,75 +235,107 @@
     <!-- Solo Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Función para toggle de campos de usuario y manejo de validaciones
+    
         function toggleUserFields() {
             const tipoAsistente = document.getElementById('tipoAsistente').checked;
             const asistenteFields = document.getElementById('asistenteFields');
             const organizadorFields = document.getElementById('organizadorFields');
             
-            // Campos de asistente
             const apellidoField = document.getElementById('apellido');
             const fechaNacimientoField = document.getElementById('fechaNacimiento');
             
-            // Campos de organizador
             const descripcionField = document.getElementById('descripcion');
             const sitioWebField = document.getElementById('sitioWeb');
             
             if (tipoAsistente) {
-                // Mostrar campos de asistente
                 asistenteFields.style.display = 'block';
                 organizadorFields.style.display = 'none';
                 
-                // Hacer obligatorios los campos de asistente
                 apellidoField.required = true;
                 fechaNacimientoField.required = true;
                 
-                // Hacer opcional los campos de organizador
                 descripcionField.required = false;
                 sitioWebField.required = false;
             } else {
-                // Mostrar campos de organizador
                 asistenteFields.style.display = 'none';
                 organizadorFields.style.display = 'block';
                 
-                // Hacer opcional los campos de asistente
                 apellidoField.required = false;
                 fechaNacimientoField.required = false;
                 
-                // Hacer obligatorio el campo descripción de organizador
                 descripcionField.required = true;
-                sitioWebField.required = false; // Sitio web sigue siendo opcional
+                sitioWebField.required = false; 
             }
         }
         
-        // Función para validar la fecha de nacimiento
         function validateFechaNacimiento(input) {
             const fechaNacimiento = new Date(input.value);
             const hoy = new Date();
             
-            // Reiniciar mensajes de error
             input.setCustomValidity('');
             document.getElementById('fechaNacimientoError').style.display = 'none';
             
-            // Validar que la fecha no sea en el futuro
             if (fechaNacimiento > hoy) {
                 input.setCustomValidity('La fecha de nacimiento no puede ser en el futuro.');
                 document.getElementById('fechaNacimientoError').style.display = 'block';
             }
         }
         
-        // Ejecutar toggle cuando se carga la página para establecer el estado inicial
         document.addEventListener('DOMContentLoaded', function() {
             toggleUserFields();
         });
         
-        // Script para recargar la página si viene del caché del navegador
         window.addEventListener("pageshow", function(event) {
             if (event.persisted) {
-                // Si la página viene del caché del navegador, recargala
                 window.location.reload();
             }
         });
+        
+        function validatePasswordMatch() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            
+            confirmPassword.setCustomValidity('');
+            
+            if (confirmPassword.value === '') {
+                return; 
+            }
+            
+            //CHECKEAMOS QUE LAS CONTRASENIAS COINCIDAN
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Las contraseñas no coinciden.');
+                
+                confirmPassword.classList.add('is-invalid');
+                confirmPassword.classList.remove('is-valid');
+            } else {
+                confirmPassword.setCustomValidity('');
+                confirmPassword.classList.add('is-valid');
+                confirmPassword.classList.remove('is-invalid');
+            }
+        }
+		
+        //actualizamos para ver si coincide o no
+        document.addEventListener('DOMContentLoaded', function() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            
+            password.addEventListener('input', validatePasswordMatch);
+            confirmPassword.addEventListener('input', validatePasswordMatch);
+            
+            document.getElementById('registroForm').addEventListener('submit', function(event) {
+                if (password.value !== confirmPassword.value && confirmPassword.value !== '') {
+                    event.preventDefault();
+                    confirmPassword.setCustomValidity('Las contraseñas no coinciden.');
+                    confirmPassword.classList.add('is-invalid');
+                    confirmPassword.reportValidity();
+                }
+            });
+            
+            toggleUserFields();
+        });
+
+
+        
     </script>
 </body>
 </html>

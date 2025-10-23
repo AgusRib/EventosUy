@@ -36,7 +36,7 @@
   String webVal = "";
 
   if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) {
-	    DTAsistente as = (DTAsistente) request.getAttribute("usuarios");
+	    DTAsistente as = (DTAsistente) request.getAttribute("detalleUsuario");
 	    nombreVal   = (nombreAttr != null) ? nombreAttr : (as != null ? as.getNombre() : du.getNombre());
 	    apellidoVal = (apellidoAttr != null) ? apellidoAttr : (as != null ? as.getapellido() : "");
 	    if (fechaNacAttr != null) {
@@ -45,7 +45,7 @@
 	        fechaNacVal = as.getFechaNacimiento().toString();
 	    }
 	} else if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
-	    DTOrganizador org = (DTOrganizador) request.getAttribute("usuarios");
+	    DTOrganizador org = (DTOrganizador) request.getAttribute("detalleUsuario");
 	    nombreVal      = (nombreAttr != null)      ? nombreAttr      : (org != null ? org.getNombre()      : du.getNombre());
 	    descripcionVal = (descripcionAttr != null) ? descripcionAttr : (org != null ? org.getDescripcion() : "");
 	    webVal         = (webAttr != null)         ? webAttr         : (org != null ? org.getWeb()         : "");
@@ -170,14 +170,6 @@ main.contUser { padding: 18px; }
             <label class="form-label">Correo electrónico</label>
             <input type="email" class="form-control" value="<%= email %>" disabled>
           </div>
-
-          <!-- Campos de password no procesados por el servlet actual; se dejan fuera o como futuro -->
-          <!--
-          <div class="mb-3">
-            <label for="password" class="form-label">Nueva contraseña</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Dejar en blanco si no cambia">
-          </div>
-          -->
 
           <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Guardar</button>
