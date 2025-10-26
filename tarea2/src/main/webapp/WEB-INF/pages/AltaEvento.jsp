@@ -138,7 +138,7 @@ main
 						</div>
 
 						<div class="mb-3">
-							<label for="descripcionEvento" class="form-label">Descripción</label>
+							<label for="descripcionEvento" class="form-label">Descripción<span class="text-danger">*</span></label>
 							<textarea class="form-control" id="descripcionEvento" 
 								name="descripcion"
 								required autocomplete="off"

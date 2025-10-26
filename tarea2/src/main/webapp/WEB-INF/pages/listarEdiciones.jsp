@@ -36,7 +36,15 @@
 
 	<div class="container">
 		<div class="m-4">
+			<%
+			DataUsuario user = (DataUsuario) session.getAttribute("usuario");
+			if(user != null && user.getTipo() == TipoUsuario.ORGANIZADOR){
+			%>
 			<h2 class="fw-bold my-3">Mis ediciones</h2>
+			<%} else if(user != null){ %>
+				<h2 class="fw-bold my-3">Mis registros</h2>
+			<% } %>
+		
 			<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
 			<div class="row row-cols-2 w-100 justify-content-center my-4 gap-5">
 				<div class="align-items-center col-12 col-xl-3 my-3">
@@ -49,7 +57,6 @@
 				<div class="row container m-2 col-12 col-xl-8">
 					<div class="row row-cols-1 gx-0 gy-3 col-12 mt-0">
 					<% 
-						DataUsuario user = (DataUsuario) session.getAttribute("usuario");
 						Set<DTDetalleEdicion> ediciones = (Set<DTDetalleEdicion>) request.getAttribute("ediciones");
 						String mensaje;
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {

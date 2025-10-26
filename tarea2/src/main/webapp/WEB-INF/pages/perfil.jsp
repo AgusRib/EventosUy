@@ -166,7 +166,6 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 									<% } else { %>
 										<div class="mt-4">
 											<div class="contenedor-ediciones">
-												<!-- For assistants show a direct action card to list editions called 'Mis Registros' -->
 												<div class="mb-2">
 													<a class="action-card" href="<%=request.getContextPath()%>/listarEdiciones" data-hotkey="2" role="button">
 														<div class="action-icon d-flex align-items-center justify-content-center rounded" style="width:44px;height:44px;border:1px solid var(--border);background:#fff">
@@ -212,7 +211,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 					<% if (org != null) { %>
 					<section class="card mb-3 bg-light">
 						<div class="card-body">
-							<div class="mb-3"><h2 class="h6 mb-0 fw-bold">Acciones</h2><p class="text-muted small mb-0">Registrate a cualquier edición existente.</p></div>
+							<div class="mb-3"><h2 class="h6 mb-0 fw-bold">Acciones</h2></div>
 							<div class="col actions-grid" role="navigation" aria-label="Acciones de perfil">
 								<div class="row-4 mb-2">
 									<a class="action-card" href="<%=request.getContextPath()%>/altaEvento" data-hotkey="3" role="button">

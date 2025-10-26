@@ -56,12 +56,8 @@
     </form>
   </div>
 
-  <% if (mensaje != null && !mensaje.isBlank()) { %>
-    <div class="alert alert-info"><%= mensaje %></div>
-  <% } %>
-
   <% if (registros.isEmpty()) { %>
-    <div class="alert alert-secondary">No hay registros para esta edición.</div>
+    <div class="alert alert-info">No hay registros para esta edición.</div>
   <% } else { %>
     <div class="listadoUsarios">
       <% for (Map.Entry<String, DTRegistro> e : registros) {

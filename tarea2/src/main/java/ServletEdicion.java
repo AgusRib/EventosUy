@@ -161,8 +161,6 @@ public class ServletEdicion extends HttpServlet {
             		
             		} 
             	
-            	
-            	
             	} else if (user != null ) {
             		for (String edicion : ICU.listarRegistrosAEventos(user.getNickname())) {
             			
