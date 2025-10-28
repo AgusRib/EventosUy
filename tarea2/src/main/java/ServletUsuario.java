@@ -1,9 +1,10 @@
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Set;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import excepciones.UsuarioNoEncontrado;
 import jakarta.servlet.ServletException;
@@ -13,14 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-import logica.controllers.IControllerUsuario;
 import logica.controllers.IControllerEvento;
+import logica.controllers.IControllerUsuario;
 import logica.data_types.DTAsistente;
+import logica.data_types.DTDetalleEdicion;
 import logica.data_types.DTOrganizador;
 import logica.data_types.DataUsuario;
+import logica.enumerators.EstadoEdicion;
 import logica.models.Factory;
 
 @MultipartConfig
@@ -163,7 +163,15 @@ public class ServletUsuario extends HttpServlet {
             
             try {
                 IControllerEvento ICE = Factory.getInstance().getControllerEvento();
-                Set<String> ediciones = this.controllerUsuario.listarEdicionesOrganizadas(usuario);
+                Set<String> todasEdiciones = this.controllerUsuario.listarEdicionesOrganizadas(usuario);
+                Set<String> ediciones = new HashSet<String>();
+                
+                for(String ed : todasEdiciones) {
+                	DTDetalleEdicion edi = ICE.mostrarDetallesEdicion(ed);
+                	if(edi.getEstado() == EstadoEdicion.Confirmada) {
+                		ediciones.add(ed);
+                	}
+                }
                 request.setAttribute("ediciones", ediciones);
 
                 Map<String, String> edicionesMap = new HashMap<>();

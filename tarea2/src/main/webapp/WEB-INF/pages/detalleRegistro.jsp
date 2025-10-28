@@ -16,7 +16,8 @@
   if (imgEdicion == null || imgEdicion.isBlank()) imgEdicion = "uploads/ediciones/default.jpg";
 
   String nickUsuario = (String) request.getAttribute("usuario");
-  String nombreEdicion = reg.getNombreEdicion();  // si tu DTO lo trae
+  String nombreEdicion = reg.getNombreEdicion(); 
+  String tipoReg = reg.getTipoRegistro().getNombre();
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -24,7 +25,6 @@
   <meta charset="UTF-8">
   <title>Detalle de Registro - Eventos.uy</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Usá rutas con contextPath para que no fallen según la URL actual -->
   <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/styles.css">
   <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/detalleregistro.css">
   <link rel="icon" type="image/x-icon" href="<%= request.getContextPath() %>/assets/icons/Logo.png">
@@ -53,7 +53,11 @@
         <div class="mb-2">
           <strong>Edición de Evento:</strong> <%= (nombreEdicion == null ? "" : nombreEdicion) %>
         </div>
-
+		
+		<div class="mb-2">
+          <strong>Tipo de registro:</strong> <%= (nombreEdicion == null ? "" : tipoReg) %>
+        </div>
+		
         <div class="mb-2">
           <strong>Fecha de Registro:</strong> <%= reg.getFechaRegistro() %>
         </div>

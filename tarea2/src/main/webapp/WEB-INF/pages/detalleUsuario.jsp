@@ -258,7 +258,7 @@ body.with-collapsed {
 					<h5>Ediciones organizadas:</h5>
 					<div class="d-flex flex-column mt-2">
 						<% if (ediciones != null && !ediciones.isEmpty()) {
-                            for (String ed : ediciones) { 
+                            for (String ed : ediciones) {
                                 String imgEd = (edicionesMap != null) ? edicionesMap.get(ed) : null;
                         %>
                                 <div class="contenedor-edicion d-flex align-items-center gap-2 mb-2">
