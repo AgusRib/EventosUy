@@ -28,11 +28,11 @@ import logica.models.Usuario;
 
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public class publicadorusuario {
+public class publicadorUsuario {
 	 private Endpoint endpoint = null;
 	 private IControllerUsuario ICU;
 	    //Constructor
-	    public publicadorusuario(){
+	    public publicadorUsuario(){
 	     IControllerUsuario ICU=Factory.getInstance().getControllerUsuario();
 	    }
 
