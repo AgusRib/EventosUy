@@ -19,6 +19,9 @@ public class DTRegistro {
 		this.tipoRegistro = tipoReg;
 	}
 	
+	public DTRegistro() {
+	}
+
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
 	}
@@ -27,6 +30,22 @@ public class DTRegistro {
 		return nombreEdicion;
 	}
 	
+	public void setFechaRegistro(LocalDate fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
+	public void setNombreEdicion(String nombreEdicion) {
+		this.nombreEdicion = nombreEdicion;
+	}
+
+	public void setNombreAsistente(String nombreAsistente) {
+		this.nombreAsistente = nombreAsistente;
+	}
+
+	public void setCosto(float costo) {
+		this.costo = costo;
+	}
+
 	public String getNombreAsistente() {
 		return nombreAsistente;
 	}

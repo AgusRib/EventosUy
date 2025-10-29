@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import excepciones.EmailRepetido;
@@ -40,7 +41,7 @@ public class publicadorUsuario {
 
 	    @WebMethod(exclude = true)
 	    public void publicar(){
-	         endpoint = Endpoint.publish("http://localhost:8080/publicadorusuario", this);
+	         endpoint = Endpoint.publish("http://localhost:8080/publicadorUsuario", this);
 	    }
 	    
 	    @WebMethod(exclude = true)
@@ -70,8 +71,8 @@ public class publicadorUsuario {
 		
 		
 		@WebMethod
-		public Set<String> listarInstituciones(){
-			return ICU.listarInstituciones();
+		public HashSet<String> listarInstituciones(){
+			return (HashSet<String>) ICU.listarInstituciones();
 		}
 		
 		
@@ -79,28 +80,28 @@ public class publicadorUsuario {
 		
 		
 		 @WebMethod
-		public Set<String> listarUsuarios(){
-			 return ICU.listarUsuarios();
+		public HashSet<String> listarUsuarios(){
+			 return (HashSet<String>) ICU.listarUsuarios();
 		 }
 		 @WebMethod
-		public Set<String> listarAsistentes(){
-			 return ICU.listarAsistentes();
+		public HashSet<String> listarAsistentes(){
+			 return (HashSet<String>) ICU.listarAsistentes();
 		 }
 		 @WebMethod
-		public Set<String> listarOrganizadores(){
-			 return ICU.listarOrganizadores();
+		public HashSet<String> listarOrganizadores(){
+			 return (HashSet<String>) ICU.listarOrganizadores();
 		 }
 		 @WebMethod
 		public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado{
 			 return ICU.infoUsuario(nickname);
 		 }
 		 @WebMethod
-		public Set<String> listarRegistrosAEventos(String nickname){
-			 return ICU.listarRegistrosAEventos(nickname);
+		public HashSet<String> listarRegistrosAEventos(String nickname){
+			 return (HashSet<String>) ICU.listarRegistrosAEventos(nickname);
 		 }
 		 @WebMethod
-		public Set<String> listarEdicionesOrganizadas(String nickname){
-			 return ICU.listarEdicionesOrganizadas(nickname);
+		public HashSet<String> listarEdicionesOrganizadas(String nickname){
+			 return (HashSet<String>) ICU.listarEdicionesOrganizadas(nickname);
 		 }
 
 		

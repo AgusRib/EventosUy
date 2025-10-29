@@ -5,15 +5,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import logica.controllers.IControllerEvento;
-import logica.controllers.IControllerUsuario;
-import logica.data_types.DTDetalleEdicion;
-import logica.data_types.DTPatrocinio;
-import logica.data_types.DTTipoRegistro;
-import logica.data_types.DataUsuario;
-import logica.data_types.DataUsuario.TipoUsuario;
-import logica.models.Factory;
 import jakarta.servlet.http.Part;
+import webservices.DataUsuario;
+import webservices.DtDetalleEdicion;
+import webservices.DtPatrocinio;
+import webservices.DtTipoRegistro;
+import webservices.PublicadorEvento;
+import webservices.PublicadorEventoService;
+import webservices.PublicadorUsuario;
+import webservices.PublicadorUsuarioService;
+import webservices.TipoUsuario;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,12 +24,9 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import excepciones.FechaInicioPOSTFINAL;
-import excepciones.FechaInicioPREALTA;
-import excepciones.NombreEdicionExistenteExcepcion;
-import excepciones.UsuarioNoEncontrado;
+import java.util.ArrayList;
 
 @MultipartConfig
 @WebServlet({ "/detalleEdicion", "/altaEdicion", "/altaRegistro", "/listarEdiciones", "/detalleEdicion/altaEdicion" })
@@ -46,33 +44,36 @@ public class ServletEdicion extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Use servletPath to determine which mapping was called
+
         String path = request.getServletPath();
+        
+        PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+    	
+        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
         
         switch (path) {
             case "/detalleEdicion": {  // EJEMPLO: /detalleEdicion?nombre=edicion1
-            	// TODO Manejar excepciones y mostrar mensajes de error en la JSP
-            	
-            	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
-            	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
+
                 String nombre = request.getParameter("nombre");
                 
                 try {
                 	// Fetch detalle de edicion
-					DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(nombre);
+					DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(nombre);
 	                request.setAttribute("edicion", ed);
 	                
 	                // Fetch tipos de Registro
-	                Set<DTTipoRegistro> tiposReg = new HashSet<>();
-	                for (String tr : ICE.listarTiposDeRegistro(nombre)) {
-	                	tiposReg.add(ICE.verDetalleTRegistro(nombre, tr));
+	                Set<DtTipoRegistro> tiposReg = new HashSet<>();
+	                for (String tr : portEvento.listarTiposDeRegistro(nombre)) {
+	                	tiposReg.add(portEvento.verDetalleTRegistro(nombre, tr));
 	                }
 	                request.setAttribute("tiposRegistro", tiposReg);
 
 	                // Fetch Patrocinios
-	                Set<DTPatrocinio> setPatrocinios = new HashSet<>();
-	                for (String patrocinio : ICE.listarPatrocinios(nombre)) {
-	                	setPatrocinios.add(ICE.obtenerPatrocinio(nombre, patrocinio));
+	                Set<DtPatrocinio> setPatrocinios = new HashSet<>();
+	                for (String patrocinio : portEvento.listarPatrocinios(nombre)) {
+	                	setPatrocinios.add(portEvento.obtenerPatrocinio(nombre, patrocinio));
 	                }
 	                request.setAttribute("patrocinios", setPatrocinios);
 	                
@@ -93,7 +94,7 @@ public class ServletEdicion extends HttpServlet {
 	                }
 	                
 	                // Fetch nombre evento
-	                String nombreEvento = ICE.nomEvPorEd(nombre);
+	                String nombreEvento = portEvento.nomEvPorEd(nombre);
 	                request.setAttribute("nombreEvento", nombreEvento);
 	                
 	                // Fetch imagen evento
@@ -112,7 +113,7 @@ public class ServletEdicion extends HttpServlet {
 	                
 	                DataUsuario user = (DataUsuario) session.getAttribute("usuario");
 	                if (user != null && user.getTipo() == TipoUsuario.ASISTENTE) {
-	                	Set<String> edicionesRegistradas = ICU.listarRegistrosAEventos(user.getNickname());
+	                	List<String> edicionesRegistradas = portUsuario.listarRegistrosAEventos(user.getNickname());
 	                	if (edicionesRegistradas.contains(nombre)) {
 	                		request.setAttribute("usuarioRegistrado", true);
 	                	} else {
@@ -136,17 +137,15 @@ public class ServletEdicion extends HttpServlet {
                 return;
             }
             case "/listarEdiciones": {
-            	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
-            	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
             	
             	DataUsuario user = (DataUsuario) request.getSession().getAttribute("usuario"); 
             	
             	// Fetch ediciones
-        		Set<DTDetalleEdicion> ediciones = new HashSet<>();
+        		Set<DtDetalleEdicion> ediciones = new HashSet<>();
             	if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
-            		for (String edicion : ICU.listarEdicionesOrganizadas(user.getNickname())) {
+            		for (String edicion : portUsuario.listarEdicionesOrganizadas(user.getNickname())) {
             			
-            			DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+            			DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
             			ediciones.add(ed);
             			
                         // Fetch imagen de ediciones
@@ -162,9 +161,9 @@ public class ServletEdicion extends HttpServlet {
             		} 
             	
             	} else if (user != null ) {
-            		for (String edicion : ICU.listarRegistrosAEventos(user.getNickname())) {
+            		for (String edicion : portUsuario.listarRegistrosAEventos(user.getNickname())) {
             			
-            			DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+            			DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
             			ediciones.add(ed);
             			
                         // Fetch imagen de ediciones
@@ -204,12 +203,10 @@ public class ServletEdicion extends HttpServlet {
     			return;
         	}
             case "/altaRegistro": {
-                IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
-                IControllerEvento  ICE = Factory.getInstance().getControllerEvento();
 
                 HttpSession session = request.getSession(false);
                 DataUsuario user = (session == null) ? null : (DataUsuario) session.getAttribute("usuario");
-                if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ASISTENTE) {
+                if (user == null || user.getTipo() != TipoUsuario.ASISTENTE) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Solo los asistentes pueden registrarse a ediciones.");
                     return;
                 }
@@ -222,8 +219,8 @@ public class ServletEdicion extends HttpServlet {
                 }
 
                 try {
-                    // 2) Verificar que la edición exista y obtener su DTO
-                    DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicionParam);
+                    // 2) Verificar que la edición exista y obtener su DtO
+                    DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicionParam);
                     if (ed == null) { // por si tu implementación devuelve null en vez de tirar excepción
                         response.sendError(HttpServletResponse.SC_NOT_FOUND, "La edición indicada no existe.");
                         return;
@@ -231,13 +228,13 @@ public class ServletEdicion extends HttpServlet {
                     request.setAttribute("edicion", ed); // <-- el JSP debe mostrar ed.getNombre(), no el parámetro
 
                     // 3) Tipos de registro (desde backend)
-                    Set<DTTipoRegistro> tiposReg = new java.util.HashSet<>();
-                    for (String tr : ICE.listarTiposDeRegistro(ed.getNombre())) { // uso el nombre del DTO, no el parámetro
-                        tiposReg.add(ICE.verDetalleTRegistro(ed.getNombre(), tr));
+                    Set<DtTipoRegistro> tiposReg = new java.util.HashSet<>();
+                    for (String tr : portEvento.listarTiposDeRegistro(ed.getNombre())) {
+                        tiposReg.add(portEvento.verDetalleTRegistro(ed.getNombre(), tr));
                     }
                     request.setAttribute("tiposRegistro", tiposReg);
 
-                    // 4) Imagen de edición (buscada por nombre canónico del DTO)
+                    // 4) Imagen de edición (buscada por nombre canónico del DtO)
                     String edicionImg = ManejadorArchivos.buscarArchivo(
                             ed.getNombre().toLowerCase(),
                             getServletContext().getRealPath("/uploads/ediciones/"));
@@ -245,7 +242,7 @@ public class ServletEdicion extends HttpServlet {
                             edicionImg != null ? "uploads/ediciones/" + edicionImg : "uploads/ediciones/default.jpg");
 
                     // 5) Evento + imagen del evento
-                    String nombreEvento = ICE.nomEvPorEd(ed.getNombre());
+                    String nombreEvento = portEvento.nomEvPorEd(ed.getNombre());
                     request.setAttribute("nombreEvento", nombreEvento);
                     String imagenEvento = ManejadorArchivos.buscarArchivo(
                             (nombreEvento == null ? "" : nombreEvento.toLowerCase()),
@@ -254,7 +251,7 @@ public class ServletEdicion extends HttpServlet {
                             imagenEvento != null ? "uploads/eventos/" + imagenEvento : "uploads/eventos/default.jpg");
 
                     // 6) Ya registrado
-                    boolean yaRegistrado = ICU.listarRegistrosAEventos(user.getNickname()).contains(ed.getNombre());
+                    boolean yaRegistrado = portUsuario.listarRegistrosAEventos(user.getNickname()).contains(ed.getNombre());
                     request.setAttribute("yaRegistrado", yaRegistrado);
 
                     // 7) Mostrar form
@@ -280,12 +277,17 @@ public class ServletEdicion extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
+        PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+    	
+        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+    	
     	String path = request.getServletPath();
     	
     	switch (path) {
         case "/altaEdicion": {
         	
-            IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
             HttpSession session = request.getSession();
             DataUsuario user = (DataUsuario) session.getAttribute("usuario");
             
@@ -305,7 +307,7 @@ public class ServletEdicion extends HttpServlet {
 					// mostrar mensaje de error, el usuario no es organizador
 					throw new Exception("Necesita estar autenticado como organizador para dar de alta una edición.");
 				}
-				ICE.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla, LocalDate.parse(fechaInicio), LocalDate.parse(fechaFin),(LocalDate) session.getAttribute("fecha"), ciudad, pais);
+				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla, LocalDate.parse(fechaInicio), LocalDate.parse(fechaFin),(LocalDate) session.getAttribute("fecha"), ciudad, pais);
 				ManejadorArchivos.guardarArchivo(imagen, nombre, "ediciones", getServletContext());
 				
 				
@@ -333,8 +335,8 @@ public class ServletEdicion extends HttpServlet {
             return;
         }
         case "/altaRegistro": {
-        	IControllerUsuario ICU = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
-        	IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
+        	IControllerUsuario portUsuario = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
+        	IControllerEvento portEvento = (IControllerEvento) Factory.getInstance().getControllerEvento();
             var session = request.getSession(false);
             DataUsuario user = (session == null) ? null : (DataUsuario) session.getAttribute("usuario");
             if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ASISTENTE) {
@@ -358,33 +360,33 @@ public class ServletEdicion extends HttpServlet {
                 forma == null || forma.isBlank()) {
                 request.setAttribute("error", "Completá la edición, el tipo de registro y la forma de registro.");
                 // Instead of redirecting (which loses attributes), populate the attributes and forward so the combobox stays filled
-                populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                 request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                 return;
             }
 
             try {
-                if (ICU.listarRegistrosAEventos(user.getNickname()).contains(edicion)) {
+                if (portUsuario.listarRegistrosAEventos(user.getNickname()).contains(edicion)) {
                     request.setAttribute("error", "Ya estás registrado en esta edición.");
-                    populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                    populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                     request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                     return;
                 }
 
-                // Obtenemos el DTO del tipo para consultar costo/cupo/lo que haya
-                DTTipoRegistro dtoTipo = ICE.verDetalleTRegistro(edicion, tipoReg);
+                // Obtenemos el DtO del tipo para consultar costo/cupo/lo que haya
+                DtTipoRegistro DtoTipo = portEvento.verDetalleTRegistro(edicion, tipoReg);
 
-                boolean hayCupo = true; // fallback si no hay API. De ser posible, usar dtoTipo.getCupoRestante() > 0
+                boolean hayCupo = true; // fallback si no hay API. De ser posible, usar DtoTipo.getCupoRestante() > 0
                 try {
-                    // si tu DTO expone cupo disponible:
-                    var m = dtoTipo.getClass().getMethod("getCupoRestante");
-                    Object v = m.invoke(dtoTipo);
+                    // si tu DtO expone cupo disponible:
+                    var m = DtoTipo.getClass().getMethod("getCupoRestante");
+                    Object v = m.invoke(DtoTipo);
                     if (v instanceof Integer rest) hayCupo = rest > 0;
                 } catch (Exception ignore) {}
 
                 if (!hayCupo) {
                     request.setAttribute("error", "No hay cupos disponibles para el tipo seleccionado.");
-                    populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                    populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                     request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                     return;
                 }
@@ -393,7 +395,7 @@ public class ServletEdicion extends HttpServlet {
                 if (usarPatrocinio) {
                     if (codigo == null || codigo.isBlank()) {
                         request.setAttribute("error", "Ingresá el código de patrocinio.");
-                        populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                        populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                         request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                         return;
                     }
@@ -403,10 +405,10 @@ public class ServletEdicion extends HttpServlet {
                     try {
                         // 'obtenerPatrocinio' expects (edicion, nombreInstitucion).
                         // The form provides a codigo de patrocinio, so search the patrocinios of the edicion
-                        // and find the DTPatrocinio whose codigo matches the provided codigo.
-                        DTPatrocinio p = null;
-                        for (String inst : ICE.listarPatrocinios(edicion)) {
-                            DTPatrocinio cand = ICE.obtenerPatrocinio(edicion, inst);
+                        // and find the DtPatrocinio whose codigo matches the provided codigo.
+                        DtPatrocinio p = null;
+                        for (String inst : portEvento.listarPatrocinios(edicion)) {
+                            DtPatrocinio cand = portEvento.obtenerPatrocinio(edicion, inst);
                             if (cand != null && codigo.equals(cand.getCodigo())) {
                                 p = cand;
                                 break;
@@ -422,7 +424,7 @@ public class ServletEdicion extends HttpServlet {
                                 okTipo = tipoReg.equals(p.getTipoRegistroGratis());
                             } catch (Exception ignore) { okTipo = false; }
 
-                            // Obtener institución del patrocinio mediante el DTO
+                            // Obtener institución del patrocinio mediante el DtO
                             String instName = "";
                             try {
                                 instName = (p.getInstitucion() == null) ? "" : String.valueOf(p.getInstitucion());
@@ -431,7 +433,7 @@ public class ServletEdicion extends HttpServlet {
                             // Obtener institución del asistente mediante el controller
                             String userInstName = "";
                             try {
-                                String inst = ICU.obtenerInstitucionAsistente(user.getNickname());
+                                String inst = portUsuario.obtenerInstitucionAsistente(user.getNickname());
                                 userInstName = (inst == null) ? "" : inst;
                             } catch (Exception e) {
                                 userInstName = "";
@@ -440,7 +442,7 @@ public class ServletEdicion extends HttpServlet {
                             // Si la institución no coincide, mensaje específico
                             if (!instName.equals(userInstName)) {
                                 request.setAttribute("error", "El código de patrocinio no corresponde a tu institución.");
-                                populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                                populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                                 request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                                 return;
                             }
@@ -456,31 +458,31 @@ public class ServletEdicion extends HttpServlet {
 
                     if (!valido) {
                         request.setAttribute("error", "El código de patrocinio es inválido o no aplica.");
-                        populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                        populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                         request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
                         return;
                     }
 
-                    ICE.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
+                    portEvento.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
 
                     request.setAttribute("mensaje", "Registro realizado exitosamente con patrocinio (costo $0).");
                 } else {
-                    ICE.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
+                    portEvento.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
                     request.setAttribute("mensaje", "Registro realizado exitosamente.");
                 }
 
-                DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+                DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
                 request.setAttribute("edicion", ed);
-                Set<DTTipoRegistro> tiposReg = new java.util.HashSet<>();
-                for (String tr : ICE.listarTiposDeRegistro(edicion)) {
-                    tiposReg.add(ICE.verDetalleTRegistro(edicion, tr));
+                Set<DtTipoRegistro> tiposReg = new java.util.HashSet<>();
+                for (String tr : portEvento.listarTiposDeRegistro(edicion)) {
+                    tiposReg.add(portEvento.verDetalleTRegistro(edicion, tr));
                 }
                 request.setAttribute("tiposRegistro", tiposReg);
                 String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(),
                         getServletContext().getRealPath("/uploads/ediciones/"));
                 request.setAttribute("imagenEdicion",
                         edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
-                String nomEv = ICE.nomEvPorEd(edicion);
+                String nomEv = portEvento.nomEvPorEd(edicion);
                 request.setAttribute("nombreEvento", nomEv);
                 String imgEv = ManejadorArchivos.buscarArchivo(nomEv.toLowerCase(),
                         getServletContext().getRealPath("/uploads/eventos/"));
@@ -491,7 +493,7 @@ public class ServletEdicion extends HttpServlet {
             } catch (Exception e) {
                 request.setAttribute("error", e.getMessage());
                 // Ensure tiposRegistro and images are present when forwarding on exception
-                populateAltaRegistroAttributes(request, edicion, user, ICE, ICU);
+                populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                 request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
             }
             return;
@@ -501,7 +503,7 @@ public class ServletEdicion extends HttpServlet {
     }
 
     // Helper: populate attributes required by altaRegistro.jsp so the combobox and images keep their values on errors
-    private void populateAltaRegistroAttributes(HttpServletRequest request, String edicion, DataUsuario user, IControllerEvento ICE, IControllerUsuario ICU) {
+    private void populateAltaRegistroAttributes(HttpServletRequest request, String edicion, DataUsuario user, IControllerEvento portEvento, IControllerUsuario portUsuario) {
         try {
             if (edicion == null) {
                 request.setAttribute("edicion", null);
@@ -513,26 +515,26 @@ public class ServletEdicion extends HttpServlet {
                 return;
             }
 
-            DTDetalleEdicion ed = ICE.mostrarDetallesEdicion(edicion);
+            DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
             request.setAttribute("edicion", ed);
 
-            Set<DTTipoRegistro> tiposReg = new HashSet<>();
-            for (String tr : ICE.listarTiposDeRegistro(ed.getNombre())) {
-                tiposReg.add(ICE.verDetalleTRegistro(ed.getNombre(), tr));
+            Set<DtTipoRegistro> tiposReg = new HashSet<>();
+            for (String tr : portEvento.listarTiposDeRegistro(ed.getNombre())) {
+                tiposReg.add(portEvento.verDetalleTRegistro(ed.getNombre(), tr));
             }
             request.setAttribute("tiposRegistro", tiposReg);
 
             String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
             request.setAttribute("imagenEdicion", edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
 
-            String nomEv = ICE.nomEvPorEd(edicion);
+            String nomEv = portEvento.nomEvPorEd(edicion);
             request.setAttribute("nombreEvento", nomEv == null ? "" : nomEv);
             String imgEv = ManejadorArchivos.buscarArchivo((nomEv == null ? "" : nomEv).toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
             request.setAttribute("imagenEvento", imgEv != null ? "uploads/eventos/" + imgEv : "uploads/eventos/default.jpg");
 
             boolean yaRegistrado = false;
             try {
-                yaRegistrado = ICU.listarRegistrosAEventos(user.getNickname()).contains(edicion);
+                yaRegistrado = portUsuario.listarRegistrosAEventos(user.getNickname()).contains(edicion);
             } catch (Exception ignore) {}
             request.setAttribute("yaRegistrado", yaRegistrado);
         } catch (Exception e) {

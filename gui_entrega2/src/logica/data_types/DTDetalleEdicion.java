@@ -34,6 +34,13 @@ public class DTDetalleEdicion {
 		this.nombresInstituciones = instituciones;
 		this.estado = estado;
 	}
+	
+
+	public DTDetalleEdicion() {
+		this.nombresTiposRegistros = null;
+		this.nombresInstituciones = null;
+
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -85,6 +92,51 @@ public class DTDetalleEdicion {
 		
 		this.organizador = (String) object;
 		
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
+
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+
+	public void setFechaAlta(LocalDate fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+
+	public void setPais(String pais) {
+		this.pais = pais;
+	}
+
+
+	public void setOrganizador(String organizador) {
+		this.organizador = organizador;
+	}
+
+
+	public void setEstado(EstadoEdicion estado) {
+		this.estado = estado;
 	}
 	
 	

@@ -32,6 +32,25 @@ public class DataUsuario {
 		this.tipo = tipo;
 	}
 	
+	public DataUsuario() {
+
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setTipo(TipoUsuario tipo) {
+		this.tipo = tipo;
+	}
 	
 	
 }

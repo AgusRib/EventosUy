@@ -21,6 +21,9 @@ public class DTTipoRegistro {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	public DTTipoRegistro() {
+	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}

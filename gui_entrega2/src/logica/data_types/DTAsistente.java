@@ -50,7 +50,44 @@ public class DTAsistente extends DataUsuario {
 	}
 
 
+   public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public void setInstitucion(String institucion) {
+		this.institucion = institucion;
+	}
+
    public String getInstitucion() {
 		return institucion;
-	}}
+	}
+
+	public DTAsistente() {
+	
+	}
+}
 

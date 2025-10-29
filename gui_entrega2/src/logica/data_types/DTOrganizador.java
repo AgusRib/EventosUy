@@ -30,8 +30,32 @@ public class DTOrganizador extends DataUsuario {
 	public String getDescripcion() {
 		return descripcion;
 	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public void setWeb(String web) {
+		this.web = web;
+	}
+
 	public String getWeb() {
 		return web;
+	}
+	
+	public DTOrganizador() {
+
 	}
 }
 	

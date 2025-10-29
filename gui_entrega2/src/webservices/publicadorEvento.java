@@ -4,9 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
-
+import java.util.ArrayList;
+import java.util.HashSet;
 import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
 import excepciones.FechaInicioPOSTFINAL;
@@ -48,34 +47,34 @@ public class publicadorEvento {
     }
     
     @WebMethod
-	public Set<String> listarEventos() {
-		return ICE.listarEventos();
+	public HashSet<String> listarEventos() {
+		return (HashSet<String>) ICE.listarEventos();
 	}
 	
 	@WebMethod
-	public Set<String> listarEdicionesTodas(){
-		return ICE.listarEdicionesTodas();
+	public HashSet<String> listarEdicionesTodas(){
+		return (HashSet<String>) ICE.listarEdicionesTodas();
 	}
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, HashSet<String> categorias)throws NombreEventoExcepcion, Exception {
 		ICE.altaEvento(nombre, sigla, fechaAlta, descripcion, categorias);
 	}
 		
 	
 	@WebMethod
-	public Set<String> listarCategorias() {
-		return ICE.listarCategorias();
+	public HashSet<String> listarCategorias() {
+		return (HashSet<String>) ICE.listarCategorias();
 	}
 	
 
 	@WebMethod
-	public Set<String> listarEdiciones(String nombreEvento) {
-		return ICE.listarEdiciones(nombreEvento);
+	public HashSet<String> listarEdiciones(String nombreEvento) {
+		return (HashSet<String>) ICE.listarEdiciones(nombreEvento);
 	}
 
 	@WebMethod
-	public Set<String> listarPatrocinios(String nombreEdi) {		
-		return ICE.listarPatrocinios(nombreEdi);
+	public HashSet<String> listarPatrocinios(String nombreEdi) {		
+		return (HashSet<String>) ICE.listarPatrocinios(nombreEdi);
 	}
 
 	@WebMethod
@@ -104,8 +103,8 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public Set<String> listarTiposDeRegistro(String nombreEdi) {
-		return ICE.listarTiposDeRegistro(nombreEdi);
+	public HashSet<String> listarTiposDeRegistro(String nombreEdi) {
+		return (HashSet<String>) ICE.listarTiposDeRegistro(nombreEdi);
 	}
 	
 	@WebMethod
@@ -125,8 +124,8 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
-		return ICE.listarAsistentesAEdicionDeEvento(nomEdi);
+	public HashSet<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
+		return (HashSet<DTAsistente>) ICE.listarAsistentesAEdicionDeEvento(nomEdi);
 	}
 	
 	@WebMethod
@@ -169,18 +168,18 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public Set<String> listarEdicionesConfirmadas(String nombreEvento) {
-		return ICE.listarEdicionesConfirmadas(nombreEvento);
+	public HashSet<String> listarEdicionesConfirmadas(String nombreEvento) {
+		return (HashSet<String>) ICE.listarEdicionesConfirmadas(nombreEvento);
 	}
 	
 	@WebMethod
-	public Set<String> listarEdicionesPendientes(String nombreEvento) {
-		return ICE.listarEdicionesPendientes(nombreEvento);
+	public HashSet<String> listarEdicionesPendientes(String nombreEvento) {
+		return (HashSet<String>) ICE.listarEdicionesPendientes(nombreEvento);
 	}
 	
 	@WebMethod
-	public List<DTDetalleEvento> obtenerEventosRecientes() {
-		return ICE.obtenerEventosRecientes();
+	public ArrayList<DTDetalleEvento> obtenerEventosRecientes() {
+		return (ArrayList<DTDetalleEvento>) ICE.obtenerEventosRecientes();
 	}
    
     @WebMethod

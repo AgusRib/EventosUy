@@ -55,6 +55,26 @@ public class DTPatrocinio {
 	public String getInstitucion() {
 		return institucion;
 	}
+	public void setInstitucion(String institucion) {
+		this.institucion = institucion;
+	}
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+	public void setMonto(float monto) {
+		this.monto = monto;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public void setNivelPatrocinio(NivelPatrocinio nivelPatrocinio) {
+		this.nivelPatrocinio = nivelPatrocinio;
+	}
+	public DTPatrocinio() {
+		this.tipoRegistroGratis = "";
+		this.cantRegsGratis = 0;
+	}
+	
 	
 	
 }

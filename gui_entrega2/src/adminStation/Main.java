@@ -16,6 +16,7 @@ import casosPrueba.CargaDatos;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.models.Factory;
+import webservices.*;
 
 public class Main {
 
@@ -57,6 +58,11 @@ public class Main {
 	
 
 	public Main() {
+		publicadorEvento pubEvento = new publicadorEvento();
+		publicadorUsuario pubUsuario = new publicadorUsuario();
+		pubEvento.publicar();
+		pubUsuario.publicar();
+		
 		
 		frmMain = new JFrame();
 		frmMain.setTitle("Main");
