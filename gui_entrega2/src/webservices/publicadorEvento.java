@@ -47,13 +47,13 @@ public class publicadorEvento {
     }
     
     @WebMethod
-	public HashSet<String> listarEventos() {
-		return (HashSet<String>) ICE.listarEventos();
+	public WrapperHashSet<String> listarEventos() {
+		return new WrapperHashSet<String>(ICE.listarEventos());
 	}
 	
 	@WebMethod
-	public HashSet<String> listarEdicionesTodas(){
-		return (HashSet<String>) ICE.listarEdicionesTodas();
+	public WrapperHashSet<String> listarEdicionesTodas(){
+		return new WrapperHashSet<String>(ICE.listarEdicionesTodas());
 	}
 	
 	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, HashSet<String> categorias)throws NombreEventoExcepcion, Exception {
@@ -62,19 +62,19 @@ public class publicadorEvento {
 		
 	
 	@WebMethod
-	public HashSet<String> listarCategorias() {
-		return (HashSet<String>) ICE.listarCategorias();
+	public WrapperHashSet<String> listarCategorias() {
+		return new WrapperHashSet<String>(ICE.listarCategorias());
 	}
 	
 
 	@WebMethod
-	public HashSet<String> listarEdiciones(String nombreEvento) {
-		return (HashSet<String>) ICE.listarEdiciones(nombreEvento);
+	public WrapperHashSet<String> listarEdiciones(String nombreEvento) {
+		return new WrapperHashSet<String>(ICE.listarEdiciones(nombreEvento));
 	}
 
 	@WebMethod
-	public HashSet<String> listarPatrocinios(String nombreEdi) {		
-		return (HashSet<String>) ICE.listarPatrocinios(nombreEdi);
+	public WrapperHashSet<String> listarPatrocinios(String nombreEdi) {		
+		return new WrapperHashSet<String>(ICE.listarPatrocinios(nombreEdi));
 	}
 
 	@WebMethod
@@ -103,8 +103,8 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public HashSet<String> listarTiposDeRegistro(String nombreEdi) {
-		return (HashSet<String>) ICE.listarTiposDeRegistro(nombreEdi);
+	public WrapperHashSet<String> listarTiposDeRegistro(String nombreEdi) {
+		return new WrapperHashSet<String>(ICE.listarTiposDeRegistro(nombreEdi));
 	}
 	
 	@WebMethod
@@ -124,8 +124,8 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public HashSet<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
-		return (HashSet<DTAsistente>) ICE.listarAsistentesAEdicionDeEvento(nomEdi);
+	public WrapperHashSet<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
+		return new WrapperHashSet<DTAsistente>(ICE.listarAsistentesAEdicionDeEvento(nomEdi));
 	}
 	
 	@WebMethod
@@ -168,13 +168,13 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public HashSet<String> listarEdicionesConfirmadas(String nombreEvento) {
-		return (HashSet<String>) ICE.listarEdicionesConfirmadas(nombreEvento);
+	public WrapperHashSet<String> listarEdicionesConfirmadas(String nombreEvento) {
+		return new WrapperHashSet<String>(ICE.listarEdicionesConfirmadas(nombreEvento));
 	}
 	
 	@WebMethod
-	public HashSet<String> listarEdicionesPendientes(String nombreEvento) {
-		return (HashSet<String>) ICE.listarEdicionesPendientes(nombreEvento);
+	public WrapperHashSet<String> listarEdicionesPendientes(String nombreEvento) {
+		return new WrapperHashSet<String>(ICE.listarEdicionesPendientes(nombreEvento));
 	}
 	
 	@WebMethod

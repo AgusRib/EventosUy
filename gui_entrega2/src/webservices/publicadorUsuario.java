@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Set;
-
 import excepciones.EmailRepetido;
 import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
@@ -34,7 +32,7 @@ public class publicadorUsuario {
 	 private IControllerUsuario ICU;
 	    //Constructor
 	    public publicadorUsuario(){
-	     IControllerUsuario ICU=Factory.getInstance().getControllerUsuario();
+	     ICU = Factory.getInstance().getControllerUsuario();
 	    }
 
 	    //Operaciones las cuales quiero publicar
@@ -71,8 +69,8 @@ public class publicadorUsuario {
 		
 		
 		@WebMethod
-		public HashSet<String> listarInstituciones(){
-			return (HashSet<String>) ICU.listarInstituciones();
+		public WrapperHashSet<String> listarInstituciones(){
+			return new WrapperHashSet<String>(ICU.listarInstituciones());
 		}
 		
 		
@@ -80,28 +78,28 @@ public class publicadorUsuario {
 		
 		
 		 @WebMethod
-		public HashSet<String> listarUsuarios(){
-			 return (HashSet<String>) ICU.listarUsuarios();
+		public WrapperHashSet<String> listarUsuarios(){
+			 return new WrapperHashSet<String>(ICU.listarUsuarios());
 		 }
 		 @WebMethod
-		public HashSet<String> listarAsistentes(){
-			 return (HashSet<String>) ICU.listarAsistentes();
+		public WrapperHashSet<String> listarAsistentes(){
+			 return new WrapperHashSet<String>(ICU.listarAsistentes());
 		 }
 		 @WebMethod
-		public HashSet<String> listarOrganizadores(){
-			 return (HashSet<String>) ICU.listarOrganizadores();
+		public WrapperHashSet<String> listarOrganizadores(){
+			 return new WrapperHashSet<String>(ICU.listarOrganizadores());
 		 }
 		 @WebMethod
 		public DataUsuario infoUsuario(String nickname) throws UsuarioNoEncontrado{
 			 return ICU.infoUsuario(nickname);
 		 }
 		 @WebMethod
-		public HashSet<String> listarRegistrosAEventos(String nickname){
-			 return (HashSet<String>) ICU.listarRegistrosAEventos(nickname);
+		public WrapperHashSet<String> listarRegistrosAEventos(String nickname){
+			 return new WrapperHashSet<String>(ICU.listarRegistrosAEventos(nickname));
 		 }
 		 @WebMethod
-		public HashSet<String> listarEdicionesOrganizadas(String nickname){
-			 return (HashSet<String>) ICU.listarEdicionesOrganizadas(nickname);
+		public WrapperHashSet<String> listarEdicionesOrganizadas(String nickname){
+			 return new WrapperHashSet<String>(ICU.listarEdicionesOrganizadas(nickname));
 		 }
 
 		
