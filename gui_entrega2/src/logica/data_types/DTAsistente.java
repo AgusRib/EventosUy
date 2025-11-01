@@ -1,61 +1,32 @@
 package logica.data_types;
 
 import java.time.LocalDate;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import webservices.LocalDateAdapter;
 
-
-
-
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DTAsistente extends DataUsuario {
 	
-	private String nickname;
-	private String nombre;
-	private String email;
 	private String apellido;
+	
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	@XmlSchemaType(name = "date")
 	private LocalDate fechaNacimiento;
+	
 	private String institucion;
 
 	public DTAsistente(String nickname, String nombre, String email, String apellido, LocalDate fechaNacimiento, String institucion) {
 		super(nickname, nombre, email, TipoUsuario.ASISTENTE);
-		this.nickname = nickname;
-		this.nombre = nombre;
-		this.email = email;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
-		
+		this.institucion = institucion;
 	}
 
-	public String getnickname() {
-		return nickname;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	
-
-	public String getEmail() {
-		return email;
-	}
-
-	
-
-	public String getapellido() {
-		return apellido;
-	}
-
-
-	public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-
-   public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public DTAsistente() {
+		super();
 	}
 
 	public String getApellido() {
@@ -66,28 +37,19 @@ public class DTAsistente extends DataUsuario {
 		this.apellido = apellido;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public void setInstitucion(String institucion) {
-		this.institucion = institucion;
-	}
-
-   public String getInstitucion() {
+	public String getInstitucion() {
 		return institucion;
 	}
 
-	public DTAsistente() {
-	
+	public void setInstitucion(String institucion) {
+		this.institucion = institucion;
 	}
 }
-

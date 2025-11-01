@@ -1,11 +1,10 @@
-<%@page import="jdk.internal.org.jline.terminal.TerminalBuilder.SystemOutput"%>
 <%@page import="java.util.HashSet"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.Set" %>
-<%@ page import="logica.data_types.*" %>
-<%@ page import="logica.data_types.DataUsuario.TipoUsuario" %>
-<%@ page import="java.time.LocalDate" %>
+<%@ page import="webservices.*" %>
+<%@ page import="java.util.GregorianCalendar" %>
+<%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -39,7 +38,7 @@
 	<div class="container px-4 mt-3">
 		<div class="row pb-4">
 			<!-- Imagen de la edición y categorias-->
-			<% DTDetalleEdicion edi = (DTDetalleEdicion) request.getAttribute("edicion");%>
+			<% DtDetalleEdicion edi = (DtDetalleEdicion) request.getAttribute("edicion");%>
 			<div class="col-md-3 col-lg-3 col-xl-3 ">
 				<img src="<%= request.getAttribute("imagenEdicion") %>"
 					alt="<%= request.getAttribute("nombre") %>" class="img-fluid rounded"
@@ -110,7 +109,9 @@
 					</a>
 				</div> <% }} else if (user != null) {
 					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
-						if (((LocalDate) session.getAttribute("fecha")).isAfter(edi.getFechaFin()) ) {
+						GregorianCalendar fechaActual = (GregorianCalendar) session.getAttribute("fecha");
+						XMLGregorianCalendar fechaFin = edi.getFechaFin();
+						if (fechaActual.toZonedDateTime().toLocalDate().isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {
 					%> 
 					<div class="alert alert-secondary text-center mb-0" role="alert">
 						Esta edición ya finalizó.</div>
@@ -136,22 +137,25 @@
 					<div class="d-flex align-items-baseline gap-2">
 						<h5 class="py-2">Tipos de Registro</h5>
 						<% 
-						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador && ((LocalDate) session.getAttribute("fecha")).isBefore(edi.getFechaFin())) {
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
+							GregorianCalendar fechaActual2 = (GregorianCalendar) session.getAttribute("fecha");
+							XMLGregorianCalendar fechaFin2 = edi.getFechaFin();
+							if (fechaActual2.toZonedDateTime().toLocalDate().isBefore(fechaFin2.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
 						%>
 						<a href="/tarea2/alta-tipo-registro?edicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
-						</a> <% } %>
+						</a> <% }} %>
 					</div>
 					<div class="accordion" id="accordionTiposRegistro">
 					<% 
 					@SuppressWarnings("unchecked")
-					Set<DTTipoRegistro> trSet = (Set<DTTipoRegistro>) request.getAttribute("tiposRegistro");
+					Set<DtTipoRegistro> trSet = (Set<DtTipoRegistro>) request.getAttribute("tiposRegistro");
 					if (trSet.isEmpty()) {
 						%> 	<div class="alert alert-secondary text-center mb-0" role="alert">
 						Aún no existen tipos de registro para esta edición.</div>
 					<%} else { 
 						int i = 0;
-						for (DTTipoRegistro tipoReg : trSet) {
+						for (DtTipoRegistro tipoReg : trSet) {
 					%>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading<%= i %>">
@@ -183,22 +187,25 @@
 					<div class="d-flex align-items-baseline gap-2">
 						<h5 class="py-2">Patrocinadores</h5>
 						<% 
-						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador && ((LocalDate) session.getAttribute("fecha")).isBefore(edi.getFechaFin())) {
+						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
+							GregorianCalendar fechaActual3 = (GregorianCalendar) session.getAttribute("fecha");
+							XMLGregorianCalendar fechaFin3 = edi.getFechaFin();
+							if (fechaActual3.toZonedDateTime().toLocalDate().isBefore(fechaFin3.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
 						%>
 						<a href="altaPatrocinio?nombreEdicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>
-						</a> <% } %>
+						</a> <% }} %>
 						
 					</div>
 					<div class="accordion" id="accordionPatrocinadores">
 					<%
 					@SuppressWarnings("unchecked")
-					Set<DTPatrocinio> patSet = (Set<DTPatrocinio>) request.getAttribute("patrocinios");
+					Set<DtPatrocinio> patSet = (Set<DtPatrocinio>) request.getAttribute("patrocinios");
 					if (patSet.isEmpty()) {
 					%> <div class="alert alert-secondary text-center mb-0" role="alert">
 						Aún no existen patrocinios para esta edición.</div>
 					<%} else { 
-						for (DTPatrocinio patr : patSet) {
+						for (DtPatrocinio patr : patSet) {
 					%>
 						<div class="accordion-item">
 							<h2 class="accordion-header">

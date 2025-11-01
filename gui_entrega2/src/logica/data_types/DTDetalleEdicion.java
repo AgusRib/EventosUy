@@ -3,14 +3,30 @@ package logica.data_types;
 import java.time.LocalDate;
 import java.util.Set;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import logica.enumerators.EstadoEdicion;
+import webservices.LocalDateAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DTDetalleEdicion {
 	private String nombre;
 	private String sigla;
+	
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	@XmlSchemaType(name = "date")
 	private LocalDate fechaInicio;
+	
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	@XmlSchemaType(name = "date")
 	private LocalDate fechaFin;
+	
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	@XmlSchemaType(name = "date")
 	private LocalDate fechaAlta;
+	
 	private String ciudad;
 	private String pais;
 	private String organizador;

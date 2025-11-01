@@ -1,45 +1,30 @@
 package logica.data_types;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DTOrganizador extends DataUsuario {
 	
-	private String nickname;
-	private String nombre;
-	private String email;
 	private String descripcion;
 	private String web;
 	
 	public DTOrganizador(String nickname, String nombre, String email, String descripcion, String web) {
 		super(nickname, nombre, email, TipoUsuario.ORGANIZADOR);
-		this.nickname = nickname;
-		this.nombre = nombre;
-		this.email = email;
 		this.descripcion = descripcion;
 		this.web = web;
 	}
 	
-	public String getNickname() {
-		return nickname;
+	public DTOrganizador() {
+		super();
 	}
-	public String getNombre() {
-		return nombre;
-	}
-	public String getEmail() {
-		return email;
-	}
+	
 	public String getDescripcion() {
 		return descripcion;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	
+	public String getWeb() {
+		return web;
 	}
 
 	public void setDescripcion(String descripcion) {
@@ -49,13 +34,4 @@ public class DTOrganizador extends DataUsuario {
 	public void setWeb(String web) {
 		this.web = web;
 	}
-
-	public String getWeb() {
-		return web;
-	}
-	
-	public DTOrganizador() {
-
-	}
 }
-	

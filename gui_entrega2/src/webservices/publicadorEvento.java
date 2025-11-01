@@ -56,8 +56,10 @@ public class publicadorEvento {
 		return new WrapperHashSet<String>(ICE.listarEdicionesTodas());
 	}
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, HashSet<String> categorias)throws NombreEventoExcepcion, Exception {
-		ICE.altaEvento(nombre, sigla, fechaAlta, descripcion, categorias);
+	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, HashSet<String> categorias)throws NombreEventoExcepcion, Exception {
+		LocalDate fechaA = LocalDate.parse(fechaAlta);
+		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias);
+		
 	}
 		
 	
@@ -113,8 +115,11 @@ public class publicadorEvento {
 	}
 
 	@WebMethod
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
-		ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais);
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, String fechaInicio, String fechaFin, String fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
+		LocalDate fInicio = LocalDate.parse(fechaInicio);
+		LocalDate fFin = LocalDate.parse(fechaFin);
+		LocalDate fAlta = LocalDate.parse(fechaAlta);
+		ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, fInicio, fFin, fAlta, ciudad, pais);
 		
 	}
 	
@@ -144,13 +149,14 @@ public class publicadorEvento {
 	}
 
 	@WebMethod
-	public LocalDate getFechaSistema() {
-		return ICE.getFechaSistema();
+	public String getFechaSistema() {
+		return ICE.getFechaSistema().toString();
 	}
 
 	@WebMethod
-	public LocalDate setFechaSistema(LocalDate fechaNueva) {
-		return ICE.setFechaSistema(fechaNueva);
+	public LocalDate setFechaSistema(String fechaNueva) {
+		LocalDate fechaN = LocalDate.parse(fechaNueva);
+		return ICE.setFechaSistema(fechaN);
 	}
 	
 	public String nomEvPorEd(String nomEdi) {

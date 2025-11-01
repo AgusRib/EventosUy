@@ -15,6 +15,7 @@ import webservices.PublicadorEventoService;
 import webservices.PublicadorUsuario;
 import webservices.PublicadorUsuarioService;
 import webservices.TipoUsuario;
+import webservices.WrapperHashSet;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,15 +66,17 @@ public class ServletEdicion extends HttpServlet {
 	                
 	                // Fetch tipos de Registro
 	                Set<DtTipoRegistro> tiposReg = new HashSet<>();
-	                for (String tr : portEvento.listarTiposDeRegistro(nombre)) {
-	                	tiposReg.add(portEvento.verDetalleTRegistro(nombre, tr));
+	                List<Object> lista= portEvento.listarTiposDeRegistro(nombre).getItem();
+	                for (Object tr : lista) {	
+	                	tiposReg.add(portEvento.verDetalleTRegistro(nombre, (String) tr));
 	                }
 	                request.setAttribute("tiposRegistro", tiposReg);
 
 	                // Fetch Patrocinios
 	                Set<DtPatrocinio> setPatrocinios = new HashSet<>();
-	                for (String patrocinio : portEvento.listarPatrocinios(nombre)) {
-	                	setPatrocinios.add(portEvento.obtenerPatrocinio(nombre, patrocinio));
+	                List<Object> listaPatrocinios = portEvento.listarPatrocinios(nombre).getItem();
+	                for (Object patrocinio : listaPatrocinios) {
+	                	setPatrocinios.add(portEvento.obtenerPatrocinio(nombre, (String) patrocinio));
 	                }
 	                request.setAttribute("patrocinios", setPatrocinios);
 	                
@@ -113,7 +116,11 @@ public class ServletEdicion extends HttpServlet {
 	                
 	                DataUsuario user = (DataUsuario) session.getAttribute("usuario");
 	                if (user != null && user.getTipo() == TipoUsuario.ASISTENTE) {
-	                	List<String> edicionesRegistradas = portUsuario.listarRegistrosAEventos(user.getNickname());
+	                	List<Object> edicionesRegistradasObj = portUsuario.listarRegistrosAEventos(user.getNickname()).getItem();
+	                	List<String> edicionesRegistradas = new ArrayList<>();
+	                	for (Object obj : edicionesRegistradasObj) {
+	                		edicionesRegistradas.add((String) obj);
+	                	}
 	                	if (edicionesRegistradas.contains(nombre)) {
 	                		request.setAttribute("usuarioRegistrado", true);
 	                	} else {
@@ -143,8 +150,9 @@ public class ServletEdicion extends HttpServlet {
             	// Fetch ediciones
         		Set<DtDetalleEdicion> ediciones = new HashSet<>();
             	if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
-            		for (String edicion : portUsuario.listarEdicionesOrganizadas(user.getNickname())) {
-            			
+            		List<Object> edicionesOrganizadasObj = portUsuario.listarEdicionesOrganizadas(user.getNickname()).getItem();
+            		for (Object obj : edicionesOrganizadasObj) {
+            			String edicion = (String) obj;
             			DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
             			ediciones.add(ed);
             			
@@ -155,14 +163,12 @@ public class ServletEdicion extends HttpServlet {
                         } else {
                         	request.setAttribute(ed.getNombre(), "uploads/ediciones/default.jpg");
                         }
-                        
-
-            		
             		} 
             	
             	} else if (user != null ) {
-            		for (String edicion : portUsuario.listarRegistrosAEventos(user.getNickname())) {
-            			
+            		List<Object> registrosObj = portUsuario.listarRegistrosAEventos(user.getNickname()).getItem();
+            		for (Object obj : registrosObj) {
+            			String edicion = (String) obj;
             			DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
             			ediciones.add(ed);
             			
@@ -229,8 +235,9 @@ public class ServletEdicion extends HttpServlet {
 
                     // 3) Tipos de registro (desde backend)
                     Set<DtTipoRegistro> tiposReg = new java.util.HashSet<>();
-                    for (String tr : portEvento.listarTiposDeRegistro(ed.getNombre())) {
-                        tiposReg.add(portEvento.verDetalleTRegistro(ed.getNombre(), tr));
+                    List<Object> listaTipos = portEvento.listarTiposDeRegistro(ed.getNombre()).getItem();
+                    for (Object tr : listaTipos) {
+                        tiposReg.add(portEvento.verDetalleTRegistro(ed.getNombre(), (String) tr));
                     }
                     request.setAttribute("tiposRegistro", tiposReg);
 
@@ -251,7 +258,14 @@ public class ServletEdicion extends HttpServlet {
                             imagenEvento != null ? "uploads/eventos/" + imagenEvento : "uploads/eventos/default.jpg");
 
                     // 6) Ya registrado
-                    boolean yaRegistrado = portUsuario.listarRegistrosAEventos(user.getNickname()).contains(ed.getNombre());
+                    List<Object> registrosObj = portUsuario.listarRegistrosAEventos(user.getNickname()).getItem();
+                    boolean yaRegistrado = false;
+                    for (Object obj : registrosObj) {
+                        if (ed.getNombre().equals((String) obj)) {
+                            yaRegistrado = true;
+                            break;
+                        }
+                    }
                     request.setAttribute("yaRegistrado", yaRegistrado);
 
                     // 7) Mostrar form
@@ -307,7 +321,7 @@ public class ServletEdicion extends HttpServlet {
 					// mostrar mensaje de error, el usuario no es organizador
 					throw new Exception("Necesita estar autenticado como organizador para dar de alta una edición.");
 				}
-				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla, LocalDate.parse(fechaInicio), LocalDate.parse(fechaFin),(LocalDate) session.getAttribute("fecha"), ciudad, pais);
+				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla,fechaInicio, fechaFin, session.getAttribute("fecha").toString(), ciudad, pais);
 				ManejadorArchivos.guardarArchivo(imagen, nombre, "ediciones", getServletContext());
 				
 				
@@ -335,11 +349,10 @@ public class ServletEdicion extends HttpServlet {
             return;
         }
         case "/altaRegistro": {
-        	IControllerUsuario portUsuario = (IControllerUsuario) Factory.getInstance().getControllerUsuario();
-        	IControllerEvento portEvento = (IControllerEvento) Factory.getInstance().getControllerEvento();
+        	
             var session = request.getSession(false);
             DataUsuario user = (session == null) ? null : (DataUsuario) session.getAttribute("usuario");
-            if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ASISTENTE) {
+            if (user == null || user.getTipo() != TipoUsuario.ASISTENTE) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
                         "Solo los asistentes pueden registrarse a ediciones.");
                 return;
@@ -366,7 +379,16 @@ public class ServletEdicion extends HttpServlet {
             }
 
             try {
-                if (portUsuario.listarRegistrosAEventos(user.getNickname()).contains(edicion)) {
+                // Check if user is already registered
+                List<Object> registrosUsuario = portUsuario.listarRegistrosAEventos(user.getNickname()).getItem();
+                boolean yaRegistrado = false;
+                for (Object obj : registrosUsuario) {
+                    if (edicion.equals((String) obj)) {
+                        yaRegistrado = true;
+                        break;
+                    }
+                }
+                if (yaRegistrado) {
                     request.setAttribute("error", "Ya estás registrado en esta edición.");
                     populateAltaRegistroAttributes(request, edicion, user, portEvento, portUsuario);
                     request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
@@ -407,8 +429,9 @@ public class ServletEdicion extends HttpServlet {
                         // The form provides a codigo de patrocinio, so search the patrocinios of the edicion
                         // and find the DtPatrocinio whose codigo matches the provided codigo.
                         DtPatrocinio p = null;
-                        for (String inst : portEvento.listarPatrocinios(edicion)) {
-                            DtPatrocinio cand = portEvento.obtenerPatrocinio(edicion, inst);
+                        List<Object> listaPatrociniosValidacion = portEvento.listarPatrocinios(edicion).getItem();
+                        for (Object inst : listaPatrociniosValidacion) {
+                            DtPatrocinio cand = portEvento.obtenerPatrocinio(edicion, (String) inst);
                             if (cand != null && codigo.equals(cand.getCodigo())) {
                                 p = cand;
                                 break;
@@ -474,8 +497,9 @@ public class ServletEdicion extends HttpServlet {
                 DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
                 request.setAttribute("edicion", ed);
                 Set<DtTipoRegistro> tiposReg = new java.util.HashSet<>();
-                for (String tr : portEvento.listarTiposDeRegistro(edicion)) {
-                    tiposReg.add(portEvento.verDetalleTRegistro(edicion, tr));
+                List<Object> listaTipos2 = portEvento.listarTiposDeRegistro(edicion).getItem();
+                for (Object tr : listaTipos2) {
+                    tiposReg.add(portEvento.verDetalleTRegistro(edicion, (String) tr));
                 }
                 request.setAttribute("tiposRegistro", tiposReg);
                 String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(),
@@ -503,7 +527,7 @@ public class ServletEdicion extends HttpServlet {
     }
 
     // Helper: populate attributes required by altaRegistro.jsp so the combobox and images keep their values on errors
-    private void populateAltaRegistroAttributes(HttpServletRequest request, String edicion, DataUsuario user, IControllerEvento portEvento, IControllerUsuario portUsuario) {
+    private void populateAltaRegistroAttributes(HttpServletRequest request, String edicion, DataUsuario user, PublicadorEvento portEvento, PublicadorUsuario portUsuario) {
         try {
             if (edicion == null) {
                 request.setAttribute("edicion", null);
@@ -519,8 +543,9 @@ public class ServletEdicion extends HttpServlet {
             request.setAttribute("edicion", ed);
 
             Set<DtTipoRegistro> tiposReg = new HashSet<>();
-            for (String tr : portEvento.listarTiposDeRegistro(ed.getNombre())) {
-                tiposReg.add(portEvento.verDetalleTRegistro(ed.getNombre(), tr));
+            List<Object> listaTipos = portEvento.listarTiposDeRegistro(ed.getNombre()).getItem();
+            for (Object tr : listaTipos) {
+                tiposReg.add(portEvento.verDetalleTRegistro(ed.getNombre(), (String) tr));
             }
             request.setAttribute("tiposRegistro", tiposReg);
 
@@ -534,7 +559,13 @@ public class ServletEdicion extends HttpServlet {
 
             boolean yaRegistrado = false;
             try {
-                yaRegistrado = portUsuario.listarRegistrosAEventos(user.getNickname()).contains(edicion);
+                List<Object> registrosObj = portUsuario.listarRegistrosAEventos(user.getNickname()).getItem();
+                for (Object obj : registrosObj) {
+                    if (edicion.equals((String) obj)) {
+                        yaRegistrado = true;
+                        break;
+                    }
+                }
             } catch (Exception ignore) {}
             request.setAttribute("yaRegistrado", yaRegistrado);
         } catch (Exception e) {

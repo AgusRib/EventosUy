@@ -11,7 +11,7 @@ import excepciones.NombreUsuarioExistente;
 import excepciones.UsuarioNoEncontrado;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
-
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
@@ -50,11 +50,12 @@ public class publicadorUsuario {
 	    @WebMethod
 		public void ingresarAsistente(String nickname, 
 				String nombre, String email, String password,
-				String apellido, LocalDate fechaNac) throws NombreUsuarioExistente, EmailRepetido, Exception{
+				String apellido, String fechaNac) throws NombreUsuarioExistente, EmailRepetido, Exception{
+			LocalDate fechaNacLD = LocalDate.parse(fechaNac);
 			
 			ICU.ingresarAsistente( nickname, 
 					 nombre, email, password,
-					 apellido, fechaNac);
+					 apellido, fechaNacLD);
 		}
 		
 		@WebMethod
@@ -115,8 +116,9 @@ public class publicadorUsuario {
 			 return ICU.obtenerUsuario(usuario);
 		 }
 		 @WebMethod
-		public void editarAsistente(String nick, String nombre, String apellido, LocalDate fechaNac) {
-			 ICU.editarAsistente(nick, nombre, apellido, fechaNac);
+		public void editarAsistente(String nick, String nombre, String apellido, String fechaNac) {
+			 LocalDate fechaNacLD = LocalDate.parse(fechaNac);
+			 ICU.editarAsistente(nick, nombre, apellido, fechaNacLD);
 		 }
 		 @WebMethod
 		public void editarOrganizador(String nick, String nombre,  String descripcion, String web) {
@@ -137,16 +139,16 @@ public class publicadorUsuario {
 			 ICU.altaInstitucion(nombre, descripcion, web);
 		 }
 		 @WebMethod
-		DataUsuario iniciarSesionNickname(String nickname, String password) {
+		public DataUsuario iniciarSesionNickname(String nickname, String password) {
 			 return ICU.iniciarSesionNickname(nickname, password);
 		 }
 		 
 		 @WebMethod
-		DataUsuario iniciarSesionEmail(String email, String password) {
+		public DataUsuario iniciarSesionEmail(String email, String password) {
 			 return ICU.iniciarSesionEmail(email, password);
 		 }
 		 @WebMethod
-		String obtenerInstitucionAsistente(String nickname) {
+		public String obtenerInstitucionAsistente(String nickname) {
 			 return ICU.obtenerInstitucionAsistente(nickname);}
 	    
 	    

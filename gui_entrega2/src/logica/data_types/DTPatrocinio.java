@@ -1,17 +1,26 @@
 package logica.data_types;
 
 import java.time.LocalDate;
-
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import logica.enumerators.NivelPatrocinio;
+import webservices.LocalDateAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DTPatrocinio {
 	private String institucion;
+	
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	@XmlSchemaType(name = "date")
 	private LocalDate fecha;
+	
 	private float monto;
 	private String codigo;
 	private NivelPatrocinio nivelPatrocinio;
-    private final String tipoRegistroGratis;   // NUEVO
-    private final int cantRegsGratis;
+    private String tipoRegistroGratis;   // NUEVO
+    private  int cantRegsGratis;
 	public DTPatrocinio(String institucion, LocalDate fecha, float monto, String codigo, NivelPatrocinio nivelPatrocinio, String tipoRegistroGratis, int cantRegsGratis) {
 		super();
 		this.institucion = institucion;
@@ -69,6 +78,12 @@ public class DTPatrocinio {
 	}
 	public void setNivelPatrocinio(NivelPatrocinio nivelPatrocinio) {
 		this.nivelPatrocinio = nivelPatrocinio;
+	}
+	public void setTipoRegistroGratis(String tipoRegistroGratis) {
+		this.tipoRegistroGratis = tipoRegistroGratis;
+	}
+	public void setCantRegsGratis(int cantRegsGratis) {
+		this.cantRegsGratis = cantRegsGratis;
 	}
 	public DTPatrocinio() {
 		this.tipoRegistroGratis = "";

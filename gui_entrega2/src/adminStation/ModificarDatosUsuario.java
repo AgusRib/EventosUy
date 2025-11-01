@@ -262,7 +262,7 @@ public class ModificarDatosUsuario extends JInternalFrame {
 			mostrarCamposOrganizador(false);
 			
 			// Cargar datos específicos de asistente
-			txtFieldApellidoUsuario.setText(dataAsistente.getapellido());
+			txtFieldApellidoUsuario.setText(dataAsistente.getApellido());
 			LocalDate fechaNac = dataAsistente.getFechaNacimiento();
 			if (fechaNac != null) {
 				txtFieldfNacUsuario.setText(fechaNac.toString());

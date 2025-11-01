@@ -58,10 +58,10 @@ public class TestControllerUsuario2{
 		DTAsistente dtas= ICU.infoAsistente("sofirod");
 		DTAsistente dtas2= new DTAsistente(as.getNickname(), as.getNombre(), as.getEmail(), as.getApellido(), as.getFechaNacimiento(), as.getInstitucion().getNombre());
 		assertEquals(true, dtas.getNombre().equals(dtas2.getNombre()));
-		assertEquals(true, dtas.getapellido().equals(dtas2.getapellido()));
+		assertEquals(true, dtas.getApellido().equals(dtas2.getApellido()));
 		assertEquals(true, dtas.getEmail().equals(dtas2.getEmail()));
 		assertEquals(true, dtas.getFechaNacimiento().equals(dtas2.getFechaNacimiento()));
-		assertEquals(true, dtas.getnickname().equals(dtas2.getnickname()));
+		assertEquals(true, dtas.getNickname().equals(dtas2.getNickname()));
 		
 		
 		Organizador or= (Organizador) mU.obtenerUsuario("techcorp");
@@ -77,7 +77,7 @@ public class TestControllerUsuario2{
 		ICU.editarAsistente("sofirod", "Sofia", "Rodriguez", as.getFechaNacimiento());
 		DTAsistente dtas3= ICU.infoAsistente("sofirod");
 		assertEquals(true, dtas3.getNombre().equals("Sofia"));
-		assertEquals(true, dtas3.getapellido().equals("Rodriguez"));
+		assertEquals(true, dtas3.getApellido().equals("Rodriguez"));
 		assertEquals(true, dtas3.getFechaNacimiento().equals(dtas2.getFechaNacimiento()));
 		
 		

@@ -98,7 +98,7 @@ public class TestControllerEvento2 {
 		Set<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento("EdTest");
 		boolean found = false;
 		for (DTAsistente a : asistentes) {
-			if (a.getnickname().equals("willyrex")) {
+			if (a.getNickname().equals("willyrex")) {
 				found = true;
 				break;
 			}

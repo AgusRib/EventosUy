@@ -1,11 +1,19 @@
 package logica.data_types;
 
 import java.time.LocalDate;
-
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import logica.models.TipoRegistro;
+import webservices.LocalDateAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class DTRegistro {
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
+	@XmlSchemaType(name = "date")
 	private LocalDate fechaRegistro;
+	
 	private String nombreEdicion;
 	private String nombreAsistente;
 	private TipoRegistro tipoRegistro;
