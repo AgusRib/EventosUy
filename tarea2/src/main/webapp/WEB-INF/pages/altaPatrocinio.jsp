@@ -82,7 +82,6 @@
 			<section class="card my-3">
 				<div class="card-body d-flex align-items-center gap-3">
 					<%
-					    // determine edition from request param or session
 					    String nombreEdicion = request.getParameter("nombreEdicion");
 					    if (nombreEdicion == null || nombreEdicion.isEmpty()) {
 					        Object s = request.getSession().getAttribute("nombreEdicion");
@@ -98,13 +97,10 @@
 				</div>
 			</section>
 
-			<!-- Messages -->
 			<%
 				String error = (String) request.getAttribute("error");
-				// mensaje may come as request attribute (server-forward) or as URL parameter after redirect
 				String mensaje = (String) request.getAttribute("mensaje");
 				if (mensaje == null) mensaje = request.getParameter("mensaje");
-				// no mostrar el bloque de permitir editar (se elimina)
 			%>
 			<% if (mensaje != null) { %>
 				<div class="alert alert-success"><%=mensaje%></div>
@@ -115,12 +111,9 @@
 
 			<!-- Formulario -->
 			<section class="card mb-3 p-5">
-				 <%-- Hidden edicion field comes from session (set by previous flow) --%>
                     <input type="hidden" name="edicion" value="<%= nombreEdicion != null ? nombreEdicion : "" %>" />
-                    <%-- include session fecha so the POST can send it back; servlet stores it in session as LocalDate --%>
                     <input type="hidden" name="fecha" value="<%= request.getAttribute("fecha") != null ? request.getAttribute("fecha") : "" %>" />
 
-                    <%-- Determinar si hay tipos de registro disponibles para la edición --%>
                     <%
                         Set<String> tiposDisponibles = (Set<String>) request.getAttribute("tiposRegistro");
                         boolean noHayTipos = (tiposDisponibles == null || tiposDisponibles.isEmpty());
@@ -130,14 +123,13 @@
                         <div class="alert alert-danger">No existen tipos de registro para la edición seleccionada. No es posible registrar un patrocinio hasta que exista al menos un tipo de registro para la edición.</div>
                     <% } %>
 
-                    <!-- session fecha is kept as hidden input; not displayed to the user -->
 
                      <div class="mb-3">
                      <label for="institucion" class="form-label">Seleccionar una institución</label>
                      <select class="form-control" id="institucion" name="institucion" required>
                          <option value="" disabled><%= request.getAttribute("institucion") == null ? "Seleccione una institución" : "Seleccione una institución" %></option>
                         <%
-				Set<String> instituciones = (Set<String>)request.getAttribute("instituciones");
+							 Set<String> instituciones = (Set<String>)request.getAttribute("instituciones");
                              String selInst = (String) request.getAttribute("institucion");
                              if(instituciones != null) {
                               for(String insti : instituciones) {

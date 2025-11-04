@@ -59,11 +59,11 @@ public interface IControllerUsuario {
 	public DTOrganizador infoOrganizador(String nickname);
 	public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception;
 
-	DataUsuario iniciarSesionNickname(String nickname, String password);
+	public DataUsuario iniciarSesionNickname(String nickname, String password);
 
-	DataUsuario iniciarSesionEmail(String email, String password);
+	public DataUsuario iniciarSesionEmail(String email, String password);
 
-	String obtenerInstitucionAsistente(String nickname);
+	public String obtenerInstitucionAsistente(String nickname);
 	
 
 }

@@ -401,7 +401,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		seleccionarEvento.setSelectedIndex(-1);
 		
 		seleccionarOrganizador.removeAllItems();
-	    var orgs = controllerUsuario.listarOrganizadores();
+	    Set<String> orgs = controllerUsuario.listarOrganizadores();
 	    for (String string : orgs) {
 			seleccionarOrganizador.addItem(string);
 		}
