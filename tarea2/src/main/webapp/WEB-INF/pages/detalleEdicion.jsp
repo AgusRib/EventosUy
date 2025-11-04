@@ -5,6 +5,7 @@
 <%@ page import="webservices.*" %>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
+<%@ page import="java.time.LocalDate" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -109,9 +110,9 @@
 					</a>
 				</div> <% }} else if (user != null) {
 					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
-						GregorianCalendar fechaActual = (GregorianCalendar) session.getAttribute("fecha");
+						LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
 						XMLGregorianCalendar fechaFin = edi.getFechaFin();
-						if (fechaActual.toZonedDateTime().toLocalDate().isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {
+						if (fechaActual.isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {
 					%> 
 					<div class="alert alert-secondary text-center mb-0" role="alert">
 						Esta edición ya finalizó.</div>
@@ -138,9 +139,9 @@
 						<h5 class="py-2">Tipos de Registro</h5>
 						<% 
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
-							GregorianCalendar fechaActual2 = (GregorianCalendar) session.getAttribute("fecha");
+							LocalDate fechaActual2 = (LocalDate) session.getAttribute("fecha");
 							XMLGregorianCalendar fechaFin2 = edi.getFechaFin();
-							if (fechaActual2.toZonedDateTime().toLocalDate().isBefore(fechaFin2.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
+							if (fechaActual2.isBefore(fechaFin2.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
 						%>
 						<a href="/tarea2/alta-tipo-registro?edicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
@@ -188,9 +189,9 @@
 						<h5 class="py-2">Patrocinadores</h5>
 						<% 
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
-							GregorianCalendar fechaActual3 = (GregorianCalendar) session.getAttribute("fecha");
+							LocalDate fechaActual3 = (LocalDate) session.getAttribute("fecha");
 							XMLGregorianCalendar fechaFin3 = edi.getFechaFin();
-							if (fechaActual3.toZonedDateTime().toLocalDate().isBefore(fechaFin3.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
+							if (fechaActual3.isBefore(fechaFin3.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
 						%>
 						<a href="altaPatrocinio?nombreEdicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>

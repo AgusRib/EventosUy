@@ -2,18 +2,18 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="logica.data_types.DTDetalleEvento" %>
-<%@ page import="logica.enumerators.EstadoEdicion" %>
-<%@ page import="logica.data_types.DataUsuario.TipoUsuario" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="webservices.*" %>
+
 
 <%
-    DTDetalleEvento evento = (DTDetalleEvento) request.getAttribute("evento");
+    DtDetalleEvento evento = (DtDetalleEvento) request.getAttribute("evento");
     String imagenEvento = (String) request.getAttribute("imagenEvento");
     @SuppressWarnings("unchecked")
     Set<Map<String, Object>> ediciones = (Set<Map<String, Object>>) request.getAttribute("ediciones");
     
     // Obtener información del usuario para determinar si es organizador
-    logica.data_types.DataUsuario usuario = (logica.data_types.DataUsuario) request.getSession().getAttribute("usuario");
+    DataUsuario usuario = (DataUsuario) request.getSession().getAttribute("usuario");
     boolean esOrganizador = usuario != null && usuario.getTipo() == TipoUsuario.ORGANIZADOR;
     
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -77,7 +77,7 @@
 						<strong>Sigla:</strong> <%=evento.getSigla()%>
 					</p>
 					<p class="mb-2">
-						<strong>Fecha de creación:</strong> <%=evento.getFechaAlta() != null ? evento.getFechaAlta().format(formatter) : ""%>
+						<strong>Fecha de creación:</strong> <%= evento.getFechaAlta().toGregorianCalendar().toZonedDateTime().toLocalDate() != null ? evento.getFechaAlta().toGregorianCalendar().toZonedDateTime().toLocalDate().format(formatter) : ""%>
 					</p>
 					<p class="mb-4">
 						<strong>Descripción:</strong> <%=evento.getDescripcion()%>
@@ -140,11 +140,11 @@
 							href="<%=request.getContextPath()%>/detalleEdicion?nombre=<%=java.net.URLEncoder.encode(nombreEdicion, "UTF-8")%>">
 							<div class="carta p-4 
 								<% if (esOrganizadorDeEstaEdicion != null && esOrganizadorDeEstaEdicion && estado != null) { %>
-									<% if (estado == EstadoEdicion.Confirmada) { %>
+									<% if (estado == EstadoEdicion.CONFIRMADA) { %>
 										bg-success bg-opacity-10 bg-gradient border-success
-									<% } else if (estado == EstadoEdicion.Rechazada) { %>
+									<% } else if (estado == EstadoEdicion.RECHAZADA) { %>
 										bg-danger bg-opacity-10 bg-gradient border-danger
-									<% } else if (estado == EstadoEdicion.Ingresada) { %>
+									<% } else if (estado == EstadoEdicion.INGRESADA) { %>
 										bg-warning bg-opacity-10 bg-gradient border-warning
 									<% } %>
 								<% } else { %>
@@ -179,20 +179,20 @@
 									</div>
 									<% if (esOrganizadorDeEstaEdicion != null && esOrganizadorDeEstaEdicion && estado != null) { %>
 										<div class="button1 rounded-5 p-3 
-											<% if (estado == EstadoEdicion.Confirmada) { %>
+											<% if (estado == EstadoEdicion.CONFIRMADA) { %>
 												bg-success bg-gradient bg-opacity-75 text-white
-											<% } else if (estado == EstadoEdicion.Rechazada) { %>
+											<% } else if (estado == EstadoEdicion.RECHAZADA) { %>
 												bg-danger bg-gradient bg-opacity-75 text-white
-											<% } else if (estado == EstadoEdicion.Ingresada) { %>
+											<% } else if (estado == EstadoEdicion.INGRESADA) { %>
 												bg-warning bg-gradient bg-opacity-75 text-white
 											<% } %>
 										">
 											<div class="header-button">
-												<% if (estado == EstadoEdicion.Confirmada) { %>
+												<% if (estado == EstadoEdicion.CONFIRMADA) { %>
 													<i class="bi bi-check-circle-fill me-2"></i>Aceptada
-												<% } else if (estado == EstadoEdicion.Rechazada) { %>
+												<% } else if (estado == EstadoEdicion.RECHAZADA) { %>
 													<i class="bi bi-x-circle-fill me-2"></i>Rechazada
-												<% } else if (estado == EstadoEdicion.Ingresada) { %>
+												<% } else if (estado == EstadoEdicion.INGRESADA) { %>
 													<i class="bi bi-hourglass-split me-2"></i>Pendiente
 												<% } %>
 											</div>

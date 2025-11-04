@@ -21,6 +21,9 @@ public class WrapperHashSet<T> {
         this.items = new ArrayList<>();
     }
     
+   public HashSet<T> toHashSet() {
+		return new HashSet<>(items);
+	}
     public WrapperHashSet(Set<T> set) {
         this.items = new ArrayList<>(set);
     }

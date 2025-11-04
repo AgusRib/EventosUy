@@ -56,9 +56,9 @@ public class publicadorEvento {
 		return new WrapperHashSet<String>(ICE.listarEdicionesTodas());
 	}
 	
-	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, HashSet<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, WrapperHashSet<String> categorias)throws NombreEventoExcepcion, Exception {
 		LocalDate fechaA = LocalDate.parse(fechaAlta);
-		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias);
+		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias.toHashSet());
 		
 	}
 		

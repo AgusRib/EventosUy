@@ -140,12 +140,17 @@ public class publicadorUsuario {
 		 }
 		 @WebMethod
 		public DataUsuario iniciarSesionNickname(String nickname, String password) {
-			 return ICU.iniciarSesionNickname(nickname, password);
+			DataUsuario result = ICU.iniciarSesionNickname(nickname, password);
+			
+			
+			return result;
 		 }
 		 
 		 @WebMethod
-		public DataUsuario iniciarSesionEmail(String email, String password) {
-			 return ICU.iniciarSesionEmail(email, password);
+		public DataUsuario iniciarSesionEmail(String email, String password)  {
+			DataUsuario result = ICU.iniciarSesionEmail(email, password);
+		
+			return result;
 		 }
 		 @WebMethod
 		public String obtenerInstitucionAsistente(String nickname) {
