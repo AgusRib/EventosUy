@@ -33,6 +33,7 @@ public class ObjectFactory {
     private final static QName _NombreEdicionExistenteExcepcion_QNAME = new QName("http://webservices/", "NombreEdicionExistenteExcepcion");
     private final static QName _NombreEventoExcepcion_QNAME = new QName("http://webservices/", "NombreEventoExcepcion");
     private final static QName _TipoRegistroExistenteExcepcion_QNAME = new QName("http://webservices/", "TipoRegistroExistenteExcepcion");
+    private final static QName _HashSetWrapper_QNAME = new QName("http://webservices/", "hashSetWrapper");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: webservices
@@ -132,13 +133,13 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link HashSet }
+     * Create an instance of {@link WrapperHashSet }
      * 
      * @return
-     *     the new instance of {@link HashSet }
+     *     the new instance of {@link WrapperHashSet }
      */
-    public HashSet createHashSet() {
-        return new HashSet();
+    public WrapperHashSet createWrapperHashSet() {
+        return new WrapperHashSet();
     }
 
     /**
@@ -149,16 +150,6 @@ public class ObjectFactory {
      */
     public DtTipoRegistro createDtTipoRegistro() {
         return new DtTipoRegistro();
-    }
-
-    /**
-     * Create an instance of {@link ArrayList }
-     * 
-     * @return
-     *     the new instance of {@link ArrayList }
-     */
-    public ArrayList createArrayList() {
-        return new ArrayList();
     }
 
     /**
@@ -336,6 +327,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservices/", name = "TipoRegistroExistenteExcepcion")
     public JAXBElement<TipoRegistroExistenteExcepcion> createTipoRegistroExistenteExcepcion(TipoRegistroExistenteExcepcion value) {
         return new JAXBElement<>(_TipoRegistroExistenteExcepcion_QNAME, TipoRegistroExistenteExcepcion.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link WrapperHashSet }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link WrapperHashSet }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "hashSetWrapper")
+    public JAXBElement<WrapperHashSet> createHashSetWrapper(WrapperHashSet value) {
+        return new JAXBElement<>(_HashSetWrapper_QNAME, WrapperHashSet.class, null, value);
     }
 
 }

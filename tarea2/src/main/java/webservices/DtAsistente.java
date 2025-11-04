@@ -1,8 +1,10 @@
 
 package webservices;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
 
@@ -17,7 +19,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *     <extension base="{http://webservices/}dataUsuario">
  *       <sequence>
  *         <element name="apellido" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         <element name="fechaNacimiento" type="{http://webservices/}localDate" minOccurs="0"/>
+ *         <element name="fechaNacimiento" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         <element name="institucion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       </sequence>
  *     </extension>
@@ -38,7 +40,8 @@ public class DtAsistente
 {
 
     protected String apellido;
-    protected LocalDate fechaNacimiento;
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar fechaNacimiento;
     protected String institucion;
 
     /**
@@ -70,10 +73,10 @@ public class DtAsistente
      * 
      * @return
      *     possible object is
-     *     {@link LocalDate }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public LocalDate getFechaNacimiento() {
+    public XMLGregorianCalendar getFechaNacimiento() {
         return fechaNacimiento;
     }
 
@@ -82,10 +85,10 @@ public class DtAsistente
      * 
      * @param value
      *     allowed object is
-     *     {@link LocalDate }
+     *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setFechaNacimiento(LocalDate value) {
+    public void setFechaNacimiento(XMLGregorianCalendar value) {
         this.fechaNacimiento = value;
     }
 

@@ -17,7 +17,6 @@ import jakarta.servlet.http.Part;
 import webservices.DataUsuario;
 import webservices.DtDetalleEdicion;
 import webservices.DtDetalleEvento;
-import webservices.HashSet;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
 import webservices.PublicadorUsuario;

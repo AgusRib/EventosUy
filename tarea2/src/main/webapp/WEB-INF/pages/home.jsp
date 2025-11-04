@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="logica.data_types.*" %>
+<%@ page import="webservices.*" %>
 <%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -49,8 +49,8 @@
             <div class="row gx-0 g-xl-2 gy-2">
                 
 			<% 
-			List<DTDetalleEvento> eventos = (List<DTDetalleEvento>) request.getAttribute("eventos_recientes");
-			for (DTDetalleEvento evento : eventos) { %>
+			List<DtDetalleEvento> eventos = (List<DtDetalleEvento>) request.getAttribute("eventos_recientes");
+			for (DtDetalleEvento evento : eventos) { %>
 				<div class="col-xl-6">
 				<a class="text-decoration-none" href="detalleEvento?nombre=<%= evento.getNombre() %>"
 					data-hotkey="5" role="button">

@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -7,9 +8,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.controllers.IControllerEvento;
-import logica.data_types.DTDetalleEvento;
-import logica.models.Factory;
+import webservices.DtDetalleEvento;
+import webservices.PublicadorEvento;
+import webservices.PublicadorEventoService;
+import webservices.PublicadorUsuario;
+import webservices.PublicadorUsuarioService;
 
 
 @WebServlet("/HomeServlet")
@@ -24,14 +27,21 @@ public class ServletHome extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		IControllerEvento iEvento = Factory.getInstance().getControllerEvento();
+        PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+    
 
+        List<DtDetalleEvento> eventosRecientes = new ArrayList<DtDetalleEvento>();
+		List<Object> lista = portEvento.obtenerEventosRecientes().getItem();
+		for (Object obj : lista) {
+			eventosRecientes.add((DtDetalleEvento) obj);
+			System.out.println(((DtDetalleEvento) obj).getNombre());
+		}
 		
-		List<DTDetalleEvento> eventosRecientes = iEvento.obtenerEventosRecientes();
 		request.setAttribute("eventos_recientes", eventosRecientes);
 		
         // Fetch imagen de edicion
-		for (DTDetalleEvento e : eventosRecientes) {
+		for (DtDetalleEvento e : eventosRecientes) {
 	        String eventoImg = ManejadorArchivos.buscarArchivo(e.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
 	        if (eventoImg != null) {
 	        	request.setAttribute(e.getNombre(), "uploads/eventos/" + eventoImg);

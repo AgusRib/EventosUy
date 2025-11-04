@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
+
 import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
 import excepciones.FechaInicioPOSTFINAL;
@@ -184,8 +186,8 @@ public class publicadorEvento {
 	}
 	
 	@WebMethod
-	public ArrayList<DTDetalleEvento> obtenerEventosRecientes() {
-		return (ArrayList<DTDetalleEvento>) ICE.obtenerEventosRecientes();
+	public WrapperHashSet<DTDetalleEvento> obtenerEventosRecientes() {
+		return new WrapperHashSet<DTDetalleEvento>(new HashSet<DTDetalleEvento>(ICE.obtenerEventosRecientes()));
 	}
    
     @WebMethod

@@ -18,9 +18,9 @@ import jakarta.xml.bind.annotation.XmlType;
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
- *         <element name="email" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="nickname" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="email" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="tipo" type="{http://webservices/}tipoUsuario" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
@@ -32,9 +32,9 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dataUsuario", propOrder = {
-    "email",
     "nickname",
     "nombre",
+    "email",
     "tipo"
 })
 @XmlSeeAlso({
@@ -43,35 +43,11 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class DataUsuario {
 
-    protected String email;
     protected String nickname;
     protected String nombre;
+    protected String email;
     @XmlSchemaType(name = "string")
     protected TipoUsuario tipo;
-
-    /**
-     * Obtiene el valor de la propiedad email.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Define el valor de la propiedad email.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setEmail(String value) {
-        this.email = value;
-    }
 
     /**
      * Obtiene el valor de la propiedad nickname.
@@ -119,6 +95,30 @@ public class DataUsuario {
      */
     public void setNombre(String value) {
         this.nombre = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad email.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Define el valor de la propiedad email.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setEmail(String value) {
+        this.email = value;
     }
 
     /**
