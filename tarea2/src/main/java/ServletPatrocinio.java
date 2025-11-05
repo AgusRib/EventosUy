@@ -1,14 +1,13 @@
 import java.io.IOException;
-
-import java.util.Set;
-import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
+import java.util.Set;
 
 import excepciones.NombreInstiExistente;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,14 +16,19 @@ import jakarta.servlet.http.Part;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 import logica.data_types.DTPatrocinio;
-import logica.data_types.DataUsuario;
 import logica.data_types.DTTipoRegistro;
+import logica.data_types.DataUsuario;
 import logica.enumerators.NivelPatrocinio;
 import logica.models.Factory;
+import webservices.DtPatrocinio;
+import webservices.DtTipoRegistro;
+import webservices.PublicadorEvento;
+import webservices.PublicadorEventoService;
+import webservices.PublicadorUsuario;
+import webservices.PublicadorUsuarioService;
+import webservices.WrapperHashSet;
 
-/**
- * Servlet implementation class ServletPatrocinio
- */
+
 @WebServlet({"/altaInstitucion","/altaPatrocinio"})
 @MultipartConfig
 public class ServletPatrocinio extends HttpServlet {
@@ -44,12 +48,17 @@ public class ServletPatrocinio extends HttpServlet {
     	String nombreEdicion = request.getParameter("nombreEdicion");
     	request.getSession().setAttribute("nombreEdicion", nombreEdicion);
     	
-    	IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+    	PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+     	
+        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+         
     	switch(path) {
         case "/detallePatrocinio":
             try {
                 String nombreInstitucion = request.getParameter("nombreInstitucion");
-                DTPatrocinio patrocinio = ICE.obtenerPatrocinio(nombreEdicion, nombreInstitucion);
+                DtPatrocinio patrocinio = portEvento.obtenerPatrocinio(nombreEdicion, nombreInstitucion);
                 request.setAttribute("patrocinio", patrocinio);
                 request.getRequestDispatcher("/WEB-INF/pages//detallePatrocinio.jsp").forward(request, response);
             } catch (Exception e) {
@@ -70,12 +79,12 @@ public class ServletPatrocinio extends HttpServlet {
         	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
             request.getSession().setAttribute("nombreEdicion", nombreEdicion);
             try {
-                Set<String> instituciones = ICU.listarInstituciones();
+            	WrapperHashSet instituciones = portUsuario.listarInstituciones();
                 request.setAttribute("instituciones", instituciones);
                
                 try {
                     if (nombreEdicion != null && !nombreEdicion.isEmpty()) {
-                        Set<String> tipos = ICE.listarTiposDeRegistro(nombreEdicion);
+                    	WrapperHashSet tipos = portEvento.listarTiposDeRegistro(nombreEdicion);
                         request.setAttribute("tiposRegistro", tipos);
                     }
                 } catch (Exception e) {
@@ -98,8 +107,11 @@ public class ServletPatrocinio extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
-        IControllerEvento ICE = Factory.getInstance().getControllerEvento();
-        IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+        PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+     	
+        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
     
 
         switch(path) {
@@ -112,10 +124,9 @@ public class ServletPatrocinio extends HttpServlet {
                     if (s != null) nombreEdi = s.toString();
                 }
               
-                System.out.println("DEBUG ICE impl: " + (ICE != null ? ICE.getClass().getName() : "<null-controller>") + ", nombreEdi='" + nombreEdi + "'");
                 String institucion = request.getParameter("institucion");
-                NivelPatrocinio nivel = null;
-                try { nivel = NivelPatrocinio.valueOf(request.getParameter("nivelPatrocinio")); } catch (Exception ex) { /* keep null */ }
+                webservices.NivelPatrocinio nivel = null;
+                try { nivel = webservices.NivelPatrocinio.valueOf(request.getParameter("nivelPatrocinio")); } catch (Exception ex) {  }
                 double aporteEconomico = 0.0;
                 try { aporteEconomico = Double.parseDouble(request.getParameter("aporte")); } catch (Exception ex) { aporteEconomico = 0.0; }
                 String tipoRegistroGratis = request.getParameter("tipoRegGratis");
@@ -123,8 +134,7 @@ public class ServletPatrocinio extends HttpServlet {
                 try { cantidadGratis = Integer.parseInt(request.getParameter("cantGratis")); } catch (Exception ex) { cantidadGratis = 0; }
                 String codigo = request.getParameter("codigo");
              
-                
-                ICE.setFechaSistema((LocalDate)request.getSession().getAttribute("fecha"));
+                portEvento.setFechaSistema((String)request.getSession().getAttribute("fecha"));
 
                 
                 request.setAttribute("edicion", nombreEdi);
@@ -135,7 +145,6 @@ public class ServletPatrocinio extends HttpServlet {
                 request.setAttribute("cantGratis", request.getParameter("cantGratis"));
                 request.setAttribute("codigo", codigo);
 
-                // Basic context and auth check
                 HttpSession session = request.getSession();
                 DataUsuario user = (DataUsuario) session.getAttribute("usuario");
                 if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ORGANIZADOR) {
@@ -145,43 +154,39 @@ public class ServletPatrocinio extends HttpServlet {
                 }
 
                 try {
-                    // Server-side validations that cannot be bypassed from the JSP
-                    // 1) There must be tipos de registro for the edition
-                    Set<String> tiposDisponibles = null;
+                    WrapperHashSet tiposDisponibles = null;
                     try {
-                        if (nombreEdi != null && !nombreEdi.isEmpty()) tiposDisponibles = ICE.listarTiposDeRegistro(nombreEdi);
+                    	if (nombreEdi != null && !nombreEdi.isEmpty()) tiposDisponibles = portEvento.listarTiposDeRegistro(nombreEdi);
                     } catch (Exception ignore) { }
-                    if (tiposDisponibles == null || tiposDisponibles.isEmpty()) {
+                    if (tiposDisponibles == null || tiposDisponibles == null) {
                         request.setAttribute("error", "No existen tipos de registro para la edición seleccionada. No es posible registrar un patrocinio hasta que exista al menos un tipo de registro para la edición.");
-                        try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
+                        try { request.setAttribute("instituciones", portUsuario.listarInstituciones()); } catch (Exception e) { }
                         request.setAttribute("tiposRegistro", tiposDisponibles);
                         request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                         break;
                     }
 
-                    // 2) All form fields are required (server-side): institucion, nivelPatrocinio, aporte, tipoRegGratis, cantGratis, codigo
                     String aporteParam = request.getParameter("aporte");
                     String tipoRegGratisParam = request.getParameter("tipoRegGratis");
                     String cantGratisParam = request.getParameter("cantGratis");
                     String codigoParam = request.getParameter("codigo");
                     if (institucion == null || institucion.trim().isEmpty() || nivel == null || aporteParam == null || aporteParam.trim().isEmpty() || tipoRegGratisParam == null || tipoRegGratisParam.trim().isEmpty() || cantGratisParam == null || cantGratisParam.trim().isEmpty() || codigoParam == null || codigoParam.trim().isEmpty()) {
                         request.setAttribute("error", "Todos los campos del formulario son obligatorios.");
-                        try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
-                        try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
+                        try { request.setAttribute("instituciones", portUsuario.listarInstituciones()); } catch (Exception e) { }
+                        try { request.setAttribute("tiposRegistro", portEvento.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
                         request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                         break;
                     }
 
-                    // 3) The cantidad de registros gratuitos cannot exceed the cupo of the selected tipo (checked in servlet)
                     try {
                         if (tipoRegGratisParam != null && !tipoRegGratisParam.isEmpty()) {
-                            DTTipoRegistro detalleTipo = ICE.verDetalleTRegistro(nombreEdi, tipoRegGratisParam);
+                            DtTipoRegistro detalleTipo = portEvento.verDetalleTRegistro(nombreEdi, tipoRegGratisParam);
                             if (detalleTipo != null) {
                                 int cupo = detalleTipo.getCupo();
                                 if (cantidadGratis > cupo) {
                                     request.setAttribute("error", "La cantidad de registros gratuitos (" + cantidadGratis + ") no puede ser mayor al cupo del tipo de registro escogido (" + cupo + ").");
-                                    try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
-                                    try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
+                                    try { request.setAttribute("instituciones", portUsuario.listarInstituciones()); } catch (Exception e) { }
+                                    try { request.setAttribute("tiposRegistro", portEvento.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
                                     request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                                     break;
                                 }
@@ -195,9 +200,9 @@ public class ServletPatrocinio extends HttpServlet {
                         System.out.println("DEBUG: comprobando existencia de patrocinio por obtenerPatrocinio(edicion, institucion)");
                         System.out.println("DEBUG institucion recibida='" + institucion + "', nombreEdi='" + nombreEdi + "'");
                         if (institucion != null && !institucion.trim().isEmpty()) {
-                            DTPatrocinio dtp = null;
+                            DtPatrocinio dtp = null;
                             try {
-                                dtp = ICE.obtenerPatrocinio(nombreEdi, institucion);
+                                dtp = portEvento.obtenerPatrocinio(nombreEdi, institucion);
                             } catch (Exception e) {
                                 System.out.println("DEBUG obtenerPatrocinio lanzó excepción: " + e.getMessage());
                             }
@@ -219,7 +224,7 @@ public class ServletPatrocinio extends HttpServlet {
                     float costoTipo = 0.0f;
                     try {
                         if (tipoRegistroGratis != null && !tipoRegistroGratis.isEmpty()) {
-                            DTTipoRegistro dttr = ICE.verDetalleTRegistro(nombreEdi, tipoRegistroGratis);
+                            DtTipoRegistro dttr = portEvento.verDetalleTRegistro(nombreEdi, tipoRegistroGratis);
                             if (dttr != null) costoTipo = dttr.getCosto();
                         }
                     } catch (Exception ignore) { }
@@ -235,21 +240,21 @@ public class ServletPatrocinio extends HttpServlet {
                         request.setAttribute("error", "Ya existe un patrocinio de la institución '" + institucion + "' para la edición '" + nombreEdi + "'. Puede editarlo o cancelar.");
                         request.setAttribute("permitirEditar", true);
 
-                        try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
-                        try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
+                        try { request.setAttribute("instituciones", portUsuario.listarInstituciones()); } catch (Exception e) { }
+                        try { request.setAttribute("tiposRegistro", portEvento.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
                         request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                         break;
                     } else if (excedePorcentaje) {
                         request.setAttribute("error", "El costo de los registros gratuitos ("+costoTotalGratis+") supera el 20% del aporte económico.");
                         request.setAttribute("permitirEditar", true);
-                        try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception e) { }
-                        try { request.setAttribute("tiposRegistro", ICE.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
+                        try { request.setAttribute("instituciones", portUsuario.listarInstituciones()); } catch (Exception e) { }
+                        try { request.setAttribute("tiposRegistro", portEvento.listarTiposDeRegistro(nombreEdi)); } catch (Exception e) { }
                         request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                         break;
                     } else {
                      
                         try {
-                            ICE.altaPatrocinio(nombreEdi, institucion, nivel, aporteEconomico, tipoRegistroGratis, cantidadGratis, codigo);
+                        	portEvento.altaPatrocinio(nombreEdi, institucion, nivel, aporteEconomico, tipoRegistroGratis, cantidadGratis, codigo);
                            
                             try {
                                 String target = request.getContextPath() + "/altaPatrocinio";
@@ -267,12 +272,10 @@ public class ServletPatrocinio extends HttpServlet {
                                 response.sendRedirect(target);
                                 return;
                             } catch (UnsupportedEncodingException uee) {
-                                // fallback: redirect without encoded params
                                 String target = request.getContextPath() + "/altaPatrocinio";
                                 if (nombreEdi != null && !nombreEdi.isEmpty()) {
                                     target += "?nombreEdicion=" + nombreEdi;
                                 }
-                                // append plain message param
                                 if (target.contains("?")) target += "&mensaje=Patrocinio registrado con éxito.";
                                 else target += "?mensaje=Patrocinio registrado con éxito.";
                                 response.sendRedirect(target);
@@ -280,7 +283,7 @@ public class ServletPatrocinio extends HttpServlet {
                             }
                         } catch (Exception e) {
                             request.setAttribute("error", "Error al registrar el patrocinio: " + e.getMessage());
-                            try { request.setAttribute("instituciones", ICU.listarInstituciones()); } catch (Exception ex) { }
+                            try { request.setAttribute("instituciones", portUsuario.listarInstituciones()); } catch (Exception ex) { }
                             request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                         }
                     }
@@ -301,20 +304,16 @@ public class ServletPatrocinio extends HttpServlet {
                 try { imagenInsti = request.getPart("imagen"); } catch (Exception e) {  }
 
                 try {
-                    ICU.altaInstitucion(nombreInsti, desc, web);
-                 
-                   
-                      
-                            ManejadorArchivos.guardarArchivo(imagenInsti, nombreInsti, "instituciones", getServletContext());
-                        
+                    portUsuario.altaInstitucion(nombreInsti, desc, web);
                     
+                    ManejadorArchivos.guardarArchivo(imagenInsti, nombreInsti, "instituciones", getServletContext());
                     request.setAttribute("mensaje", "Institución creada exitosamente.");
                     request.setAttribute("error", null);
                     request.setAttribute("nombre", nombreInsti);
                     request.setAttribute("descripcion", desc);
                     request.setAttribute("url", web);
                     request.getRequestDispatcher("/WEB-INF/pages/altaInstitucion.jsp").forward(request, response);
-                } catch (NombreInstiExistente e) {
+                } catch (webservices.NombreInstiExistente_Exception e) {
                     request.setAttribute("error", "El nombre de la institucion ya existe");
                  
                     request.setAttribute("nombre", nombreInsti);
