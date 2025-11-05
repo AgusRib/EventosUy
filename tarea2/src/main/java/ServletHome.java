@@ -39,6 +39,7 @@ public class ServletHome extends HttpServlet {
 		}
 		
 		request.setAttribute("eventos_recientes", eventosRecientes);
+		request.setAttribute("mensaje", request.getParameter("mensaje"));
 		
         // Fetch imagen de edicion
 		for (DtDetalleEvento e : eventosRecientes) {

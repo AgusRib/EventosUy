@@ -17,6 +17,7 @@ import jakarta.servlet.http.Part;
 import webservices.DataUsuario;
 import webservices.DtDetalleEdicion;
 import webservices.DtDetalleEvento;
+import webservices.EventoFinalizadoExcepcion_Exception;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
 import webservices.PublicadorUsuario;
@@ -27,7 +28,7 @@ import webservices.WrapperHashSet;
 /**
  * Servlet implementation class EventosServlet
  */
-@WebServlet({ "/eventos", "/listarEventos", "/detalleEvento", "/altaEvento", "/categorias" })
+@WebServlet({ "/eventos", "/listarEventos", "/detalleEvento", "/altaEvento", "/categorias", "/finalizarEvento" })
 @MultipartConfig
 public class ServletEvento extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -86,6 +87,10 @@ public class ServletEvento extends HttpServlet {
                 listarCategorias(request, response, portEvento);
                 return;
             }
+            case "/finalizarEvento": {
+            	finalizarEvento(request, response, portEvento);
+				return;
+			}
             default:
                 break;
         }
@@ -177,7 +182,14 @@ public class ServletEvento extends HttpServlet {
         System.out.println("Nombre del evento recibido: " + nombreEvento);
         
         try {
-            DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+        	DtDetalleEvento detalleEvento = null;
+        	try {
+        		detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+        	} catch (EventoFinalizadoExcepcion_Exception e) {
+				request.setAttribute("error", "El evento ha finalizado y no se pueden ver sus detalles.");
+				request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
+				return;
+			}
             
             // Fetch imagen de evento (copiado de ServletEdicion)
             String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
@@ -385,4 +397,15 @@ public class ServletEvento extends HttpServlet {
             response.getWriter().append(e.getMessage());
         }
     }
+    
+    private void finalizarEvento(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
+		String nombreEvento = request.getParameter("nombreEvento");
+		
+		try {
+			portEvento.finalizarEvento(nombreEvento);
+			response.sendRedirect(request.getContextPath() + "/HomeServlet" + "&mensaje=Evento finalizado exitosamente");
+		} catch (Exception e) {
+			response.sendRedirect(request.getContextPath() + "/detalleEvento?nombre=" + nombreEvento + "&error=" + e.getMessage());
+		}
+		}
 }

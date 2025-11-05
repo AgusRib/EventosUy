@@ -10,6 +10,7 @@ import java.util.Set;
 
 import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
+import excepciones.EventoFinalizadoExcepcion;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
@@ -102,7 +103,7 @@ public class publicadorEvento {
 	}
 
 	@WebMethod
-	public DTDetalleEvento verDetalleEvento(String nombreEvento) {
+	public DTDetalleEvento verDetalleEvento(String nombreEvento) throws EventoFinalizadoExcepcion {
 		return ICE.verDetalleEvento(nombreEvento);
 	}
 	
@@ -204,4 +205,9 @@ public class publicadorEvento {
         }
         return byteArray;
     }
+    
+    public void finalizarEvento(String nombreEvento) {
+		ICE.finalizarEvento(nombreEvento);
+		return;
+	}
 }

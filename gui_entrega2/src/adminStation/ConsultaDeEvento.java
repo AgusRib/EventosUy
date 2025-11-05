@@ -155,7 +155,14 @@ public class ConsultaDeEvento extends JInternalFrame {
         String evento = (String) cbxListadoDeEventos.getSelectedItem();
         if (evento != null && !evento.equals(PLACEHOLDER_EVENTO)) {
             // Labels de Nombre y Sigla
-        	DTDetalleEvento dtde = controllerEvento.verDetalleEvento(evento);
+        	DTDetalleEvento dtde = null;
+        	try {
+        		dtde = controllerEvento.verDetalleEvento(evento);
+        	}
+        	catch (Exception ex) {
+        		ex.printStackTrace();
+        		return;
+        	}
             
            
             	txtNombreEvento.setText(dtde.getNombre());

@@ -18,6 +18,7 @@ public class Evento{
 	private List<Edicion> colEdicionesIngresadas;
 	private List<Edicion> colEdicionesRechazadas;
 	private List<Categoria> colCategorias;
+	private boolean finalizado;
 
 	public Evento(String nombre, String sigla,  LocalDate fecha, String descripcion) {
 		this.nombre = nombre;
@@ -28,6 +29,7 @@ public class Evento{
 		this.colEdicionesIngresadas = new ArrayList<>();
 		this.colEdicionesRechazadas = new ArrayList<>();
 		this.colCategorias = new ArrayList<>();
+		this.finalizado = false;
 	}
 
 	public String getNombre() {
@@ -56,6 +58,10 @@ public class Evento{
 			}
 		}
 		return null;
+	}
+	
+	public  boolean getFinalizado() {
+		return finalizado;
 	}
 
 	
@@ -126,5 +132,9 @@ public class Evento{
 		if (nuevoestado == EstadoEdicion.Rechazada) colEdicionesRechazadas.add(edi);
 		if (nuevoestado == EstadoEdicion.Confirmada)colEdicionesConfirmadas.add(edi);
 		
+	}
+	
+	public void setFinalizado(boolean fin) {
+		this.finalizado = fin;
 	}
 }

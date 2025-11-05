@@ -95,6 +95,37 @@
         </div>
     </div>
     
-    <script src="assets/js/main.js"></script>
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="mensajeModalLabel">Mensaje</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="mensajeModalBody"></div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script src="assets/js/main.js">
+	  (function() {
+	    var mensaje = '<%= request.getAttribute("mensaje") %>';
+	    if (mensaje && mensaje.length > 0) {
+	      var body = document.getElementById('mensajeModalBody');
+	      if (body) body.textContent = mensaje;
+	      var modalEl = document.getElementById('mensajeModal');
+	      if (modalEl) {
+	        var modal = new bootstrap.Modal(modalEl);
+	        modal.show();
+	      } else {
+	        alert(mensaje);
+	      }
+	    }
+	  })();
+
+   </script>
 </body>
 </html>
