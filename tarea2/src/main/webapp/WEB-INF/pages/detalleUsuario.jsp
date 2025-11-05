@@ -2,9 +2,9 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.data_types.DataUsuario" %>
-<%@ page import="logica.data_types.DTOrganizador" %>
-<%@ page import="logica.data_types.DTAsistente" %>
+<%@ page import="webservices.DataUsuario" %>
+<%@ page import="webservices.DtOrganizador" %>
+<%@ page import="webservices.DtAsistente" %>
 
 <!doctype html>
 
@@ -170,12 +170,12 @@ body.with-collapsed {
     }
 	
 	Object detalleObj = request.getAttribute("detalleUsuario");
-	DTAsistente asis = null;
-	DTOrganizador org = null;
-	if (detalleObj instanceof DTOrganizador) {
-		org = (DTOrganizador) detalleObj;
-	} else if (detalleObj instanceof DTAsistente) {
-		asis = (DTAsistente) detalleObj;
+	DtAsistente asis = null;
+	DtOrganizador org = null;
+	if (detalleObj instanceof DtOrganizador) {
+		org = (DtOrganizador) detalleObj;
+	} else if (detalleObj instanceof DtAsistente) {
+		asis = (DtAsistente) detalleObj;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -232,7 +232,7 @@ body.with-collapsed {
                                                 <u>Fecha de Nacimiento:</u> <%= asis.getFechaNacimiento() %>
                                             </div>
                                             <div class="apellido">
-                                                <u>Apellido:</u> <%= asis.getapellido() %>
+                                                <u>Apellido:</u> <%= asis.getApellido() %>
                                             </div>
                                         
                                             <% if (asis.getInstitucion() != null && !asis.getInstitucion().isBlank()) { %>

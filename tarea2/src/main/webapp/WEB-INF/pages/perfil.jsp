@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.data_types.DataUsuario" %>
-<%@ page import="logica.data_types.DTOrganizador" %>
-<%@ page import="logica.data_types.DTAsistente" %>
+<%@ page import="webservices.DataUsuario" %>
+<%@ page import="webservices.DtOrganizador" %>
+<%@ page import="webservices.DtAsistente" %>
 <!doctype html>
 <html lang="es">
 <head>
@@ -74,8 +74,8 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 		uObj = su;
 	}
 
-	DTOrganizador org = null;
-	DTAsistente asis = null;
+	DtOrganizador org = null;
+	DtAsistente asis = null;
 	String nickname = null;
 	String nombre = null;
 	String apellido = null;
@@ -83,18 +83,18 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 	String descripcion = null;
 	String web = null;
 	
-	if (uObj instanceof DTOrganizador) {
-		org = (DTOrganizador) uObj;
+	if (uObj instanceof DtOrganizador) {
+		org = (DtOrganizador) uObj;
 		nickname = org.getNickname();
 		nombre = org.getNombre();
 		email = org.getEmail();
 		descripcion = org.getDescripcion();
 		web = org.getWeb();
-	} else if (uObj instanceof DTAsistente) {
-		asis = (DTAsistente) uObj;
+	} else if (uObj instanceof DtAsistente) {
+		asis = (DtAsistente) uObj;
 		nickname = asis.getNickname();
 		nombre = asis.getNombre();
-		apellido = asis.getapellido();
+		apellido = asis.getApellido();
 		email = asis.getEmail();
 	}
 

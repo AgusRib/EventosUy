@@ -2,7 +2,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.data_types.DataUsuario" %>
+<%@ page import="webservices.DataUsuario" %>
 
 <!doctype html>
 

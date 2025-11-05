@@ -1,5 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="logica.data_types.*" %>
+
+<%@ page import="webservices.DataUsuario" %>
+<%@ page import="webservices.DtOrganizador" %>
+<%@ page import="webservices.DtAsistente" %>
+<%@ page import="webservices.TipoUsuario" %>
+
 <%@ page import="java.time.LocalDate" %>
 
 <%
@@ -35,17 +40,17 @@
   String descripcionVal = "";
   String webVal = "";
 
-  if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) {
-	    DTAsistente as = (DTAsistente) request.getAttribute("detalleUsuario");
+  if (du != null && du.getTipo() == TipoUsuario.ASISTENTE) {
+	    DtAsistente as = (DtAsistente) request.getAttribute("detalleUsuario");
 	    nombreVal   = (nombreAttr != null) ? nombreAttr : (as != null ? as.getNombre() : du.getNombre());
-	    apellidoVal = (apellidoAttr != null) ? apellidoAttr : (as != null ? as.getapellido() : "");
+	    apellidoVal = (apellidoAttr != null) ? apellidoAttr : (as != null ? as.getApellido() : "");
 	    if (fechaNacAttr != null) {
 	        fechaNacVal = fechaNacAttr;
 	    } else if (as != null && as.getFechaNacimiento() != null) {
 	        fechaNacVal = as.getFechaNacimiento().toString();
 	    }
-	} else if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
-	    DTOrganizador org = (DTOrganizador) request.getAttribute("detalleUsuario");
+	} else if (du != null && du.getTipo() == TipoUsuario.ORGANIZADOR) {
+	    DtOrganizador org = (DtOrganizador) request.getAttribute("detalleUsuario");
 	    nombreVal      = (nombreAttr != null)      ? nombreAttr      : (org != null ? org.getNombre()      : du.getNombre());
 	    descripcionVal = (descripcionAttr != null) ? descripcionAttr : (org != null ? org.getDescripcion() : "");
 	    webVal         = (webAttr != null)         ? webAttr         : (org != null ? org.getWeb()         : "");
@@ -125,7 +130,7 @@ main.contUser { padding: 18px; }
 			  <input class="form-control" type="file" id="avatarInput" name="avatar" accept="image/*">
 		  </div>
 
-          <% if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) { %>
+          <% if (du != null && du.getTipo() == TipoUsuario.ASISTENTE) { %>
             <!-- ASISTENTE -->
             <div class="row">
               <div class="col-md-6 mb-3">
@@ -143,7 +148,7 @@ main.contUser { padding: 18px; }
               <input type="date" class="form-control" id="fechaNac" name="fechaNac" value="<%= (fechaNacVal==null?"":fechaNacVal) %>" required>
             </div>
 
-          <% } else if (du != null && du.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) { %>
+          <% } else if (du != null && du.getTipo() == TipoUsuario.ORGANIZADOR) { %>
             <!-- ORGANIZADOR -->
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>

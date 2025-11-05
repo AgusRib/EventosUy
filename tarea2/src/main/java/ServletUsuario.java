@@ -1,11 +1,13 @@
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
+//import excepciones.UsuarioNoEncontrado;
 import excepciones.UsuarioNoEncontrado;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -14,25 +16,34 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import logica.controllers.IControllerEvento;
-import logica.controllers.IControllerUsuario;
-import logica.data_types.DTAsistente;
-import logica.data_types.DTDetalleEdicion;
-import logica.data_types.DTOrganizador;
-import logica.data_types.DataUsuario;
-import logica.enumerators.EstadoEdicion;
-import logica.models.Factory;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+//import logica.controllers.IControllerUsuario;
+//import logica.controllers.IControllerEvento;
+import webservices.DtAsistente;
+import webservices.DtOrganizador;
+import webservices.DataUsuario;
+import webservices.TipoUsuario;
+
+//import webservices.Factory;
+import webservices.PublicadorUsuario;
+import webservices.PublicadorUsuarioService;
+import webservices.UsuarioNoEncontrado_Exception;
+import webservices.WrapperHashSet;
 
 @MultipartConfig
 @WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })
 public class ServletUsuario extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private IControllerUsuario controllerUsuario;
+    //private IControllerUsuario portUsuario;
+    private PublicadorUsuario portUsuario;
 
     public ServletUsuario() {
         super();
-        Factory factory = Factory.getInstance();
-        this.controllerUsuario = factory.getControllerUsuario();
+        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+
     }
 
     
@@ -50,19 +61,23 @@ public class ServletUsuario extends HttpServlet {
                 return;
             }
             try {
-                DataUsuario du = controllerUsuario.infoUsuario(usuario);
+                //DataUsuario du = portUsuario.infoUsuario(usuario);
+                DataUsuario du = portUsuario.infoUsuario(usuario);
                 request.setAttribute("usuario", du);
 
-                if (du.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
-                    DTOrganizador org = controllerUsuario.infoOrganizador(usuario);
+                if (du.getTipo() ==  TipoUsuario.ORGANIZADOR) {
+                    //DtOrganizador org = portUsuario.infoOrganizador(usuario);
+                    DtOrganizador org = portUsuario.infoOrganizador(usuario);
                     request.setAttribute("detalleUsuario", org);
                 } else {
-                    DTAsistente asis = controllerUsuario.infoAsistente(usuario);
+                    //DtAsistente asis = portUsuario.infoAsistente(usuario);
+                    DtAsistente asis = portUsuario.infoAsistente(usuario);
                     request.setAttribute("detalleUsuario", asis);
                 }
 
                 // Imagen de perfil
                 String dirUsuarios   = getServletContext().getRealPath("/uploads/usuarios/");
+                //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
                 String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
                 if (nombreArchivo != null) {
                     request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
@@ -77,7 +92,7 @@ public class ServletUsuario extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/pages/modificarDatos.jsp").forward(request, response);
                 return;
 
-            } catch (UsuarioNoEncontrado e) {
+            } catch (UsuarioNoEncontrado_Exception e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
                 return;
             } catch (Exception e) {
@@ -146,8 +161,8 @@ public class ServletUsuario extends HttpServlet {
 
         DataUsuario usr;
         try {
-            usr = this.controllerUsuario.infoUsuario(usuario);
-        } catch (UsuarioNoEncontrado ex) {
+            usr = this.portUsuario.infoUsuario(usuario);
+        } catch (UsuarioNoEncontrado_Exception ex) {
             response.sendError(404);
             request.getRequestDispatcher("/WEB-INF/errorPages/404.jsp").include(request, response);
             return;
@@ -156,28 +171,28 @@ public class ServletUsuario extends HttpServlet {
         
         request.setAttribute("usuario", usr);
 
-        if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
-            DTOrganizador org = this.controllerUsuario.infoOrganizador(usuario);
+        if (usr.getTipo() ==  TipoUsuario.ORGANIZADOR) {
+            //DtOrganizador org = this.portUsuario.infoOrganizador(usuario);
+            DtOrganizador org = portUsuario.infoOrganizador(usuario);
             request.setAttribute("detalleUsuario", org);
 
             
             try {
-                IControllerEvento ICE = Factory.getInstance().getControllerEvento();
-                Set<String> todasEdiciones = this.controllerUsuario.listarEdicionesOrganizadas(usuario);
-                Set<String> ediciones = new HashSet<String>();
+                //IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+                //Set<String> ediciones = this.portUsuario.listarEdicionesOrganizadas(usuario);
+                Set<String> ediciones = new HashSet<>();
+                List<Object> lista = portUsuario.listarEdicionesOrganizadas(usuario).getItem();
+                for (Object obj : lista) {
+					ediciones.add((String) obj);
+				}
                 
-                for(String ed : todasEdiciones) {
-                	DTDetalleEdicion edi = ICE.mostrarDetallesEdicion(ed);
-                	if(edi.getEstado() == EstadoEdicion.Confirmada) {
-                		ediciones.add(ed);
-                	}
-                }
                 request.setAttribute("ediciones", ediciones);
 
                 Map<String, String> edicionesMap = new HashMap<>();
                 String dirEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
                 if (ediciones != null) {
                     for (String ed : ediciones) {
+                        //String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
                         String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
                         if (nombreArchivo != null) {
                             edicionesMap.put(ed, "uploads/ediciones/" + nombreArchivo);
@@ -193,13 +208,15 @@ public class ServletUsuario extends HttpServlet {
                 request.setAttribute("edicionesMap", java.util.Collections.emptyMap());
             }
         } else {
-            DTAsistente asis = this.controllerUsuario.infoAsistente(usuario);
+            //DtAsistente asis = this.portUsuario.infoAsistente(usuario);
+            DtAsistente asis = portUsuario.infoAsistente(usuario);
             request.setAttribute("detalleUsuario", asis);
         }
 
         // set imagenUsuario attribute
         try {
             String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+            //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
             String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
             if (nombreArchivo != null) {
                 request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
@@ -218,24 +235,28 @@ public class ServletUsuario extends HttpServlet {
 
         DataUsuario usr;
         try {
-            usr = this.controllerUsuario.infoUsuario(usuario);
-        } catch (UsuarioNoEncontrado ex) {
+            //usr = this.portUsuario.infoUsuario(usuario);
+            usr = portUsuario.infoUsuario(usuario);
+        } catch (UsuarioNoEncontrado_Exception ex) {
             response.sendError(404);
             request.getRequestDispatcher("/WEB-INF/errorPages/404.jsp").include(request, response);
             return;
         }
 
-        if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
-            DTOrganizador org = this.controllerUsuario.infoOrganizador(usuario);
+        if (usr.getTipo() ==  TipoUsuario.ORGANIZADOR) {
+            //DtOrganizador org = this.portUsuario.infoOrganizador(usuario);
+            DtOrganizador org = portUsuario.infoOrganizador(usuario);
             request.setAttribute("usuario", org);
         } else {
-            DTAsistente asis = this.controllerUsuario.infoAsistente(usuario);
+            //DtAsistente asis = this.portUsuario.infoAsistente(usuario);
+            DtAsistente asis = portUsuario.infoAsistente(usuario);
             request.setAttribute("usuario", asis);
         }
 
        
         try {
             String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+            //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
             String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
             if (nombreArchivo != null) {
                 request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
@@ -252,7 +273,13 @@ public class ServletUsuario extends HttpServlet {
 
         String q = trimOrNull(request.getParameter("q"));
 
-        Set<String> usrs = this.controllerUsuario.listarUsuarios();
+        Set<String> usrs = new HashSet<>();
+        List<Object> lista = this.portUsuario.listarUsuarios().getItem();
+        
+        for (Object obj : lista) {
+			usrs.add((String) obj);
+        }
+        
         try {
             if (usrs == null || usrs.isEmpty())
                 throw new UsuarioNoEncontrado("No hay usuarios registrados");
@@ -270,23 +297,21 @@ public class ServletUsuario extends HttpServlet {
                     }
 
                     try {
-                        DataUsuario usr = this.controllerUsuario.infoUsuario(u);
+                        //DataUsuario usr = this.portUsuario.infoUsuario(u);
+                        DataUsuario usr = portUsuario.infoUsuario(u);
                         usuarios.add(usr);
 
-                        
-                        try {
+                            //String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
                             String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
                             if (nombreArchivo != null) {
                                 imgsUsuarios.put(u, "uploads/usuarios/" + nombreArchivo);
                             } else {
                                 imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
                             }
-                        } catch (Exception ignore) {
-                            imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
-                        }
-
-                    } catch (UsuarioNoEncontrado e) {
+                    } catch (UsuarioNoEncontrado_Exception e) {
                         e.printStackTrace();
+                    } catch (Exception ignore) {
+                        imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
                     }
                 }
 
@@ -314,14 +339,15 @@ public class ServletUsuario extends HttpServlet {
 
         DataUsuario usr;
         try {
-            usr = this.controllerUsuario.infoUsuario(nickParam);
-        } catch (UsuarioNoEncontrado ex) {
+            //usr = this.portUsuario.infoUsuario(nickParam);
+            usr = portUsuario.infoUsuario(nickParam);
+        } catch (UsuarioNoEncontrado_Exception ex) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
             return;
         }
 
         try {
-            if (usr.getTipo() == DataUsuario.TipoUsuario.ASISTENTE) {
+            if (usr.getTipo() ==  TipoUsuario.ASISTENTE) {
                 String nombre     = trimOrNull(request.getParameter("nombre"));
                 String apellido   = trimOrNull(request.getParameter("apellido"));
                 String fechaNacStr= trimOrNull(request.getParameter("fechaNac")); // YYYY-MM-DD
@@ -346,9 +372,9 @@ public class ServletUsuario extends HttpServlet {
                     return;
                 }
 
-                controllerUsuario.editarAsistente(nickParam, nombre, apellido, fechaNac);
+                portUsuario.editarAsistente(nickParam, nombre, apellido, fechaNacStr);
 
-            } else if (usr.getTipo() == DataUsuario.TipoUsuario.ORGANIZADOR) {
+            } else if (usr.getTipo() ==  TipoUsuario.ORGANIZADOR) {
                 String nombre      = trimOrNull(request.getParameter("nombre"));
                 String descripcion = trimOrNull(request.getParameter("descripcion"));
                 String web         = trimOrNull(request.getParameter("web"));
@@ -363,7 +389,7 @@ public class ServletUsuario extends HttpServlet {
                     return;
                 }
 
-                controllerUsuario.editarOrganizador(nickParam, nombre, descripcion, web);
+                portUsuario.editarOrganizador(nickParam, nombre, descripcion, web);
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Tipo de usuario no soportado");
                 return;
@@ -372,8 +398,10 @@ public class ServletUsuario extends HttpServlet {
             try {
                 Part avatar = request.getPart("avatar");
                 if (avatar != null && avatar.getSize() > 0) {
+                	
                     ManejadorArchivos.guardarArchivo(avatar, nickParam, "usuarios", getServletContext());
     				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+
     				System.out.println("PFP seteada en sesión: " + pfp);
     				if (pfp != null) {
     					request.getSession().setAttribute("pfp", pfp);
@@ -424,3 +452,4 @@ public class ServletUsuario extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/pages/modificarDatos.jsp").forward(request, response);
     }
 }
+
