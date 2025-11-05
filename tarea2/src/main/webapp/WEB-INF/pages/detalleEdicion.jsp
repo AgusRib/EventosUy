@@ -141,7 +141,8 @@
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 							LocalDate fechaActual2 = (LocalDate) session.getAttribute("fecha");
 							XMLGregorianCalendar fechaFin2 = edi.getFechaFin();
-							if (fechaActual2.isBefore(fechaFin2.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
+							if (fechaActual2.isBefore(fechaFin2.toGregorianCalendar().toZonedDateTime().toLocalDate()) 
+								&& edi.getEstado() != EstadoEdicion.RECHAZADA) {
 						%>
 						<a href="/tarea2/alta-tipo-registro?edicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar tipo de registro"> <i class="bi bi-plus-lg"></i>
@@ -191,7 +192,8 @@
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) {
 							LocalDate fechaActual3 = (LocalDate) session.getAttribute("fecha");
 							XMLGregorianCalendar fechaFin3 = edi.getFechaFin();
-							if (fechaActual3.isBefore(fechaFin3.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
+							if (fechaActual3.isBefore(fechaFin3.toGregorianCalendar().toZonedDateTime().toLocalDate())
+								&& edi.getEstado() != EstadoEdicion.RECHAZADA) {
 						%>
 						<a href="altaPatrocinio?nombreEdicion=<%= edi.getNombre() %>" class="btn btn-success btn-sm"
 							title="Agregar patrocinio"> <i class="bi bi-plus-lg"></i>

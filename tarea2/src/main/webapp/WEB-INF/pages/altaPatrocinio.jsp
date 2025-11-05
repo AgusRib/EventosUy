@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@page import="java.util.Set"%>
+<%@page import="java.util.List"%>
+<%@page import="webservices.WrapperHashSet"%>
 <%@page import="java.net.URLEncoder"%>
 
 <!doctype html>
@@ -115,8 +117,8 @@
                     <input type="hidden" name="fecha" value="<%= request.getAttribute("fecha") != null ? request.getAttribute("fecha") : "" %>" />
 
                     <%
-                        Set<String> tiposDisponibles = (Set<String>) request.getAttribute("tiposRegistro");
-                        boolean noHayTipos = (tiposDisponibles == null || tiposDisponibles.isEmpty());
+                        WrapperHashSet tiposDisponibles = (WrapperHashSet) request.getAttribute("tiposRegistro");
+                        boolean noHayTipos = (tiposDisponibles == null || tiposDisponibles.getItem() == null || tiposDisponibles.getItem().isEmpty());
                     %>
 
                     <% if (noHayTipos) { %>
@@ -129,10 +131,11 @@
                      <select class="form-control" id="institucion" name="institucion" required>
                          <option value="" disabled><%= request.getAttribute("institucion") == null ? "Seleccione una institución" : "Seleccione una institución" %></option>
                         <%
-							 Set<String> instituciones = (Set<String>)request.getAttribute("instituciones");
+							 WrapperHashSet instituciones = (WrapperHashSet)request.getAttribute("instituciones");
                              String selInst = (String) request.getAttribute("institucion");
-                             if(instituciones != null) {
-                              for(String insti : instituciones) {
+                             if(instituciones != null && instituciones.getItem() != null) {
+                              for(Object obj : instituciones.getItem()) {
+                                  String insti = obj.toString();
                            %>
                            <option value="<%=insti%>" <%= insti.equals(selInst) ? "selected" : "" %>><%=insti%></option>
                            
@@ -161,10 +164,11 @@
                     <select class="form-select" id="tipoRegistroGratis" name="tipoRegGratis" <%= noHayTipos ? "disabled" : "required" %> >
                          <option value="">-- Ninguno --</option>
                          <%
-                            Set<String> tipos = (Set<String>) request.getAttribute("tiposRegistro");
+                            WrapperHashSet tipos = (WrapperHashSet) request.getAttribute("tiposRegistro");
                             String selTipo = (String) request.getAttribute("tipoRegGratis");
-                            if (tipos != null) {
-                                for (String t : tipos) {
+                            if (tipos != null && tipos.getItem() != null) {
+                                for (Object obj : tipos.getItem()) {
+                                    String t = obj.toString();
                          %>
                          <option value="<%=t%>" <%= t.equals(selTipo)?"selected":"" %>><%=t%></option>
                          <%
