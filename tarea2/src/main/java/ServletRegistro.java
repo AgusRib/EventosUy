@@ -91,9 +91,9 @@ public class ServletRegistro extends HttpServlet {
 	
 	            List<Map.Entry<String, DTRegistro>> regs = new ArrayList<>();
 	            for (var a : asistentes) {
-	                DTRegistro r = ICE.infoRegistro(edicion, a.getnickname());
+	                DTRegistro r = ICE.infoRegistro(edicion, a.getNickname());
 	                if (r != null) {
-	                    String nick = a.getnickname();
+	                    String nick = a.getNickname();
 	                    if (qNorm.isEmpty() || (nick != null && nick.toLowerCase().contains(qNorm))) {
 	                        regs.add(new AbstractMap.SimpleEntry<>(nick, r));
 	                    }
