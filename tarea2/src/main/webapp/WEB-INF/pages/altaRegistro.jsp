@@ -1,19 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
-<%@ page import="logica.data_types.*" %>
+<%@ page import="webservices.*" %>
 
 <%
   String ctx = request.getContextPath();
-  DTDetalleEdicion ed = (DTDetalleEdicion) request.getAttribute("edicion");
+  DtDetalleEdicion ed = (DtDetalleEdicion) request.getAttribute("edicion");
   @SuppressWarnings("unchecked")
-  Set<DTTipoRegistro> tiposRegistro = (Set<DTTipoRegistro>) request.getAttribute("tiposRegistro");
+  Set<DtTipoRegistro> tiposRegistro = (Set<DtTipoRegistro>) request.getAttribute("tiposRegistro");
 
   String error   = (String) request.getAttribute("error");
   String mensaje = (String) request.getAttribute("mensaje");
 
   String edicionStr = request.getParameter("edicion");
   if (edicionStr == null || edicionStr.isBlank()) {
-      // también puede venir reinyectada por setAttribute en POST
       Object eStr = request.getAttribute("edicionStr");
       edicionStr = (eStr == null ? (ed != null ? ed.getNombre() : "") : String.valueOf(eStr));
   }
