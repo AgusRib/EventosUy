@@ -100,7 +100,9 @@
 				boolean esOrganizador = false;
 				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
 					esOrganizador = (boolean) request.getAttribute("esOrganizador");
-					if ((boolean) request.getAttribute("esOrganizador") == true) {
+					if ((boolean) request.getAttribute("esOrganizador") == true 
+						&& edi.getEstado() != EstadoEdicion.INGRESADA 
+						&& edi.getEstado() != EstadoEdicion.RECHAZADA) {
 				%>
 				<div class="mt-4">
 					<a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
