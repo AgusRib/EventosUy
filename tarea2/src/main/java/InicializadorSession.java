@@ -6,8 +6,6 @@ import java.util.Set;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
-import logica.controllers.IControllerEvento;
-import logica.models.Factory;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
 
