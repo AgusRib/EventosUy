@@ -83,10 +83,6 @@
 
 					<button type="submit" class="btn btn-dark">Ingresar</button>
 				</form>
-
-				<div class="mt-3">
-					<p>¿No tienes cuenta? <a href="${pageContext.request.contextPath}/registro">Regístrate aquí</a></p>
-				</div>
 			</div>
 		</div>
 	</div>
