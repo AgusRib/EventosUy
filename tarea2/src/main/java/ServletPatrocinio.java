@@ -4,7 +4,6 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.Set;
 
-import excepciones.NombreInstiExistente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,19 +12,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import logica.controllers.IControllerEvento;
-import logica.controllers.IControllerUsuario;
-import logica.data_types.DTPatrocinio;
-import logica.data_types.DTTipoRegistro;
-import logica.data_types.DataUsuario;
-import logica.enumerators.NivelPatrocinio;
-import logica.models.Factory;
+import webservices.DataUsuario;
 import webservices.DtPatrocinio;
 import webservices.DtTipoRegistro;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
 import webservices.PublicadorUsuario;
 import webservices.PublicadorUsuarioService;
+import webservices.TipoUsuario;
 import webservices.WrapperHashSet;
 
 
@@ -76,7 +70,6 @@ public class ServletPatrocinio extends HttpServlet {
              break;
             
         case "/altaPatrocinio":
-        	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
             request.getSession().setAttribute("nombreEdicion", nombreEdicion);
             try {
             	WrapperHashSet instituciones = portUsuario.listarInstituciones();
@@ -147,7 +140,7 @@ public class ServletPatrocinio extends HttpServlet {
 
                 HttpSession session = request.getSession();
                 DataUsuario user = (DataUsuario) session.getAttribute("usuario");
-                if (user == null || user.getTipo() != DataUsuario.TipoUsuario.ORGANIZADOR) {
+                if (user == null || user.getTipo() != TipoUsuario.ORGANIZADOR) {
                     request.setAttribute("error", "Debe iniciar sesión como organizador para registrar un patrocinio.");
                     request.getRequestDispatcher("/WEB-INF/pages/altaPatrocinio.jsp").forward(request, response);
                     break;

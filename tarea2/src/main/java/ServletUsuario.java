@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-//import excepciones.UsuarioNoEncontrado;
-import excepciones.UsuarioNoEncontrado;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,7 +24,7 @@ import webservices.DtAsistente;
 import webservices.DtOrganizador;
 import webservices.DataUsuario;
 import webservices.TipoUsuario;
-
+import webservices.UsuarioNoEncontrado;
 //import webservices.Factory;
 import webservices.PublicadorUsuario;
 import webservices.PublicadorUsuarioService;
@@ -116,7 +115,7 @@ public class ServletUsuario extends HttpServlet {
             case "/detalleUsuario":
                 try {
                     detalleUsuario(request, response);
-                } catch (UsuarioNoEncontrado e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
                 }
@@ -143,7 +142,7 @@ public class ServletUsuario extends HttpServlet {
 
     
     private void detalleUsuario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, UsuarioNoEncontrado {
+            throws ServletException, IOException, Exception {
 
         String usuario = request.getParameter("usuarios"); 
         if (usuario == null || usuario.isBlank()) {
@@ -282,7 +281,7 @@ public class ServletUsuario extends HttpServlet {
         
         try {
             if (usrs == null || usrs.isEmpty())
-                throw new UsuarioNoEncontrado("No hay usuarios registrados");
+                throw new Exception("No hay usuarios registrados");
             else {
                 Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
                 Map<String, String> imgsUsuarios = new java.util.HashMap<>();
@@ -320,7 +319,7 @@ public class ServletUsuario extends HttpServlet {
                 request.setAttribute("q", q == null ? "" : q);
                 request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
             }
-        } catch (UsuarioNoEncontrado e1) {
+        } catch (Exception e1) {
             e1.printStackTrace();
             request.setAttribute("usuarios", java.util.Collections.emptySet());
             request.setAttribute("imgsUsuarios", java.util.Collections.emptyMap());
