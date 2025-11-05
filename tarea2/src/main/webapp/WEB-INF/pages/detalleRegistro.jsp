@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="logica.data_types.DTRegistro" %>
+<%@ page import="webservices.*" %>
 <%
   String ctx = request.getContextPath();
-  DTRegistro reg = (DTRegistro) request.getAttribute("registro");
+  DtRegistro reg = (DtRegistro) request.getAttribute("registro");
   if (reg == null) {
 %>
   <h2>No hay datos de registro para mostrar.</h2>
@@ -17,7 +17,7 @@
 
   String nickUsuario = (String) request.getAttribute("usuario");
   String nombreEdicion = reg.getNombreEdicion(); 
-  String tipoReg = reg.getTipoRegistro().getNombre();
+  String tipoReg = (reg.getTipoRegistro() != null ? reg.getTipoRegistro().getNombre() : "");
 %>
 <!DOCTYPE html>
 <html lang="es">
