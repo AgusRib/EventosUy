@@ -3,9 +3,12 @@ package webservices;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import excepciones.AsistenteYaRegistrado;
@@ -40,7 +43,20 @@ public class publicadorEvento {
 
     @WebMethod(exclude = true)
     public void publicar(){
-         endpoint = Endpoint.publish("http://localhost:8080/publicadorEvento", this);
+    	
+	    Properties props = new Properties();
+    	
+        FileInputStream fis;
+		try {
+			Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
+			fis = new FileInputStream(userDir + "/application.properties");
+			props.load(fis);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Publicando publicadorEvento...");
+		System.out.println(props.getProperty("server.protocol") + "://" + props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento");
+         endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento", this);
     }
     
     @WebMethod(exclude = true)

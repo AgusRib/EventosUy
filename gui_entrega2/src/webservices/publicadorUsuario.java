@@ -2,9 +2,14 @@ package webservices;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Properties;
+
 import excepciones.EmailRepetido;
 import excepciones.NombreInstiExistente;
 import excepciones.NombreUsuarioExistente;
@@ -39,7 +44,18 @@ public class publicadorUsuario {
 
 	    @WebMethod(exclude = true)
 	    public void publicar(){
-	         endpoint = Endpoint.publish("http://localhost:8080/publicadorUsuario", this);
+	    	
+		    Properties props = new Properties();
+	    	
+	        FileInputStream fis;
+			try {
+				Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
+				fis = new FileInputStream(userDir + "/application.properties");
+				props.load(fis);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	         endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorUsuario", this);
 	    }
 	    
 	    @WebMethod(exclude = true)
