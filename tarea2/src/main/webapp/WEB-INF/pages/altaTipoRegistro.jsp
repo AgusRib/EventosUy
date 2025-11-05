@@ -19,7 +19,6 @@
   String error = (String) request.getAttribute("error");
   String mensaje = (String) request.getAttribute("mensaje");
 
-
   String ed = (String) request.getAttribute("edicion");
   
   String volverUrl = (ed == null || ed.isBlank())
