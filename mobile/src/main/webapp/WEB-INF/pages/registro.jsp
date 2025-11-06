@@ -171,37 +171,7 @@
                     <div>
                         <label for="carta-categorias-consulta" class="form-label">Si perteneces a una institución, seleccionala.</label>
                     </div>
-                    <div class="mt-3 mt-md-0 d-flex justify-content-center">
-                        <div class="carta-categorias-consulta overflow-auto" style="max-height: 325px;">
-                            <h4 class="categorias-consulta">Institución</h4>
-                            <ul class="lista-categoria-consulta">
-                                <%
-                                    java.util.Set<String> instituciones = (java.util.Set<String>) request.getAttribute("instituciones");
-                                    String institucionSeleccionada = (String) request.getAttribute("institucion");
-                                    if (instituciones != null && !instituciones.isEmpty()) {
-                                        for (String institucion : instituciones) {
-                                            // Use Objects.equals to safely compare potentially-null strings
-                                            String selectedStyle = java.util.Objects.equals(institucion, institucionSeleccionada) ? "background-color: #e7f3ff;" : "";
-                                %>
-                                    <li class="categoria-item" style="<%= selectedStyle %>" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;" data-value="<%= institucion %>">
-                                        <%= institucion %>
-                                    </li>
-                                <%
-                                        }
-                                    } else {
-                                %>
-                                    <li class="categoria-item" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;">Facultad de Ingeniería</li>
-                                    <li class="categoria-item" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;">ORT Uruguay</li>
-                                    <li class="categoria-item" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;">Universidad Católica del Uruguay</li>
-                                    <li class="categoria-item" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;">Antel</li>
-                                    <li class="categoria-item" onclick="document.querySelectorAll('.categoria-item').forEach(i=>i.style.backgroundColor='');this.style.backgroundColor='#e7f3ff';document.getElementById('institucionSeleccionada').value=this.textContent;">Agencia Nacional de Investigación e Innovación (ANII)</li>
-                                <%
-                                    }
-                                %>
-                            </ul>
-                        </div>
-                    </div>
-                    <input type="hidden" id="institucionSeleccionada" name="institucion" value="<%= request.getAttribute("institucion") != null ? request.getAttribute("institucion") : "" %>">
+                    
                 </div>
 
                 <!-- Campos específicos para Organizador -->

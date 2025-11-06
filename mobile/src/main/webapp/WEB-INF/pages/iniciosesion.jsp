@@ -27,17 +27,16 @@
 	rel="stylesheet">
 </head>
 
-<jsp:include page="../templates/header.jsp"></jsp:include>
 
 <body>
 	<div class="container d-flex justify-content-center">
 		<div class="col-md-5 col-lg-7 col-13">
 			<div class="col-md-5 col-lg-7 col-xxl-9 mt-3 mt-sm-3 mt-md-0 inicioSesion text-center">
 				<h1 class="mb-5">
-					<strong></strong>
+					<strong>Eventos.uy</strong>
 				</h1>
 				<h3 class="mb-4">
-					<strong>Inicio de Sesión</strong>
+					<strong>Inicio de Sesiónnnnnnnn</strong>
 				</h3>
 
 				<!-- Mostrar mensaje de error si existe -->
@@ -89,7 +88,6 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-		// Reload the page if it was restored from the browser cache (bfcache)
 		window.addEventListener("pageshow", function(event) {
 			if (event.persisted) {
 				window.location.reload();

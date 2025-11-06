@@ -29,72 +29,7 @@
     <img class="section-icon" alt="" src="assets/images/section-image.jpg">
     
     <div class="row row-cols-2 row-cols-md-3 w-100 justify-content-center mt-4 dflex">
-
-        <div class="carta-categorias align-items-center col-12 col-md-8 col-xl-3 h-100 my-3">
-            <h3 class="categorias fw-bold">Categorías</h3>
-            <jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
-            <div class="d-flex justify-content-center mt-3">
-                <a href="<%= request.getContextPath() %>/listarUsuarios"
-                   class="btn btn-dark rounded-pill px-4 py-2 d-flex align-items-center gap-2 text-white"
-                   style="font-weight: 500;"> 
-                    <i class="bi bi-people" style="font-size: 1.2rem; color: #fff;"></i>
-                    <span class="text-white">Usuarios</span>
-                </a>
-            </div>
-        </div>
-
-<div class="container col-12 col-md-8">
-   <div class="row container m-2">
-   		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
-            <div class="row gx-0 g-xl-2 gy-2">
-                
-			<% 
-			List<DtDetalleEvento> eventos = (List<DtDetalleEvento>) request.getAttribute("eventos_recientes");
-			for (DtDetalleEvento evento : eventos) { %>
-				<div class="col-xl-6">
-				<a class="text-decoration-none" href="detalleEvento?nombre=<%= evento.getNombre() %>"
-					data-hotkey="5" role="button">
-					<div class="carta p-4">
-						<div class="text-heading">
-							<div class="search-text-heading"><%= evento.getNombre() %></div>
-						</div>
-						<div class="avatar-block">
-							<div class="avatar">
-								<img class="shape-icon" alt=""
-									src="<%= request.getAttribute(evento.getNombre()) %>">
-							</div>
-							<div class="info">
-								<div class="description"> <%= evento.getDescripcion() %> </div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-			<%
-			}
-			
-			%>
-
-                
-
-            </div>
-            
-
-
-        </div>
-    </div>
-</div>
-
-
-
-                </div>
-                
-
-
-            </div>
-        </div>
-    </div>
-    
-    <script src="assets/js/main.js"></script>
+	</div>
+        
 </body>
 </html>

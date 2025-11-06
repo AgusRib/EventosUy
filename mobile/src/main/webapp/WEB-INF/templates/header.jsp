@@ -1,3 +1,4 @@
+<%@page import="logica.data_types.DataUsuario"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -33,7 +34,7 @@
 	<header>
 		<nav class="navbar bg-white shadow-sm" style="height: 86px;">
 			<div>
-				<a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="HomeServlet"><b>Eventos.uy</b></a>
+				<a class="fw-bold text-dark fs-2 m-4 text-decoration-none d-flex justify-content-center align-items-center" href="HomeServlet" href="HomeServlet"><b>Eventos.uy</b></a>
 			</div>
 		</nav>
 	</header>
@@ -41,9 +42,27 @@
 	
 	<header>
 		<nav class="navbar bg-white shadow-sm">
-					<div>
-				<a class="fw-bold text-dark fs-2 m-4 text-decoration-none" href="HomeServlet"><b>Eventos.uy</b></a>
+			<button class="navbar-toggler btn btn-link p-2 border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation" style="width:48px; height:48px;">
+  				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="navbarMenu">
+			  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+			    <li class="nav-item">
+			      <a class="nav-link" href="listarEventos">Consulta Edición</a>
+			    </li>
+			    <li class="nav-item">
+			      <a class="nav-link" href="HomeServlet">Consulta Registro</a>
+			    </li>
+			    <li class="nav-item">
+			      <a class="nav-link" href="HomeServlet">Asistencia</a>
+			    </li>
+			  </ul>
 			</div>
+		
+			<div>
+        		<a class="fw-bold text-dark fs-2 m-4 text-decoration-none d-flex justify-content-center align-items-center" href="HomeServlet"><b>Eventos.uy</b></a>
+    		</div>
 			<div class="text-center align-items-center"></div>
 			<div class="d-flex justify-content-end align-items-center">
 				<div class="dropdown">
@@ -57,8 +76,7 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
 						aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="perfil">Mi
-								perfil</a></li>
+						<li><a class="dropdown-item" href="perfil">Mi perfil</a></li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>

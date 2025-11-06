@@ -1,9 +1,9 @@
 import java.io.IOException;
 import java.text.Normalizer;
 import java.time.LocalDate;
-import java.util.Set;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+
 // Agregar imports necesarios para conversión de fechas
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -14,13 +14,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import logica.controllers.IControllerEvento;
+import logica.controllers.IControllerUsuario;
+import logica.data_types.DTDetalleEdicion;
+import logica.data_types.DTDetalleEvento;
+import logica.models.Factory;
 import webservices.DataUsuario;
 import webservices.DtDetalleEdicion;
 import webservices.DtDetalleEvento;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
-import webservices.PublicadorUsuario;
-import webservices.PublicadorUsuarioService;
 import webservices.TipoUsuario;
 import webservices.WrapperHashSet;
 
@@ -57,24 +60,27 @@ public class ServletEvento extends HttpServlet {
         
         String path = request.getServletPath();
         
-        PublicadorEventoService serviceEvento = new PublicadorEventoService();
-        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+        //PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        //PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
     	
-        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
-        PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+        //PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        //PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+        
+        IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+        IControllerEvento ICE = Factory.getInstance().getControllerEvento();
         
         switch (path) {
             case "/eventos":
             case "/listarEventos": {
-                listarEventos(request, response, portEvento);
+                listarEventos(request, response/*, portEvento*/);
                 return;
             }
             case "/detalleEvento": {
-                mostrarDetalleEvento(request, response, portEvento);
+                mostrarDetalleEvento(request, response/*, portEvento*/);
                 return;
             }
             case "/categorias": {
-                listarCategorias(request, response, portEvento);
+                listarCategorias(request, response/*, portEvento*/);
                 return;
             }
             case "/altaEvento": {
@@ -83,7 +89,7 @@ public class ServletEvento extends HttpServlet {
                 request.setAttribute("error", null);
                 // Clear any previous success message when opening the form
                 request.setAttribute("mensaje", null);
-                listarCategorias(request, response, portEvento);
+                listarCategorias(request, response/*, portEvento*/);
                 return;
             }
             default:
@@ -96,20 +102,23 @@ public class ServletEvento extends HttpServlet {
     	String path = request.getServletPath();
         
         if (path.equals("/altaEvento")) {
-            PublicadorEventoService serviceEvento = new PublicadorEventoService();
-            PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
             
-            crearEvento(request, response, portEvento);
+            
+            crearEvento(request, response/*, portEvento*/);
         } 
     }
     
-    private void listarEventos(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
+    private void listarEventos(HttpServletRequest request, HttpServletResponse response/*, PublicadorEvento portEvento*/) throws ServletException, IOException {
         String categoria = request.getParameter("categoria");
         String nombreBusqueda = request.getParameter("nombre"); 
         
+        IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+        IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+        
         try {
-            WrapperHashSet todosLosEventosWrapper = portEvento.listarEventos();
-            List<Object> todosLosEventosObj = todosLosEventosWrapper.getItem();
+            //WrapperHashSet todosLosEventosWrapper = portEvento.listarEventos();
+            //List<Object> todosLosEventosObj = todosLosEventosWrapper.getItem();
+        	Set<String> todosLosEventosObj = ICE.listarEventos();
             Set<String> todosLosEventos = new java.util.HashSet<>();
             for (Object obj : todosLosEventosObj) {
                 todosLosEventos.add((String) obj);
@@ -119,13 +128,14 @@ public class ServletEvento extends HttpServlet {
             Set<String> eventosFiltrados = new java.util.LinkedHashSet<>();
             
             for (String nombreEvento : todosLosEventos) {
-                DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+                //DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+            	DTDetalleEvento detalleEvento = ICE.verDetalleEvento(nombreEvento);
                 boolean incluirEvento = true;
                 
                 // Filtro por categoría 
                 if (categoria != null && !categoria.trim().isEmpty() && !categoria.equals("todas")) {
             
-                    List<String> categoriasObj = detalleEvento.getCategorias();
+                    List<String> categoriasObj = (List<String>) detalleEvento.getCategorias();
                     Set<String> categorias = new java.util.HashSet<>();
                     for (String cat : categoriasObj) {
                         categorias.add((String) cat);
@@ -171,13 +181,17 @@ public class ServletEvento extends HttpServlet {
         }
     }
     
-    private void mostrarDetalleEvento(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
+    private void mostrarDetalleEvento(HttpServletRequest request, HttpServletResponse response/*, PublicadorEvento portEvento*/) throws ServletException, IOException {
         String nombreEvento = request.getParameter("nombre");
 
         System.out.println("Nombre del evento recibido: " + nombreEvento);
         
+        IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+        IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+        
         try {
-            DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+            //DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+        	DTDetalleEvento detalleEvento = ICE.verDetalleEvento(nombreEvento);
             
             // Fetch imagen de evento (copiado de ServletEdicion)
             String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
@@ -191,13 +205,15 @@ public class ServletEvento extends HttpServlet {
             DataUsuario usuario = (DataUsuario) request.getSession().getAttribute("usuario");
             
             // Obtener todas las ediciones (confirmadas y no confirmadas)
-            List<Object> todasLasEdicionesObj = portEvento.listarEdiciones(nombreEvento).getItem();
+            //List<Object> todasLasEdicionesObj = portEvento.listarEdiciones(nombreEvento).getItem();
+            Set<String> todasLasEdicionesObj = ICE.listarEdiciones(nombreEvento);
             Set<String> todasLasEdiciones = new java.util.HashSet<>();
             for (Object obj : todasLasEdicionesObj) {
                 todasLasEdiciones.add((String) obj);
             }
             
-            List<Object> edicionesConfirmadasObj = portEvento.listarEdicionesConfirmadas(nombreEvento).getItem();
+            Set<String> edicionesConfirmadasObj = ICE.listarEdiciones(nombreEvento);
+            //List<Object> edicionesConfirmadasObj = portEvento.listarEdicionesConfirmadas(nombreEvento).getItem();
             Set<String> edicionesConfirmadas = new java.util.HashSet<>();
             for (Object obj : edicionesConfirmadasObj) {
                 edicionesConfirmadas.add((String) obj);
@@ -207,7 +223,8 @@ public class ServletEvento extends HttpServlet {
             
             // Para cada nombre de edición, verificar si debe mostrarse
             for (String nombreEdicion : todasLasEdiciones) {
-                DtDetalleEdicion detalleEdicion = portEvento.mostrarDetallesEdicion(nombreEdicion);
+                //DtDetalleEdicion detalleEdicion = portEvento.mostrarDetallesEdicion(nombreEdicion);
+            	DTDetalleEdicion detalleEdicion = ICE.mostrarDetallesEdicion(nombreEdicion);
                 
                 // Verificar si el usuario es el organizador específico de esta edición
                 boolean esOrganizadorDeEstaEdicion = usuario != null && 
@@ -226,18 +243,23 @@ public class ServletEvento extends HttpServlet {
                     edicionMinima.put("pais", detalleEdicion.getPais());
                     
                     // Convertir XMLGregorianCalendar a LocalDate
-                    XMLGregorianCalendar xmlFechaInicio = detalleEdicion.getFechaInicio();
-                    XMLGregorianCalendar xmlFechaFin = detalleEdicion.getFechaFin();
+                    //XMLGregorianCalendar xmlFechaInicio = detalleEdicion.getFechaInicio();
+                    //XMLGregorianCalendar xmlFechaFin = detalleEdicion.getFechaFin();
+                    
+                    LocalDate xmlFechaInicio = detalleEdicion.getFechaInicio();
+                    LocalDate xmlFechaFin = detalleEdicion.getFechaFin();
                     
                     LocalDate fechaInicio = null;
                     LocalDate fechaFin = null;
                     
+                    /* esto lo comento pq no hay que hacer ninguna conversion pq ya estamos en localdate
                     if (xmlFechaInicio != null) {
                         fechaInicio = xmlFechaInicio.toGregorianCalendar().toZonedDateTime().toLocalDate();
                     }
                     if (xmlFechaFin != null) {
                         fechaFin = xmlFechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate();
                     }
+                    */
                     
                     edicionMinima.put("fechaInicio", fechaInicio);
                     edicionMinima.put("fechaFin", fechaFin);
@@ -270,10 +292,13 @@ public class ServletEvento extends HttpServlet {
         }
     }
    
-    private void crearEvento(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
+    private void crearEvento(HttpServletRequest request, HttpServletResponse response/*, PublicadorEvento portEvento*/) throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         String sigla = request.getParameter("sigla");
         String descripcion = request.getParameter("descripcion");
+        
+        IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+        IControllerEvento ICE = Factory.getInstance().getControllerEvento();
         
         try {
             // Obtener las categorías seleccionadas desde la request
@@ -297,15 +322,15 @@ public class ServletEvento extends HttpServlet {
                 fechaEvento = LocalDate.of(2025, 1, 15);
             }
             
-            portEvento.altaEvento(nombre != null ? nombre.trim() : "", 
+            ICE.altaEvento(nombre != null ? nombre.trim() : "", 
                                 sigla != null ? sigla.trim() : "", 
-                                fechaEvento.toString(), 
+                                fechaEvento, 
                                 descripcion != null ? descripcion.trim() : "", 
-                                categorias);
+                                (Set<String>) categorias);
             
             // Mostrar mensaje de registro exitoso en la misma página de alta (como en altaEdicion)
-            WrapperHashSet todasLasCategoriasWrapper = portEvento.listarCategorias();
-            List<Object> todasLasCategoriasObj = todasLasCategoriasWrapper.getItem();
+            Set<String> todasLasCategoriasWrapper = ICE.listarCategorias();
+            Set<String> todasLasCategoriasObj = todasLasCategoriasWrapper;
             Set<String> todasLasCategorias = new java.util.HashSet<>();
             for (Object obj : todasLasCategoriasObj) {
                 todasLasCategorias.add((String) obj);
@@ -325,7 +350,7 @@ public class ServletEvento extends HttpServlet {
         } catch(Exception e) {
             // Cargar las categorías para que el JSP pueda mostrar el dropdown
             try {
-                WrapperHashSet todasLasCategoriasWrapper = portEvento.listarCategorias();
+                WrapperHashSet todasLasCategoriasWrapper = (WrapperHashSet) ICE.listarCategorias();
                 List<Object> todasLasCategoriasObj = todasLasCategoriasWrapper.getItem();
                 Set<String> todasLasCategorias = new java.util.HashSet<>();
                 for (Object obj : todasLasCategoriasObj) {
@@ -358,9 +383,13 @@ public class ServletEvento extends HttpServlet {
         }
     }
     
-    private void listarCategorias(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
+    private void listarCategorias(HttpServletRequest request, HttpServletResponse response/*, PublicadorEvento portEvento*/) throws ServletException, IOException {
         try {
-            WrapperHashSet todasLasCategoriasWrapper = portEvento.listarCategorias();
+        	
+        	IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+            IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+            
+            WrapperHashSet todasLasCategoriasWrapper = (WrapperHashSet) ICE.listarCategorias();
             List<Object> todasLasCategoriasObj = todasLasCategoriasWrapper.getItem();
             Set<String> todasLasCategorias = new java.util.HashSet<>();
             for (Object obj : todasLasCategoriasObj) {
