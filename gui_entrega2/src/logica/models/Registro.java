@@ -11,6 +11,8 @@ public class Registro {
 	private float costo;
 	private TipoRegistro tipoReg;
 	private LocalDate fechaRegistro;
+	private String constanciaUrl;
+	private boolean asistencia;
 
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
@@ -22,7 +24,7 @@ public class Registro {
 	}
 
 	//TODO: implementar caso en el que el costo sea 0 (ej: asistente de una institucion que patrocina)
-	public Registro(Asistente asis, TipoRegistro tipoReg, Edicion edi) {
+	public Registro(Asistente asis, TipoRegistro tipoReg, Edicion edi, boolean asistencia) {
 		super();
 		this.asistente=asis;
 		this.edicion=edi;
@@ -30,6 +32,7 @@ public class Registro {
 		this.costo = tipoReg.getCosto();
 		IControllerEvento cEve = new ControllerEvento();
 		this.fechaRegistro = cEve.getFechaSistema();
+		this.asistencia = asistencia;
 		return;
 	}
 
@@ -66,5 +69,26 @@ public class Registro {
 	public void setTipoReg(TipoRegistro tipoReg) {
 		this.tipoReg = tipoReg;
 	}
+	
+	public String getConstanciaUrl() {
+		return constanciaUrl;
+	}
 
+
+	public void setConstanciaUrl(String constanciaUrl) {
+		this.constanciaUrl = constanciaUrl;
+	}
+	
+	public boolean getAsistencia() {
+		return asistencia;
+	}
+
+
+	public void confirmarAsistencia() {
+		if (!this.asistencia){
+			this.asistencia = true;
+			//TODO: generar pdf ...	
+		}
+		
+	}
 }
