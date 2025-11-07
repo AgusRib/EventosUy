@@ -98,28 +98,33 @@
 							<div class="col m-0">
 								<a href="<%=request.getContextPath()%>/detalleEvento?nombre=<%=java.net.URLEncoder.encode(nombreEvento, "UTF-8")%>"
 									class="text-decoration-none text-dark">
-									<div class="carta p-4">
-										<div class="text-heading">
-											<div class="search-text-heading"><%=nombreEvento%></div>
-										</div>
-										<div class="d-flex flex-row justify-content-between align-items-start w-100">
-											<div class="avatar-block">
-												<div class="avatar">
-													<img class="shape-icon" alt="Imagen de <%=nombreEvento%>"
-														src="<%=imagenEvento%>"
-														onerror="this.onerror=null;this.src='<%=request.getContextPath()%>/assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'">
-												</div>
-												<div class="info gap-1">
-													<%if (descripcionEvento != null && !descripcionEvento.trim().isEmpty()) { %>
-														<div class="d-flex align-items-center">
-															<i class="bi bi-info-circle mx-2"></i>
-															<div class="description"><%=descripcionEvento.length() > 100 ? descripcionEvento.substring(0, 100) + "..." : descripcionEvento%></div>
-														</div>
-													<%} %>
-												</div>
-											</div>
-										</div>
+									<div class="carta p-4 w-100 h-100">
+									    <div class="text-heading">
+									        <div class="search-text-heading"><%=nombreEvento%></div>
+									    </div>
+									    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start w-100">
+									        <div class="avatar-block d-flex flex-row w-100">
+									            <div class="avatar me-3 flex-shrink-0">
+									                <img class="shape-icon img-fluid"
+									                     alt="Imagen de <%=nombreEvento%>"
+									                     src="<%=imagenEvento%>"
+									                     style="max-width: 120px; max-height: 120px; object-fit: cover;"
+									                     onerror="this.onerror=null;this.src='<%=request.getContextPath()%>/assets/images/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'">
+									            </div>
+									            <div class="info gap-1 flex-grow-1">
+									                <%if (descripcionEvento != null && !descripcionEvento.trim().isEmpty()) { %>
+									                    <div class="d-flex align-items-center">
+									                        <i class="bi bi-info-circle mx-2"></i>
+									                        <div class="description text-break">
+									                            <%=descripcionEvento.length() > 100 ? descripcionEvento.substring(0, 100) + "..." : descripcionEvento%>
+									                        </div>
+									                    </div>
+									                <%} %>
+									            </div>
+									        </div>
+									    </div>
 									</div>
+
 								</a>
 							</div>
 						<%

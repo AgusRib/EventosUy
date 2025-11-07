@@ -161,6 +161,17 @@ button {
 	font-family: Inter;
 }
 
+.carta {
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+
 .search:focus {
 	border: 1px solid #1e1e1e;
 	outline: none;
