@@ -50,6 +50,7 @@ public interface IControllerEvento {
 	Set<String> listarEdicionesTodas();
 	Set<String> listarEdicionesConfirmadas(String nombreEvento);
 	Set<String> listarEdicionesPendientes(String nombreEvento);
+    void confirmarAsistencia(String nombreEdi, String nickAsistente);
 	
 	
 }
