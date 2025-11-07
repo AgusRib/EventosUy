@@ -205,6 +205,11 @@ public class publicadorEvento {
 	public WrapperHashSet<DTDetalleEvento> obtenerEventosRecientes() {
 		return new WrapperHashSet<DTDetalleEvento>(new HashSet<DTDetalleEvento>(ICE.obtenerEventosRecientes()));
 	}
+	
+	@WebMethod
+	public void ConfirmarAsistencia(String nickAsistente, String nombreEdi) {
+		ICE.confirmarAsistencia(nombreEdi, nickAsistente);
+	}
    
     @WebMethod
     public byte[] getFile(@WebParam(name = "fileName") String name)

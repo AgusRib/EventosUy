@@ -67,6 +67,9 @@ public class DTRegistro {
 	public boolean getAsistencia() {
 		return asistencia;
 	}
+	public void setAsistencia(boolean asistencia) {
+		this.asistencia = asistencia;
+	}
 
 
 	public void confirmarAsistencia(String asistente) {
