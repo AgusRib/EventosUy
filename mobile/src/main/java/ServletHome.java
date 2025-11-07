@@ -8,14 +8,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.controllers.IControllerEvento;
-import logica.data_types.DTDetalleEvento;
-import logica.models.Factory;
 import webservices.DtDetalleEvento;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
-import webservices.PublicadorUsuario;
-import webservices.PublicadorUsuarioService;
 
 
 @WebServlet("/HomeServlet")
@@ -30,14 +25,12 @@ public class ServletHome extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-        //PublicadorEventoService serviceEvento = new PublicadorEventoService();
-        //PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+        PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
     
-        IControllerEvento ICE = Factory.getInstance().getControllerEvento();
-        
-        
+
         List<DtDetalleEvento> eventosRecientes = new ArrayList<DtDetalleEvento>();
-        List<DTDetalleEvento> lista = ICE.obtenerEventosRecientes();
+		List<Object> lista = portEvento.obtenerEventosRecientes().getItem();
 		for (Object obj : lista) {
 			eventosRecientes.add((DtDetalleEvento) obj);
 			System.out.println(((DtDetalleEvento) obj).getNombre());
