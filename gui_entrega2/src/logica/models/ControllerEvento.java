@@ -168,7 +168,7 @@ public class ControllerEvento implements IControllerEvento{
 		Asistente usu = mUsuer.obtenerAsistente(usuario);
 		
 		Registro reg = usu.getRegistro(edi);
-		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg());
+		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg(), reg.getAsistencia());
 		return dtR;
 	}
 
@@ -372,6 +372,26 @@ public class ControllerEvento implements IControllerEvento{
 		}
 		 
 		return recientes;
+	}
+
+	@Override
+	public void confirmarAsistencia(String nombreEdi, String nickAsistente) {
+	    if (nombreEdi == null || nombreEdi.isBlank() || nickAsistente == null || nickAsistente.isBlank()) {
+	        throw new IllegalArgumentException("Faltan parámetros: nombreEdi y/o nickAsistente");
+	    }
+
+	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+
+	    ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	    Asistente asis = mUser.obtenerAsistente(nickAsistente);
+
+	    Registro reg = asis.getRegistro(edi);
+
+
+	    if (!reg.getAsistencia()) {
+	        reg.confirmarAsistencia();
+	    }
 	}
 	
 	
