@@ -144,9 +144,9 @@ public class ControllerEvento implements IControllerEvento{
 	  ManejadorEvento mEventos = ManejadorEvento.getInstance();
 	  Evento eve = mEventos.obtenerEvento(nombreEvento);
 	  
-	  if (eve.getFinalizado()) {
+	 /* if (eve.getFinalizado()) {
 		  throw new EventoFinalizadoExcepcion("El evento se encuentra finalizado");
-	  }
+	  } */
 	  
 	  DTDetalleEvento dtE = eve.devolverDT();
 	  return dtE;		
