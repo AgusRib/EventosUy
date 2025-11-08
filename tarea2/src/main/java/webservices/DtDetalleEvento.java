@@ -27,6 +27,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *         <element name="descripcion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         <element name="categorias" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         <element name="ediciones" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         <element name="finalizado" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -42,7 +43,8 @@ import jakarta.xml.bind.annotation.XmlType;
     "fechaAlta",
     "descripcion",
     "categorias",
-    "ediciones"
+    "ediciones",
+    "finalizado"
 })
 public class DtDetalleEvento {
 
@@ -55,6 +57,7 @@ public class DtDetalleEvento {
     protected List<String> categorias;
     @XmlElement(nillable = true)
     protected List<String> ediciones;
+    protected boolean finalizado;
 
     /**
      * Obtiene el valor de la propiedad nombre.
@@ -212,6 +215,22 @@ public class DtDetalleEvento {
             ediciones = new ArrayList<>();
         }
         return this.ediciones;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad finalizado.
+     * 
+     */
+    public boolean isFinalizado() {
+        return finalizado;
+    }
+
+    /**
+     * Define el valor de la propiedad finalizado.
+     * 
+     */
+    public void setFinalizado(boolean value) {
+        this.finalizado = value;
     }
 
 }

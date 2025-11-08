@@ -43,7 +43,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class DataUsuario {
 
-	protected String nickname;
+    protected String nickname;
     protected String nombre;
     protected String email;
     @XmlSchemaType(name = "string")

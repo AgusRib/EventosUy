@@ -1,4 +1,8 @@
 import java.io.IOException;
+
+
+import java.lang.reflect.Method;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.data_types.DTRegistro;
+
 import webservices.DtAsistente;
 import webservices.DtRegistro;
 import webservices.PublicadorEvento;
@@ -101,7 +105,7 @@ public class ServletRegistro extends HttpServlet {
                     if (asistObj != null) {
                         for (Object o : asistObj) {
                             DtAsistente a = (DtAsistente) o;
-                            String nick = getnickname(a);
+                            String nick = a.getNickname();
                             if (nick == null || nick.isBlank()) continue;
 
                             // filtro de bùsqueda
@@ -224,10 +228,12 @@ public class ServletRegistro extends HttpServlet {
             }
 
             try {
-            	ICE.confirmarAsistencia(edicion, usuario);
+            	portEvento.confirmarAsistencia(edicion, usuario);
 
                 DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
-                boolean asistencia = (reg != null) && reg.getAsistencia();
+
+                boolean asistencia = (reg != null) && reg.isAsistencia();
+
 
                 response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
             } catch (Exception e) {

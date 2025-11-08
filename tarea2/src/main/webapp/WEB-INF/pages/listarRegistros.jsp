@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="logica.data_types.DTRegistro" %>
+<%@ page import="webservices.*" %>
 
 <%
   String ctx = request.getContextPath();
@@ -9,8 +9,8 @@
   String q = (String) request.getAttribute("q");
   if (q == null) q = "";
   @SuppressWarnings("unchecked")
-  List<Map.Entry<String, DTRegistro>> registros =
-      (List<Map.Entry<String, DTRegistro>>) request.getAttribute("registros");
+  List<Map.Entry<String, DtRegistro>> registros =
+      (List<Map.Entry<String, DtRegistro>>) request.getAttribute("registros");
   String mensaje = (String) request.getAttribute("mensaje");
   if (registros == null) registros = java.util.Collections.emptyList();
 
@@ -60,9 +60,9 @@
     <div class="alert alert-info">No hay registros para esta edición.</div>
   <% } else { %>
     <div class="listadoUsarios">
-      <% for (Map.Entry<String, DTRegistro> e : registros) {
+      <% for (Map.Entry<String, DtRegistro> e : registros) {
            String nick = e.getKey();
-           DTRegistro r = e.getValue();
+           DtRegistro r = e.getValue();
            String verDetalleUrl = ctx + "/ver-registro"
                + "?edicion=" + URLEncoder.encode(edicion == null ? "" : edicion, "UTF-8")
                + "&usuario=" + URLEncoder.encode(nick == null ? "" : nick, "UTF-8");

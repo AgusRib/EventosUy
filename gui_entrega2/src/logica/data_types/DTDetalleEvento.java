@@ -20,8 +20,10 @@ public class DTDetalleEvento {
 	private String descripcion;
 	private Set<String>  categorias;
 	private Set<String> ediciones;
+	private boolean finalizado;
+	
 	public DTDetalleEvento(String nombre, String sigla, LocalDate fecha, String descripcion, Set<String> categorias,
-			Set<String> hashSet) {
+			Set<String> hashSet, boolean finalizado) {
 		super();
 		this.nombre = nombre;
 		this.sigla = sigla;
@@ -29,6 +31,7 @@ public class DTDetalleEvento {
 		this.descripcion = descripcion;
 		this.categorias = categorias;
 		this.ediciones = hashSet;
+		this.finalizado = finalizado;
 	}
 	
 	public String getNombre() {
@@ -78,6 +81,13 @@ public class DTDetalleEvento {
 		this.ediciones = ediciones;
 	}
 	
+	public boolean getFinalizado() {
+		return finalizado;
+	}
+	
+	public void setFinalizado(boolean finalizado) {
+		this.finalizado = finalizado;
+	}
 	
 	
 }

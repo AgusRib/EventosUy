@@ -40,6 +40,11 @@ public class ServletHome extends HttpServlet {
 		
 		request.setAttribute("eventos_recientes", eventosRecientes);
 		
+		String mensaje = request.getParameter("mensaje");
+		if (mensaje != null) {
+		    request.setAttribute("mensaje", mensaje);
+		}
+		
         // Fetch imagen de edicion
 		for (DtDetalleEvento e : eventosRecientes) {
 	        String eventoImg = ManejadorArchivos.buscarArchivo(e.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));

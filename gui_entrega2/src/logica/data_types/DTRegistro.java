@@ -8,11 +8,11 @@ public class DTRegistro {
 	private LocalDate fechaRegistro;
 	private String nombreEdicion;
 	private String nombreAsistente;
-	private TipoRegistro tipoRegistro;
+	private String tipoRegistro;
 	private float costo;
 	private boolean asistencia;
 	
-	public DTRegistro(LocalDate fechaRegistro, String nombreEdicion, String nombreAsistente, float costo, TipoRegistro tipoReg, boolean asistencia) {
+	public DTRegistro(LocalDate fechaRegistro, String nombreEdicion, String nombreAsistente, float costo, String tipoReg, boolean asistencia) {
 		this.fechaRegistro = fechaRegistro;
 		this.nombreEdicion = nombreEdicion;
 		this.nombreAsistente = nombreAsistente;
@@ -56,11 +56,11 @@ public class DTRegistro {
 		return costo;
 	}
 
-	public TipoRegistro getTipoRegistro() {
+	public String getTipoRegistro() {
 		return tipoRegistro;
 	}
 
-	public void setTipoRegistro(TipoRegistro tipoRegistro) {
+	public void setTipoRegistro(String tipoRegistro) {
 		this.tipoRegistro = tipoRegistro;
 	}
 	

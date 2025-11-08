@@ -76,7 +76,7 @@ public class TestVerDetalles {
 		edis.add("Edicion1");
 		edis.add("Edicion2");
 		
-		DTDetalleEvento dtde = new DTDetalleEvento("Edicion1","ev1",ICE.getFechaSistema(),"descripcion 1",categorias,edis);
+		DTDetalleEvento dtde = new DTDetalleEvento("Edicion1","ev1",ICE.getFechaSistema(),"descripcion 1",categorias,edis, false);
 		assertEquals("Edicion1",dtde.getNombre());
 		assertEquals("ev1",dtde.getSigla());
 		assertEquals("descripcion 1",dtde.getDescripcion());

@@ -9,6 +9,7 @@ import java.util.Set;
 
 import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
+import excepciones.EventoFinalizadoExcepcion;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.FechaRegPREALTA;
@@ -39,7 +40,8 @@ public class ControllerEvento implements IControllerEvento{
 		Map<String, Evento> eventos = mEventos.obtenerEventos(); 
 		Set<String> nomEventos = new LinkedHashSet<>();
 		for (Evento eve : eventos.values()) {
-			nomEventos.add(eve.getNombre());
+			if (eve.getFinalizado() == false)	nomEventos.add(eve.getNombre());
+
 		}
 		return nomEventos;
 	}
@@ -138,9 +140,14 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public DTDetalleEvento verDetalleEvento(String nombreEvento) {
+	public DTDetalleEvento verDetalleEvento(String nombreEvento) throws EventoFinalizadoExcepcion {
 	  ManejadorEvento mEventos = ManejadorEvento.getInstance();
 	  Evento eve = mEventos.obtenerEvento(nombreEvento);
+	  
+	 /* if (eve.getFinalizado()) {
+		  throw new EventoFinalizadoExcepcion("El evento se encuentra finalizado");
+	  } */
+	  
 	  DTDetalleEvento dtE = eve.devolverDT();
 	  return dtE;		
 	}
@@ -168,7 +175,7 @@ public class ControllerEvento implements IControllerEvento{
 		Asistente usu = mUsuer.obtenerAsistente(usuario);
 		
 		Registro reg = usu.getRegistro(edi);
-		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg(), reg.getAsistencia());
+		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg().getNombre(), reg.getAsistencia());
 		return dtR;
 	}
 
@@ -394,5 +401,10 @@ public class ControllerEvento implements IControllerEvento{
 	    }
 	}
 	
-	
+	public void finalizarEvento(String nombreEvento) {
+		ManejadorEvento mEventos = ManejadorEvento.getInstance();
+		Evento eve = mEventos.obtenerEvento(nombreEvento);
+		eve.setFinalizado(true);
+		return;
+	}
 }

@@ -2,6 +2,7 @@ package logica.controllers;
 
 import excepciones.AsistenteYaRegistrado;
 import excepciones.CupoLLeno;
+import excepciones.EventoFinalizadoExcepcion;
 import excepciones.FechaInicioPOSTFINAL;
 import excepciones.FechaInicioPREALTA;
 import excepciones.FechaRegPREALTA;
@@ -33,7 +34,7 @@ public interface IControllerEvento {
 	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi);
 	public DTTipoRegistro verDetalleTRegistro(String nombreEdi, String nomTRegistro);
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, String descripcion, Float costo, int cupo) throws excepciones.TipoRegistroExistenteExcepcion, Exception;
-	public DTDetalleEvento verDetalleEvento(String nombreEvento);
+	public DTDetalleEvento verDetalleEvento(String nombreEvento) throws EventoFinalizadoExcepcion;
 	public Set<String> listarTiposDeRegistro( String nombreEdicion);
 	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception;
 	public void ingresarCategoria(String string);
@@ -50,6 +51,7 @@ public interface IControllerEvento {
 	Set<String> listarEdicionesTodas();
 	Set<String> listarEdicionesConfirmadas(String nombreEvento);
 	Set<String> listarEdicionesPendientes(String nombreEvento);
+	public void finalizarEvento(String nombreEvento);
     void confirmarAsistencia(String nombreEdi, String nickAsistente);
 	
 	

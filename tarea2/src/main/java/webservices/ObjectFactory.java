@@ -26,6 +26,7 @@ public class ObjectFactory {
 
     private final static QName _AsistenteYaRegistrado_QNAME = new QName("http://webservices/", "AsistenteYaRegistrado");
     private final static QName _CupoLLeno_QNAME = new QName("http://webservices/", "CupoLLeno");
+    private final static QName _EventoFinalizadoExcepcion_QNAME = new QName("http://webservices/", "EventoFinalizadoExcepcion");
     private final static QName _Exception_QNAME = new QName("http://webservices/", "Exception");
     private final static QName _FechaInicioPOSTFINAL_QNAME = new QName("http://webservices/", "FechaInicioPOSTFINAL");
     private final static QName _FechaInicioPREALTA_QNAME = new QName("http://webservices/", "FechaInicioPREALTA");
@@ -60,6 +61,16 @@ public class ObjectFactory {
      */
     public CupoLLeno createCupoLLeno() {
         return new CupoLLeno();
+    }
+
+    /**
+     * Create an instance of {@link EventoFinalizadoExcepcion }
+     * 
+     * @return
+     *     the new instance of {@link EventoFinalizadoExcepcion }
+     */
+    public EventoFinalizadoExcepcion createEventoFinalizadoExcepcion() {
+        return new EventoFinalizadoExcepcion();
     }
 
     /**
@@ -173,16 +184,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TipoRegistro }
-     * 
-     * @return
-     *     the new instance of {@link TipoRegistro }
-     */
-    public TipoRegistro createTipoRegistro() {
-        return new TipoRegistro();
-    }
-
-    /**
      * Create an instance of {@link DtDetalleEvento }
      * 
      * @return
@@ -236,6 +237,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservices/", name = "CupoLLeno")
     public JAXBElement<CupoLLeno> createCupoLLeno(CupoLLeno value) {
         return new JAXBElement<>(_CupoLLeno_QNAME, CupoLLeno.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link EventoFinalizadoExcepcion }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link EventoFinalizadoExcepcion }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://webservices/", name = "EventoFinalizadoExcepcion")
+    public JAXBElement<EventoFinalizadoExcepcion> createEventoFinalizadoExcepcion(EventoFinalizadoExcepcion value) {
+        return new JAXBElement<>(_EventoFinalizadoExcepcion_QNAME, EventoFinalizadoExcepcion.class, null, value);
     }
 
     /**

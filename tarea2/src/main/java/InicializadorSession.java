@@ -22,10 +22,9 @@ public class InicializadorSession implements HttpSessionListener {
 			categoriasSet.add((String) categoria);
 		}
         
-    	
-        event.getSession().setAttribute("usuario", null);
         event.getSession().setAttribute("categorias", categoriasSet);
         event.getSession().setAttribute("fecha", LocalDate.now());
+        event.getSession().setAttribute("usuario", null);
     }
 
     @Override
