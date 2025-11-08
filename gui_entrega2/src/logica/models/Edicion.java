@@ -7,13 +7,17 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import logica.data_types.DTAsistente;
 import logica.data_types.DTDetalleEdicion;
 import logica.data_types.DTPatrocinio;
 import logica.data_types.DTTipoRegistro;
 import logica.enumerators.EstadoEdicion;
 
+@Entity
 public class Edicion {
+	@Id
 	private String nombre;
 	private String sigla;
 	private LocalDate fechaInicio;
