@@ -1,4 +1,5 @@
 import java.io.IOException;
+
 import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class ServletRegistro extends HttpServlet {
                     if (asistObj != null) {
                         for (Object o : asistObj) {
                             DtAsistente a = (DtAsistente) o;
-                            String nick = getnickname(a);
+                            String nick = a.getNickname();
                             if (nick == null || nick.isBlank()) continue;
 
                             // filtro de bùsqueda
@@ -226,10 +227,10 @@ public class ServletRegistro extends HttpServlet {
             }
 
             try {
-            	ICE.confirmarAsistencia(edicion, usuario);
+            	portEvento.confirmarAsistencia(edicion, usuario);
 
-                DTRegistro reg = portEvento.infoRegistro(edicion, usuario);
-                boolean asistencia = (reg != null) && reg.getAsistencia();
+                DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
+                boolean asistencia = (reg != null) && reg.isAsistencia();
 
                 response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
             } catch (Exception e) {
