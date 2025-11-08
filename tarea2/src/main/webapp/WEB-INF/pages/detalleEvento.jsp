@@ -86,6 +86,11 @@
 							</svg> Finalizar evento
                 		</button>
 						</a>
+						
+					<% } else if (evento.isFinalizado()) {%>
+						
+						<span class="badge bg-danger ms-2">Finalizado</span>
+					
 					<% } %></h1>
 					<p class="mb-2">
 						<strong>Sigla:</strong> <%=evento.getSigla()%>
