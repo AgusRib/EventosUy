@@ -404,9 +404,11 @@ public class ServletEvento extends HttpServlet {
 		try {
 			portEvento.finalizarEvento(nombreEvento);
 			
-			request.setAttribute("mensaje", "Evento finalizado exitosamente.");
+			/* request.setAttribute("mensaje", "Evento finalizado exitosamente.");
     
-			request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/pages/home.jsp").forward(request, response); */
+			
+			response.sendRedirect(request.getContextPath() + "/HomeServlet?mensaje=Evento finalizado exitosamente.");
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Evento ya finalizado o no existe.");
 		}

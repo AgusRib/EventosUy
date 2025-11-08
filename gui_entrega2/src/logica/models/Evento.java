@@ -101,7 +101,7 @@ public class Evento{
 	}
 
 	public DTDetalleEvento devolverDT() {
-		DTDetalleEvento dtE = new DTDetalleEvento(this.nombre, this.sigla, this.fechaAlta, this.descripcion, this.getCategorias(), this.getCategorias());
+		DTDetalleEvento dtE = new DTDetalleEvento(this.nombre, this.sigla, this.fechaAlta, this.descripcion, this.getCategorias(), this.getCategorias(), this.finalizado);
 		return dtE;
 	}
 
