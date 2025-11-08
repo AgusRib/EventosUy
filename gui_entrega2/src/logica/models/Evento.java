@@ -8,6 +8,7 @@ import java.util.Set;
 
 import logica.data_types.DTDetalleEvento;
 import logica.enumerators.EstadoEdicion;
+import jakarta.persistence.Entity;
 
 public class Evento{
 	private String nombre;
