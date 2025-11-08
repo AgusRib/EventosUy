@@ -1,10 +1,8 @@
 
 package webservices;
 
-import javax.xml.datatype.XMLGregorianCalendar;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
 
@@ -18,11 +16,12 @@ import jakarta.xml.bind.annotation.XmlType;
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
- *         <element name="fechaRegistro" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
- *         <element name="nombreEdicion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         <element name="nombreAsistente" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         <element name="tipoRegistro" type="{http://webservices/}tipoRegistro" minOccurs="0"/>
+ *         <element name="asistencia" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         <element name="costo" type="{http://www.w3.org/2001/XMLSchema}float"/>
+ *         <element name="fechaRegistro" type="{http://webservices/}localDate" minOccurs="0"/>
+ *         <element name="nombreAsistente" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="nombreEdicion" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="tipoRegistro" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -33,30 +32,63 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dtRegistro", propOrder = {
+    "asistencia",
+    "costo",
     "fechaRegistro",
-    "nombreEdicion",
     "nombreAsistente",
-    "tipoRegistro",
-    "costo"
+    "nombreEdicion",
+    "tipoRegistro"
 })
 public class DtRegistro {
 
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar fechaRegistro;
-    protected String nombreEdicion;
-    protected String nombreAsistente;
-    protected TipoRegistro tipoRegistro;
+    protected boolean asistencia;
     protected float costo;
+    protected LocalDate fechaRegistro;
+    protected String nombreAsistente;
+    protected String nombreEdicion;
+    protected String tipoRegistro;
+
+    /**
+     * Obtiene el valor de la propiedad asistencia.
+     * 
+     */
+    public boolean isAsistencia() {
+        return asistencia;
+    }
+
+    /**
+     * Define el valor de la propiedad asistencia.
+     * 
+     */
+    public void setAsistencia(boolean value) {
+        this.asistencia = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad costo.
+     * 
+     */
+    public float getCosto() {
+        return costo;
+    }
+
+    /**
+     * Define el valor de la propiedad costo.
+     * 
+     */
+    public void setCosto(float value) {
+        this.costo = value;
+    }
 
     /**
      * Obtiene el valor de la propiedad fechaRegistro.
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link LocalDate }
      *     
      */
-    public XMLGregorianCalendar getFechaRegistro() {
+    public LocalDate getFechaRegistro() {
         return fechaRegistro;
     }
 
@@ -65,35 +97,11 @@ public class DtRegistro {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link LocalDate }
      *     
      */
-    public void setFechaRegistro(XMLGregorianCalendar value) {
+    public void setFechaRegistro(LocalDate value) {
         this.fechaRegistro = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad nombreEdicion.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getNombreEdicion() {
-        return nombreEdicion;
-    }
-
-    /**
-     * Define el valor de la propiedad nombreEdicion.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setNombreEdicion(String value) {
-        this.nombreEdicion = value;
     }
 
     /**
@@ -121,14 +129,38 @@ public class DtRegistro {
     }
 
     /**
+     * Obtiene el valor de la propiedad nombreEdicion.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getNombreEdicion() {
+        return nombreEdicion;
+    }
+
+    /**
+     * Define el valor de la propiedad nombreEdicion.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setNombreEdicion(String value) {
+        this.nombreEdicion = value;
+    }
+
+    /**
      * Obtiene el valor de la propiedad tipoRegistro.
      * 
      * @return
      *     possible object is
-     *     {@link TipoRegistro }
+     *     {@link String }
      *     
      */
-    public TipoRegistro getTipoRegistro() {
+    public String getTipoRegistro() {
         return tipoRegistro;
     }
 
@@ -137,27 +169,11 @@ public class DtRegistro {
      * 
      * @param value
      *     allowed object is
-     *     {@link TipoRegistro }
+     *     {@link String }
      *     
      */
-    public void setTipoRegistro(TipoRegistro value) {
+    public void setTipoRegistro(String value) {
         this.tipoRegistro = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad costo.
-     * 
-     */
-    public float getCosto() {
-        return costo;
-    }
-
-    /**
-     * Define el valor de la propiedad costo.
-     * 
-     */
-    public void setCosto(float value) {
-        this.costo = value;
     }
 
 }

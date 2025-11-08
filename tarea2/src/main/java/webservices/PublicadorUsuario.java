@@ -27,21 +27,40 @@ public interface PublicadorUsuario {
 
     /**
      * 
-     * @param arg0
+     * @param fileName
      * @return
-     *     returns webservices.DataUsuario
-     * @throws UsuarioNoEncontrado_Exception
+     *     returns byte[]
+     * @throws IOException_Exception
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/infoUsuarioRequest", output = "http://webservices/publicadorUsuario/infoUsuarioResponse", fault = {
-        @FaultAction(className = UsuarioNoEncontrado_Exception.class, value = "http://webservices/publicadorUsuario/infoUsuario/Fault/UsuarioNoEncontrado")
+    @Action(input = "http://webservices/publicadorUsuario/getFileRequest", output = "http://webservices/publicadorUsuario/getFileResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://webservices/publicadorUsuario/getFile/Fault/IOException")
     })
-    public DataUsuario infoUsuario(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
-        throws UsuarioNoEncontrado_Exception
+    public byte[] getFile(
+        @WebParam(name = "fileName", partName = "fileName")
+        String fileName)
+        throws IOException_Exception
     ;
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     */
+    @WebMethod
+    @Action(input = "http://webservices/publicadorUsuario/editarOrganizadorRequest", output = "http://webservices/publicadorUsuario/editarOrganizadorResponse")
+    public void editarOrganizador(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        String arg3);
 
     /**
      * 
@@ -80,77 +99,6 @@ public interface PublicadorUsuario {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns webservices.DtAsistente
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/infoAsistenteRequest", output = "http://webservices/publicadorUsuario/infoAsistenteResponse")
-    public DtAsistente infoAsistente(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns webservices.WrapperHashSet
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/listarAsistentesRequest", output = "http://webservices/publicadorUsuario/listarAsistentesResponse")
-    public WrapperHashSet listarAsistentes();
-
-    /**
-     * 
-     * @return
-     *     returns webservices.WrapperHashSet
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/listarUsuariosRequest", output = "http://webservices/publicadorUsuario/listarUsuariosResponse")
-    public WrapperHashSet listarUsuarios();
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     * @param arg3
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorUsuario/editarAsistenteRequest", output = "http://webservices/publicadorUsuario/editarAsistenteResponse")
-    public void editarAsistente(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        String arg3);
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     * @param arg3
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorUsuario/editarOrganizadorRequest", output = "http://webservices/publicadorUsuario/editarOrganizadorResponse")
-    public void editarOrganizador(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        String arg3);
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      */
     @WebMethod
@@ -178,27 +126,71 @@ public interface PublicadorUsuario {
      * 
      * @param arg0
      * @return
-     *     returns webservices.WrapperHashSet
+     *     returns webservices.DataUsuario
+     * @throws UsuarioNoEncontrado_Exception
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/listarRegistrosAEventosRequest", output = "http://webservices/publicadorUsuario/listarRegistrosAEventosResponse")
-    public WrapperHashSet listarRegistrosAEventos(
+    @Action(input = "http://webservices/publicadorUsuario/infoUsuarioRequest", output = "http://webservices/publicadorUsuario/infoUsuarioResponse", fault = {
+        @FaultAction(className = UsuarioNoEncontrado_Exception.class, value = "http://webservices/publicadorUsuario/infoUsuario/Fault/UsuarioNoEncontrado")
+    })
+    public DataUsuario infoUsuario(
         @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
+        String arg0)
+        throws UsuarioNoEncontrado_Exception
+    ;
 
     /**
      * 
-     * @param arg0
      * @return
      *     returns webservices.WrapperHashSet
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/listarEdicionesOrganizadasRequest", output = "http://webservices/publicadorUsuario/listarEdicionesOrganizadasResponse")
-    public WrapperHashSet listarEdicionesOrganizadas(
+    @Action(input = "http://webservices/publicadorUsuario/listarUsuariosRequest", output = "http://webservices/publicadorUsuario/listarUsuariosResponse")
+    public WrapperHashSet listarUsuarios();
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns webservices.DtAsistente
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorUsuario/infoAsistenteRequest", output = "http://webservices/publicadorUsuario/infoAsistenteResponse")
+    public DtAsistente infoAsistente(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
+
+    /**
+     * 
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorUsuario/listarAsistentesRequest", output = "http://webservices/publicadorUsuario/listarAsistentesResponse")
+    public WrapperHashSet listarAsistentes();
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     */
+    @WebMethod
+    @Action(input = "http://webservices/publicadorUsuario/editarAsistenteRequest", output = "http://webservices/publicadorUsuario/editarAsistenteResponse")
+    public void editarAsistente(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        String arg3);
 
     /**
      * 
@@ -236,6 +228,32 @@ public interface PublicadorUsuario {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorUsuario/listarRegistrosAEventosRequest", output = "http://webservices/publicadorUsuario/listarRegistrosAEventosResponse")
+    public WrapperHashSet listarRegistrosAEventos(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorUsuario/listarEdicionesOrganizadasRequest", output = "http://webservices/publicadorUsuario/listarEdicionesOrganizadasResponse")
+    public WrapperHashSet listarEdicionesOrganizadas(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
      * @return
      *     returns webservices.WrapperHashSet
      */
@@ -243,19 +261,6 @@ public interface PublicadorUsuario {
     @WebResult(partName = "return")
     @Action(input = "http://webservices/publicadorUsuario/listarOrganizadoresRequest", output = "http://webservices/publicadorUsuario/listarOrganizadoresResponse")
     public WrapperHashSet listarOrganizadores();
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns webservices.Usuario
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/obtenerUsuarioRequest", output = "http://webservices/publicadorUsuario/obtenerUsuarioResponse")
-    public Usuario obtenerUsuario(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
 
     /**
      * 
@@ -282,6 +287,19 @@ public interface PublicadorUsuario {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns webservices.Usuario
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorUsuario/obtenerUsuarioRequest", output = "http://webservices/publicadorUsuario/obtenerUsuarioResponse")
+    public Usuario obtenerUsuario(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
      * @return
      *     returns webservices.WrapperHashSet
      */
@@ -305,24 +323,6 @@ public interface PublicadorUsuario {
 
     /**
      * 
-     * @param fileName
-     * @return
-     *     returns byte[]
-     * @throws IOException_Exception
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/getFileRequest", output = "http://webservices/publicadorUsuario/getFileResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://webservices/publicadorUsuario/getFile/Fault/IOException")
-    })
-    public byte[] getFile(
-        @WebParam(name = "fileName", partName = "fileName")
-        String fileName)
-        throws IOException_Exception
-    ;
-
-    /**
-     * 
      * @param arg0
      * @param arg1
      * @return
@@ -330,8 +330,8 @@ public interface PublicadorUsuario {
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/iniciarSesionEmailRequest", output = "http://webservices/publicadorUsuario/iniciarSesionEmailResponse")
-    public DataUsuario iniciarSesionEmail(
+    @Action(input = "http://webservices/publicadorUsuario/iniciarSesionNicknameRequest", output = "http://webservices/publicadorUsuario/iniciarSesionNicknameResponse")
+    public DataUsuario iniciarSesionNickname(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
@@ -346,8 +346,8 @@ public interface PublicadorUsuario {
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorUsuario/iniciarSesionNicknameRequest", output = "http://webservices/publicadorUsuario/iniciarSesionNicknameResponse")
-    public DataUsuario iniciarSesionNickname(
+    @Action(input = "http://webservices/publicadorUsuario/iniciarSesionEmailRequest", output = "http://webservices/publicadorUsuario/iniciarSesionEmailResponse")
+    public DataUsuario iniciarSesionEmail(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")

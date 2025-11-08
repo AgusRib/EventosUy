@@ -2,18 +2,22 @@ import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import excepciones.TipoRegistroExistenteExcepcion;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import logica.controllers.IControllerEvento;
-import logica.data_types.DTRegistro;
-import logica.models.Factory;
+import webservices.DataUsuario;
+import webservices.DtAsistente;
+import webservices.DtPatrocinio;
+import webservices.DtRegistro;
+import webservices.PublicadorEvento;
+import webservices.PublicadorEventoService;
 
 
 /**
@@ -36,7 +40,8 @@ public class ServletRegistro extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
-        IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
+    	PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
         
         switch (path) {
 	        case "/ver-registro": {
@@ -47,7 +52,7 @@ public class ServletRegistro extends HttpServlet {
 	                return;
 	            }
 	
-	            DTRegistro registro = ICE.infoRegistro(edicion, usuario);
+	            DtRegistro registro = portEvento.infoRegistro(edicion, usuario);
 	            if (registro == null) {
 	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Registro no encontrado");
 	                return;
@@ -87,18 +92,26 @@ public class ServletRegistro extends HttpServlet {
 	            String q = request.getParameter("q");
 	            String qNorm = q == null ? "" : q.trim().toLowerCase();
 	
-	            var asistentes = ICE.listarAsistentesAEdicionDeEvento(edicion);
-	
-	            List<Map.Entry<String, DTRegistro>> regs = new ArrayList<>();
-	            for (var a : asistentes) {
-	                DTRegistro r = ICE.infoRegistro(edicion, a.getNickname());
+	            var asistentes = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
+	            
+	            List<Map.Entry<String, DtRegistro>> regs = new ArrayList<>();
+	            for (Object a : asistentes) {
+	                DtRegistro r = portEvento.infoRegistro(edicion, ((DtAsistente) a).getNickname());
 	                if (r != null) {
-	                    String nick = a.getNickname();
+	                    String nick = ((DtAsistente) a).getNickname();
 	                    if (qNorm.isEmpty() || (nick != null && nick.toLowerCase().contains(qNorm))) {
 	                        regs.add(new AbstractMap.SimpleEntry<>(nick, r));
 	                    }
 	                }
 	            }
+	            
+	            /*
+	             	                Set<DtPatrocinio> setPatrocinios = new HashSet<>();
+	                List<Object> listaPatrocinios = portEvento.listarPatrocinios(nombre).getItem();
+	                for (Object patrocinio : listaPatrocinios) {
+	                	setPatrocinios.add(portEvento.obtenerPatrocinio(nombre, (String) patrocinio));
+	                } 
+	             */
 	
 	            if (regs.isEmpty()) {
 	                request.setAttribute("mensaje", (qNorm.isEmpty() ?
@@ -144,7 +157,8 @@ public class ServletRegistro extends HttpServlet {
     	String path = request.getServletPath();
 	    	
 	    if ("/alta-tipo-registro".equals(path)) {
-			IControllerEvento ICE = (IControllerEvento) Factory.getInstance().getControllerEvento();
+	    	PublicadorEventoService serviceEvento = new PublicadorEventoService();
+	        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
 			
 			String edicion = request.getParameter("edicion");
 			String nombre  = request.getParameter("nombre");
@@ -159,7 +173,7 @@ public class ServletRegistro extends HttpServlet {
 		    	if (costo < 0 || cupo <= 0) {
 		    		throw new IllegalArgumentException("Costo y cupo deben ser positivos");
 		    	}
-		    	ICE.altaTipoDeRegistro(edicion, nombre, desc, costo, cupo);
+		    	portEvento.altaTipoDeRegistro(edicion, nombre, desc, costo, cupo);
 		    	
 		    	String url = request.getContextPath() + "/detalleEdicion?nombre=" + edicion;
 		    	response.sendRedirect(url);
@@ -173,7 +187,7 @@ public class ServletRegistro extends HttpServlet {
 		        request.setAttribute("cupo", cupoS);
 		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
 		        return;
-		    } catch (TipoRegistroExistenteExcepcion e) {
+		    } catch (Exception e) {
 		    	request.setAttribute("error", e.getMessage());
 		        request.setAttribute("edicion", edicion);
 		        request.setAttribute("nombre", nombre);
@@ -182,16 +196,7 @@ public class ServletRegistro extends HttpServlet {
 		        request.setAttribute("cupo", cupoS);
 		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
 		        return;
-			} catch (Exception e) {
-				request.setAttribute("error", "Error al dar de alta el tipo de registro: " + e.getMessage());
-		        request.setAttribute("edicion", edicion);
-		        request.setAttribute("nombre", nombre);
-		        request.setAttribute("descripcion", desc);
-		        request.setAttribute("costo", costoS);
-		        request.setAttribute("cupo", cupoS);
-		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
-		        return;
-			}
+			} 
 				
 			
 		}

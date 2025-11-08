@@ -56,7 +56,7 @@ public class publicadorEvento {
 			e.printStackTrace();
 		}
 		System.out.println("Publicando publicadorEvento...");
-		System.out.println(props.getProperty("server.protocol") + "://" + props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento");
+		System.out.println(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento");
          endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento", this);
     }
     
