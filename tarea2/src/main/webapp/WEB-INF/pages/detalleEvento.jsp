@@ -72,7 +72,33 @@
 				<%
 				if (evento != null) {
 				%>
-					<h1 class="mb-3"><%=evento.getNombre()%></h1>
+					<h1 class="mb-3"><%=evento.getNombre()%> 
+					
+					
+					<% if (esOrganizador && evento.isFinalizado() == false ) { %> <!--  NO SE PQ PASA ESTO WTFF JAJJAJAJA AYUDAAAAA -->
+					
+						<%
+							String urlFinalizar = "";
+							if (evento != null) {
+							    urlFinalizar = request.getContextPath() + "/finalizarEvento?nombreEvento=" 
+							                   + java.net.URLEncoder.encode(evento.getNombre(), "UTF-8");
+							}
+							%>
+						<button type="button" class="btn btn-danger btn-sm d-flex align-items-center ms-2"
+						        data-url-finalizar="<%=urlFinalizar%>"
+						        data-bs-toggle="modal" data-bs-target="#modalConfirmarFinalizacion"
+						        title="Finalizar evento">
+						    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-x-fill" viewBox="0 0 16 16">
+						        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M6.854 8.146 8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 1 1 .708-.708"></path>
+						    </svg>
+						    Finalizar evento
+						</button>
+						
+					<% } else if (evento.isFinalizado()) {%>
+						
+						<span class="badge bg-danger ms-2">Finalizado</span>
+					
+					<% } %></h1>
 					<p class="mb-2">
 						<strong>Sigla:</strong> <%=evento.getSigla()%>
 					</p>
@@ -209,6 +235,51 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Modal de confirmación para finalizar evento wAAAA-->
+		<div class="modal fade" id="modalConfirmarFinalizacion" tabindex="-1" aria-labelledby="modalConfirmarFinalizacionLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header bg-danger text-white">
+		        <h5 class="modal-title" id="modalConfirmarFinalizacionLabel">
+		          <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar finalización
+		        </h5>
+		        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+		      </div>
+		      <div class="modal-body">
+		        ¿Desea finalizar el evento <strong id="nombreEventoAMostrar"></strong>?<br>
+		        <small class="text-muted">Esta acción no se puede deshacer.</small>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+		        <button type="button" class="btn btn-danger" id="btnConfirmarFinalizacion">Finalizar evento</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+			    const modal = document.getElementById('modalConfirmarFinalizacion');
+			    const btnConfirmar = document.getElementById('btnConfirmarFinalizacion');
+			    let urlFinalizar = '';
+			
+			    modal.addEventListener('show.bs.modal', function (event) {
+			        const button = event.relatedTarget;
+			        urlFinalizar = button.getAttribute('data-url-finalizar');
+			        
+			        // Opcional: mostrar el nombre del evento en el modal
+			        const nombreEvento = '<%= evento != null ? evento.getNombre().replace("'", "\\'") : "" %>';
+			        document.getElementById('nombreEventoAMostrar').textContent = '"' + nombreEvento + '"';
+			    });
+			
+			    btnConfirmar.addEventListener('click', function () {
+			        if (urlFinalizar) {
+			            window.location.href = urlFinalizar;
+			        }
+			    });
+			});
+			</script>
 
 </body>
 </html>
