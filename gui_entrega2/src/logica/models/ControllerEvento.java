@@ -175,7 +175,7 @@ public class ControllerEvento implements IControllerEvento{
 		Asistente usu = mUsuer.obtenerAsistente(usuario);
 		
 		Registro reg = usu.getRegistro(edi);
-		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg(), reg.getAsistencia());
+		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg().getNombre(), reg.getAsistencia());
 		return dtR;
 	}
 
