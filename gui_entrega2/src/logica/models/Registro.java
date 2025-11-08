@@ -2,16 +2,30 @@ package logica.models;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import logica.controllers.IControllerEvento;
 
+@Entity
 public class Registro {
-
+	
+	@ManyToOne
 	private Edicion edicion;
+	@OneToMany
 	private Asistente asistente;
 	private float costo;
+	@Transient
 	private TipoRegistro tipoReg;
+	@Column(nullable = false)
+	private String nombreTipoRegistro;
+	@Column(nullable = false)
 	private LocalDate fechaRegistro;
+	@Transient
 	private String constanciaUrl;
+	@Transient
 	private boolean asistencia;
 
 	public LocalDate getFechaRegistro() {
@@ -29,6 +43,7 @@ public class Registro {
 		this.asistente=asis;
 		this.edicion=edi;
 		this.setTipoReg(tipoReg);
+		this.nombreTipoRegistro = tipoReg.getNombre();
 		this.costo = tipoReg.getCosto();
 		IControllerEvento cEve = new ControllerEvento();
 		this.fechaRegistro = cEve.getFechaSistema();

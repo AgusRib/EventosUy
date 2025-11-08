@@ -7,8 +7,15 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import logica.data_types.DTAsistente;
 import logica.data_types.DTDetalleEdicion;
 import logica.data_types.DTPatrocinio;
@@ -16,20 +23,37 @@ import logica.data_types.DTTipoRegistro;
 import logica.enumerators.EstadoEdicion;
 
 @Entity
+@Table(name = "Ediciones_Archivadas")
 public class Edicion {
-	@Id
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	@Column(nullable = false , unique = true)
 	private String nombre;
+	@Column(nullable = false)
 	private String sigla;
+	@Column(nullable = false)
 	private LocalDate fechaInicio;
+	@Column(nullable = false)
 	private LocalDate fechaFin;
+	@Column(nullable = false)
 	private LocalDate fechaAlta;
+	@Column(nullable = false)
 	private String ciudad;
+	@Column(nullable = false)
 	private String pais;
+	@OneToMany 
 	private final Set<Registro> registros;
+	@Transient
     private final Set<TipoRegistro> tiposRegistro;
+	@Transient // Se agrega un nuevo atributo nombreEvento
     private Evento evento;
+	@Column(nullable = false)
+	private String nombreEvento;
+    @Transient
 	private final Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
+	@OneToOne
 	private Organizador organizador;
+	@Transient
 	private EstadoEdicion estado;
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
@@ -45,6 +69,7 @@ public class Edicion {
 		this.registros = new LinkedHashSet<>();
 		this.tiposRegistro = new LinkedHashSet<>();
 		this.evento = evento;
+		this.nombreEvento = evento.getNombre();
 		this.organizador =organizador;
 		this.setEstado(EstadoEdicion.Ingresada); //siempre que agregamos una edicion, estado = ingresada.
 
@@ -221,6 +246,9 @@ public class Edicion {
 
 	public void setOrganizador(Organizador org) {
 	  		this.organizador = org;
-		
+	}
+	
+	public int getId() {
+		return id;
 	}
 }
