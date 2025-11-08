@@ -1,4 +1,4 @@
-<%@page import="webservices.data_types.DataUsuario"%>
+<%@page import="webservices.DataUsuario"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 

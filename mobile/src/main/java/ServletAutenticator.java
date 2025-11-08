@@ -64,7 +64,7 @@ public class ServletAutenticator extends HttpServlet {
 				if (session != null) {
 					session.invalidate();
 				}
-				response.sendRedirect(request.getContextPath() + "/HomeServlet");
+				response.sendRedirect(request.getContextPath() + "/iniciosesion");
 				break;
 			}
 			default:
