@@ -13,6 +13,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -46,6 +47,8 @@ public class ConsultaDeEvento extends JInternalFrame {
     private DefaultListModel<String> modeloCategorias = new DefaultListModel<>();
     private JList<String> listCategorias = new JList<>(modeloCategorias);
     
+    private javax.swing.JButton btnFinalizarEvento;
+    
    
     
 
@@ -74,9 +77,31 @@ public class ConsultaDeEvento extends JInternalFrame {
         cbxListadoDeEventos.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         content.add(cbxListadoDeEventos, gbc(0, y++, 2, 1, 1, 0, GridBagConstraints.HORIZONTAL));
 
-        JPanel panelNombre = new JPanel(new BorderLayout(5, 0)); // 5px de separación
-        panelNombre.add(new JLabel("Nombre:"), BorderLayout.WEST);
-        panelNombre.add(txtNombreEvento, BorderLayout.CENTER);
+        JPanel panelNombre = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Etiqueta "Nombre:"
+        JLabel lblNombre = new JLabel("Nombre:");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0, 0, 0, 5); // margen derecho
+        gbc.fill = GridBagConstraints.NONE;
+        panelNombre.add(lblNombre, gbc);
+
+        // Campo de texto
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panelNombre.add(txtNombreEvento, gbc);
+
+        // Botón "Finalizar evento"
+        btnFinalizarEvento = new javax.swing.JButton("Finalizar evento");
+        gbc.gridx = 2;
+        gbc.weightx = 0; // no expandir
+        gbc.insets = new Insets(0, 5, 0, 0); // margen izquierdo
+        gbc.fill = GridBagConstraints.NONE;
+        panelNombre.add(btnFinalizarEvento, gbc);
+        btnFinalizarEvento.setEnabled(false);
 
         GridBagConstraints gbcNombre = gbc(0, y, 1, 1, 1, 0, GridBagConstraints.HORIZONTAL);
         gbcNombre.anchor = GridBagConstraints.WEST; // alinear a la izquierda
@@ -147,6 +172,47 @@ public class ConsultaDeEvento extends JInternalFrame {
         		llamarAConsultaEdicion(edicion,evento);
             }
         });
+        btnFinalizarEvento.addActionListener(e -> {
+            String eventoSeleccionado = (String) cbxListadoDeEventos.getSelectedItem();
+            
+            
+            int resultado = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea finalizar el evento \"" + eventoSeleccionado + "\"?\nEsta acción no se puede deshacer.",
+                "Confirmar finalización",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (resultado == JOptionPane.YES_OPTION) {
+                try {
+                    // Llamar al controlador para finalizar el evento
+                    controllerEvento.finalizarEvento(eventoSeleccionado);
+                    
+                    // Mostrar mensaje de éxito
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "El evento ha sido finalizado correctamente.",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    
+                    // Opcional: refrescar la interfaz
+                    refrescar();
+                    
+                } catch (Exception ex) {
+                    // Manejar errores (por ejemplo, si el evento ya está finalizado)
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "No se pudo finalizar el evento:\n" + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                    ex.printStackTrace();
+                }
+            }
+        });
+        
 
         if (cbxListadoDeEventos.getItemCount() > 0) cbxListadoDeEventos.setSelectedIndex(0);
     }
@@ -169,7 +235,7 @@ public class ConsultaDeEvento extends JInternalFrame {
             	txtSiglaEvento.setText(dtde.getSigla());
                 textAreaDescripcion.setText(dtde.getDescripcion());
             
-
+                btnFinalizarEvento.setEnabled(true);
            
             modeloCategorias.clear(); 
             Set<String> cats = dtde.getCategorias();
@@ -211,6 +277,7 @@ public class ConsultaDeEvento extends JInternalFrame {
         modeloCategorias.clear();
         cbxListadoDeEdiciones.removeAllItems();
         cbxListadoDeEdiciones.addItem(PLACEHOLDER_EDICION);
+        btnFinalizarEvento.setEnabled(false);
     }
        
     
