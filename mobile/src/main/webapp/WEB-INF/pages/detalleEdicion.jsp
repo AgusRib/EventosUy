@@ -116,14 +116,7 @@
 					%> 
 					<div class="alert alert-secondary text-center mb-0" role="alert">
 						Esta edición ya finalizó.</div>
-					<% } else { %>
-				<div class="mt-4">
-					<a href="altaRegistro?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
-						<button class="btn btn-success rounded-3 p-3">
-							<div class="header-button">Registrarse a la Edicion</div>
-						</button>
-					</a>
-				</div> <% }} else { %>
+					<% } } else { %>
 				<div class="mt-4">
 					<a href="ver-registro?edicion=<%= edi.getNombre()  %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
 						<button class="button2 rounded-3 p-3">
