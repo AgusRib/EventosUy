@@ -1,6 +1,8 @@
 import java.io.IOException;
 
+
 import java.lang.reflect.Method;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +36,6 @@ public class ServletRegistro extends HttpServlet {
             throws ServletException, IOException {
 
         String path = request.getServletPath();
-
         // publicadres y soap
         PublicadorEventoService serviceEvento = new PublicadorEventoService();
         PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
@@ -230,7 +231,9 @@ public class ServletRegistro extends HttpServlet {
             	portEvento.confirmarAsistencia(edicion, usuario);
 
                 DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
+
                 boolean asistencia = (reg != null) && reg.isAsistencia();
+
 
                 response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
             } catch (Exception e) {
