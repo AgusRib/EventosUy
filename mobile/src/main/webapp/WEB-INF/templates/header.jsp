@@ -76,13 +76,10 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end shadow-sm"
 						aria-labelledby="userMenuDropdown">
-						<li><a class="dropdown-item" href="perfil">Mi perfil</a></li>
-						<li>
-							<hr class="dropdown-divider">
-						</li>
 						<li><a class="dropdown-item text-danger"
 							href="cerrarsesion"
-							style="color: #dc3545 !important;">Cerrar sesión</a></li>
+							style="color: #dc3545 !important;">Cerrar sesión</a>
+						</li>
 					</ul>
 				</div>
 			</div>
