@@ -1,19 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
-<%@ page import="logica.data_types.*" %>
+<%@ page import="webservices.*" %>
 
 <%
   String ctx = request.getContextPath();
-  DTDetalleEdicion ed = (DTDetalleEdicion) request.getAttribute("edicion");
+  DtDetalleEdicion ed = (DtDetalleEdicion) request.getAttribute("edicion");
   @SuppressWarnings("unchecked")
-  Set<DTTipoRegistro> tiposRegistro = (Set<DTTipoRegistro>) request.getAttribute("tiposRegistro");
+  Set<DtTipoRegistro> tiposRegistro = (Set<DtTipoRegistro>) request.getAttribute("tiposRegistro");
 
   String error   = (String) request.getAttribute("error");
   String mensaje = (String) request.getAttribute("mensaje");
 
   String edicionStr = request.getParameter("edicion");
   if (edicionStr == null || edicionStr.isBlank()) {
-      // también puede venir reinyectada por setAttribute en POST
       Object eStr = request.getAttribute("edicionStr");
       edicionStr = (eStr == null ? (ed != null ? ed.getNombre() : "") : String.valueOf(eStr));
   }
@@ -117,14 +116,14 @@ main.contUser { padding:18px; }
             <select class="form-select" id="tipoRegistroSelect" name="tipoRegistro" required>
               <option value="">-- Seleccione un tipo de registro --</option>
               <% if (tiposRegistro != null) {
-                   for (DTTipoRegistro tr : tiposRegistro) {
+                   for (DtTipoRegistro tr : tiposRegistro) {
                       String nombreTr = "";
                       float  costoTr  = 0f;
-                      try { nombreTr = (String) tr.getClass().getMethod("getNombre").invoke(tr); } catch (Exception ignore) {}
+                      try { nombreTr = (String) tr.getClass().getMethod("getNombre").invoke(tr); } catch (java.lang.Exception ignore) {}
                       try { Object c = tr.getClass().getMethod("getCosto").invoke(tr);
                             if (c instanceof Float f) costoTr = f;
                             if (c instanceof Double d) costoTr = d.floatValue();
-                      } catch (Exception ignore) {}
+                      } catch (java.lang.Exception ignore) {}
                       boolean sel = nombreTr.equals(tipoRegistroSel);
               %>
                 <option value="<%= nombreTr %>" <%= sel ? "selected" : "" %>>

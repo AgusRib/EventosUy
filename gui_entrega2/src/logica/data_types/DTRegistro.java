@@ -1,30 +1,24 @@
 package logica.data_types;
 
 import java.time.LocalDate;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlSchemaType;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import logica.models.TipoRegistro;
-import webservices.LocalDateAdapter;
 
-@XmlAccessorType(XmlAccessType.FIELD)
+import logica.models.TipoRegistro;
+
 public class DTRegistro {
-	@XmlJavaTypeAdapter(LocalDateAdapter.class)
-	@XmlSchemaType(name = "date")
 	private LocalDate fechaRegistro;
-	
 	private String nombreEdicion;
 	private String nombreAsistente;
 	private TipoRegistro tipoRegistro;
 	private float costo;
+	private boolean asistencia;
 	
-	public DTRegistro(LocalDate fechaRegistro, String nombreEdicion, String nombreAsistente, float costo, TipoRegistro tipoReg) {
+	public DTRegistro(LocalDate fechaRegistro, String nombreEdicion, String nombreAsistente, float costo, TipoRegistro tipoReg, boolean asistencia) {
 		this.fechaRegistro = fechaRegistro;
 		this.nombreEdicion = nombreEdicion;
 		this.nombreAsistente = nombreAsistente;
 		this.costo = costo;
 		this.tipoRegistro = tipoReg;
+		this.asistencia = asistencia;
 	}
 	
 	public DTRegistro() {
@@ -70,8 +64,20 @@ public class DTRegistro {
 		this.tipoRegistro = tipoRegistro;
 	}
 	
-	
-	
-	
+	public boolean getAsistencia() {
+		return asistencia;
+	}
+	public void setAsistencia(boolean asistencia) {
+		this.asistencia = asistencia;
+	}
+
+
+	public void confirmarAsistencia(String asistente) {
+		if (!this.asistencia){
+			this.asistencia = true;
+			//TODO: generar pdf ...	
+		}
+		
+	}
 	
 }

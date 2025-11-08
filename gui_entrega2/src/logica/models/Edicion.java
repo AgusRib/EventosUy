@@ -176,7 +176,7 @@ public class Edicion {
 		
 		TipoRegistro treg = this.getTipoRegistro(tipoReg);
 		treg.restarCupo();
-		Registro nReg = new Registro(asis, treg, this);
+		Registro nReg = new Registro(asis, treg, this, false);
 		this.registros.add(nReg);
 		asis.addRegistro(nReg);
 		return;
