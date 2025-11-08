@@ -1,17 +1,23 @@
 package logica.models;
 
 import java.time.LocalDate;
+
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.*;
 import logica.data_types.DTAsistente;
 
+@Entity
+@Table(name="ASISTENTE")
 public class Asistente extends Usuario {
 	
-	private String apellido;
-	private LocalDate fechaNacimiento;
-	private Institucion institucion = null;
-	private Set<Registro> registros = new HashSet<Registro>();
+	@Column(name="APELLIDO", nullable=false) private String apellido;
+	@Column(name="FECHA_NAC", nullable=false) private LocalDate fechaNacimiento;
+	
+	@ManyToOne @JoinColumn(name = "id_institucion") private Institucion institucion = null;
+	
+	@OneToMany(mappedBy = "asistente") private Set<Registro> registros = new HashSet<Registro>();
 	
 	public String getApellido() {
 		return apellido;
@@ -64,6 +70,8 @@ public class Asistente extends Usuario {
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
 	}
+	
+	public Asistente( ) { super(); } //necesario para que funcione el jpa
 	
 	public DTAsistente infoAsist() {
 		//para evitar los getters podriamos hacer que Usuario sea protected 

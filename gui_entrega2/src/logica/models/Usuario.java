@@ -1,11 +1,17 @@
 package logica.models;
 
-public class Usuario {
+import jakarta.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)	
+public abstract class Usuario {
 	
-	private String nickname;
-	private String nombre;
-	private String email;
-	private String password;
+	
+	@Id @GeneratedValue(strategy = GenerationType.TABLE) @Column(name = "USER_ID") private int id;
+	@Column(name="NICKNAME", nullable = false, unique = true) private String nickname;
+	@Column(name="EMAIL", nullable = false, unique = true) private String email;
+	@Column(name="NOMBRE") private String nombre;
+	@Column(name="PASSWORD") private String password;
 
 	public String getNickname() {
 		return nickname;
@@ -33,7 +39,9 @@ public class Usuario {
 		this.password = password;
 		
 	}
-
+	
+	//agrego un constructor vacio pq JPA lo necesita para hacer la tabla
+	public Usuario() {}
 	
 
 }

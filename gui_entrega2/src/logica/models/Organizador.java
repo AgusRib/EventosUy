@@ -1,13 +1,18 @@
 package logica.models;
 
 import java.util.HashSet;
+
 import java.util.Set;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="ORGANIZADOR")
 public class Organizador extends Usuario {
 
-    private String descripcion;
-    private String web;
-    private Set<String> ediciones = new HashSet<String>();
+	@Column(name="DESC", nullable = false) private String descripcion;
+    @Column(name="WEB") private String web;
+    @ElementCollection @CollectionTable(name = "EDICIONES_ORGANIZADAS") private Set<String> ediciones = new HashSet<String>();
 	
     //GETTERS Y SETTERS
     public String getDescripcion() {
@@ -46,5 +51,7 @@ public class Organizador extends Usuario {
 		this.descripcion = descripcion;
 		this.web = web;
 	}
+	
+	public Organizador() { super(); } //necesario para que funcione el jpa
 	
 }
