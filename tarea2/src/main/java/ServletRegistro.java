@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import logica.data_types.DTRegistro;
 import webservices.DtAsistente;
 import webservices.DtRegistro;
 import webservices.PublicadorEvento;
@@ -33,7 +32,6 @@ public class ServletRegistro extends HttpServlet {
             throws ServletException, IOException {
 
         String path = request.getServletPath();
-
         // publicadres y soap
         PublicadorEventoService serviceEvento = new PublicadorEventoService();
         PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
@@ -228,7 +226,7 @@ public class ServletRegistro extends HttpServlet {
             try {
             	ICE.confirmarAsistencia(edicion, usuario);
 
-                DTRegistro reg = portEvento.infoRegistro(edicion, usuario);
+                DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
                 boolean asistencia = (reg != null) && reg.getAsistencia();
 
                 response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
