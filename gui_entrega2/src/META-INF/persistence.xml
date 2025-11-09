@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
-	<persistence-unit name="EventosDB">
+	<persistence-unit name="EventosDB" transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>		
+		
+		<class>logica.models.Usuario</class>
+		<class>logica.models.Asistente</class>
+		<class>logica.models.Organizador</class>
+		<class>logica.models.Institucion</class>
+		<class>logica.models.Registro</class>
+		<class>logica.models.Evento</class>
+	
+		<properties>
+			<property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:EventosDB"/>
+			<property name="jakarta.persistence.jdbc.user" value="admin"/>
+			<property name="jakarta.persistence.jdbc.password" value=""/>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+			<property name="eclipselink.ddl-generation.output-mode" value="database"/>
+		</properties>
+		
 	</persistence-unit>
 </persistence>
