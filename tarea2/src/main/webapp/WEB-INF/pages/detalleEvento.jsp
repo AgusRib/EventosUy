@@ -48,7 +48,7 @@
 	<jsp:include page="../templates/header.jsp"></jsp:include>
 
 	<div class="container-fluid px-4 mt-4">
-		<jsp:include page="../templates/searchbarevento.jsp" />
+		
 	</div>
 
 	<div class="container-fluid px-4 mt-3">

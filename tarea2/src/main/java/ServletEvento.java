@@ -110,8 +110,17 @@ public class ServletEvento extends HttpServlet {
     private void listarEventos(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
         String categoria = request.getParameter("categoria");
         String nombreBusqueda = request.getParameter("nombre"); 
+        String tipoFiltro = request.getParameter("tipo"); // "eventos", "ediciones", o null (ambos)
+        String ordenamiento = request.getParameter("orden"); // "fecha", "alfabetico", o null (por defecto fecha descendente)
         
         try {
+            Set<java.util.Map<String, Object>> todosLosItems = new java.util.LinkedHashSet<>();
+            int totalEventos = 0;
+            int totalEdiciones = 0;
+            int eventosEncontrados = 0;
+            int edicionesEncontradas = 0;
+            
+            // Obtener todos los eventos primero para contar totales
             WrapperHashSet todosLosEventosWrapper = portEvento.listarEventos();
             List<Object> todosLosEventosObj = todosLosEventosWrapper.getItem();
             Set<String> todosLosEventos = new java.util.HashSet<>();
@@ -119,59 +128,204 @@ public class ServletEvento extends HttpServlet {
                 todosLosEventos.add((String) obj);
             }
             
-            Set<java.util.Map<String, Object>> eventosInfo = new java.util.LinkedHashSet<>();
-            Set<String> eventosFiltrados = new java.util.LinkedHashSet<>();
+            // Contar total de eventos
+            totalEventos = todosLosEventos.size();
             
+            // Contar total de ediciones confirmadas
             for (String nombreEvento : todosLosEventos) {
-                DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
-                boolean incluirEvento = true;
-                
-                // Filtro por categoría 
-                if (categoria != null && !categoria.trim().isEmpty() && !categoria.equals("todas")) {
-            
-                    List<String> categoriasObj = detalleEvento.getCategorias();
-                    Set<String> categorias = new java.util.HashSet<>();
-                    for (String cat : categoriasObj) {
-                        categorias.add((String) cat);
-                    }
-                    incluirEvento = categorias.contains(categoria);
-                }
-                
-                // Filtro por nombre - búsqueda parcial insensible a mayúsculas y acentos
-                if (incluirEvento && nombreBusqueda != null && !nombreBusqueda.trim().isEmpty()) {
-                    String nombreEventoNormalizado = normalizeText(nombreEvento);
-                    String busquedaNormalizada = normalizeText(nombreBusqueda.trim());
-                    incluirEvento = nombreEventoNormalizado.contains(busquedaNormalizada);
-                }
-                
-                if (incluirEvento) {
-                    eventosFiltrados.add(nombreEvento);
-                    java.util.Map<String, Object> eventoInfo = new java.util.HashMap<>();
-                    eventoInfo.put("nombre", detalleEvento.getNombre());
-                    eventoInfo.put("descripcion", detalleEvento.getDescripcion());
-                    
-                    // Buscar imagen de evento usando el nuevo sistema centralizado
-                    String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
-                    if (eventoImg != null && !eventoImg.equals("images/default.png")) {
-                        eventoInfo.put("imagenEvento", eventoImg);
-                    } else {
-                        eventoInfo.put("imagenEvento", "images/default.png");
-                    }
-                    
-                    eventosInfo.add(eventoInfo);
+                try {
+                    List<Object> edicionesConfirmadasObj = portEvento.listarEdicionesConfirmadas(nombreEvento).getItem();
+                    totalEdiciones += edicionesConfirmadasObj.size();
+                } catch (Exception e) {
+                    // Continuar con el siguiente evento si hay error
+                    continue;
                 }
             }
             
-            request.setAttribute("eventos", eventosFiltrados);                    
-            request.setAttribute("eventosInfo", eventosInfo);      
+            // Procesar eventos si no se filtra solo por ediciones
+            if (tipoFiltro == null || tipoFiltro.isEmpty() || "eventos".equals(tipoFiltro)) {
+                for (String nombreEvento : todosLosEventos) {
+                    try {
+                        DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
+                        boolean incluirEvento = true;
+                        
+                        // Filtro por categoría 
+                        if (categoria != null && !categoria.trim().isEmpty() && !categoria.equals("todas")) {
+                            List<String> categoriasObj = detalleEvento.getCategorias();
+                            Set<String> categorias = new java.util.HashSet<>();
+                            for (String cat : categoriasObj) {
+                                categorias.add((String) cat);
+                            }
+                            incluirEvento = categorias.contains(categoria);
+                        }
+                        
+                        // Filtro por nombre - búsqueda parcial insensible a mayúsculas y acentos
+                        if (incluirEvento && nombreBusqueda != null && !nombreBusqueda.trim().isEmpty()) {
+                            String nombreEventoNormalizado = normalizeText(nombreEvento);
+                            String busquedaNormalizada = normalizeText(nombreBusqueda.trim());
+                            incluirEvento = nombreEventoNormalizado.contains(busquedaNormalizada);
+                        }
+                        
+                        // Solo agregar si pasa todos los filtros
+                        if (incluirEvento) {
+                            eventosEncontrados++;
+                            
+                            java.util.Map<String, Object> eventoInfo = new java.util.HashMap<>();
+                            eventoInfo.put("nombre", detalleEvento.getNombre());
+                            eventoInfo.put("descripcion", detalleEvento.getDescripcion());
+                            eventoInfo.put("tipo", "evento");
+                            
+                            // Convertir fecha de alta para ordenamiento
+                            XMLGregorianCalendar xmlFechaAlta = detalleEvento.getFechaAlta();
+                            if (xmlFechaAlta != null) {
+                                LocalDate fechaAlta = xmlFechaAlta.toGregorianCalendar().toZonedDateTime().toLocalDate();
+                                eventoInfo.put("fechaAlta", fechaAlta);
+                            }
+                            
+                            // Buscar imagen de evento usando el nuevo sistema centralizado
+                            String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
+                            if (eventoImg != null && !eventoImg.equals("images/default.png")) {
+                                eventoInfo.put("imagenEvento", eventoImg);
+                            } else {
+                                eventoInfo.put("imagenEvento", "images/default.png");
+                            }
+                            
+                            todosLosItems.add(eventoInfo);
+                        }
+                    } catch (Exception e) {
+                        // Continuar con el siguiente evento si hay error
+                        continue;
+                    }
+                }
+            }
+            
+            // Procesar ediciones confirmadas si no se filtra solo por eventos
+            if (tipoFiltro == null || tipoFiltro.isEmpty() || "ediciones".equals(tipoFiltro)) {
+                for (String nombreEvento : todosLosEventos) {
+                    try {
+                        // Verificar primero si el evento padre pasa el filtro de categoría
+                        boolean eventoParentPasaFiltroCategoria = true;
+                        if (categoria != null && !categoria.trim().isEmpty() && !categoria.equals("todas")) {
+                            DtDetalleEvento eventoParent = portEvento.verDetalleEvento(nombreEvento);
+                            List<String> categoriasObj = eventoParent.getCategorias();
+                            Set<String> categorias = new java.util.HashSet<>();
+                            for (String cat : categoriasObj) {
+                                categorias.add((String) cat);
+                            }
+                            eventoParentPasaFiltroCategoria = categorias.contains(categoria);
+                        }
+                        
+                        // Solo buscar ediciones si el evento padre pasa el filtro de categoría
+                        if (eventoParentPasaFiltroCategoria) {
+                            List<Object> edicionesConfirmadasObj = portEvento.listarEdicionesConfirmadas(nombreEvento).getItem();
+                            for (Object obj : edicionesConfirmadasObj) {
+                                String nombreEdicion = (String) obj;
+                                
+                                try {
+                                    DtDetalleEdicion detalleEdicion = portEvento.mostrarDetallesEdicion(nombreEdicion);
+                                    boolean incluirEdicion = true;
+                                    
+                                    // Filtro por nombre - buscar en nombre de edición y evento padre
+                                    if (incluirEdicion && nombreBusqueda != null && !nombreBusqueda.trim().isEmpty()) {
+                                        String nombreEdicionNormalizado = normalizeText(nombreEdicion);
+                                        String nombreEventoNormalizado = normalizeText(nombreEvento);
+                                        String busquedaNormalizada = normalizeText(nombreBusqueda.trim());
+                                        incluirEdicion = nombreEdicionNormalizado.contains(busquedaNormalizada) || 
+                                                       nombreEventoNormalizado.contains(busquedaNormalizada);
+                                    }
+                                    
+                                    // Solo agregar si pasa todos los filtros
+                                    if (incluirEdicion) {
+                                        edicionesEncontradas++;
+                                        
+                                        java.util.Map<String, Object> edicionInfo = new java.util.HashMap<>();
+                                        edicionInfo.put("nombre", detalleEdicion.getNombre());
+                                        edicionInfo.put("descripcion", "Edición de " + nombreEvento + " - " + detalleEdicion.getCiudad() + ", " + detalleEdicion.getPais());
+                                        edicionInfo.put("tipo", "edicion");
+                                        edicionInfo.put("eventoParent", nombreEvento);
+                                        
+                                        // Convertir fecha de alta para ordenamiento
+                                        XMLGregorianCalendar xmlFechaAlta = detalleEdicion.getFechaAlta();
+                                        if (xmlFechaAlta != null) {
+                                            LocalDate fechaAlta = xmlFechaAlta.toGregorianCalendar().toZonedDateTime().toLocalDate();
+                                            edicionInfo.put("fechaAlta", fechaAlta);
+                                        }
+                                        
+                                        // Buscar imagen de edicion usando el nuevo sistema centralizado
+                                        String edicionImg = ManejadorArchivos.buscarArchivo(detalleEdicion.getNombre().toLowerCase(), "ediciones");
+                                        if (edicionImg != null && !edicionImg.equals("images/default.png")) {
+                                            edicionInfo.put("imagenEvento", edicionImg);
+                                        } else {
+                                            edicionInfo.put("imagenEvento", "images/default.png");
+                                        }
+                                        
+                                        todosLosItems.add(edicionInfo);
+                                    }
+                                } catch (Exception e) {
+                                    // Continuar con la siguiente edición si hay error
+                                    continue;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        // Continuar con el siguiente evento si hay error
+                        continue;
+                    }
+                }
+            }
+            
+            // Convertir a List para poder ordenar
+            List<java.util.Map<String, Object>> listaItems = new ArrayList<>(todosLosItems);
+            
+            // Ordenamiento
+            if ("alfabetico".equals(ordenamiento)) {
+                // Ordenar alfabéticamente descendente
+                listaItems.sort((a, b) -> {
+                    String nombreA = (String) a.get("nombre");
+                    String nombreB = (String) b.get("nombre");
+                    return nombreB.compareToIgnoreCase(nombreA);
+                });
+            } else {
+                // Por defecto: ordenar por fecha de alta descendente, luego alfabético descendente
+                listaItems.sort((a, b) -> {
+                    LocalDate fechaA = (LocalDate) a.get("fechaAlta");
+                    LocalDate fechaB = (LocalDate) b.get("fechaAlta");
+                    
+                    if (fechaA != null && fechaB != null) {
+                        int fechaComparison = fechaB.compareTo(fechaA); // Descendente
+                        if (fechaComparison != 0) {
+                            return fechaComparison;
+                        }
+                    } else if (fechaA != null) {
+                        return -1;
+                    } else if (fechaB != null) {
+                        return 1;
+                    }
+                    
+                    // Si las fechas son iguales o nulas, ordenar alfabéticamente descendente
+                    String nombreA = (String) a.get("nombre");
+                    String nombreB = (String) b.get("nombre");
+                    return nombreB.compareToIgnoreCase(nombreA);
+                });
+            }
+            
+            // Convertir de vuelta a LinkedHashSet para mantener orden
+            Set<java.util.Map<String, Object>> itemsOrdenados = new java.util.LinkedHashSet<>(listaItems);
+            
+            request.setAttribute("eventos", new java.util.HashSet<>()); // Mantener compatibilidad                   
+            request.setAttribute("eventosInfo", itemsOrdenados);      
             request.setAttribute("categoriaSeleccionada", categoria);
             request.setAttribute("nombreBusqueda", nombreBusqueda); 
-            request.setAttribute("totalEventos", todosLosEventos.size());
-            request.setAttribute("eventosFiltrados", eventosFiltrados.size());
+            request.setAttribute("tipoFiltro", tipoFiltro);
+            request.setAttribute("ordenamiento", ordenamiento);
+            request.setAttribute("totalEventos", totalEventos);
+            request.setAttribute("totalEdiciones", totalEdiciones);
+            request.setAttribute("eventosFiltrados", itemsOrdenados.size());
             
             request.getRequestDispatcher("/WEB-INF/pages/listarEventos.jsp").forward(request, response);
         } catch (Exception e) {
-            response.getWriter().append(e.getMessage());
+            e.printStackTrace();
+            response.getWriter().append("Error: " + e.getMessage());
         }
     }
     

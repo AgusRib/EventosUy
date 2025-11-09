@@ -34,7 +34,7 @@
 	<jsp:include page="../templates/header.jsp"></jsp:include>
 
 	<div class="container px-4 ">
-		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
+	
 	</div>
 	<div class="container px-4 mt-3">
 		<div class="row pb-4">
@@ -48,7 +48,35 @@
 			</div>
 			<!-- Información principal de la edición -->
 			<div class="col-md-9 col-lg-9 col-xl-9 mt-3 mt-md-0 info-evento px-5">
-				<h2 class="fw-bold"> <%= edi.getNombre() %></h2>
+				<div class="d-flex align-items-center gap-3 mb-2">
+					<h2 class="fw-bold mb-0"> <%= edi.getNombre() %></h2>
+					<%
+					// Mostrar tag de estado solo si es organizador de la edición
+					if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
+						boolean esOrg = (boolean) request.getAttribute("esOrganizador");
+						if (esOrg) {
+							String estadoClass = "";
+							String estadoTexto = "";
+							EstadoEdicion estado = edi.getEstado();
+							
+							switch(estado) {
+								case CONFIRMADA:
+									estadoClass = "badge bg-success";
+									estadoTexto = "Confirmada";
+									break;
+								case INGRESADA:
+									estadoClass = "badge bg-warning text-dark";
+									estadoTexto = "Pendiente";
+									break;
+								case RECHAZADA:
+									estadoClass = "badge bg-danger";
+									estadoTexto = "Rechazada";
+									break;
+							}
+					%>
+					<span class="<%= estadoClass %>"><%= estadoTexto %></span>
+					<% }} %>
+				</div>
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Organizador:</strong> <a
 						href="detalleUsuario?usuarios=<%= edi.getOrganizador() %>"
@@ -111,7 +139,8 @@
 						</button>
 					</a>
 				</div> <% }} else if (user != null) {
-					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
+					boolean usuarioRegistrado = (boolean) request.getAttribute("usuarioRegistrado");
+					if (!usuarioRegistrado) {
 						LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
 						XMLGregorianCalendar fechaFin = edi.getFechaFin();
 						if (fechaActual.isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {

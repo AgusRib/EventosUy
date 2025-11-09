@@ -45,7 +45,7 @@
 
 <div class="container col-12 col-md-8">
    <div class="row container m-2">
-   		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
+   		
             <div class="row gx-0 g-xl-2 gy-2">
                 
 			<% 
