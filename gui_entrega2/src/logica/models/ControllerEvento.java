@@ -383,23 +383,29 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public void confirmarAsistencia(String nombreEdi, String nickAsistente) {
-	    if (nombreEdi == null || nombreEdi.isBlank() || nickAsistente == null || nickAsistente.isBlank()) {
+	    if (nombreEdi == null || nombreEdi.isBlank() ||
+	        nickAsistente == null || nickAsistente.isBlank()) {
 	        throw new IllegalArgumentException("Faltan parámetros: nombreEdi y/o nickAsistente");
 	    }
 
-	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+	    Edicion edi = ManejadorEdicion.getInstance().encontrarEdicion(nombreEdi);
+	    if (edi == null) throw new IllegalArgumentException("No existe la edición: " + nombreEdi);
 
-	    ManejadorUsuario mUser = ManejadorUsuario.getInstance();
-	    Asistente asis = mUser.obtenerAsistente(nickAsistente);
+	    Asistente asis = ManejadorUsuario.getInstance().obtenerAsistente(nickAsistente);
+	    if (asis == null) throw new IllegalArgumentException("No existe el asistente: " + nickAsistente);
 
 	    Registro reg = asis.getRegistro(edi);
+	    if (reg == null) reg = edi.getRegistroDe(nickAsistente);
 
+	    if (reg == null) {
+	        throw new IllegalStateException("El asistente " + nickAsistente + " no tiene registro en " + nombreEdi);
+	    }
 
-	    if (!reg.getAsistencia()) {
+	    if (!Boolean.TRUE.equals(reg.getAsistencia())) {
 	        reg.confirmarAsistencia();
 	    }
 	}
+
 	
 	public void finalizarEvento(String nombreEvento) {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();

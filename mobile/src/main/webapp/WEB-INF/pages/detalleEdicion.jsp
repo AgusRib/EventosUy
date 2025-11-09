@@ -96,34 +96,52 @@
 				<div class="mb-2">
 					<strong>Ciudad:</strong> <%= edi.getCiudad() %>
 				</div>
-				<%
-				boolean esOrganizador = false;
-				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
-					esOrganizador = (boolean) request.getAttribute("esOrganizador");
-					if ((boolean) request.getAttribute("esOrganizador") == true) {
-				%>
-				<div class="mt-4">
-					<a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
-						<button class="button2 rounded-3 p-3">
-							<div class="header-button">Ver Registros</div>
-						</button>
-					</a>
-				</div> <% }} else if (user != null) {
-					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
-						LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
-						XMLGregorianCalendar fechaFin = edi.getFechaFin();
-						if (fechaActual.isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {
-					%> 
-					<div class="alert alert-secondary text-center mb-0" role="alert">
-						Esta edición ya finalizó.</div>
-					<% } } else { %>
-				<div class="mt-4">
-					<a href="ver-registro?edicion=<%= edi.getNombre()  %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
-						<button class="button2 rounded-3 p-3">
-							<div class="header-button">Ver detalle del Registro</div>
-						</button>
-					</a>
-				</div> <% }} %>
+				<%					
+					Boolean esOrgAttr = (Boolean) request.getAttribute("esOrganizador");
+					boolean esOrganizador = (esOrgAttr != null) ? esOrgAttr.booleanValue() : false;
+					
+					Boolean usuRegAttr = (Boolean) request.getAttribute("usuarioRegistrado");
+					boolean usuarioRegistrado = (usuRegAttr != null) ? usuRegAttr.booleanValue() : false;
+					
+					LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
+					XMLGregorianCalendar fechaFinX = edi.getFechaFin();
+					LocalDate fechaFin = (fechaFinX != null)
+					        ? fechaFinX.toGregorianCalendar().toZonedDateTime().toLocalDate()
+					        : null;
+					boolean edicionFinalizada = (fechaActual != null && fechaFin != null && fechaActual.isAfter(fechaFin));
+					%>
+					
+					<!-- solo “Ver Registros” (organizador) o “Ver detalle del Registro” (asistente ya registrado) -->
+					<% if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) { %>
+					  <!-- ver lista de registros de org -->
+					  <div class="mt-4">
+					    <a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
+					      <button class="button2 rounded-3 p-3">
+					        <div class="header-button">Ver Registros</div>
+					      </button>
+					    </a>
+					  </div>
+					
+					<% } else if (user != null) { %>
+					  <% if (usuarioRegistrado) { %>
+					    <!-- asistente registrado en esta edición ver detalle -->
+					    <div class="mt-4">
+					      <a href="ver-registro?edicion=<%= edi.getNombre() %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
+					        <button class="button2 rounded-3 p-3">
+					          <div class="header-button">Ver detalle del Registro</div>
+					        </button>
+					      </a>
+					    </div>
+					  <% } else { %>
+					    <!-- sin login no se muestra botón de registrarse -->
+					    <% if (edicionFinalizada) { %>
+					      <div class="alert alert-secondary text-center mb-0" role="alert">
+					        Esta edición ya finalizó.
+					      </div>
+					    <% } %>
+					  <% } %>
+					<% } %>
+					
 
 				<!-- Tipos de registros -->
 				<div class="mt-4">

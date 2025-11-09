@@ -15,7 +15,6 @@
   String nickUsuario   = (String) request.getAttribute("usuario");
   String nombreEdicion = reg.getNombreEdicion();
   String tipoReg       = reg.getTipoRegistro();
-  boolean asistencia   = reg.isAsistencia();
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -109,90 +108,14 @@
             </li>
           </ul>
 
-          <!-- botncito para confirmra la asistencia -->
-          <div class="mt-2">
-            <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
-              <div>
-                <span class="me-2 fw-bold">Asistencia:</span>
-                <span id="asistenciaEstado"
-                      class="badge badge-xl <%= asistencia ? "bg-success" : "bg-secondary" %>">
-                  <%= asistencia ? "Confirmada" : "Sin confirmar" %>
-                </span>
-              </div>
-
-              <div class="w-100 w-sm-auto">
-                <button class="btn <%= asistencia ? "btn-success disabled" : "btn-success" %> btn-lg btn-block"
-                        id="btnConfirmarAsistencia"
-                        <%= asistencia ? "disabled" : "" %>>
-                  <%= asistencia ? "Asistencia confirmada" : "Confirmar asistencia" %>
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
     </div>
   </div>
 
-  <!-- modal para confirmar la confirmación de asistencia -->
-  <div class="modal fade" id="confirmAsistenciaModal" tabindex="-1" aria-labelledby="confirmAsistenciaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="confirmAsistenciaLabel">Confirmar asistencia</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">¿Querés confirmar tu asistencia a este evento?</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary" id="btnModalConfirmar">Confirmar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-  (function(){
-    const container = document.querySelector('.info-evento');
-    const usuario = container?.dataset?.usuario || '';
-    const edicion = container?.dataset?.edicion || '';
-
-    const btn   = document.getElementById('btnConfirmarAsistencia');
-    const badge = document.getElementById('asistenciaEstado');
-    const modalEl = document.getElementById('confirmAsistenciaModal');
-    const modal   = new bootstrap.Modal(modalEl);
-    const btnOk   = document.getElementById('btnModalConfirmar');
-
-    if (btn && !btn.disabled) {
-      btn.addEventListener('click', () => modal.show());
-    }
-
-    btnOk.addEventListener('click', async () => {
-      try {
-        const body = new URLSearchParams({ usuario, edicion });
-        const resp = await fetch('<%= ctx %>/confirmar-asistencia', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-          body
-        });
-
-        const data = await resp.json();
-        if (!resp.ok || !data.ok) throw new Error(data.error || 'Error desconocido');
-
-        badge.textContent = 'Confirmada';
-        badge.className = 'badge badge-xl bg-success';
-        btn.textContent = 'Asistencia confirmada';
-        btn.classList.add('disabled');
-        btn.setAttribute('disabled', 'disabled');
-
-        modal.hide();
-      } catch (e) {
-        alert('No se pudo confirmar la asistencia: ' + (e.message || e));
-      }
-    });
-  })();
-  </script>
+  
 </body>
 </html>
