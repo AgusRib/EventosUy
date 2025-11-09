@@ -75,7 +75,7 @@
 								<a href="<%= detalleUrl %>" class="text-decoration-none d-block h-100 w-100">
 									<div class="user row g-0 align-items-center">
 										<div class="col-auto">
-											<img src="<%= ctx %>/<%= imgRel %>" alt="<%= nick %>"
+											<img src="<%= imgRel %>" alt="<%= nick %>"
 											class="img-fluid rounded-circle m-3"
 											style="width: 90px; height: 90px; object-fit: cover;">
 										</div>

@@ -201,7 +201,7 @@ body.with-collapsed {
 							<div class="d-flex align-items-center d-flex justify-content-between gap-4">
                                 <div class="d-flex align-items-center gap-3 flex-wrap col-4" id="fotoCarnet">
                                     <div class="contenedor-fotoPerfil mb-0">
-                                        <img class="foto-usuario avatar" src="<%= request.getContextPath() %>/<%= imagenUsuario != null ? imagenUsuario : "uploads/usuarios/default.jpg" %>"
+                                        <img class="foto-usuario avatar" src="<%= imagenUsuario %>"
                                             alt="<%= usuario.getNickname() %>" style="height: 127px; width:127px;">
                                     </div>
                                     <div class="contenedor-NickRolUser text-start">

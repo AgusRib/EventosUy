@@ -125,7 +125,7 @@ main.contUser { padding: 18px; }
 
           <div class="mb-3 text-center">
 			  <img id="avatarPreview"
-			       src="<%= ctx %>/<%= (request.getAttribute("imagenUsuario") != null ? request.getAttribute("imagenUsuario") : "uploads/usuarios/default.jpg") %>"
+			       src="<%=request.getAttribute("imagenUsuario")%>"
 			       alt="Avatar" class="avatar-preview mb-2">
 			  <input class="form-control" type="file" id="avatarInput" name="avatar" accept="image/*">
 		  </div>

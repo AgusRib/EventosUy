@@ -20,6 +20,7 @@ import logica.controllers.IControllerUsuario;
 import logica.models.Factory;
 import webservices.publicadorEvento;
 import webservices.publicadorUsuario;
+import webservices.publicadorImagenes;
 
 public class Main {
 
@@ -63,8 +64,10 @@ public class Main {
 	public Main() {
 		publicadorEvento pubEvento = new publicadorEvento();
 		publicadorUsuario pubUsuario = new publicadorUsuario();
+		publicadorImagenes pubImagenes = new publicadorImagenes();
 		pubEvento.publicar();
 		pubUsuario.publicar();
+		pubImagenes.publicar();
 		
 		
 		frmMain = new JFrame();
@@ -375,4 +378,3 @@ public class Main {
 		frmMain.getContentPane().setLayout(null);
 	}
 }
-

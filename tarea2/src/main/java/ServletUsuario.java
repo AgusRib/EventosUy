@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
@@ -74,15 +73,9 @@ public class ServletUsuario extends HttpServlet {
                     request.setAttribute("detalleUsuario", asis);
                 }
 
-                // Imagen de perfil
-                String dirUsuarios   = getServletContext().getRealPath("/uploads/usuarios/");
-                //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-                String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-                if (nombreArchivo != null) {
-                    request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
-                } else {
-                    request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-                }
+                // Imagen de perfil usando el nuevo sistema centralizado
+                String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+                request.setAttribute("imagenUsuario", imagenUsuario);
 
                 if ("1".equals(request.getParameter("ok"))) {
                     request.setAttribute("mensaje", "Modificaciones realizadas exitosamente.");
@@ -188,17 +181,9 @@ public class ServletUsuario extends HttpServlet {
                 request.setAttribute("ediciones", ediciones);
 
                 Map<String, String> edicionesMap = new HashMap<>();
-                String dirEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
-                if (ediciones != null) {
-                    for (String ed : ediciones) {
-                        //String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
-                        String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
-                        if (nombreArchivo != null) {
-                            edicionesMap.put(ed, "uploads/ediciones/" + nombreArchivo);
-                        } else {
-                            edicionesMap.put(ed, "assets/images/SinFoto.jpg");
-                        }
-                    }
+                for (String ed : ediciones) {
+                    String imagenEdicion = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), "ediciones");
+                    edicionesMap.put(ed, imagenEdicion);
                 }
                 request.setAttribute("edicionesMap", edicionesMap);
 
@@ -212,17 +197,9 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("detalleUsuario", asis);
         }
 
-        // set imagenUsuario attribute
-        try {
-            String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-            //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            if (nombreArchivo != null) {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
-            } else {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-            }
-        } catch (Exception ignore) {}
+        // Imagen de usuario usando el nuevo sistema centralizado
+        String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+        request.setAttribute("imagenUsuario", imagenUsuario);
 
         request.getRequestDispatcher("/WEB-INF/pages/detalleUsuario.jsp").forward(request, response);
     }
@@ -252,17 +229,9 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("usuario", asis);
         }
 
-       
-        try {
-            String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-            //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            if (nombreArchivo != null) {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
-            } else {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-            }
-        } catch (Exception ignore) {}
+        // Imagen de usuario usando el nuevo sistema centralizado
+        String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+        request.setAttribute("imagenUsuario", imagenUsuario);
 
         request.getRequestDispatcher("/WEB-INF/pages/perfil.jsp").forward(request, response);
     }
@@ -280,45 +249,35 @@ public class ServletUsuario extends HttpServlet {
         }
         
         try {
-            if (usrs == null || usrs.isEmpty())
-                throw new Exception("No hay usuarios registrados");
-            else {
-                Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
-                Map<String, String> imgsUsuarios = new java.util.HashMap<>();
-                String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+            Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
+            Map<String, String> imgsUsuarios = new java.util.HashMap<>();
 
-                for (String u : usrs) {
-                    
-                    if (q != null && !q.isBlank()) {
-                        if (!u.toLowerCase().contains(q.toLowerCase())) {
-                            continue;
-                        }
-                    }
-
-                    try {
-                        //DataUsuario usr = this.portUsuario.infoUsuario(u);
-                        DataUsuario usr = portUsuario.infoUsuario(u);
-                        usuarios.add(usr);
-
-                            //String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
-                            String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
-                            if (nombreArchivo != null) {
-                                imgsUsuarios.put(u, "uploads/usuarios/" + nombreArchivo);
-                            } else {
-                                imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
-                            }
-                    } catch (UsuarioNoEncontrado_Exception e) {
-                        e.printStackTrace();
-                    } catch (Exception ignore) {
-                        imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
+            for (String u : usrs) {
+                
+                if (q != null && !q.isBlank()) {
+                    if (!u.toLowerCase().contains(q.toLowerCase())) {
+                        continue;
                     }
                 }
 
-                request.setAttribute("usuarios", usuarios);
-                request.setAttribute("imgsUsuarios", imgsUsuarios);
-                request.setAttribute("q", q == null ? "" : q);
-                request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
+                try {
+                    DataUsuario usr = portUsuario.infoUsuario(u);
+                    usuarios.add(usr);
+
+                    // Imagen de usuario usando el nuevo sistema centralizado
+                    String imagenUsuario = ManejadorArchivos.buscarArchivo(u.toLowerCase(), "usuarios");
+                    imgsUsuarios.put(u, imagenUsuario);
+                    
+                } catch (UsuarioNoEncontrado_Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+            request.setAttribute("usuarios", usuarios);
+            request.setAttribute("imgsUsuarios", imgsUsuarios);
+            request.setAttribute("q", q == null ? "" : q);
+            request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
+            
         } catch (Exception e1) {
             e1.printStackTrace();
             request.setAttribute("usuarios", java.util.Collections.emptySet());
@@ -399,14 +358,11 @@ public class ServletUsuario extends HttpServlet {
                 if (avatar != null && avatar.getSize() > 0) {
                 	
                     ManejadorArchivos.guardarArchivo(avatar, nickParam, "usuarios", getServletContext());
-    				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+    				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), "usuarios");
 
     				System.out.println("PFP seteada en sesión: " + pfp);
-    				if (pfp != null) {
-    					request.getSession().setAttribute("pfp", pfp);
-    				} else {
-    					request.getSession().setAttribute("pfp", "default.png");
-    				}
+    				// Actualizar la sesión con la nueva imagen
+    				request.getSession().setAttribute("pfp", pfp);
                 }
             } catch (Exception ignore) {  }
 
@@ -441,14 +397,10 @@ public class ServletUsuario extends HttpServlet {
 
         Object uo = request.getAttribute("usuario");
         if (uo instanceof DataUsuario du) {
-            try {
-                String dirUsuarios   = getServletContext().getRealPath("/uploads/usuarios/");
-                String nombreArchivo = ManejadorArchivos.buscarArchivo(du.getNickname().toLowerCase(), dirUsuarios);
-                request.setAttribute("imagenUsuario",
-                        nombreArchivo != null ? "uploads/usuarios/" + nombreArchivo : "uploads/usuarios/default.jpg");
-            } catch (Exception ignore) {}
+            // Imagen de usuario usando el nuevo sistema centralizado
+            String imagenUsuario = ManejadorArchivos.buscarArchivo(du.getNickname().toLowerCase(), "usuarios");
+            request.setAttribute("imagenUsuario", imagenUsuario);
         }
         request.getRequestDispatcher("/WEB-INF/pages/modificarDatos.jsp").forward(request, response);
     }
 }
-

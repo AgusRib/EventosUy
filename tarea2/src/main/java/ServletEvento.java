@@ -150,12 +150,12 @@ public class ServletEvento extends HttpServlet {
                     eventoInfo.put("nombre", detalleEvento.getNombre());
                     eventoInfo.put("descripcion", detalleEvento.getDescripcion());
                     
-                    // Fetch imagen de evento (copiado de ServletEdicion)
-                    String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-                    if (eventoImg != null) {
-                        eventoInfo.put("imagenEvento", "uploads/eventos/" + eventoImg);
+                    // Buscar imagen de evento usando el nuevo sistema centralizado
+                    String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
+                    if (eventoImg != null && !eventoImg.equals("images/default.png")) {
+                        eventoInfo.put("imagenEvento", eventoImg);
                     } else {
-                        eventoInfo.put("imagenEvento", "uploads/eventos/default.jpg");
+                        eventoInfo.put("imagenEvento", "images/default.png");
                     }
                     
                     eventosInfo.add(eventoInfo);
@@ -184,18 +184,18 @@ public class ServletEvento extends HttpServlet {
         	DtDetalleEvento detalleEvento = null;
         	try {
         		detalleEvento = portEvento.verDetalleEvento(nombreEvento);
-        	} catch (EventoFinalizadoExcepcion_Exception e) {
+        	} catch (Exception e) {
 				request.setAttribute("error", "El evento ha finalizado y no se pueden ver sus detalles.");
 				request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
 				return;
 			}
             
-            // Fetch imagen de evento (copiado de ServletEdicion)
-            String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-            if (eventoImg != null) {
-                request.setAttribute("imagenEvento", "uploads/eventos/" + eventoImg);
+            // Fetch imagen de evento usando el nuevo sistema centralizado
+            String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
+            if (eventoImg != null && !eventoImg.equals("images/default.png")) {
+                request.setAttribute("imagenEvento", eventoImg);
             } else {
-                request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
+                request.setAttribute("imagenEvento", "images/default.png");
             }
             
             // Verificar el tipo de usuario para listar ediciones
@@ -253,12 +253,12 @@ public class ServletEvento extends HttpServlet {
                     edicionMinima.put("fechaInicio", fechaInicio);
                     edicionMinima.put("fechaFin", fechaFin);
                     
-                    // Fetch imagen de edicion (copiado de ServletEdicion)
-                    String edicionImg = ManejadorArchivos.buscarArchivo(detalleEdicion.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
-                    if (edicionImg != null) {
-                        edicionMinima.put("imagenEdicion", "uploads/ediciones/" + edicionImg);
+                    // Fetch imagen de edicion usando el nuevo sistema centralizado
+                    String edicionImg = ManejadorArchivos.buscarArchivo(detalleEdicion.getNombre().toLowerCase(), "ediciones");
+                    if (edicionImg != null && !edicionImg.equals("images/default.png")) {
+                        edicionMinima.put("imagenEdicion", edicionImg);
                     } else {
-                        edicionMinima.put("imagenEdicion", "uploads/ediciones/default.jpg");
+                        edicionMinima.put("imagenEdicion", "images/default.png");
                     }
                     
                     // Incluir estado solo si el usuario es el organizador específico de esta edición

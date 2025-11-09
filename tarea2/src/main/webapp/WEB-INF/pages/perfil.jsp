@@ -98,12 +98,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 		email = asis.getEmail();
 	}
 
-	String imagenUsuario = (String) request.getAttribute("imagenUsuario");
-	if (imagenUsuario == null || imagenUsuario.isBlank()) {
-		imagenUsuario = request.getContextPath() + "/assets/images/IMG-US04.jpeg";
-	} else if (!imagenUsuario.startsWith(request.getContextPath())) {
-		imagenUsuario = request.getContextPath() + "/" + imagenUsuario.replaceAll("^/+", "");
-	}
+	
 
 	String encodedNick = URLEncoder.encode(nickname == null ? "" : nickname, "UTF-8");
 	%>
@@ -119,7 +114,7 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
 							<div class="d-flex align-items-center justify-content-between gap-4">
 								<div class="d-flex flex-column align-items-center">
 									<div class="contenedor-fotoPerfil mb-2">
-										<img class="foto-usuario" src="<%=imagenUsuario%>" alt="fotoPerfil" style="height:127px;">
+										<img class="foto-usuario" src="<%=request.getAttribute("imagenUsuario")%>" alt="fotoPerfil" style="height:127px;">
 									</div>
 									<div class="contenedor-NickRolUser text-center">
 										<div class="nickname"><b><%= nickname %></b></div>
