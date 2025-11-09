@@ -109,7 +109,7 @@
             </li>
           </ul>
 
-          <!-- botncito para confirmra la asistencia -->
+          <!-- Estado de asistencia (solo mostrar estado, sin botón de descarga) -->
           <div class="mt-2">
             <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
               <div>
@@ -121,21 +121,14 @@
               </div>
 
               <div class="w-100 w-sm-auto">
-				  <% if (asistencia) { %>
-				    <a class="btn btn-outline-primary btn-lg btn-block"
-				       id="btnDescargarAsistencia"
-				       href="<%= ctx %>/descargar-asistencia?usuario=<%= nickUsuario %>&edicion=<%= nombreEdicion %>"
-				       target="_blank" rel="noopener">
-				      Descargar asistencia
-				    </a>
-				  <% } else { %>
-				    <button class="btn btn-success btn-lg btn-block"
-				            id="btnConfirmarAsistencia"
-				            type="button">
-				      Confirmar asistencia
-				    </button>
-				  <% } %>
-				</div>
+                <% if (!asistencia) { %>
+                  <button class="btn btn-success btn-lg btn-block"
+                          id="btnConfirmarAsistencia"
+                          type="button">
+                    Confirmar asistencia
+                  </button>
+                <% } %>
+              </div>
 
             </div>
           </div>
@@ -170,7 +163,6 @@
   const edicion = container?.dataset?.edicion || '';
 
   const btnConfirm = document.getElementById('btnConfirmarAsistencia');
-  const btnDownload = document.getElementById('btnDescargarAsistencia');
   const badge = document.getElementById('asistenciaEstado');
 
   const modalEl = document.getElementById('confirmAsistenciaModal');
@@ -180,7 +172,6 @@
   if (btnConfirm && modal) {
     btnConfirm.addEventListener('click', () => modal.show());
   }
-
 
   if (btnOk) {
     btnOk.addEventListener('click', async () => {
@@ -201,18 +192,10 @@
         }
         if (modal) modal.hide();
 
+        // Ocultar el botón de confirmar después de confirmar
         if (btnConfirm) {
-        	  const parent = btnConfirm.parentElement;
-        	  const a = document.createElement('a');
-        	  a.id = 'btnDescargarAsistencia';
-        	  a.className = 'btn btn-outline-primary btn-lg btn-block';
-        	  a.textContent = 'Descargar asistencia';
-        	  a.href = '<%= ctx %>/descargar-asistencia?usuario=' + encodeURIComponent(usuario) +
-        	           '&edicion=' + encodeURIComponent(edicion);
-        	  a.target = '_blank';
-        	  a.rel = 'noopener';
-        	  parent.replaceChild(a, btnConfirm);
-        	}
+          btnConfirm.style.display = 'none';
+        }
 
       } catch (e) {
         alert('No se pudo confirmar la asistencia: ' + (e.message || e));
