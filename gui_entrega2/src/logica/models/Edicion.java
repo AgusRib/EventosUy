@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +42,7 @@ public class Edicion {
 	private String ciudad;
 	@Column(nullable = false)
 	private String pais;
-	@OneToMany 
+	@OneToMany(cascade = CascadeType.PERSIST)
 	private final Set<Registro> registros;
 	@Transient
     private final Set<TipoRegistro> tiposRegistro;

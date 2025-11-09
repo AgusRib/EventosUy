@@ -2,6 +2,7 @@ package logica.models;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -14,7 +15,7 @@ public class Registro {
 	
 	@ManyToOne
 	private Edicion edicion;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
 	private Asistente asistente;
 	private float costo;
 	@Transient

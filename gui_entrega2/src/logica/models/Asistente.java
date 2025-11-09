@@ -15,7 +15,7 @@ public class Asistente extends Usuario {
 	@Column(name="APELLIDO", nullable=false) private String apellido;
 	@Column(name="FECHA_NAC", nullable=false) private LocalDate fechaNacimiento;
 	
-	@ManyToOne @JoinColumn(name = "id_institucion") private Institucion institucion = null;
+	@ManyToOne(cascade = CascadeType.PERSIST) @JoinColumn(name = "id_institucion") private Institucion institucion = null;
 	
 	@OneToMany(mappedBy = "asistente") private Set<Registro> registros = new HashSet<Registro>();
 	

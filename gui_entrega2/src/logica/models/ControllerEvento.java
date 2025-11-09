@@ -15,6 +15,9 @@ import excepciones.FechaInicioPREALTA;
 import excepciones.FechaRegPREALTA;
 import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import logica.controllers.IControllerEvento;
 import logica.data_types.DTAsistente;
 import logica.data_types.DTDetalleEdicion;
@@ -407,4 +410,28 @@ public class ControllerEvento implements IControllerEvento{
 		eve.setFinalizado(true);
 		return;
 	}
+
+	@Override
+	public void archivarEdicion(String nombreEdi) {
+	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+
+	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
+	    EntityManager em = emf.createEntityManager();
+
+	    try {
+	        em.getTransaction().begin();
+	        em.merge(edi);
+	        em.getTransaction().commit();
+	    } catch (Exception e) {
+	        if (em.getTransaction().isActive()) {
+	            em.getTransaction().rollback();
+	        }
+	        e.printStackTrace();
+	    } finally {
+	        em.close();
+	        emf.close();
+	    }
+	}
+
 }
