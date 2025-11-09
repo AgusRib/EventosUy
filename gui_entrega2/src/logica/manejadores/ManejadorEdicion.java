@@ -1,8 +1,12 @@
 package logica.manejadores;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import logica.enumerators.EstadoEdicion;
 import logica.models.Edicion;
 
@@ -11,11 +15,12 @@ public class ManejadorEdicion {
 	private Map<String, Edicion> colEdicionesIngresadas;
 	private Map<String, Edicion> colEdicionesConfirmadas;
 	private Map<String, Edicion> colEdicionesRechazadas;
-
+	private Map<String, Edicion> colEdicionesArchivadas;
 	private ManejadorEdicion() {
 		colEdicionesIngresadas = new HashMap<String, Edicion>();
 		colEdicionesConfirmadas = new HashMap<String, Edicion>();
 		colEdicionesRechazadas = new HashMap<String, Edicion>();
+		colEdicionesArchivadas = new HashMap<String, Edicion>();
 	}
 	
 	public static ManejadorEdicion getInstance() {
@@ -29,7 +34,8 @@ public class ManejadorEdicion {
 	public boolean existeEdicion(String nombreEdicion) {
 		return colEdicionesIngresadas.containsKey(nombreEdicion)
 			|| colEdicionesConfirmadas.containsKey(nombreEdicion)
-			|| colEdicionesRechazadas.containsKey(nombreEdicion);
+			|| colEdicionesRechazadas.containsKey(nombreEdicion)
+			|| colEdicionesArchivadas.containsKey(nombreEdicion);
 	}
 
 	// Obtener todas las ediciones Pendientes
@@ -46,6 +52,11 @@ public class ManejadorEdicion {
 	public Map<String, Edicion> obtenerEdicionesRechazadas() {
 		return colEdicionesRechazadas;
 	}
+	
+	// Obtener todas las ediciones archivadas
+	public Map<String, Edicion> obtenerEdicionesArchivadas() {
+		return colEdicionesArchivadas;
+	}
 
 	// Buscar una edición por nombre en todas las colecciones
 	public Edicion encontrarEdicion(String nombreEdi) {
@@ -55,6 +66,8 @@ public class ManejadorEdicion {
 			return colEdicionesConfirmadas.get(nombreEdi);
 		} else if (colEdicionesRechazadas.containsKey(nombreEdi)) {
 			return colEdicionesRechazadas.get(nombreEdi);
+		} else if (colEdicionesArchivadas.containsKey(nombreEdi)) {
+			return colEdicionesArchivadas.get(nombreEdi);
 		}
 		return null;
 	}
@@ -76,13 +89,24 @@ public class ManejadorEdicion {
 		
 	}
 	
-	public void removerEdicion(Edicion edi) {
-		if (colEdicionesIngresadas.containsKey(edi.getNombre())) {
-			colEdicionesIngresadas.remove(edi.getNombre());
-		} else if (colEdicionesConfirmadas.containsKey(edi.getNombre())) {
-			colEdicionesConfirmadas.remove(edi.getNombre());
-		} else if (colEdicionesRechazadas.containsKey(edi.getNombre())) {
-			colEdicionesRechazadas.remove(edi.getNombre());
-		}
+	public void archivarEdicion(Edicion edi) {
+		colEdicionesConfirmadas.remove(edi.getNombre());
+		edi.setEstado(EstadoEdicion.Archivada);
+		colEdicionesArchivadas.put(edi.getNombre(), edi);
 	}
+	
+    public void inicializarEdicionesArchivadas() {
+    	EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
+        EntityManager em = emf.createEntityManager();
+        List<Edicion> lista = em.createQuery("SELECT e FROM Edicion e", Edicion.class).getResultList();
+        colEdicionesArchivadas.clear();
+        for (Edicion edicion : lista) {
+			colEdicionesArchivadas.put(edicion.getNombre(), edicion);
+		}
+        em.close();
+    }
+
+    public Edicion getEdicionArchivada(String nombre) {
+        return colEdicionesArchivadas.get(nombre);
+    }
 }

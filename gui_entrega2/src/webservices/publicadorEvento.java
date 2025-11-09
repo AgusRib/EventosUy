@@ -231,4 +231,8 @@ public class publicadorEvento {
 		ICE.finalizarEvento(nombreEvento);
 		return;
 	}
+    
+    public void archivarEdicion(String nombreEdicion) throws Exception {
+    	ICE.archivarEdicion(nombreEdicion);
+    }
 }

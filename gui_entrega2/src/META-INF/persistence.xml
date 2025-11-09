@@ -13,7 +13,7 @@
 		
 		<properties>
 			<property name="jakarta.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-			<property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:mem:EventosDB"/>
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:EventosDB;shutdown=true"/>
 			<property name="jakarta.persistence.jdbc.user" value="SA"/>
 			<property name="jakarta.persistence.jdbc.password" value=""/>
 			<property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>

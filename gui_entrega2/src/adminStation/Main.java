@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import casosPrueba.CargaDatos;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
+import logica.controllers.IControllerDB;
 import logica.models.Factory;
 import webservices.publicadorEvento;
 import webservices.publicadorUsuario;
@@ -45,6 +46,7 @@ public class Main {
 	private ConfirmarRechazarEdicion frmConfirmarRechazarEdicion;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
+	private IControllerDB ICDB;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -72,6 +74,8 @@ public class Main {
 
 		ICU = Factory.getInstance().getControllerUsuario();
 		ICE = Factory.getInstance().getControllerEvento();
+		ICDB = Factory.getInstance().getControllerDB();
+		ICDB.inicializarDB();
 		
 		ICE.setFechaSistema(LocalDate.now());
 		frmMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

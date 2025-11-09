@@ -214,6 +214,44 @@
 							</div>
 										<% break;
 									}
+									case ARCHIVADA: {
+										%>
+										<div class="col-12">
+								<a href="detalleEdicion?nombre=<%= edicion.getNombre() %>"
+									class="text-decoration-none text-reset">
+									<div class="carta p-4 bg-secondary-emphasis bg-opacity-10 bg-gradient border-secondary-emphasis">
+										<div class="text-heading">
+											<div class="search-text-heading"><%= edicion.getNombre() %></div>
+										</div>
+										<div
+											class="d-flex flex-row justify-content-between align-items-start w-100">
+											<div class="avatar-block">
+												<div class="avatar">
+													<img class="shape-icon" alt=""
+														src="<%= request.getAttribute(edicion.getNombre()) %>">
+												</div>
+												<div class="info gap-1">
+													<div class="d-flex align-items-center">
+														<i class="bi bi-geo-alt-fill mx-2"></i>
+														<div class="description"><%= edicion.getCiudad() %>, <%= edicion.getPais() %></div>
+													</div>
+													<div class="d-flex align-items-center">
+														<i class="bi bi-calendar-fill mx-2"></i>
+														<div class="description"><%= edicion.getFechaInicio() %> / <%= edicion.getFechaFin() %></div>
+													</div>
+												</div>
+											</div>
+											<div class="button1 rounded-5 p-3 bg-secondary-emphasis bg-gradient bg-opacity-75">
+											<div class="header-button">
+												<i class="bi bi-archive-fill me-2"></i>Archivada
+											</div>
+										</div>
+										</div>
+	
+									</div>
+							</div>
+										<% break;
+									}
 								}
 							}} %>
 

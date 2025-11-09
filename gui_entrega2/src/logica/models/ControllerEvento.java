@@ -425,13 +425,15 @@ public class ControllerEvento implements IControllerEvento{
 	        throw new Exception("Solo se pueden archivar ediciones finalizadas");
 	    }
 	    
-	    mEdi.removerEdicion(edi);
+	    System.out.println("Archivar Edicion: " + nombreEdi);
+	    
+	    mEdi.archivarEdicion(edi);
 	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
 	    EntityManager em = emf.createEntityManager();
 
 	    try {
 	        em.getTransaction().begin();
-	        em.persist(edi); //se guarda la edi en la db y todas sus cosas asociadas que le metimos el CASCADE
+	        em.merge(edi); //se guarda la edi en la db y todas sus cosas asociadas que le metimos el CASCADE
 	        em.getTransaction().commit();
 	    } catch (Exception e) {
 	        if (em.getTransaction().isActive()) {

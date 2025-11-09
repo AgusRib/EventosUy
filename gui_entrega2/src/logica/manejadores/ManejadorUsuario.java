@@ -2,10 +2,15 @@ package logica.manejadores;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import logica.models.Asistente;
+import logica.models.Edicion;
 import logica.models.Organizador;
 import logica.models.Usuario;
 
@@ -25,6 +30,7 @@ public class ManejadorUsuario {
 	private ManejadorUsuario() {
 		usuarios = new HashMap<String, Usuario>();
 		emails = new HashSet<String>();
+		inicializarUsuarios();
 	}
 	
 	public void agregarUsuario(Usuario user) {
@@ -89,6 +95,25 @@ public class ManejadorUsuario {
 			}
 		}
 		return null; // Retorna null si no se encuentra ningún usuario con el email dado
+		}
 
-	
-}}
+   public void inicializarUsuarios() {
+	   // Inicializar usuarios desde la db
+	   	EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
+	    EntityManager em = emf.createEntityManager();
+	    List<Asistente> lista = em.createQuery("SELECT u FROM Asistente u", Asistente.class).getResultList();
+	    usuarios = new HashMap<String, Usuario>();
+	    for (Asistente user : lista) {
+			usuarios.put(user.getNombre(), user);
+			emails.add(user.getEmail());
+		}
+	    
+	    List<Organizador> lista2 = em.createQuery("SELECT o FROM Organizador o", Organizador.class).getResultList();
+	    System.out.println("Organizadores cargados: " + lista2.size());
+	    for (Organizador user : lista2) {
+	    	usuarios.put(user.getNombre(), user);
+	    	emails.add(user.getEmail());
+	    }
+	    em.close();
+   }
+}

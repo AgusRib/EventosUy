@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 @MultipartConfig
-@WebServlet({ "/detalleEdicion", "/altaEdicion", "/altaRegistro", "/listarEdiciones", "/detalleEdicion/altaEdicion" })
+@WebServlet({ "/detalleEdicion", "/altaEdicion", "/altaRegistro", "/listarEdiciones", "/detalleEdicion/altaEdicion", "/archivarEdicion" })
 public class ServletEdicion extends HttpServlet {
     private static final long serialVersionUID = 1L;
        
@@ -522,6 +522,44 @@ public class ServletEdicion extends HttpServlet {
             }
             return;
         }
+        case "/archivarEdicion": {
+        	System.out.println("ServletArchivarEdicion: POST recibido");
+			HttpSession session = request.getSession();
+			DataUsuario user = (DataUsuario) session.getAttribute("usuario");
+
+			String nombreEdicion = request.getParameter("nombreEdicion");
+			System.out.println("Intentando archivar edición: " + nombreEdicion + " por usuario: " + user.getNickname());
+			
+			try {
+				if (user.getTipo() != TipoUsuario.ORGANIZADOR && !user.getNickname().equals(portEvento.mostrarDetallesEdicion(nombreEdicion).getOrganizador())) {
+					throw new Exception("Solo el organizador de la edición puede archivarla.");
+				}
+
+				portEvento.archivarEdicion(nombreEdicion);
+				System.out.println("Edición " + nombreEdicion + " archivada por " + user.getNickname());
+
+				request.setAttribute("mensaje", "Edición archivada exitosamente.");
+				request.setAttribute("error", null);
+
+				// Refrescar
+				response.sendRedirect(request.getContextPath() + "/detalleEdicion?nombre=" + nombreEdicion);
+			} catch (Exception e) {
+				request.setAttribute("error", e.getMessage());
+				request.setAttribute("mensaje", null);
+
+				// Refrescar detalles de la edición
+				try {
+					DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(nombreEdicion);
+					request.setAttribute("edicion", ed);
+				} catch (Exception ex) {
+					request.setAttribute("edicion", null);
+				}
+
+				request.getRequestDispatcher("/WEB-INF/pages/detalleEdicion.jsp").forward(request, response);
+			}
+			return;
+		}
+        //
         default:
             break;}
     }

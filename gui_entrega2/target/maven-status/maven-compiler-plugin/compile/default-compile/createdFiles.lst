@@ -20,6 +20,7 @@ casosPrueba\TestControllerUsuario.class
 excepciones\UsuarioNoEncontrado.class
 logica\data_types\DataUsuario.class
 adminStation\Main$15.class
+logica\models\ControllerDB.class
 logica\models\Asistente.class
 excepciones\NombreEdicionExistenteExcepcion.class
 logica\data_types\DTRegistro.class
@@ -33,6 +34,7 @@ adminStation\AltaTipoRegistro.class
 logica\manejadores\ManejadorEvento.class
 casosPrueba\TestControllerUsuario2.class
 logica\data_types\DTTipoRegistro.class
+logica\controllers\IControllerDB.class
 webservices\publicadorUsuario.class
 adminStation\FechaSistema$2.class
 adminStation\AltaUsuario.class

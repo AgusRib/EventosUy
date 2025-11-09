@@ -1,5 +1,6 @@
 package logica.models;
 
+import logica.controllers.IControllerDB;
 import logica.controllers.IControllerEvento;
 import logica.controllers.IControllerUsuario;
 
@@ -22,6 +23,10 @@ public class Factory {
 
 	public IControllerEvento getControllerEvento() {
 		return new ControllerEvento();
+	}
+
+	public IControllerDB getControllerDB() {
+		return new ControllerDB();
 	}
 
 }

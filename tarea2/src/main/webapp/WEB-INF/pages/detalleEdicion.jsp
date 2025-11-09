@@ -48,7 +48,25 @@
 			</div>
 			<!-- Información principal de la edición -->
 			<div class="col-md-9 col-lg-9 col-xl-9 mt-3 mt-md-0 info-evento px-5">
-				<h2 class="fw-bold"> <%= edi.getNombre() %></h2>
+				<div class="row pb-2">
+					<h2 class="fw-bold col-md-10"> <%= edi.getNombre() %></h2>
+									<%
+				boolean esOrg = false;
+				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
+					esOrg = (boolean) request.getAttribute("esOrganizador");
+					if (edi.getEstado() == EstadoEdicion.CONFIRMADA) {
+				%>
+					<form method="post" class="col-12 col-md-2" action="archivarEdicion" style="text-decoration: none;">
+					<input type="hidden" name="nombreEdicion" value="<%= edi.getNombre() %>">
+						<button type="submit" class="button1 rounded-3 p-3 col-12 bg-secondary-emphasis white">
+							Archivar
+						</button>
+					</form>
+				 <% } else {
+					 
+				 }} %>
+				</div>
+				
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Organizador:</strong> <a
 						href="detalleUsuario?usuarios=<%= edi.getOrganizador() %>"
@@ -101,8 +119,7 @@
 				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
 					esOrganizador = (boolean) request.getAttribute("esOrganizador");
 					if ((boolean) request.getAttribute("esOrganizador") == true 
-						&& edi.getEstado() != EstadoEdicion.INGRESADA 
-						&& edi.getEstado() != EstadoEdicion.RECHAZADA) {
+						&& edi.getEstado() == EstadoEdicion.CONFIRMADA) {
 				%>
 				<div class="mt-4">
 					<a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">

@@ -43,6 +43,7 @@ C:\Users\ignac\git\tpgr57\gui_entrega2\src\excepciones\NombreInstiExistente.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\excepciones\NombreUsuarioExistente.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\excepciones\TipoRegistroExistenteExcepcion.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\excepciones\UsuarioNoEncontrado.java
+C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\controllers\IControllerDB.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\controllers\IControllerEvento.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\controllers\IControllerUsuario.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\data_types\DataUsuario.java
@@ -64,6 +65,7 @@ C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\manejadores\ManejadorInstituci
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\manejadores\ManejadorUsuario.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\models\Asistente.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\models\Categoria.java
+C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\models\ControllerDB.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\models\ControllerEvento.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\models\ControllerUsuario.java
 C:\Users\ignac\git\tpgr57\gui_entrega2\src\logica\models\Edicion.java

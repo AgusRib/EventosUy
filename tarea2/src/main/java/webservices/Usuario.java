@@ -29,7 +29,7 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "usuario", propOrder = {
     "nombre"
 })
-public class Usuario {
+public abstract class Usuario {
 
     protected String nombre;
 

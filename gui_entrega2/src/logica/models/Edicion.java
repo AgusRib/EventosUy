@@ -42,7 +42,7 @@ public class Edicion {
 	private String ciudad;
 	@Column(nullable = false)
 	private String pais;
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "edicion", cascade = CascadeType.PERSIST)
 	private  Set<Registro> registros;
 	@Transient
     private  Set<TipoRegistro> tiposRegistro;
