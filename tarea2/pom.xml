@@ -61,6 +61,20 @@
     <version>3.0.0</version>
     <scope>provided</scope>
 </dependency>
+   <!-- Módulo para crear PDFs -->
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>kernel</artifactId>
+        <version>7.2.6</version>
+    </dependency>
+
+    <!-- Módulo de layout (Paragraph, Document, etc.) -->
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>layout</artifactId>
+        <version>7.2.6</version>
+    </dependency>
+
 
 	 
 	</dependencies>
