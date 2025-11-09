@@ -45,8 +45,16 @@ public class ManejadorUsuario {
 	}
 	
 	public Asistente obtenerAsistente(String nickname) {
-		return (Asistente) usuarios.get(nickname);
+	    Usuario u = usuarios.get(nickname);
+	    if (u == null) {
+	        throw new IllegalArgumentException("No existe usuario: " + nickname);
+	    }
+	    if (!(u instanceof Asistente)) {
+	        throw new IllegalStateException("El usuario " + nickname + " no es Asistente.");
+	    }
+	    return (Asistente) u;
 	}
+
 
 	public Organizador obtenerOrganizador(String nickname) {
 		return (Organizador) usuarios.get(nickname);

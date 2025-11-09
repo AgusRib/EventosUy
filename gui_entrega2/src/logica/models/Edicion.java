@@ -219,4 +219,15 @@ public class Edicion {
 	  		this.organizador = org;
 		
 	}
+	
+	public Registro getRegistroDe(String nickAsistente) {
+	    if (nickAsistente == null || nickAsistente.isBlank()) return null;
+	    for (Registro r : this.registros) {
+	        Asistente a = r.getAsistente();
+	        if (a != null && nickAsistente.equals(a.getNickname())) return r;
+	    }
+	    return null;
+	}
+	
 }
+

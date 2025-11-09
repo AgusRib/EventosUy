@@ -51,13 +51,17 @@ public class Asistente extends Usuario {
 	}
 	
 	public Registro getRegistro(Edicion edicion) {
-		for (Registro reg : registros) {
-			if (reg.getEdicion().equals(edicion)) {
-				return reg;
-			}
-		}
-		return null;
+	    if (edicion == null) return null;
+	    for (Registro reg : registros) {
+	        Edicion e = reg.getEdicion();
+	        if (e == edicion) return reg;
+	        if (e != null && e.getNombre() != null && e.getNombre().equals(edicion.getNombre())) {
+	            return reg;
+	        }
+	    }
+	    return null;
 	}
+
 
 	public Asistente(String nickname, String nombre, String email, String password, String apellido, LocalDate fechaNacimiento) {
 		super(nickname, nombre, email, password);
