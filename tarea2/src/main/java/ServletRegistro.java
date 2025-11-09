@@ -215,34 +215,5 @@ public class ServletRegistro extends HttpServlet {
             }
         }
 
-        if ("/confirmar-asistencia".equals(path)) {
-			PublicadorEventoService serviceEvento = new PublicadorEventoService();
-            PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
-			String edicion = request.getParameter("edicion");
-            String usuario = request.getParameter("usuario");
-
-            if (usuario == null || usuario.isBlank() || edicion == null || edicion.isBlank()) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"ok\":false,\"error\":\"Faltan parámetros 'edicion' y/o 'usuario'\"}");
-                return;
-            }
-
-            try {
-            	portEvento.confirmarAsistencia(edicion, usuario);
-
-                DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
-
-                boolean asistencia = (reg != null) && reg.isAsistencia();
-
-
-                response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                String msg = e.getMessage() == null ? "Error al confirmar asistencia" : e.getMessage().replace("\"", "\\\"");
-                response.getWriter().write("{\"ok\":false,\"error\":\"" + msg + "\"}");
-            }
-            return;
-
-	    }
     }
 }
