@@ -48,7 +48,7 @@ public interface IControllerUsuario {
 	//public void editarDatos(String nickname, String nombre, 
 			//String descripcion, String URL, String apellido, LocalDate fechaNac);
 
-	public Usuario obtenerUsuario(String usuario);
+	
 
 	public void editarAsistente(String nick, String nombre, String apellido, LocalDate fechaNac);
 	public void editarOrganizador(String nick, String nombre,  String descripcion, String web);
@@ -64,6 +64,8 @@ public interface IControllerUsuario {
 	public DataUsuario iniciarSesionEmail(String email, String password);
 
 	public String obtenerInstitucionAsistente(String nickname);
+	public boolean existeNickname(String nickname);
+	public boolean existeEmail(String email);
 	
 
 }

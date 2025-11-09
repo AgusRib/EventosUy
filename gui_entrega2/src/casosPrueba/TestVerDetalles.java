@@ -58,7 +58,7 @@ public class TestVerDetalles {
 		ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ed1", LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), LocalDate.of(2027, 1,1), "Montevideo", "Uruguay");
 		DTEdicion dtEdicion = new DTEdicion("Edicion1", "ed1",LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), "Montevideo", "Uruguay");
 		DTDetalleEdicion detalleEdicion = ICE.mostrarDetallesEdicion("Edicion1");
-		Organizador org = (Organizador) ICU.obtenerUsuario("Vegetta");
+
 		
 		// Checkeo si coinciden los datos de la edicion
 		assertEquals(detalleEdicion.getNombre(), dtEdicion.getNombre());
@@ -67,8 +67,8 @@ public class TestVerDetalles {
 		assertEquals(detalleEdicion.getFechaFin(), dtEdicion.getFechaFin());
 		assertEquals(detalleEdicion.getCiudad(), dtEdicion.getCiudad());
 		assertEquals(detalleEdicion.getPais(), dtEdicion.getPais());
-		assertEquals(true, org.organizaEdicion(detalleEdicion.getNombre()));
-		
+		assertEquals(detalleEdicion.getOrganizador()
+				, "Vegetta");
 		// Checkeo que funcione DTDetalleEdicion creandola a mano
 		HashSet<String> categorias = new HashSet<String>();
 		categorias.add("Categoria1");

@@ -103,11 +103,7 @@ public class ControllerUsuario implements IControllerUsuario {
 		
 	}
 
-	@Override
-	public Usuario obtenerUsuario(String usuario) {
-		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
-		return mUser.obtenerUsuario(usuario);
-	}
+	
 	
 	@Override
 	public Set<String> listarRegistrosAEventos(String nickname) {
@@ -220,7 +216,23 @@ public class ControllerUsuario implements IControllerUsuario {
 
 
 
-}}
+}
+  @Override
+  public boolean existeNickname(String nickname) {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  return mUser.existeNickname(nickname);
+  }
+  
+  @Override
+  public boolean existeEmail(String email) {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  return mUser.existeEmail(email);
+  }
+
+
+
+
+}
 	
 
 

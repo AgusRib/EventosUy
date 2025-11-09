@@ -127,10 +127,7 @@ public class publicadorUsuario {
 		 }
 		
 		
-		 @WebMethod
-		public Usuario obtenerUsuario(String usuario) {
-			 return ICU.obtenerUsuario(usuario);
-		 }
+	
 		 @WebMethod
 		public void editarAsistente(String nick, String nombre, String apellido, String fechaNac) {
 			 LocalDate fechaNacLD = LocalDate.parse(fechaNac);
@@ -172,6 +169,15 @@ public class publicadorUsuario {
 		public String obtenerInstitucionAsistente(String nickname) {
 			 return ICU.obtenerInstitucionAsistente(nickname);}
 	    
+		 @WebMethod
+		 public boolean existeNickname(String nickname) {
+			 return ICU.existeNickname(nickname);
+		 }
+		 
+		 @WebMethod
+		 public boolean existeEmail(String email) {
+			 return ICU.existeEmail(email);
+		 }
 	    
 	    
 	    

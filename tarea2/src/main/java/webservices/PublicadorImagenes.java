@@ -24,20 +24,17 @@ public interface PublicadorImagenes {
      * 
      * @param arg0
      * @param arg1
-     * @param arg2
      * @return
      *     returns boolean
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorImagenes/guardarImagenRequest", output = "http://webservices/publicadorImagenes/guardarImagenResponse")
-    public boolean guardarImagen(
+    @Action(input = "http://webservices/publicadorImagenes/eliminarImagenRequest", output = "http://webservices/publicadorImagenes/eliminarImagenResponse")
+    public boolean eliminarImagen(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2);
+        String arg1);
 
     /**
      * 
@@ -75,16 +72,19 @@ public interface PublicadorImagenes {
      * 
      * @param arg0
      * @param arg1
+     * @param arg2
      * @return
      *     returns boolean
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorImagenes/eliminarImagenRequest", output = "http://webservices/publicadorImagenes/eliminarImagenResponse")
-    public boolean eliminarImagen(
+    @Action(input = "http://webservices/publicadorImagenes/guardarImagenRequest", output = "http://webservices/publicadorImagenes/guardarImagenResponse")
+    public boolean guardarImagen(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2);
 
 }

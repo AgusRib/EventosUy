@@ -80,7 +80,7 @@ public class TestControllerUsuario {
 		assertEquals(ICU.infoUsuario("nachito").getNombre(), "Ignacio");
 		assertEquals(ICU.infoUsuario("nachito").getEmail(), "nachito@gmail.com");
 		assertEquals(ICU.infoUsuario("nachito").getTipo(), TipoUsuario.ORGANIZADOR);
-		assertEquals(((Organizador)ICU.obtenerUsuario("nachito")).getDescripcion(), "descripcion generica 123");
+		assertEquals(ICU.infoOrganizador("nachito").getDescripcion(), "descripcion generica 123");
 	
 		
 		try {

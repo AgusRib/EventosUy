@@ -307,7 +307,7 @@ public class ConsultaRegistro extends JInternalFrame {
 	}
 	
 	//TODO: Implementar esto:
-	public void invocacionDesdeConsultaUsuario(Usuario user, String edicion) throws UsuarioNoEncontrado {
+	public void invocacionDesdeConsultaUsuario(DataUsuario user, String edicion) throws UsuarioNoEncontrado {
 		refrescar();
 		listUsuarios.setSelectedValue(user.getNickname(), true);
 		listRegistros.setListData(controllerUsr.listarRegistrosAEventos(user.getNickname()).toArray(new String[0]));
