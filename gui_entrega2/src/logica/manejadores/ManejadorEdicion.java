@@ -75,4 +75,14 @@ public class ManejadorEdicion {
 		}
 		
 	}
+	
+	public void removerEdicion(Edicion edi) {
+		if (colEdicionesIngresadas.containsKey(edi.getNombre())) {
+			colEdicionesIngresadas.remove(edi.getNombre());
+		} else if (colEdicionesConfirmadas.containsKey(edi.getNombre())) {
+			colEdicionesConfirmadas.remove(edi.getNombre());
+		} else if (colEdicionesRechazadas.containsKey(edi.getNombre())) {
+			colEdicionesRechazadas.remove(edi.getNombre());
+		}
+	}
 }

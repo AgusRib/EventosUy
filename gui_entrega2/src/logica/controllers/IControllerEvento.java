@@ -53,7 +53,7 @@ public interface IControllerEvento {
 	Set<String> listarEdicionesPendientes(String nombreEvento);
 	public void finalizarEvento(String nombreEvento);
     void confirmarAsistencia(String nombreEdi, String nickAsistente);
-    void archivarEdicion(String nombreEdi);
+    void archivarEdicion(String nombreEdi) throws Exception;
 	
 	
 }

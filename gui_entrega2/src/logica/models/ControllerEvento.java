@@ -412,10 +412,20 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void archivarEdicion(String nombreEdi) {
+	public void archivarEdicion(String nombreEdi) throws Exception {
 	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
-
+	    
+	    // Chequeos
+	    if (edi == null) {
+	        throw new Exception("La edicion no existe");
+	    } else if (edi.getEstado() != EstadoEdicion.Confirmada) {
+	        throw new Exception("Solo se pueden archivar ediciones confirmadas");
+	    } else if (edi.getFechaFin().isAfter(fechaSistema)) {
+	        throw new Exception("Solo se pueden archivar ediciones finalizadas");
+	    }
+	    
+	    mEdi.removerEdicion(edi);
 	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
 	    EntityManager em = emf.createEntityManager();
 

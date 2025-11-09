@@ -184,7 +184,7 @@ public class ServletEvento extends HttpServlet {
         	DtDetalleEvento detalleEvento = null;
         	try {
         		detalleEvento = portEvento.verDetalleEvento(nombreEvento);
-        	} catch (EventoFinalizadoExcepcion_Exception e) {
+        	} catch (Exception e) {
 				request.setAttribute("error", "El evento ha finalizado y no se pueden ver sus detalles.");
 				request.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(request, response);
 				return;
