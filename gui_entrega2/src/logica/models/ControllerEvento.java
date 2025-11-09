@@ -421,7 +421,7 @@ public class ControllerEvento implements IControllerEvento{
 
 	    try {
 	        em.getTransaction().begin();
-	        em.merge(edi);
+	        em.persist(edi); //se guarda la edi en la db y todas sus cosas asociadas que le metimos el CASCADE
 	        em.getTransaction().commit();
 	    } catch (Exception e) {
 	        if (em.getTransaction().isActive()) {

@@ -2,7 +2,7 @@ package logica.data_types;
 
 import java.time.LocalDate;
 
-import logica.models.TipoRegistro;
+import jakarta.persistence.*;
 
 public class DTRegistro {
 	private LocalDate fechaRegistro;

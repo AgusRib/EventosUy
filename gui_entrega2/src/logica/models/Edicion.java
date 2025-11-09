@@ -43,16 +43,16 @@ public class Edicion {
 	@Column(nullable = false)
 	private String pais;
 	@OneToMany(cascade = CascadeType.PERSIST)
-	private final Set<Registro> registros;
+	private  Set<Registro> registros;
 	@Transient
-    private final Set<TipoRegistro> tiposRegistro;
+    private  Set<TipoRegistro> tiposRegistro;
 	@Transient // Se agrega un nuevo atributo nombreEvento
     private Evento evento;
 	@Column(nullable = false)
 	private String nombreEvento;
     @Transient
-	private final Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
-	@OneToOne
+	private  Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Organizador organizador;
 	@Transient
 	private EstadoEdicion estado;
@@ -76,6 +76,7 @@ public class Edicion {
 
 	}
 	
+	public Edicion() {}
 	
 	// Getters y setters
 	public String getNombre() {

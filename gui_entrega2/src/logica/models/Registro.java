@@ -2,32 +2,46 @@ package logica.models;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import logica.controllers.IControllerEvento;
 
 @Entity
 public class Registro {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	
 	@ManyToOne
 	private Edicion edicion;
-	@OneToMany(cascade = CascadeType.PERSIST)
+	
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Asistente asistente;
+	
 	private float costo;
+	
 	@Transient
 	private TipoRegistro tipoReg;
+	
 	@Column(nullable = false)
 	private String nombreTipoRegistro;
+	
 	@Column(nullable = false)
 	private LocalDate fechaRegistro;
+	
 	@Transient
 	private String constanciaUrl;
+	
 	@Transient
 	private boolean asistencia;
+	
+	public int getId() {
+		return id;
+	}
+	
+	public Registro() {
+	
+	}
 
 	public LocalDate getFechaRegistro() {
 		return fechaRegistro;
