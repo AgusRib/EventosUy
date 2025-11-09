@@ -71,7 +71,7 @@ public class TestControllerEvento2 {
 		}
 
 		// Alta de asistente y registro
-		ICE.altaRegistro("willyrex", "TipoRegTest", "EdTest");
+		ICE.altaRegistro("willyrex", "TipoRegTest", "EdTest",false);
 
 		// Test listarEventos
 		Set<String> eventos = ICE.listarEventos();

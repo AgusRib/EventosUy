@@ -393,7 +393,7 @@ public class CargaDatos {
 				fechaAlta = fechaAlta.split("/")[2] + "-" + fechaAlta.split("/")[1] + "-" + fechaAlta.split("/")[0];
 				
 				ICE.setFechaSistema(LocalDate.parse(fechaAlta));
-				ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nombreEdi);
+				ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nombreEdi,false);
 				
 				
 			} } catch (FileNotFoundException e) {

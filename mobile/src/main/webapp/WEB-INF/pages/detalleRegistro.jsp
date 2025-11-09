@@ -101,7 +101,7 @@
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <span class="dr-muted">Fecha de registro</span>
-              <strong class="ms-3"><%= reg.getFechaRegistro() %></strong>
+              <strong class="ms-3"><%= reg.getFechaRegistro().toGregorianCalendar().toZonedDateTime().toLocalDate() %></strong>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <span class="dr-muted">Costo</span>

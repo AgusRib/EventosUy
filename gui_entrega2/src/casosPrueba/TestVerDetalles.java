@@ -94,14 +94,14 @@ public class TestVerDetalles {
 		assertEquals(tRegis.getCupo(), detalleTRegis.getCupo());
 		
 		ICE.altaTipoDeRegistro("Edicion1", "Tipo2", "Descripcion de Tipo2",(float) 100, 1);
-		ICE.altaRegistro("Willyrex", "Tipo2", "Edicion1");
+		ICE.altaRegistro("Willyrex", "Tipo2", "Edicion1",false);
 		//ahora se supone que tiene que tener 0 cupos
 		assertEquals(0, edicionTest.getTipoRegistro("Tipo2").getCupo());
 		
 		//ahora deberia no funcionar porque no hay cupos en Tipo2
 		ICU.ingresarAsistente("Willyrex2", "Guillermo2", "willy2@gmail.com","a", "Diaz", LocalDate.of(2004, 1,1));
 		assertThrows(Exception.class, () -> {
-		    ICE.elegirAsistenteYTipoRegistro("Willyrex2", "Tipo2", "Edicion1");
+		    ICE.elegirAsistenteYTipoRegistro("Willyrex2", "Tipo2", "Edicion1",false);
 		});
 		
 		

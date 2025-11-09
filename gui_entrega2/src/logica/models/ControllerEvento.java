@@ -222,14 +222,14 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
+	public List<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
-		return edi.obtenerAsistentes()	;
+		return edi.obtenerAsistentes();
 	}
 	
 	@Override
-	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi,boolean esGratis) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
 		//asumo que nomEdi viene de la interfaz en memoria
 			
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
@@ -244,13 +244,13 @@ public class ControllerEvento implements IControllerEvento{
 		
 		
 		
-		altaRegistro(nickAsistente, tipoReg, nomEdi);
+		altaRegistro(nickAsistente, tipoReg, nomEdi,esGratis);
 		
 		
 	}
 	
 	@Override
-	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi) {
+	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi,boolean esGratis) {
 		
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
@@ -258,7 +258,7 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorUsuario mUsuer = ManejadorUsuario.getInstance();
 		Asistente asis = mUsuer.obtenerAsistente(nickAsistente);
 		
-		edi.crearRegistro(asis, tipoReg);
+		edi.crearRegistro(asis, tipoReg,esGratis);
 		return;
 	}
 	
@@ -413,4 +413,6 @@ public class ControllerEvento implements IControllerEvento{
 		eve.setFinalizado(true);
 		return;
 	}
+	
+	
 }

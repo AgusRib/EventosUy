@@ -1,9 +1,11 @@
 package logica.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -94,8 +96,8 @@ public class Edicion {
 		return setTipoReg;
 	}
 	
-	public Set<DTAsistente> obtenerAsistentes(){
-		Set<DTAsistente> setAsist= new HashSet<>();
+	public List<DTAsistente> obtenerAsistentes(){
+		List<DTAsistente> setAsist= new ArrayList<>();
 		for (Registro reg : this.registros) {
 			Asistente asist = reg.getAsistente();
 			setAsist.add(asist.infoAsist() );
@@ -172,11 +174,11 @@ public class Edicion {
 		return true;
 	}
 
-	public void crearRegistro(Asistente asis, String tipoReg) {
+	public void crearRegistro(Asistente asis, String tipoReg,boolean esGratis) {
 		
 		TipoRegistro treg = this.getTipoRegistro(tipoReg);
 		treg.restarCupo();
-		Registro nReg = new Registro(asis, treg, this, false);
+		Registro nReg = new Registro(asis, treg, this, false,esGratis);
 		this.registros.add(nReg);
 		asis.addRegistro(nReg);
 		return;

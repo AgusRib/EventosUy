@@ -24,12 +24,17 @@ public class Registro {
 	}
 
 	//TODO: implementar caso en el que el costo sea 0 (ej: asistente de una institucion que patrocina)
-	public Registro(Asistente asis, TipoRegistro tipoReg, Edicion edi, boolean asistencia) {
+	public Registro(Asistente asis, TipoRegistro tipoReg, Edicion edi, boolean asistencia,boolean esGratis) {
 		super();
 		this.asistente=asis;
 		this.edicion=edi;
 		this.setTipoReg(tipoReg);
-		this.costo = tipoReg.getCosto();
+		if (esGratis) {
+			this.costo = 0;
+		} else {
+			this.costo = tipoReg.getCosto();
+		}
+		
 		IControllerEvento cEve = new ControllerEvento();
 		this.fechaRegistro = cEve.getFechaSistema();
 		this.asistencia = asistencia;

@@ -149,17 +149,17 @@ public class publicadorEvento {
 	
 	@WebMethod
 	public WrapperHashSet<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
-		return new WrapperHashSet<DTAsistente>(ICE.listarAsistentesAEdicionDeEvento(nomEdi));
+		return new WrapperHashSet<DTAsistente>(new HashSet<DTAsistente>(ICE.listarAsistentesAEdicionDeEvento(nomEdi)));
 	}
 	
 	@WebMethod
-	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
-		ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nomEdi);
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi,boolean esGratis) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
+		ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nomEdi, esGratis);
 	}
 	
 	@WebMethod
-	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi) {
-		ICE.altaRegistro(nickAsistente, tipoReg, nombreEdi);
+	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi,boolean esGratis) throws Exception {
+		ICE.altaRegistro(nickAsistente, tipoReg, nombreEdi, esGratis);
 	}
 	
 	@WebMethod

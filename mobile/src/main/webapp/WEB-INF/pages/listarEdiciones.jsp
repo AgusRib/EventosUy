@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="logica.data_types.DataUsuario" %>
-    <%@ page import="logica.data_types.DataUsuario.TipoUsuario" %>
-    <%@ page import="logica.data_types.DTDetalleEdicion" %>
-    <%@ page import="logica.enumerators.EstadoEdicion" %>
+    <%@ page import="webservices.DataUsuario" %>
+    <%@ page import="webservices.TipoUsuario" %>
+    <%@ page import="webservices.DtDetalleEdicion" %>
+    <%@ page import="webservices.EstadoEdicion" %>
     <%@ page import="java.util.Set" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -57,7 +57,7 @@
 				<div class="row container m-2 col-12 col-xl-8">
 					<div class="row row-cols-1 gx-0 gy-3 col-12 mt-0">
 					<% 
-						Set<DTDetalleEdicion> ediciones = (Set<DTDetalleEdicion>) request.getAttribute("ediciones");
+						Set<DtDetalleEdicion> ediciones = (Set<DtDetalleEdicion>) request.getAttribute("ediciones");
 						String mensaje;
 						if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) {
 							mensaje = "Aún no organizas ninguna edición";
@@ -67,7 +67,7 @@
 						if (ediciones.isEmpty()) {
 						%> <div class="alert alert-secondary text-center mb-0 align-items-center" role="alert">
 						<%= mensaje %></div> <% } %>
-						<% for (DTDetalleEdicion edicion : ediciones) { 
+						<% for (DtDetalleEdicion edicion : ediciones) { 
 							if (user == null || user.getTipo() == TipoUsuario.ASISTENTE) {
 						%>
 							<div class="col-12">
@@ -100,7 +100,7 @@
 									</div>
 							</div> <% } else {
 								switch (edicion.getEstado()) {
-									case Ingresada : {
+									case INGRESADA : {
 										%>
 										<div class="col-12">
 								<a href="detalleEdicion?nombre=<%= edicion.getNombre() %>"
@@ -138,7 +138,7 @@
 							</div>
 										<% break;
 									}
-									case Confirmada: {
+									case CONFIRMADA: {
 										%>
 										<div class="col-12">
 								<a href="detalleEdicion?nombre=<%= edicion.getNombre() %>"
@@ -176,7 +176,7 @@
 							</div>
 										<% break;
 									}
-									case Rechazada: {
+									case RECHAZADA: {
 										%>
 										<div class="col-12">
 								<a href="detalleEdicion?nombre=<%= edicion.getNombre() %>"

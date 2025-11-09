@@ -1,6 +1,5 @@
 package webservices;
 
-import java.time.LocalDate;
 import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 /**

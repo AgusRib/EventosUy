@@ -486,11 +486,11 @@ public class ServletEdicion extends HttpServlet {
                         return;
                     }
 
-                    portEvento.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
+                    portEvento.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion,valido);
 
                     request.setAttribute("mensaje", "Registro realizado exitosamente con patrocinio (costo $0).");
                 } else {
-                    portEvento.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion);
+                    portEvento.elegirAsistenteYTipoRegistro(user.getNickname(), tipoReg, edicion,false);
                     request.setAttribute("mensaje", "Registro realizado exitosamente.");
                 }
 
