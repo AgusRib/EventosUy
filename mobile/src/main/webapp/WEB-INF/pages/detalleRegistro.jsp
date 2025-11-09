@@ -121,12 +121,22 @@
               </div>
 
               <div class="w-100 w-sm-auto">
-                <button class="btn <%= asistencia ? "btn-success disabled" : "btn-success" %> btn-lg btn-block"
-                        id="btnConfirmarAsistencia"
-                        <%= asistencia ? "disabled" : "" %>>
-                  <%= asistencia ? "Asistencia confirmada" : "Confirmar asistencia" %>
-                </button>
-              </div>
+				  <% if (asistencia) { %>
+				    <a class="btn btn-outline-primary btn-lg btn-block"
+				       id="btnDescargarAsistencia"
+				       href="<%= ctx %>/descargar-asistencia?usuario=<%= nickUsuario %>&edicion=<%= nombreEdicion %>"
+				       target="_blank" rel="noopener">
+				      Descargar asistencia
+				    </a>
+				  <% } else { %>
+				    <button class="btn btn-success btn-lg btn-block"
+				            id="btnConfirmarAsistencia"
+				            type="button">
+				      Confirmar asistencia
+				    </button>
+				  <% } %>
+				</div>
+
             </div>
           </div>
         </div>
@@ -154,21 +164,25 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-  (function(){
-    const container = document.querySelector('.info-evento');
-    const usuario = container?.dataset?.usuario || '';
-    const edicion = container?.dataset?.edicion || '';
+(function(){
+  const container = document.querySelector('.info-evento');
+  const usuario = container?.dataset?.usuario || '';
+  const edicion = container?.dataset?.edicion || '';
 
-    const btn   = document.getElementById('btnConfirmarAsistencia');
-    const badge = document.getElementById('asistenciaEstado');
-    const modalEl = document.getElementById('confirmAsistenciaModal');
-    const modal   = new bootstrap.Modal(modalEl);
-    const btnOk   = document.getElementById('btnModalConfirmar');
+  const btnConfirm = document.getElementById('btnConfirmarAsistencia');
+  const btnDownload = document.getElementById('btnDescargarAsistencia');
+  const badge = document.getElementById('asistenciaEstado');
 
-    if (btn && !btn.disabled) {
-      btn.addEventListener('click', () => modal.show());
-    }
+  const modalEl = document.getElementById('confirmAsistenciaModal');
+  const modal   = modalEl ? new bootstrap.Modal(modalEl) : null;
+  const btnOk   = document.getElementById('btnModalConfirmar');
 
+  if (btnConfirm && modal) {
+    btnConfirm.addEventListener('click', () => modal.show());
+  }
+
+
+  if (btnOk) {
     btnOk.addEventListener('click', async () => {
       try {
         const body = new URLSearchParams({ usuario, edicion });
@@ -181,18 +195,32 @@
         const data = await resp.json();
         if (!resp.ok || !data.ok) throw new Error(data.error || 'Error desconocido');
 
-        badge.textContent = 'Confirmada';
-        badge.className = 'badge badge-xl bg-success';
-        btn.textContent = 'Asistencia confirmada';
-        btn.classList.add('disabled');
-        btn.setAttribute('disabled', 'disabled');
+        if (badge) {
+          badge.textContent = 'Confirmada';
+          badge.className = 'badge badge-xl bg-success';
+        }
+        if (modal) modal.hide();
 
-        modal.hide();
+        if (btnConfirm) {
+        	  const parent = btnConfirm.parentElement;
+        	  const a = document.createElement('a');
+        	  a.id = 'btnDescargarAsistencia';
+        	  a.className = 'btn btn-outline-primary btn-lg btn-block';
+        	  a.textContent = 'Descargar asistencia';
+        	  a.href = '<%= ctx %>/descargar-asistencia?usuario=' + encodeURIComponent(usuario) +
+        	           '&edicion=' + encodeURIComponent(edicion);
+        	  a.target = '_blank';
+        	  a.rel = 'noopener';
+        	  parent.replaceChild(a, btnConfirm);
+        	}
+
       } catch (e) {
         alert('No se pudo confirmar la asistencia: ' + (e.message || e));
       }
     });
-  })();
-  </script>
+  }
+})();
+</script>
+
 </body>
 </html>
