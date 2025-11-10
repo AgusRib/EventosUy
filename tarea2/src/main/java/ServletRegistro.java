@@ -21,7 +21,7 @@ import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
 import webservices.PublicadorUsuario;
 import webservices.PublicadorUsuarioService;
-import webservices.StringArray;
+
 
 /**
  * Servlet registrossss
@@ -65,19 +65,15 @@ public class ServletRegistro extends HttpServlet {
                     request.setAttribute("usuario", usuario);
 
                     // img usr
-                    String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-                    String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), baseUsuarios);
-                    request.setAttribute("imagenUsuario",
-                            imgUsuario != null ? ("uploads/usuarios/" + imgUsuario) : "uploads/usuarios/default.jpg");
+                    String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+                    request.setAttribute("imagenUsuario", imgUsuario);
 
                     // nombre de ediciòn 
                     String nombreEdicion = (edicion != null && !edicion.isBlank()) ? edicion : registro.getNombreEdicion();
 
                     // imagen de la ediciòn
-                    String baseEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
-                    String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), baseEdiciones);
-                    request.setAttribute("imagenEdicion",
-                            imgEdicion != null ? ("uploads/ediciones/" + imgEdicion) : "uploads/ediciones/default.jpg");
+                    String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), "ediciones");
+                    request.setAttribute("imagenEdicion", imgEdicion);
 
                     request.getRequestDispatcher("/WEB-INF/pages/detalleRegistro.jsp").forward(request, response);
                     return;
@@ -100,11 +96,11 @@ public class ServletRegistro extends HttpServlet {
 
                 try {
                     // asistentes por la ediciòn 
-                    List<String> asistObj = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
+                    List<Object> asistObj = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
 
                     List<Map.Entry<String, DtRegistro>> regs = new ArrayList<>();
                     if (asistObj != null) {
-                        for (String nick : asistObj) {
+                        for (Object nick : asistObj) {
                         	
                             if (nick == null || ((String)nick).isBlank()) continue;
 
@@ -128,11 +124,10 @@ public class ServletRegistro extends HttpServlet {
 
                     // imàgenes por usuario
                     Map<String, String> imgsUsuarios = new HashMap<>();
-                    String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
                     for (var e : regs) {
                         String nick = e.getKey();
-                        String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), baseUsuarios);
-                        imgsUsuarios.put(nick, (img != null) ? ("uploads/usuarios/" + img) : "uploads/usuarios/default.jpg");
+                        String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), "usuarios");
+                        imgsUsuarios.put(nick, img);
                     }
 
                     request.setAttribute("edicion", edicion);

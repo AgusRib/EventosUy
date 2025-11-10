@@ -27,20 +27,31 @@ public interface PublicadorEvento {
 
     /**
      * 
-     * @param fileName
-     * @return
-     *     returns byte[]
-     * @throws IOException_Exception
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param arg4
+     * @throws Exception_Exception
+     * @throws NombreEventoExcepcion_Exception
      */
     @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/getFileRequest", output = "http://webservices/publicadorEvento/getFileResponse", fault = {
-        @FaultAction(className = IOException_Exception.class, value = "http://webservices/publicadorEvento/getFile/Fault/IOException")
+    @Action(input = "http://webservices/publicadorEvento/altaEventoRequest", output = "http://webservices/publicadorEvento/altaEventoResponse", fault = {
+        @FaultAction(className = NombreEventoExcepcion_Exception.class, value = "http://webservices/publicadorEvento/altaEvento/Fault/NombreEventoExcepcion"),
+        @FaultAction(className = Exception_Exception.class, value = "http://webservices/publicadorEvento/altaEvento/Fault/Exception")
     })
-    public byte[] getFile(
-        @WebParam(name = "fileName", partName = "fileName")
-        String fileName)
-        throws IOException_Exception
+    public void altaEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        String arg3,
+        @WebParam(name = "arg4", partName = "arg4")
+        WrapperHashSet arg4)
+        throws Exception_Exception, NombreEventoExcepcion_Exception
     ;
 
     /**
@@ -65,6 +76,16 @@ public interface PublicadorEvento {
     @WebResult(partName = "return")
     @Action(input = "http://webservices/publicadorEvento/getFechaSistemaRequest", output = "http://webservices/publicadorEvento/getFechaSistemaResponse")
     public String getFechaSistema();
+
+    /**
+     * 
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorEvento/listarCategoriasRequest", output = "http://webservices/publicadorEvento/listarCategoriasResponse")
+    public WrapperHashSet listarCategorias();
 
     /**
      * 
@@ -128,6 +149,19 @@ public interface PublicadorEvento {
      * 
      * @param arg0
      * @return
+     *     returns webservices.DtDetalleEdicion
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorEvento/mostrarDetallesEdicionRequest", output = "http://webservices/publicadorEvento/mostrarDetallesEdicionResponse")
+    public DtDetalleEdicion mostrarDetallesEdicion(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
      *     returns webservices.WrapperHashSet
      */
     @WebMethod
@@ -140,50 +174,9 @@ public interface PublicadorEvento {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/nomEvPorEdRequest", output = "http://webservices/publicadorEvento/nomEvPorEdResponse")
-    public String nomEvPorEd(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @param arg2
      * @param arg3
-     * @param arg4
-     * @throws Exception_Exception
-     * @throws NombreEventoExcepcion_Exception
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorEvento/altaEventoRequest", output = "http://webservices/publicadorEvento/altaEventoResponse", fault = {
-        @FaultAction(className = NombreEventoExcepcion_Exception.class, value = "http://webservices/publicadorEvento/altaEvento/Fault/NombreEventoExcepcion"),
-        @FaultAction(className = Exception_Exception.class, value = "http://webservices/publicadorEvento/altaEvento/Fault/Exception")
-    })
-    public void altaEvento(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2,
-        @WebParam(name = "arg3", partName = "arg3")
-        String arg3,
-        @WebParam(name = "arg4", partName = "arg4")
-        WrapperHashSet arg4)
-        throws Exception_Exception, NombreEventoExcepcion_Exception
-    ;
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
      * @throws AsistenteYaRegistrado_Exception
      * @throws CupoLLeno_Exception
      * @throws Exception_Exception
@@ -202,9 +195,62 @@ public interface PublicadorEvento {
         @WebParam(name = "arg1", partName = "arg1")
         String arg1,
         @WebParam(name = "arg2", partName = "arg2")
-        String arg2)
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        boolean arg3)
         throws AsistenteYaRegistrado_Exception, CupoLLeno_Exception, Exception_Exception, FechaInicioPREALTA_Exception
     ;
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorEvento/listarEdicionesRequest", output = "http://webservices/publicadorEvento/listarEdicionesResponse")
+    public WrapperHashSet listarEdiciones(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     */
+    @WebMethod
+    @Action(input = "http://webservices/publicadorEvento/finalizarEventoRequest", output = "http://webservices/publicadorEvento/finalizarEventoResponse")
+    public void finalizarEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns webservices.DtDetalleEvento
+     * @throws EventoFinalizadoExcepcion_Exception
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorEvento/verDetalleEventoRequest", output = "http://webservices/publicadorEvento/verDetalleEventoResponse", fault = {
+        @FaultAction(className = EventoFinalizadoExcepcion_Exception.class, value = "http://webservices/publicadorEvento/verDetalleEvento/Fault/EventoFinalizadoExcepcion")
+    })
+    public DtDetalleEvento verDetalleEvento(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0)
+        throws EventoFinalizadoExcepcion_Exception
+    ;
+
+    /**
+     * 
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorEvento/listarEventosRequest", output = "http://webservices/publicadorEvento/listarEventosResponse")
+    public WrapperHashSet listarEventos();
 
     /**
      * 
@@ -218,6 +264,19 @@ public interface PublicadorEvento {
     public WrapperHashSet listarPatrocinios(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     */
+    @WebMethod
+    @Action(input = "http://webservices/publicadorEvento/rechazarEdicionRequest", output = "http://webservices/publicadorEvento/rechazarEdicionResponse")
+    public void rechazarEdicion(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
 
     /**
      * 
@@ -251,32 +310,6 @@ public interface PublicadorEvento {
      * 
      * @param arg0
      * @param arg1
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorEvento/rechazarEdicionRequest", output = "http://webservices/publicadorEvento/rechazarEdicionResponse")
-    public void rechazarEdicion(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorEvento/aceptarEdicionRequest", output = "http://webservices/publicadorEvento/aceptarEdicionResponse")
-    public void aceptarEdicion(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
      * @return
      *     returns webservices.DtPatrocinio
      */
@@ -293,13 +326,10 @@ public interface PublicadorEvento {
      * 
      * @param arg0
      * @param arg1
-     * @return
-     *     returns webservices.DtRegistro
      */
     @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/infoRegistroRequest", output = "http://webservices/publicadorEvento/infoRegistroResponse")
-    public DtRegistro infoRegistro(
+    @Action(input = "http://webservices/publicadorEvento/aceptarEdicionRequest", output = "http://webservices/publicadorEvento/aceptarEdicionResponse")
+    public void aceptarEdicion(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
@@ -336,62 +366,64 @@ public interface PublicadorEvento {
 
     /**
      * 
-     * @return
-     *     returns webservices.WrapperHashSet
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/listarCategoriasRequest", output = "http://webservices/publicadorEvento/listarCategoriasResponse")
-    public WrapperHashSet listarCategorias();
-
-    /**
-     * 
      * @param arg0
+     * @param arg1
      * @return
-     *     returns webservices.DtDetalleEvento
-     * @throws EventoFinalizadoExcepcion_Exception
+     *     returns webservices.DtRegistro
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/verDetalleEventoRequest", output = "http://webservices/publicadorEvento/verDetalleEventoResponse", fault = {
-        @FaultAction(className = EventoFinalizadoExcepcion_Exception.class, value = "http://webservices/publicadorEvento/verDetalleEvento/Fault/EventoFinalizadoExcepcion")
-    })
-    public DtDetalleEvento verDetalleEvento(
+    @Action(input = "http://webservices/publicadorEvento/infoRegistroRequest", output = "http://webservices/publicadorEvento/infoRegistroResponse")
+    public DtRegistro infoRegistro(
         @WebParam(name = "arg0", partName = "arg0")
-        String arg0)
-        throws EventoFinalizadoExcepcion_Exception
-    ;
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
 
     /**
      * 
      * @param arg0
      */
     @WebMethod
-    @Action(input = "http://webservices/publicadorEvento/finalizarEventoRequest", output = "http://webservices/publicadorEvento/finalizarEventoResponse")
-    public void finalizarEvento(
+    @Action(input = "http://webservices/publicadorEvento/ingresarCategoriaRequest", output = "http://webservices/publicadorEvento/ingresarCategoriaResponse")
+    public void ingresarCategoria(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
 
     /**
      * 
-     * @return
-     *     returns webservices.WrapperHashSet
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @throws Exception_Exception
      */
     @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/listarEventosRequest", output = "http://webservices/publicadorEvento/listarEventosResponse")
-    public WrapperHashSet listarEventos();
+    @Action(input = "http://webservices/publicadorEvento/altaRegistroRequest", output = "http://webservices/publicadorEvento/altaRegistroResponse", fault = {
+        @FaultAction(className = Exception_Exception.class, value = "http://webservices/publicadorEvento/altaRegistro/Fault/Exception")
+    })
+    public void altaRegistro(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1,
+        @WebParam(name = "arg2", partName = "arg2")
+        String arg2,
+        @WebParam(name = "arg3", partName = "arg3")
+        boolean arg3)
+        throws Exception_Exception
+    ;
 
     /**
      * 
      * @param arg0
      * @return
-     *     returns webservices.WrapperHashSet
+     *     returns java.lang.String
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/listarEdicionesRequest", output = "http://webservices/publicadorEvento/listarEdicionesResponse")
-    public WrapperHashSet listarEdiciones(
+    @Action(input = "http://webservices/publicadorEvento/nomEvPorEdRequest", output = "http://webservices/publicadorEvento/nomEvPorEdResponse")
+    public String nomEvPorEd(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
 
@@ -410,19 +442,6 @@ public interface PublicadorEvento {
         String arg0,
         @WebParam(name = "arg1", partName = "arg1")
         String arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns webservices.DtDetalleEdicion
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/mostrarDetallesEdicionRequest", output = "http://webservices/publicadorEvento/mostrarDetallesEdicionResponse")
-    public DtDetalleEdicion mostrarDetallesEdicion(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
 
     /**
      * 
@@ -446,6 +465,16 @@ public interface PublicadorEvento {
     public WrapperHashSet listarAsistentesAEdicionDeEvento(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
+
+    /**
+     * 
+     * @return
+     *     returns webservices.WrapperHashSet
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://webservices/publicadorEvento/obtenerEventosRecientesRequest", output = "http://webservices/publicadorEvento/obtenerEventosRecientesResponse")
+    public WrapperHashSet obtenerEventosRecientes();
 
     /**
      * 
@@ -475,38 +504,20 @@ public interface PublicadorEvento {
 
     /**
      * 
+     * @param fileName
      * @return
-     *     returns webservices.WrapperHashSet
+     *     returns byte[]
+     * @throws IOException_Exception
      */
     @WebMethod
     @WebResult(partName = "return")
-    @Action(input = "http://webservices/publicadorEvento/obtenerEventosRecientesRequest", output = "http://webservices/publicadorEvento/obtenerEventosRecientesResponse")
-    public WrapperHashSet obtenerEventosRecientes();
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorEvento/altaRegistroRequest", output = "http://webservices/publicadorEvento/altaRegistroResponse")
-    public void altaRegistro(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1,
-        @WebParam(name = "arg2", partName = "arg2")
-        String arg2);
-
-    /**
-     * 
-     * @param arg0
-     */
-    @WebMethod
-    @Action(input = "http://webservices/publicadorEvento/ingresarCategoriaRequest", output = "http://webservices/publicadorEvento/ingresarCategoriaResponse")
-    public void ingresarCategoria(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
+    @Action(input = "http://webservices/publicadorEvento/getFileRequest", output = "http://webservices/publicadorEvento/getFileResponse", fault = {
+        @FaultAction(className = IOException_Exception.class, value = "http://webservices/publicadorEvento/getFile/Fault/IOException")
+    })
+    public byte[] getFile(
+        @WebParam(name = "fileName", partName = "fileName")
+        String fileName)
+        throws IOException_Exception
+    ;
 
 }

@@ -149,19 +149,19 @@ public class publicadorEvento {
 		ICE.ingresarCategoria(string);
 	}
 	
+	
 	@WebMethod
-	public String[] listarAsistentesAEdicionDeEvento(String nomEdi) {
-	    
+	public WrapperHashSet<String> listarAsistentesAEdicionDeEvento(String nomEdi) {
 	    List<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento(nomEdi);
-	    
-	    String[] arreglo = new String[asistentes.size()];
+	    Set<String> nicknames = new HashSet<>();
 	    
 	    for (DTAsistente asistente : asistentes) {
-	        arreglo[asistentes.indexOf(asistente)] = asistente.getNickname();
+	        nicknames.add(asistente.getNickname());
 	    }
 	    
-	    return arreglo;
+	    return new WrapperHashSet<String>(nicknames);
 	}
+
 	
 	@WebMethod
 	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi,boolean esGratis) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 

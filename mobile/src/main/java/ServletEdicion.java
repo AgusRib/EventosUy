@@ -81,34 +81,20 @@ public class ServletEdicion extends HttpServlet {
 	                request.setAttribute("patrocinios", setPatrocinios);
 	                
 	                // Fetch imagen de edicion
-	                String edicionImg = ManejadorArchivos.buscarArchivo(nombre.toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
-	                if (edicionImg != null) {
-	                	request.setAttribute("imagenEdicion", "uploads/ediciones/" + edicionImg);
-	                } else {
-	                	request.setAttribute("imagenEdicion", "uploads/ediciones/default.jpg");
-	                }
+	                String edicionImg = ManejadorArchivos.buscarArchivo(nombre.toLowerCase(), "ediciones");
+	                request.setAttribute("imagenEdicion", edicionImg);
 	                
 	                // Fetch imagen organizador
-	                String organizadorImg = ManejadorArchivos.buscarArchivo(ed.getOrganizador().toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
-	                if (organizadorImg != null) {
-	                	request.setAttribute("imagenOrganizador", "uploads/usuarios/" + organizadorImg);
-	                } else {
-	                	request.setAttribute("imagenOrganizador", "uploads/usuarios/default.jpg");
-	                }
+	                String organizadorImg = ManejadorArchivos.buscarArchivo(ed.getOrganizador().toLowerCase(), "usuarios");
+	                request.setAttribute("imagenOrganizador", organizadorImg);
 	                
 	                // Fetch nombre evento
 	                String nombreEvento = portEvento.nomEvPorEd(nombre);
 	                request.setAttribute("nombreEvento", nombreEvento);
 	                
 	                // Fetch imagen evento
-	                String imagenEvento = ManejadorArchivos.buscarArchivo(
-	                        nombreEvento.toLowerCase(),
-	                        getServletContext().getRealPath("/uploads/eventos/"));
-	                if (imagenEvento != null) {
-	                    request.setAttribute("imagenEvento", "uploads/eventos/" + imagenEvento);
-	                } else {
-	                    request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
-	                }
+	                String imagenEvento = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
+	                request.setAttribute("imagenEvento", imagenEvento);
 
 	                
 	                // Fetch si el usuario registrado en la edicion
@@ -157,12 +143,8 @@ public class ServletEdicion extends HttpServlet {
             			ediciones.add(ed);
             			
                         // Fetch imagen de ediciones
-                        String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
-                        if (edicionImg != null) {
-                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/" + edicionImg);
-                        } else {
-                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/default.jpg");
-                        }
+                        String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), "ediciones");
+                        request.setAttribute(ed.getNombre(), edicionImg);
             		} 
             	
             	} else if (user != null ) {
@@ -173,12 +155,8 @@ public class ServletEdicion extends HttpServlet {
             			ediciones.add(ed);
             			
                         // Fetch imagen de ediciones
-                        String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
-                        if (edicionImg != null) {
-                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/" + edicionImg);
-                        } else {
-                        	request.setAttribute(ed.getNombre(), "uploads/ediciones/default.jpg");
-                        }
+                        String edicionImg = ManejadorArchivos.buscarArchivo(ed.getNombre().toLowerCase(), "ediciones");
+                        request.setAttribute(ed.getNombre(), edicionImg);
 					}
             	}
             
@@ -244,18 +222,16 @@ public class ServletEdicion extends HttpServlet {
                     // 4) Imagen de edición (buscada por nombre canónico del DtO)
                     String edicionImg = ManejadorArchivos.buscarArchivo(
                             ed.getNombre().toLowerCase(),
-                            getServletContext().getRealPath("/uploads/ediciones/"));
-                    request.setAttribute("imagenEdicion",
-                            edicionImg != null ? "uploads/ediciones/" + edicionImg : "uploads/ediciones/default.jpg");
+                            "ediciones");
+                    request.setAttribute("imagenEdicion", edicionImg);
 
                     // 5) Evento + imagen del evento
                     String nombreEvento = portEvento.nomEvPorEd(ed.getNombre());
                     request.setAttribute("nombreEvento", nombreEvento);
                     String imagenEvento = ManejadorArchivos.buscarArchivo(
                             (nombreEvento == null ? "" : nombreEvento.toLowerCase()),
-                            getServletContext().getRealPath("/uploads/eventos/"));
-                    request.setAttribute("imagenEvento",
-                            imagenEvento != null ? "uploads/eventos/" + imagenEvento : "uploads/eventos/default.jpg");
+                            "eventos");
+                    request.setAttribute("imagenEvento", imagenEvento);
 
                     // 6) Ya registrado
                     List<Object> registrosObj = portUsuario.listarRegistrosAEventos(user.getNickname()).getItem();
@@ -503,15 +479,13 @@ public class ServletEdicion extends HttpServlet {
                 }
                 request.setAttribute("tiposRegistro", tiposReg);
                 String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(),
-                        getServletContext().getRealPath("/uploads/ediciones/"));
-                request.setAttribute("imagenEdicion",
-                        edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
+                        "ediciones");
+                request.setAttribute("imagenEdicion", edImg);
                 String nomEv = portEvento.nomEvPorEd(edicion);
                 request.setAttribute("nombreEvento", nomEv);
                 String imgEv = ManejadorArchivos.buscarArchivo(nomEv.toLowerCase(),
-                        getServletContext().getRealPath("/uploads/eventos/"));
-                request.setAttribute("imagenEvento",
-                        imgEv != null ? "uploads/eventos/" + imgEv : "uploads/eventos/default.jpg");
+                        "eventos");
+                request.setAttribute("imagenEvento", imgEv);
 
                 request.getRequestDispatcher("/WEB-INF/pages/altaRegistro.jsp").forward(request, response);
             } catch (Exception e) {
@@ -549,13 +523,13 @@ public class ServletEdicion extends HttpServlet {
             }
             request.setAttribute("tiposRegistro", tiposReg);
 
-            String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
-            request.setAttribute("imagenEdicion", edImg != null ? "uploads/ediciones/" + edImg : "uploads/ediciones/default.jpg");
+            String edImg = ManejadorArchivos.buscarArchivo(edicion.toLowerCase(), "ediciones");
+            request.setAttribute("imagenEdicion", edImg);
 
             String nomEv = portEvento.nomEvPorEd(edicion);
             request.setAttribute("nombreEvento", nomEv == null ? "" : nomEv);
-            String imgEv = ManejadorArchivos.buscarArchivo((nomEv == null ? "" : nomEv).toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-            request.setAttribute("imagenEvento", imgEv != null ? "uploads/eventos/" + imgEv : "uploads/eventos/default.jpg");
+            String imgEv = ManejadorArchivos.buscarArchivo((nomEv == null ? "" : nomEv).toLowerCase(), "eventos");
+            request.setAttribute("imagenEvento", imgEv);
 
             boolean yaRegistrado = false;
             try {

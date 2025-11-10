@@ -26,7 +26,6 @@ public class ObjectFactory {
 
     private final static QName _EmailRepetido_QNAME = new QName("http://webservices/", "EmailRepetido");
     private final static QName _Exception_QNAME = new QName("http://webservices/", "Exception");
-    private final static QName _IOException_QNAME = new QName("http://webservices/", "IOException");
     private final static QName _NombreInstiExistente_QNAME = new QName("http://webservices/", "NombreInstiExistente");
     private final static QName _NombreUsuarioExistente_QNAME = new QName("http://webservices/", "NombreUsuarioExistente");
     private final static QName _UsuarioNoEncontrado_QNAME = new QName("http://webservices/", "UsuarioNoEncontrado");
@@ -57,16 +56,6 @@ public class ObjectFactory {
      */
     public Exception createException() {
         return new Exception();
-    }
-
-    /**
-     * Create an instance of {@link IOException }
-     * 
-     * @return
-     *     the new instance of {@link IOException }
-     */
-    public IOException createIOException() {
-        return new IOException();
     }
 
     /**
@@ -120,16 +109,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DtAsistente }
-     * 
-     * @return
-     *     the new instance of {@link DtAsistente }
-     */
-    public DtAsistente createDtAsistente() {
-        return new DtAsistente();
-    }
-
-    /**
      * Create an instance of {@link DtOrganizador }
      * 
      * @return
@@ -137,6 +116,16 @@ public class ObjectFactory {
      */
     public DtOrganizador createDtOrganizador() {
         return new DtOrganizador();
+    }
+
+    /**
+     * Create an instance of {@link DtAsistente }
+     * 
+     * @return
+     *     the new instance of {@link DtAsistente }
+     */
+    public DtAsistente createDtAsistente() {
+        return new DtAsistente();
     }
 
     /**
@@ -163,19 +152,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://webservices/", name = "Exception")
     public JAXBElement<Exception> createException(Exception value) {
         return new JAXBElement<>(_Exception_QNAME, Exception.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link IOException }{@code >}
-     * 
-     * @param value
-     *     Java instance representing xml element's value.
-     * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link IOException }{@code >}
-     */
-    @XmlElementDecl(namespace = "http://webservices/", name = "IOException")
-    public JAXBElement<IOException> createIOException(IOException value) {
-        return new JAXBElement<>(_IOException_QNAME, IOException.class, null, value);
     }
 
     /**

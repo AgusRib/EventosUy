@@ -210,13 +210,8 @@ public class ServletAutenticator extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("usuario", usuario);
 			
-			String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), 
-														getServletContext().getRealPath("/uploads/usuarios/"));
-			if (pfp != null) {
-				session.setAttribute("pfp", "uploads/usuarios/" + pfp);
-			} else {
-				session.setAttribute("pfp", "uploads/usuarios/default.jpg");
-			}
+			String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), "usuarios");
+			session.setAttribute("pfp", pfp);
 			
 			response.sendRedirect(request.getContextPath() + "/HomeServlet");
 		} else {

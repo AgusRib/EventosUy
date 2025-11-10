@@ -70,11 +70,11 @@
       <div class="card-body">
         <div class="dr-avatars row g-3 align-items-center justify-content-center mb-3 mb-md-4">
           <div class="col-12 col-md-auto d-flex justify-content-center">
-            <img src="<%= ctx %>/<%= imgUsuario %>" alt="Foto Usuario"
+            <img src="<%= imgUsuario %>" alt="Foto Usuario"
                  class="img-fluid rounded-circle shadow-sm">
           </div>
           <div class="col-12 col-md-auto d-flex justify-content-center">
-            <img src="<%= ctx %>/<%= imgEdicion %>" alt="Foto Edición"
+            <img src="<%= imgEdicion %>" alt="Foto Edición"
                  class="img-fluid rounded shadow-sm">
           </div>
         </div>

@@ -47,13 +47,7 @@
 		
 			<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
 			<div class="row row-cols-2 w-100 justify-content-center my-4 gap-5">
-				<div class="align-items-center col-12 col-xl-3 my-3">
-
-
-					<h3 class="categorias fw-bold text-center">Categorías</h3>
-					<jsp:include page="../templates/categorias-sidebar.jsp"></jsp:include>
-				</div>
-
+				
 				<div class="row container m-2 col-12 col-xl-8">
 					<div class="row row-cols-1 gx-0 gy-3 col-12 mt-0">
 					<% 
