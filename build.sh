@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Configurar Java 21 para Maven
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+export PATH=$JAVA_HOME/bin:$PATH
+
 echo "Building Maven projects..."
 echo
 
@@ -11,6 +15,28 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "gui_entrega2 build completed successfully"
+echo
+
+# Copiar datosPrueba desde gui_entrega2 a la carpeta target
+echo "Copying datosPrueba to target folder..."
+cp -r ./datosPrueba ./target/
+if [ $? -ne 0 ]; then
+    echo "Error copying datosPrueba"
+    exit 1
+fi
+echo "datosPrueba copied successfully to target folder."
+echo
+
+# Ejecutar el archivo JAR generado
+echo "Running the generated JAR..."
+JAR_PATH="./target/ServidorWS-0.0.1-SNAPSHOT-jar-with-dependencies.jar"
+if [ -f "$JAR_PATH" ]; then
+    java -jar "$JAR_PATH"
+else
+    echo "JAR file not found: $JAR_PATH"
+    exit 1
+fi
+echo "JAR executed successfully."
 echo
 
 echo "Building tarea2 (WAR)..."
