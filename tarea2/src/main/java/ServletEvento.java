@@ -332,7 +332,16 @@ public class ServletEvento extends HttpServlet {
     private void mostrarDetalleEvento(HttpServletRequest request, HttpServletResponse response, PublicadorEvento portEvento) throws ServletException, IOException {
         String nombreEvento = request.getParameter("nombre");
 
-        System.out.println("Nombre del evento recibido: " + nombreEvento);
+        
+        // Registrar la visita al evento 
+        if (nombreEvento != null && !nombreEvento.trim().isEmpty()) {
+            try {
+                portEvento.registrarVisitaEvento(nombreEvento);
+            } catch (Exception e) {
+                
+                System.err.println("Error al registrar visita: " + e.getMessage());
+            }
+        }
         
         try {
         	DtDetalleEvento detalleEvento = null;

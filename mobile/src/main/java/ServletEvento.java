@@ -163,6 +163,16 @@ public class ServletEvento extends HttpServlet {
 
         System.out.println("Nombre del evento recibido: " + nombreEvento);
         
+        // Registrar la visita al evento 
+        if (nombreEvento != null && !nombreEvento.trim().isEmpty()) {
+            try {
+                portEvento.registrarVisitaEvento(nombreEvento);
+            } catch (Exception e) {
+                
+                System.err.println("Error al registrar visita: " + e.getMessage());
+            }
+        }
+        
         try {
             DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
             

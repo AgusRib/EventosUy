@@ -25,6 +25,7 @@ import logica.models.Asistente;
 import logica.models.Evento;
 import logica.models.Factory;
 import logica.models.Organizador;
+import logica.models.RastreadorVisitasEvento;
 import logica.models.Usuario;
 
 public class CargaDatos {
@@ -148,6 +149,7 @@ public class CargaDatos {
 		BufferedReader brEventos = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025Eventos.csv"));
 
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+		RastreadorVisitasEvento rastreador = RastreadorVisitasEvento.obtenerInstancia();
 		
 		String linea;
 		brEventos.readLine(); // Saltear la primer linea (headers)
@@ -182,6 +184,19 @@ public class CargaDatos {
 				Evento evento = mE.obtenerEvento(nombre);
 				if (evento != null) {
 					evento.setFinalizado(true);
+				}
+			}
+			
+			// Cargar contador de visitas desde la última columna (campos[8])
+			if (campos.length > 8 && !campos[8].trim().isEmpty()) {
+				try {
+					int visitas = Integer.parseInt(campos[8].trim());
+					// Registrar las visitas en el rastreador
+					for (int i = 0; i < visitas; i++) {
+						rastreador.registrarVisita(nombre);
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Error al parsear visitas para evento " + nombre + ": " + campos[8]);
 				}
 			}
 		}
@@ -463,8 +478,6 @@ public class CargaDatos {
 	
 		System.out.println("Seguidores cargados");
 	}
-	
-	
 	
 	//UTILS
 	private static String[] buscarLinea(String id, String path) throws IOException {

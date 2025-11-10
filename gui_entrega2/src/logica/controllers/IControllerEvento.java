@@ -10,6 +10,7 @@ import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import logica.data_types.DTAsistente;
 import logica.data_types.DTDetalleEdicion;
@@ -54,6 +55,10 @@ public interface IControllerEvento {
 	public void finalizarEvento(String nombreEvento);
     void confirmarAsistencia(String nombreEdi, String nickAsistente);
     
+    // Métodos para estadísticas de eventos visitados
+    void registrarVisitaEvento(String nombreEvento);
+    List<Map<String, Object>> obtenerTop5EventosMasVisitados();
+    Map<String, Long> obtenerEstadisticasVisitas();
 	
 	
 }

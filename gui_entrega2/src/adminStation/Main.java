@@ -44,6 +44,7 @@ public class Main {
 	private AltaInstitucion frmAltaInstitucion;
 	private FechaSistema frmFechaSistema;
 	private ConfirmarRechazarEdicion frmConfirmarRechazarEdicion;
+	private EstadisticasEventos frmEstadisticasEventos;
 	private IControllerUsuario ICU;
 	private IControllerEvento ICE;
 	
@@ -375,6 +376,23 @@ public class Main {
 				
 			
 			
+		// Estadísticas
+		JMenu mnEstadisticas = new JMenu("Estadísticas");
+		mnFuncionalidades.add(mnEstadisticas);
+			//Submenus Estadísticas
+			JMenuItem mntmEventosPopulares = new JMenuItem("Eventos Más Visitados");
+			mnEstadisticas.add(mntmEventosPopulares);
+			frmEstadisticasEventos = EstadisticasEventos.obtenerInstancia(ICE);
+			frmMain.getContentPane().add(frmEstadisticasEventos);
+			frmEstadisticasEventos.setVisible(false);
+			mntmEventosPopulares.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					frmEstadisticasEventos.refrescar();
+					frmEstadisticasEventos.setVisible(true);
+					frmEstadisticasEventos.toFront();
+				}
+			});
+				
 		frmMain.getContentPane().setLayout(null);
 	}
 }

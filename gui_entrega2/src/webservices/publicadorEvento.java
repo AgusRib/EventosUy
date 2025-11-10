@@ -243,7 +243,9 @@ public class publicadorEvento {
 		return;
 	}
     
- 
-    
+    @WebMethod
+    public void registrarVisitaEvento(@WebParam(name = "nombreEvento") String nombreEvento) {
+        ICE.registrarVisitaEvento(nombreEvento);
+    }
     
 }

@@ -389,8 +389,9 @@ public class ControllerEvento implements IControllerEvento{
 		//me quedo con las primeras 4, despues hay que ver con cual nos quedamos
 		for (String eve : eventos) {
 		    if (count >= 4) break;
+		    if (!h_evento.obtenerEvento(eve).getFinalizado()) { // saltar eventos finalizados
 		    recientes.add(h_evento.obtenerEvento(eve).devolverDT());
-		    count++;
+		    count++;}
 		}
 		 
 		return recientes;
@@ -429,5 +430,20 @@ public class ControllerEvento implements IControllerEvento{
 		return;
 	}
 	
+	// Métodos para estadísticas de eventos visitados
+	@Override
+	public void registrarVisitaEvento(String nombreEvento) {
+		RastreadorVisitasEvento.obtenerInstancia().registrarVisita(nombreEvento);
+	}
+	
+	@Override
+	public List<Map<String, Object>> obtenerTop5EventosMasVisitados() {
+		return RastreadorVisitasEvento.obtenerInstancia().obtenerTop5Eventos();
+	}
+	
+	@Override
+	public Map<String, Long> obtenerEstadisticasVisitas() {
+		return RastreadorVisitasEvento.obtenerInstancia().obtenerTodosLosContadores();
+	}
 	
 }
