@@ -23,7 +23,7 @@ public class TestEdicionVacia {
 		categorias.add("cat1");
 		Categoria cat = new Categoria("cat1");
 		ManejadorCategoria.getInstance().agregarCategoria(cat);
-		ICE.altaEvento("ev1", "e1", ICE.getFechaSistema(), "desc1",categorias);
+		ICE.altaEvento("ev1", "e1", ICE.getFechaSistema(), "desc1",categorias,"");
 		Evento eventoSeleccionado = ManejadorEvento.getInstance().obtenerEvento("ev1");
 		
 		//nombre de edicion vacio entonces deberia tirar excepcion

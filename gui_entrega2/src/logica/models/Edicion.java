@@ -29,6 +29,7 @@ public class Edicion {
 	private final Map<String, Patrocinio> patrociniosPorInstitucion = new LinkedHashMap<>();
 	private Organizador organizador;
 	private EstadoEdicion estado;
+	private String videourl;
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
 			String ciudad, String pais, Evento evento, Organizador organizador) {
@@ -45,8 +46,29 @@ public class Edicion {
 		this.evento = evento;
 		this.organizador =organizador;
 		this.setEstado(EstadoEdicion.Ingresada); //siempre que agregamos una edicion, estado = ingresada.
+		this.videourl = "";
 
 	}
+	
+    public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
+			String ciudad, String pais, Evento evento, Organizador organizador, String videourl) {
+		super();
+		this.nombre = nombre;
+		this.sigla = sigla;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.fechaAlta = fechaAlta;
+		this.ciudad = ciudad;
+		this.pais = pais;
+		this.registros = new LinkedHashSet<>();
+		this.tiposRegistro = new LinkedHashSet<>();
+		this.evento = evento;
+		this.organizador =organizador;
+		this.setEstado(EstadoEdicion.Ingresada); //siempre que agregamos una edicion, estado = ingresada.
+		this.videourl = videourl;
+
+	}
+	
 	
 	
 	// Getters y setters
@@ -76,6 +98,9 @@ public class Edicion {
 	}
 	public Organizador getOrganizador() {
 		return organizador;
+	}
+	public String getVideourl() {
+		return videourl;
 	}
 	
 	public EstadoEdicion getEstado() {
@@ -143,7 +168,7 @@ public class Edicion {
 				organizador.getNickname(),
 				nombresTiposRegistros,
 				nombresInstituciones,
-				this.estado
+				this.estado,this.videourl
 		);
 	}
 	

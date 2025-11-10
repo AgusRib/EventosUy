@@ -171,7 +171,7 @@ public class CargaDatos {
 				categorias.add(buscarLinea(cat.stripLeading(), "/datosPrueba/2025Categorias.csv")[1]);
 			}
 			
-			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias);
+			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias,"");
 		}
 	}
 	
@@ -218,7 +218,7 @@ public class CargaDatos {
 				String[] fechaAltaParts = fechaAlta.split("/");
 				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
 				
-				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais);
+				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais,"");
 			
 				if (campos[10].equals("Aceptada")) {
 					ICE.aceptarEdicion(nombre,nombreEvento);

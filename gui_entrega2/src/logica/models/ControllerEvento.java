@@ -59,18 +59,27 @@ public class ControllerEvento implements IControllerEvento{
 		return nomEdiciones;
 	}
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias,String url)throws NombreEventoExcepcion, Exception {
 		
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
 		if (mEventos.existeEvento(nombre)) {
 			throw new Exception("El evento ya existe");
 		}else {
+			if(url=="") {
 			Evento nuevoEvento= new Evento(nombre, sigla, fechaAlta, descripcion);
 			ManejadorCategoria mCategoria = ManejadorCategoria.getInstance();
 			for (String cat : categorias) {
 				nuevoEvento.agregarCategoria(mCategoria.obtenerCategoria(cat));
 			}
-			mEventos.agregarEvento(nuevoEvento);
+			mEventos.agregarEvento(nuevoEvento);}
+			else {
+				Evento nuevoEvento= new Evento(nombre, sigla, fechaAlta, descripcion,url);
+				ManejadorCategoria mCategoria = ManejadorCategoria.getInstance();
+				for (String cat : categorias) {
+					nuevoEvento.agregarCategoria(mCategoria.obtenerCategoria(cat));
+				}
+				mEventos.agregarEvento(nuevoEvento);
+			}
 		}
 	}
 		
@@ -180,7 +189,7 @@ public class ControllerEvento implements IControllerEvento{
 	}
 
 	@Override
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais,String url)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		if (mEdi.existeEdicion(nombre)) throw new NombreEdicionExistenteExcepcion("Ya existe una edicion con el nombre: " + nombre);
 		if (fechaInicio.isAfter(fechaFin)) throw new FechaInicioPOSTFINAL("La fecha de inicio no puede ser posterior a la fecha de finalizacion");
@@ -196,10 +205,16 @@ public class ControllerEvento implements IControllerEvento{
 		
 		Organizador org = mUsuer.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
-
+        if (url=="") {
 		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais, eve, org);
 		eve.agregarEdicion(nueva); 
-		mEdi.agregarEdicionIngresada(nueva);
+		mEdi.agregarEdicionIngresada(nueva);}
+        else {
+			Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais, eve, org,url);
+			eve.agregarEdicion(nueva); 
+			mEdi.agregarEdicionIngresada(nueva);
+		}
+	
 		
 	}
 	

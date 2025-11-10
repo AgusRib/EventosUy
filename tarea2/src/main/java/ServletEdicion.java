@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import webservices.DataUsuario;
 import webservices.DtDetalleEdicion;
+import webservices.DtDetalleEvento;
 import webservices.DtPatrocinio;
 import webservices.DtTipoRegistro;
 import webservices.PublicadorEvento;
@@ -189,20 +190,32 @@ public class ServletEdicion extends HttpServlet {
             
             case "/detalleEdicion/altaEdicion" : {       // EJEMPLO: /detalleEdicion/altaEdicion?nombreEvento=evento1
                 
-                
-                
-                
                 HttpSession session = request.getSession();
                 DataUsuario user = (DataUsuario) session.getAttribute("usuario");
+                String nombreEvento = request.getParameter("nombreEvento");
 
-                
-				// Verifica que el usuario haya iniciado sesion como organizador
+                // Verifica que el usuario haya iniciado sesion como organizador
                 if (user == null || user.getTipo() != TipoUsuario.ORGANIZADOR) {
 					// mostrar mensaje de error, el usuario no es organizador
 					response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Solo los organizadores pueden dar de alta ediciones.");
 				} else {
-                	request.setAttribute("nombreEvento", request.getParameter("nombreEvento"));
-					request.getRequestDispatcher("/WEB-INF/pages/altaEdicion.jsp").forward(request, response);
+					try {
+						// Verificar si el evento existe y si está finalizado
+						DtDetalleEvento evento = portEvento.verDetalleEvento(nombreEvento);
+						
+						if (evento.isFinalizado()) {
+							// Si el evento está finalizado, mostrar error
+							response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No se pueden crear ediciones para un evento finalizado.");
+							return;
+						}
+						
+						// Si el evento no está finalizado, continuar normalmente
+						request.setAttribute("nombreEvento", nombreEvento);
+						request.getRequestDispatcher("/WEB-INF/pages/altaEdicion.jsp").forward(request, response);
+					} catch (Exception e) {
+						// Si hay error al obtener el evento (no existe), mostrar error
+						response.sendError(HttpServletResponse.SC_NOT_FOUND, "El evento especificado no existe.");
+					}
 				}
     			return;
         	}
@@ -309,6 +322,7 @@ public class ServletEdicion extends HttpServlet {
 			String pais = request.getParameter("pais");
 			String fechaInicio = request.getParameter("fechaInicio");
 			String fechaFin = request.getParameter("fechaFin");
+			String urlYoutube = request.getParameter("urlYoutube");
 			Part imagen = request.getPart("imagen");
 			String nombreEvento = request.getParameter("nombreEvento");
 			String organizador = user.getNickname();
@@ -319,7 +333,18 @@ public class ServletEdicion extends HttpServlet {
 					// mostrar mensaje de error, el usuario no es organizador
 					throw new Exception("Necesita estar autenticado como organizador para dar de alta una edición.");
 				}
-				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla,fechaInicio, fechaFin, session.getAttribute("fecha").toString(), ciudad, pais);
+				
+				// Verificar si el evento existe y si está finalizado
+				DtDetalleEvento evento = portEvento.verDetalleEvento(nombreEvento);
+				if (evento.isFinalizado()) {
+					// Si el evento está finalizado, mostrar error
+					throw new Exception("No se pueden crear ediciones para un evento finalizado.");
+				}
+				
+				// Si no se proporciona URL de YouTube, enviar cadena vacía
+				String urlYoutubeParam = (urlYoutube != null && !urlYoutube.trim().isEmpty()) ? urlYoutube.trim() : "";
+				
+				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla, fechaInicio, fechaFin, session.getAttribute("fecha").toString(), ciudad, pais, urlYoutubeParam);
 				ManejadorArchivos.guardarArchivo(imagen, nombre, "ediciones", getServletContext());
 				
 				
@@ -336,6 +361,7 @@ public class ServletEdicion extends HttpServlet {
 				request.setAttribute("pais", pais);
 				request.setAttribute("fechaInicio", fechaInicio);
 				request.setAttribute("fechaFin", fechaFin);
+				request.setAttribute("urlYoutube", urlYoutube);
 				request.setAttribute("nombreEvento", nombreEvento);
 				
 				request.setAttribute("error", e.getMessage());

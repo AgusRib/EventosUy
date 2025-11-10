@@ -21,6 +21,7 @@ public class DTDetalleEvento {
 	private Set<String>  categorias;
 	private Set<String> ediciones;
 	private boolean finalizado;
+	private String videourl;
 	
 	public DTDetalleEvento(String nombre, String sigla, LocalDate fecha, String descripcion, Set<String> categorias,
 			Set<String> hashSet, boolean finalizado) {
@@ -32,6 +33,20 @@ public class DTDetalleEvento {
 		this.categorias = categorias;
 		this.ediciones = hashSet;
 		this.finalizado = finalizado;
+		this.videourl = "";
+	}
+	
+	public DTDetalleEvento(String nombre, String sigla, LocalDate fecha, String descripcion, Set<String> categorias,
+			Set<String> hashSet, boolean finalizado, String videourl) {
+		super();
+		this.nombre = nombre;
+		this.sigla = sigla;
+		this.fechaAlta= fecha;
+		this.descripcion = descripcion;
+		this.categorias = categorias;
+		this.ediciones = hashSet;
+		this.finalizado = finalizado;
+		this.videourl = videourl;
 	}
 	
 	public String getNombre() {
@@ -88,6 +103,11 @@ public class DTDetalleEvento {
 	public void setFinalizado(boolean finalizado) {
 		this.finalizado = finalizado;
 	}
-	
+	public String getVideourl() {
+		return videourl;
+	}
+	public void setVideourl(String videourl) {
+		this.videourl = videourl;
+	}
 	
 }

@@ -36,8 +36,8 @@ public class TestControllerEvento2 {
 			e.printStackTrace();
 		}
 		try {
-			ICE.altaEvento("EventoTest", "ET", LocalDate.of(2025, 8, 31), "DescTest", categorias);
-			ICE.altaEdicionDeEvento("EventoTest", "Jorge", "EdTest", "EDT", LocalDate.of(2025, 9, 1), LocalDate.of(2025, 9, 2), LocalDate.of(2025, 8, 31), "CiudadTest", "PaisTest");
+			ICE.altaEvento("EventoTest", "ET", LocalDate.of(2025, 8, 31), "DescTest", categorias,"");
+			ICE.altaEdicionDeEvento("EventoTest", "Jorge", "EdTest", "EDT", LocalDate.of(2025, 9, 1), LocalDate.of(2025, 9, 2), LocalDate.of(2025, 8, 31), "CiudadTest", "PaisTest","");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

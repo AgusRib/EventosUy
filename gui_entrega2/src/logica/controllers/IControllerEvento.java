@@ -24,7 +24,7 @@ import logica.enumerators.NivelPatrocinio;
  * */
 public interface IControllerEvento {
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception;
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias,String url)throws NombreEventoExcepcion, Exception;
 	public Set<String> listarEventos();
 	public Set<String> listarCategorias();
 	public Set<String> listarEdiciones(String nombreEvento);
@@ -36,7 +36,7 @@ public interface IControllerEvento {
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, String descripcion, Float costo, int cupo) throws excepciones.TipoRegistroExistenteExcepcion, Exception;
 	public DTDetalleEvento verDetalleEvento(String nombreEvento) throws EventoFinalizadoExcepcion;
 	public Set<String> listarTiposDeRegistro( String nombreEdicion);
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception;
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais,String url) throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception;
 	public void ingresarCategoria(String string);
 	public DTRegistro infoRegistro(String edicion, String usuario);
 	List<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi);

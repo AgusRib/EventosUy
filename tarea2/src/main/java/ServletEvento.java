@@ -439,6 +439,7 @@ public class ServletEvento extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String sigla = request.getParameter("sigla");
         String descripcion = request.getParameter("descripcion");
+        String urlYoutube = request.getParameter("urlYoutube");
         
         try {
             // Obtener las categorías seleccionadas desde la request
@@ -462,11 +463,15 @@ public class ServletEvento extends HttpServlet {
                 fechaEvento = LocalDate.of(2025, 1, 15);
             }
             
+            // Si no se proporciona URL de YouTube, enviar cadena vacía
+            String urlYoutubeParam = (urlYoutube != null && !urlYoutube.trim().isEmpty()) ? urlYoutube.trim() : "";
+            
             portEvento.altaEvento(nombre != null ? nombre.trim() : "", 
                                 sigla != null ? sigla.trim() : "", 
                                 fechaEvento.toString(), 
                                 descripcion != null ? descripcion.trim() : "", 
-                                categorias);
+                                categorias,
+                                urlYoutubeParam);
             
             // Mostrar mensaje de registro exitoso en la misma página de alta (como en altaEdicion)
             WrapperHashSet todasLasCategoriasWrapper = portEvento.listarCategorias();
@@ -483,6 +488,7 @@ public class ServletEvento extends HttpServlet {
             request.setAttribute("nombre", nombre);
             request.setAttribute("sigla", sigla);
             request.setAttribute("descripcion", descripcion);
+            request.setAttribute("urlYoutube", urlYoutube);
             // Ensure no stale category selections remain
             request.setAttribute("categoriasSeleccionadas", null);
             request.getRequestDispatcher("/WEB-INF/pages/AltaEvento.jsp").forward(request, response);
@@ -512,6 +518,7 @@ public class ServletEvento extends HttpServlet {
             request.setAttribute("nombre", nombre);
             request.setAttribute("sigla", sigla);
             request.setAttribute("descripcion", descripcion);
+            request.setAttribute("urlYoutube", urlYoutube);
             
             // Preservar categorías seleccionadas
             String[] categoriasSeleccionadas = request.getParameterValues("categorias");

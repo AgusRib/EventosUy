@@ -60,7 +60,7 @@ public class TestFuncionesNoCubiertas {
 		
 		// Crear evento
 		try {
-			ICE.altaEvento("EventoTest", "ET", LocalDate.of(2024, 6, 1), "Evento para testing", categorias);
+			ICE.altaEvento("EventoTest", "ET", LocalDate.of(2024, 6, 1), "Evento para testing", categorias,"");
 		} catch (Exception e) {
 			// Evento ya existe
 		}
@@ -69,7 +69,7 @@ public class TestFuncionesNoCubiertas {
 		try {
 			ICE.altaEdicionDeEvento("EventoTest", "orgTest", "EdicionTest", "ET2024", 
 				LocalDate.of(2024, 12, 20), LocalDate.of(2024, 12, 25), 
-				LocalDate.of(2024, 11, 1), "Montevideo", "Uruguay");
+				LocalDate.of(2024, 11, 1), "Montevideo", "Uruguay","");
 		} catch (Exception e) {
 			// Edicion ya existe
 		}
@@ -108,7 +108,7 @@ public class TestFuncionesNoCubiertas {
 		try {
 			ICE.altaEdicionDeEvento("EventoTest", "orgTest", "EdicionTest2", "ET2025", 
 				LocalDate.of(2025, 6, 15), LocalDate.of(2025, 6, 20), 
-				LocalDate.of(2025, 3, 1), "Buenos Aires", "Argentina");
+				LocalDate.of(2025, 3, 1), "Buenos Aires", "Argentina","");
 			ICE.rechazarEdicion("EdicionTest2", "EventoTest");
 		} catch (Exception e) {
 			// Manejar excepcion si ya existe

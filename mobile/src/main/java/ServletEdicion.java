@@ -297,7 +297,7 @@ public class ServletEdicion extends HttpServlet {
 					// mostrar mensaje de error, el usuario no es organizador
 					throw new Exception("Necesita estar autenticado como organizador para dar de alta una edición.");
 				}
-				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla,fechaInicio, fechaFin, session.getAttribute("fecha").toString(), ciudad, pais);
+				portEvento.altaEdicionDeEvento(nombreEvento, organizador, nombre, sigla,fechaInicio, fechaFin, session.getAttribute("fecha").toString(), ciudad, pais,"");
 				ManejadorArchivos.guardarArchivo(imagen, nombre, "ediciones", getServletContext());
 				
 				

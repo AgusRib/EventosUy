@@ -5,6 +5,52 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="webservices.*" %>
 
+<%!
+	// Función Java para convertir URL de YouTube a formato embed
+	private String convertToEmbedUrl(String youtubeUrl) {
+	    if (youtubeUrl == null || youtubeUrl.trim().isEmpty()) {
+	        return null;
+	    }
+	    
+	    try {
+	        // Patrones comunes de URL de YouTube
+	        String videoId = null;
+	        
+	        // Para URLs como: https://www.youtube.com/watch?v=VIDEO_ID
+	        if (youtubeUrl.contains("youtube.com/watch?v=")) {
+	            int startIndex = youtubeUrl.indexOf("v=") + 2;
+	            int endIndex = youtubeUrl.indexOf("&", startIndex);
+	            if (endIndex == -1) {
+	                endIndex = youtubeUrl.length();
+	            }
+	            videoId = youtubeUrl.substring(startIndex, endIndex);
+	        }
+	        // Para URLs como: https://youtu.be/VIDEO_ID
+	        else if (youtubeUrl.contains("youtu.be/")) {
+	            int startIndex = youtubeUrl.lastIndexOf("/") + 1;
+	            int endIndex = youtubeUrl.indexOf("?", startIndex);
+	            if (endIndex == -1) {
+	                endIndex = youtubeUrl.length();
+	            }
+	            videoId = youtubeUrl.substring(startIndex, endIndex);
+	        }
+	        // Para URLs que ya están en formato embed
+	        else if (youtubeUrl.contains("youtube.com/embed/")) {
+	            return youtubeUrl;
+	        }
+	        
+	        // Si encontramos el video ID, construir URL embed
+	        if (videoId != null && !videoId.isEmpty()) {
+	            return "https://www.youtube.com/embed/" + videoId;
+	        }
+	    } catch (java.lang.Exception e) {
+	        // En caso de error, no mostrar video
+	        return null;
+	    }
+	    
+	    return null;
+	}
+%>
 
 <%
     DtDetalleEvento evento = (DtDetalleEvento) request.getAttribute("evento");
@@ -96,6 +142,31 @@
 						}
 						%>
 					</p>
+					
+					<!-- Sección de video de YouTube -->
+					<%
+					String videoUrl = evento.getVideourl();
+					if (videoUrl != null && !videoUrl.trim().isEmpty()) {
+						// Convertir URL de YouTube a formato embed
+						String embedUrl = convertToEmbedUrl(videoUrl.trim());
+						if (embedUrl != null) {
+					%>
+						<div class="mb-4">
+							<h5 class="mb-3"><i class="bi bi-play-circle"></i> Video del Evento</h5>
+							<div class="ratio ratio-16x9" style="max-width: 600px;">
+								<iframe src="<%=embedUrl%>" 
+								        title="Video de YouTube para <%=evento.getNombre()%>"
+								        frameborder="0" 
+								        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+								        referrerpolicy="strict-origin-when-cross-origin"
+								        allowfullscreen>
+								</iframe>
+							</div>
+						</div>
+					<%
+						}
+					}
+					%>
 				<%
 				}
 				%>

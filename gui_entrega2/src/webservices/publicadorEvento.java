@@ -77,9 +77,9 @@ public class publicadorEvento {
 		return new WrapperHashSet<String>(ICE.listarEdicionesTodas());
 	}
 	
-	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, WrapperHashSet<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, WrapperHashSet<String> categorias,String url)throws NombreEventoExcepcion, Exception {
 		LocalDate fechaA = LocalDate.parse(fechaAlta);
-		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias.toHashSet());
+		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias.toHashSet(), url);
 		
 	}
 		
@@ -136,11 +136,11 @@ public class publicadorEvento {
 	}
 
 	@WebMethod
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, String fechaInicio, String fechaFin, String fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, String fechaInicio, String fechaFin, String fechaAlta, String ciudad, String pais,String url)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
 		LocalDate fInicio = LocalDate.parse(fechaInicio);
 		LocalDate fFin = LocalDate.parse(fechaFin);
 		LocalDate fAlta = LocalDate.parse(fechaAlta);
-		ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, fInicio, fFin, fAlta, ciudad, pais);
+		ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, fInicio, fFin, fAlta, ciudad, pais,url);
 		
 	}
 	
@@ -237,9 +237,13 @@ public class publicadorEvento {
         }
         return byteArray;
     }
-    
+    @WebMethod
     public void finalizarEvento(String nombreEvento) {
 		ICE.finalizarEvento(nombreEvento);
 		return;
 	}
+    
+ 
+    
+    
 }

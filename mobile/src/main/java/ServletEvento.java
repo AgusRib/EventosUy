@@ -273,7 +273,7 @@ public class ServletEvento extends HttpServlet {
                                 sigla != null ? sigla.trim() : "", 
                                 fechaEvento.toString(), 
                                 descripcion != null ? descripcion.trim() : "", 
-                                categorias);
+                                categorias,"");
             
             WrapperHashSet todasLasCategoriasWrapper = portEvento.listarCategorias();
             List<Object> todasLasCategoriasObj = todasLasCategoriasWrapper.getItem();

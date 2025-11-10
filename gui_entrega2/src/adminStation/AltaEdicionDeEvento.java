@@ -329,7 +329,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 		            }
 
 		          
-		            ice.altaEdicionDeEvento(ev, org, nombre, sigla, fIni, fFin, fAlta, ciudad, pais);
+		            ice.altaEdicionDeEvento(ev, org, nombre, sigla, fIni, fFin, fAlta, ciudad, pais,"");
 		            JOptionPane.showMessageDialog(this, "La edicion se ha registrado con exito", "Alta Edicion",
 		                        JOptionPane.INFORMATION_MESSAGE);
 		            limpiarFormulario();
