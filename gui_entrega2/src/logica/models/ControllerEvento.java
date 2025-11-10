@@ -47,6 +47,18 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
+	public Set<String> listarEventosConFinalizados() {
+		ManejadorEvento mEventos = ManejadorEvento.getInstance();
+		Map<String, Evento> eventos = mEventos.obtenerEventos(); 
+		Set<String> nomEventos = new LinkedHashSet<>();
+		for (Evento eve : eventos.values()) {
+			nomEventos.add(eve.getNombre());
+
+		}
+		return nomEventos;
+	}
+	
+	@Override
 	public Set<String> listarEdicionesTodas(){
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Map<String, Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
