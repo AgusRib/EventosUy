@@ -4,15 +4,25 @@
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk
 export PATH=$JAVA_HOME/bin:$PATH
 
-# Ruta a Tomcat
-TOMCAT_DIR="/ens/devel01/tpgr57/tpgr57/apache-tomcat-11.0.13"
+# Obtener el directorio donde está el script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Ruta a Tomcat (relativa al directorio del proyecto)
+TOMCAT_DIR="$SCRIPT_DIR/apache-tomcat-11.0.13"
 WEBAPPS_DIR="$TOMCAT_DIR/webapps"
+
+# Verificar que Tomcat existe
+if [ ! -d "$TOMCAT_DIR" ]; then
+    echo "ERROR: No se encontró Tomcat en $TOMCAT_DIR"
+    echo "Por favor, descarga Tomcat 11.0.13 y colócalo en el directorio raíz del proyecto"
+    exit 1
+fi
 
 echo "Building Maven projects..."
 echo
 
 echo "Building gui_entrega2 (JAR)..."
-cd gui_entrega2
+cd "$SCRIPT_DIR/gui_entrega2"
 mvn clean install
 if [ $? -ne 0 ]; then
     echo "Error building gui_entrega2"
@@ -32,7 +42,7 @@ echo "datosPrueba copied successfully to target folder."
 echo
 
 echo "Building tarea2 (WAR)..."
-cd ../tarea2
+cd "$SCRIPT_DIR/tarea2"
 mvn clean install
 if [ $? -ne 0 ]; then
     echo "Error building tarea2"
@@ -42,7 +52,7 @@ echo "tarea2 build completed successfully"
 echo
 
 echo "Building dispositivoMobile (WAR)..."
-cd ../mobile
+cd "$SCRIPT_DIR/mobile"
 mvn clean install
 if [ $? -ne 0 ]; then
     echo "Error building mobile"
@@ -53,14 +63,14 @@ echo
 
 # Copiar WARs a Tomcat webapps
 echo "Copying WAR files to Tomcat webapps..."
-cp ../tarea2/target/tarea2-0.0.1-SNAPSHOT.war "$WEBAPPS_DIR/"
+cp "$SCRIPT_DIR/tarea2/target/tarea2-0.0.1-SNAPSHOT.war" "$WEBAPPS_DIR/"
 if [ $? -ne 0 ]; then
     echo "Error copying tarea2 WAR to Tomcat"
     exit 1
 fi
 echo "tarea2 WAR copied to $WEBAPPS_DIR"
 
-cp ./target/movil-0.0.1-SNAPSHOT.war "$WEBAPPS_DIR/"
+cp "$SCRIPT_DIR/mobile/target/movil-0.0.1-SNAPSHOT.war" "$WEBAPPS_DIR/"
 if [ $? -ne 0 ]; then
     echo "Error copying movil WAR to Tomcat"
     exit 1
