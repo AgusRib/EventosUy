@@ -74,6 +74,7 @@ public class AltaEdicionDeEvento extends JInternalFrame {
 
 		seleccionarEvento = new JComboBox<>();
 		for (String ev : ice.listarEventos()) {
+			
 		    seleccionarEvento.addItem(ev);
 		}
 		

@@ -157,7 +157,7 @@ public class ConsultaDeEvento extends JInternalFrame {
 
         // Vincular con el BackEnd
         
-        Set<String> eventos = controllerEvento.listarEventos();
+        Set<String> eventos = controllerEvento.listarEventosConFinalizados();
         cbxListadoDeEventos.removeAllItems();
         cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
         if(eventos != null) {for (String ev : eventos) cbxListadoDeEventos.addItem(ev);};
@@ -172,6 +172,9 @@ public class ConsultaDeEvento extends JInternalFrame {
         		llamarAConsultaEdicion(edicion,evento);
             }
         });
+        
+        
+        
         btnFinalizarEvento.addActionListener(e -> {
             String eventoSeleccionado = (String) cbxListadoDeEventos.getSelectedItem();
             
@@ -234,8 +237,13 @@ public class ConsultaDeEvento extends JInternalFrame {
             	txtNombreEvento.setText(dtde.getNombre());
             	txtSiglaEvento.setText(dtde.getSigla());
                 textAreaDescripcion.setText(dtde.getDescripcion());
-            
-                btnFinalizarEvento.setEnabled(true);
+                
+                if(!dtde.getFinalizado()) {
+                	btnFinalizarEvento.setEnabled(true);
+                } else {
+                	btnFinalizarEvento.setEnabled(false);
+                }
+                
            
             modeloCategorias.clear(); 
             Set<String> cats = dtde.getCategorias();
@@ -262,7 +270,7 @@ public class ConsultaDeEvento extends JInternalFrame {
     
     //Metodo para refrescar el combo de eventos
     public void refrescar() {
-        Set<String> eventos = controllerEvento.listarEventos();
+        Set<String> eventos = controllerEvento.listarEventosConFinalizados();
         cbxListadoDeEventos.removeAllItems();
         cbxListadoDeEventos.addItem(PLACEHOLDER_EVENTO);
         if (eventos != null) {
