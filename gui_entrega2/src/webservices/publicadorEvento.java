@@ -46,20 +46,18 @@ public class publicadorEvento {
 
     @WebMethod(exclude = true)
     public void publicar(){
-    	
 	    Properties props = new Properties();
-    	
-        FileInputStream fis;
+	    FileInputStream fis;
 		try {
-			Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
-			fis = new FileInputStream(userDir + "/application.properties");
+			// Buscar application.properties en el home del usuario (según Sección 7.9)
+			String userHome = System.getProperty("user.home");
+			String configPath = userHome + "/application.properties";
+			fis = new FileInputStream(configPath);
 			props.load(fis);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Publicando publicadorEvento...");
-		System.out.println(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento");
-         endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento", this);
+		endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento", this);
     }
     
     @WebMethod(exclude = true)

@@ -34,8 +34,12 @@ public class PublicadorImagenesService
         WebServiceException e = null;
         try {
             Properties props = new Properties();
-            Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
-            FileInputStream fis = new FileInputStream(userDir + "/application.properties");
+            
+            // Buscar application.properties en el home del usuario (según Sección 7.9)
+            String userHome = System.getProperty("user.home");
+            String configPath = userHome + "/application.properties";
+            
+            FileInputStream fis = new FileInputStream(configPath);
             props.load(fis);
             fis.close();
             

@@ -49,8 +49,10 @@ public class publicadorUsuario {
 	    	
 	        FileInputStream fis;
 			try {
-				Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
-				fis = new FileInputStream(userDir + "/application.properties");
+				// Buscar application.properties en el home del usuario (según Sección 7.9)
+				String userHome = System.getProperty("user.home");
+				String configPath = userHome + "/application.properties";
+				fis = new FileInputStream(configPath);
 				props.load(fis);
 			} catch (Exception e) {
 				e.printStackTrace();

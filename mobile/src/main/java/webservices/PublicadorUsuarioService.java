@@ -3,8 +3,6 @@ package webservices;
 import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 import javax.xml.namespace.QName;
 import jakarta.xml.ws.Service;
@@ -34,8 +32,12 @@ public class PublicadorUsuarioService
         WebServiceException e = null;
         try {
             Properties props = new Properties();
-            Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
-            FileInputStream fis = new FileInputStream(userDir + "/application.properties");
+            
+            // Buscar application.properties en el home del usuario (según Sección 7.9)
+            String userHome = System.getProperty("user.home");
+            String configPath = userHome + "/application.properties";
+            
+            FileInputStream fis = new FileInputStream(configPath);
             props.load(fis);
             fis.close();
             
