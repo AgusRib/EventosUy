@@ -99,23 +99,22 @@ public class ServletRegistro extends HttpServlet {
 
                 try {
                     // asistentes por la ediciòn 
-                    List<Object> asistObj = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
+                    List<String> asistObj = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
 
                     List<Map.Entry<String, DtRegistro>> regs = new ArrayList<>();
                     if (asistObj != null) {
-                        for (Object o : asistObj) {
-                            DtAsistente a = (DtAsistente) o;
-                            String nick = a.getNickname();
-                            if (nick == null || nick.isBlank()) continue;
+                        for (String nick : asistObj) {
+                        	
+                            if (nick == null || ((String)nick).isBlank()) continue;
 
                             // filtro de bùsqueda
-                            if (!qNorm.isEmpty() && (nick == null || !nick.toLowerCase().contains(qNorm))) {
+                            if (!qNorm.isEmpty() && (nick == null || !((String)nick).toLowerCase().contains(qNorm))) {
                                 continue;
                             }
 
-                            DtRegistro r = portEvento.infoRegistro(edicion, nick);
+                            DtRegistro r = portEvento.infoRegistro(edicion, ( (String) nick) );
                             if (r != null) {
-                                regs.add(new AbstractMap.SimpleEntry<>(nick, r));
+                                regs.add(new AbstractMap.SimpleEntry<>( ( (String) nick) , r));
                             }
                         }
                     }
