@@ -104,14 +104,14 @@ public class ManejadorUsuario {
 	    List<Asistente> lista = em.createQuery("SELECT u FROM Asistente u", Asistente.class).getResultList();
 	    usuarios = new HashMap<String, Usuario>();
 	    for (Asistente user : lista) {
-			usuarios.put(user.getNombre(), user);
+			usuarios.put(user.getNickname(), user);
 			emails.add(user.getEmail());
 		}
 	    
 	    List<Organizador> lista2 = em.createQuery("SELECT o FROM Organizador o", Organizador.class).getResultList();
 	    System.out.println("Organizadores cargados: " + lista2.size());
 	    for (Organizador user : lista2) {
-	    	usuarios.put(user.getNombre(), user);
+	    	usuarios.put(user.getNickname(), user);
 	    	emails.add(user.getEmail());
 	    }
 	    em.close();

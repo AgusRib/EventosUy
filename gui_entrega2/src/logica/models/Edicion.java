@@ -154,10 +154,12 @@ public class Edicion {
 
 	public DTDetalleEdicion devolverDT() {
 		Set<String> nombresTiposRegistros = new LinkedHashSet<>();
-		for (TipoRegistro tr : this.tiposRegistro) {
-			if (tr != null && tr.getNombre() != null) {
-	            nombresTiposRegistros.add(tr.getNombre());
-	        }
+		if (this.tiposRegistro != null) {
+			for (TipoRegistro tr : this.tiposRegistro) {
+				if (tr != null && tr.getNombre() != null) {
+		            nombresTiposRegistros.add(tr.getNombre());
+		        }
+			}
 		}
 		Set<String> nombresInstituciones = patrociniosPorInstitucion.keySet();
 		

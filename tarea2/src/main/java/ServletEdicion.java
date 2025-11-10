@@ -144,7 +144,6 @@ public class ServletEdicion extends HttpServlet {
                 return;
             }
             case "/listarEdiciones": {
-            	
             	DataUsuario user = (DataUsuario) request.getSession().getAttribute("usuario"); 
             	
             	// Fetch ediciones
@@ -153,6 +152,7 @@ public class ServletEdicion extends HttpServlet {
             		List<Object> edicionesOrganizadasObj = portUsuario.listarEdicionesOrganizadas(user.getNickname()).getItem();
             		for (Object obj : edicionesOrganizadasObj) {
             			String edicion = (String) obj;
+            			System.out.println("Edicion organizada: " + edicion);
             			DtDetalleEdicion ed = portEvento.mostrarDetallesEdicion(edicion);
             			ediciones.add(ed);
             			
