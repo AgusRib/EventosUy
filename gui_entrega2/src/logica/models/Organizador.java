@@ -12,7 +12,7 @@ public class Organizador extends Usuario {
 
 	@Column(name="DESC", nullable = false) private String descripcion;
     @Column(name="WEB") private String web;
-    @ElementCollection @CollectionTable(name = "EDICIONES_ORGANIZADAS") private Set<String> ediciones = new HashSet<String>();
+    @Transient private Set<String> ediciones = new HashSet<String>();
 	
     //GETTERS Y SETTERS
     public String getDescripcion() {

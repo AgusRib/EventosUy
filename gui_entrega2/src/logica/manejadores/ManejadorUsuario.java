@@ -12,6 +12,7 @@ import jakarta.persistence.Persistence;
 import logica.models.Asistente;
 import logica.models.Edicion;
 import logica.models.Organizador;
+import logica.models.Registro;
 import logica.models.Usuario;
 
 public class ManejadorUsuario {
@@ -98,7 +99,7 @@ public class ManejadorUsuario {
 		}
 
    public void inicializarUsuarios() {
-	   // Inicializar usuarios desde la db
+	   // Inicializar asistentes desde la db
 	   	EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
 	    EntityManager em = emf.createEntityManager();
 	    List<Asistente> lista = em.createQuery("SELECT u FROM Asistente u", Asistente.class).getResultList();
@@ -108,6 +109,22 @@ public class ManejadorUsuario {
 			emails.add(user.getEmail());
 		}
 	    
+	    // Inicializar registros desde la db y asignarlos a los asistentes correspondientes
+	    List<Registro> listaReg = em.createQuery("SELECT r FROM Registro r", Registro.class).getResultList();
+	    for (Registro reg : listaReg) {
+	    	Asistente asistente = reg.getAsistente();
+	    	if (asistente != null) {
+	    		asistente.addRegistro(reg);
+	    	}
+	    	Edicion edicion = reg.getEdicion();
+	    	if (edicion != null) {
+	    		edicion.agregarRegistro(reg);
+	    	}
+	    }
+	    
+	    
+	    
+	 	// Inicializar organizadores desde la db
 	    List<Organizador> lista2 = em.createQuery("SELECT o FROM Organizador o", Organizador.class).getResultList();
 	    System.out.println("Organizadores cargados: " + lista2.size());
 	    for (Organizador user : lista2) {

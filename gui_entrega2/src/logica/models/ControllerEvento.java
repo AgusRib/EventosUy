@@ -113,6 +113,7 @@ public class ControllerEvento implements IControllerEvento{
 	@Override
 	public DTDetalleEdicion mostrarDetallesEdicion(String nombreEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
+		System.out.println(mEdi.obtenerEdicionesArchivadas().size() + mEdi.obtenerEdicionesConfirmadas().size() + mEdi.obtenerEdicionesPendientes().size() + mEdi.obtenerEdicionesRechazadas().size());
 		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
 		System.out.println(edi);
 		DTDetalleEdicion dtEdi = edi.devolverDT();
@@ -426,6 +427,7 @@ public class ControllerEvento implements IControllerEvento{
 	    }
 	    
 	    System.out.println("Archivar Edicion: " + nombreEdi);
+	    System.out.println("Estado actual: " + edi.getEstado());
 	    
 	    mEdi.archivarEdicion(edi);
 	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");

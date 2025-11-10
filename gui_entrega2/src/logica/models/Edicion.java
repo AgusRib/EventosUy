@@ -255,4 +255,8 @@ public class Edicion {
 	public int getId() {
 		return id;
 	}
+	
+	public void agregarRegistro(Registro reg) {
+		this.registros.add(reg);
+	}
 }
