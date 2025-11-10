@@ -13,14 +13,26 @@ public class LocalDateAdapter extends XmlAdapter<String, java.time.LocalDate> {
         if (dateString == null || dateString.trim().isEmpty()) {
             return null;
         }
-        return java.time.LocalDate.parse(dateString);
+        try {
+            return java.time.LocalDate.parse(dateString);
+        } catch (Exception e) {
+            // Log the error and return null instead of throwing exception
+            System.err.println("Error parsing date: " + dateString + " - " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public String marshal(java.time.LocalDate localDate) throws Exception {
         if (localDate == null) {
-            return null;
+            return "";  // Return empty string instead of null
         }
-        return localDate.toString();
+        try {
+            return localDate.toString();
+        } catch (Exception e) {
+            // Log the error and return empty string instead of throwing exception
+            System.err.println("Error marshalling date: " + localDate + " - " + e.getMessage());
+            return "";
+        }
     }
 }

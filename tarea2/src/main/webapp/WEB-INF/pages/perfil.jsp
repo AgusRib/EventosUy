@@ -139,6 +139,16 @@ body.with-collapsed { padding-left: var(--sidebar-w-collapsed); }
                                                     <u>Institución:</u> <%= asis.getInstitucion() %>
                                                 </div>
                                             <% } %>
+                                            
+                                        <!-- Información de seguidores y seguidos -->
+                                        <div class="seguidores-info mt-3 pt-2" style="border-top: 1px solid var(--border);">
+                                            <div class="seguidores mb-1">
+                                                <u>Seguidores:</u> <span class="fw-bold"><%= request.getAttribute("cantidadSeguidores") != null ? request.getAttribute("cantidadSeguidores") : 0 %></span>
+                                            </div>
+                                            <div class="seguidos">
+                                                <u>Siguiendo:</u> <span class="fw-bold"><%= request.getAttribute("cantidadSeguidos") != null ? request.getAttribute("cantidadSeguidos") : 0 %></span>
+                                            </div>
+                                        </div>
 									</div>
 								</div>
 							</div>

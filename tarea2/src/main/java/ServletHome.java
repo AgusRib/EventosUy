@@ -28,8 +28,7 @@ public class ServletHome extends HttpServlet {
 		
         PublicadorEventoService serviceEvento = new PublicadorEventoService();
         PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
-    
-
+        
         List<DtDetalleEvento> eventosRecientes = new ArrayList<DtDetalleEvento>();
 		List<Object> lista = portEvento.obtenerEventosRecientes().getItem();
 		for (Object obj : lista) {

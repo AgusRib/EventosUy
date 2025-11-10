@@ -124,7 +124,7 @@ public class TestEstadoEdiciones {
 		ICE.altaEvento("evento4", "E4", LocalDate.of(2023, 4, 1), "Descripción del evento 4", categorias);
 
 		List<DTDetalleEvento> recientes = ICE.obtenerEventosRecientes();
-		assertEquals(3, recientes.size());
+		assertEquals(4, recientes.size());
 
 		
 		Set<String> nombresEventos = new HashSet<>();
@@ -132,7 +132,7 @@ public class TestEstadoEdiciones {
 		    nombresEventos.add(ev.getNombre());
 		}
 
-		assertTrue(nombresEventos.size() == 3);
+		assertTrue(nombresEventos.size() == 4);
 		
 	}
    

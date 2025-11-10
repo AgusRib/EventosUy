@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -95,7 +96,7 @@ public class TestControllerEvento2 {
 		assertEquals(true, tiposReg.contains("TipoRegTest"));
 
 		// Test listarAsistentesAEdicionDeEvento
-		Set<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento("EdTest");
+		List<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento("EdTest");
 		boolean found = false;
 		for (DTAsistente a : asistentes) {
 			if (a.getNickname().equals("willyrex")) {

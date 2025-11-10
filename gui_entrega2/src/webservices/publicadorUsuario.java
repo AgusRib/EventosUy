@@ -182,21 +182,29 @@ public class publicadorUsuario {
 	    
 	    
 
-
+        @WebMethod
+        public void seguirUsuario(String followerNickname, String followedNickname) throws UsuarioNoEncontrado {
+			ICU.seguirUsuario(followerNickname, followedNickname);
+		}
 	    
 	    @WebMethod
-	    public byte[] getFile(@WebParam(name = "fileName") String name)
-	                    throws  IOException {
-	        byte[] byteArray = null;
-	        try {
-	                File f = new File("files/" + name);
-	                FileInputStream streamer = new FileInputStream(f);
-	                byteArray = new byte[streamer.available()];
-	                streamer.read(byteArray);
-	        } catch (IOException e) {
-	                throw e;
-	        }
-	        return byteArray;
+	    public int cantidadSeguidores(String nickname) throws UsuarioNoEncontrado {
+	    	return ICU.cantidadSeguidores(nickname);
+	    }
+	    
+	    @WebMethod
+	    public int cantidadSeguidos(String nickname) throws UsuarioNoEncontrado {
+	    	return ICU.cantidadSeguidos(nickname);
+	    }
+	    
+	    @WebMethod
+	    public void dejarDeSeguirUsuario(String followerNickname, String followedNickname) throws UsuarioNoEncontrado {
+	    	ICU.dejarDeSeguirUsuario(followerNickname, followedNickname);
+	    }
+	    
+	    @WebMethod
+	    public boolean esSeguidor(String followerNickname, String followedNickname) throws UsuarioNoEncontrado {
+	    	return ICU.esSeguidor(followerNickname, followedNickname);
 	    }
 	
 	

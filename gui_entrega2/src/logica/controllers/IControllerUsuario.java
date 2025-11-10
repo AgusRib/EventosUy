@@ -55,6 +55,7 @@ public interface IControllerUsuario {
 	
 	
 	
+	
 	public DTAsistente infoAsistente(String nickname);
 	public DTOrganizador infoOrganizador(String nickname);
 	public void altaInstitucion(String nombre, String descripcion, String web) throws NombreInstiExistente, Exception;
@@ -66,6 +67,10 @@ public interface IControllerUsuario {
 	public String obtenerInstitucionAsistente(String nickname);
 	public boolean existeNickname(String nickname);
 	public boolean existeEmail(String email);
-	
+	public void seguirUsuario(String nicknameSeguidor, String nicknameSeguido) throws UsuarioNoEncontrado;
+	public int cantidadSeguidores(String nickname) throws UsuarioNoEncontrado;
+	public int cantidadSeguidos(String nickname) throws UsuarioNoEncontrado;
+	public void dejarDeSeguirUsuario(String nicknameSeguidor, String nicknameSeguido) throws UsuarioNoEncontrado;
+    public boolean esSeguidor(String nicknameSeguidor, String nicknameSeguido) throws UsuarioNoEncontrado;
 
 }

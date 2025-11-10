@@ -31,7 +31,7 @@ import webservices.UsuarioNoEncontrado_Exception;
 import webservices.WrapperHashSet;
 
 @MultipartConfig
-@WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })
+@WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil", "/seguirUsuario", "/dejarDeSeguir" })
 public class ServletUsuario extends HttpServlet {
     private static final long serialVersionUID = 1L;
     //private IControllerUsuario portUsuario;
@@ -130,9 +130,73 @@ public class ServletUsuario extends HttpServlet {
             modificarDatos(request, response);
             return;
         }
+        
+        // Manejar acciones de seguimiento
+        if ("/seguirUsuario".equals(path) || "/dejarDeSeguir".equals(path)) {
+            manejarSeguimiento(request, response);
+            return;
+        }
+        
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
     }
+    
+    private void manejarSeguimiento(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        DataUsuario sessionUser = (DataUsuario) request.getSession().getAttribute("usuario");
+        if (sessionUser == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
+        String usuarioASeguir = request.getParameter("usuario");
+        String path = request.getServletPath();
+        String referer = request.getHeader("Referer");
+        
+        if (usuarioASeguir == null || usuarioASeguir.isBlank()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetro usuario requerido");
+            return;
+        }
+
+        try {
+            if ("/seguirUsuario".equals(path)) {
+                portUsuario.seguirUsuario(sessionUser.getNickname(), usuarioASeguir);
+                request.getSession().setAttribute("mensajeSeguimiento", "Ahora sigues a " + usuarioASeguir);
+            } else if ("/dejarDeSeguir".equals(path)) {
+                portUsuario.dejarDeSeguirUsuario(sessionUser.getNickname(), usuarioASeguir);
+                request.getSession().setAttribute("mensajeSeguimiento", "Ya no sigues a " + usuarioASeguir);
+            }
+            
+            // Determinar a dónde redirigir basándose en el referer
+            if (referer != null && referer.contains("/listarUsuarios")) {
+                // Si viene de la lista de usuarios, regresar ahí
+                response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+            } else {
+                // Si viene del detalle de usuario, regresar ahí
+                response.sendRedirect(request.getContextPath() + "/detalleUsuario?usuarios=" + 
+                    java.net.URLEncoder.encode(usuarioASeguir, java.nio.charset.StandardCharsets.UTF_8));
+            }
+            
+        } catch (UsuarioNoEncontrado_Exception e) {
+            request.getSession().setAttribute("errorSeguimiento", "Usuario no encontrado");
+            // Redirigir apropiadamente según el origen
+            if (referer != null && referer.contains("/listarUsuarios")) {
+                response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/detalleUsuario?usuarios=" + 
+                    java.net.URLEncoder.encode(usuarioASeguir, java.nio.charset.StandardCharsets.UTF_8));
+            }
+        } catch (Exception e) {
+            request.getSession().setAttribute("errorSeguimiento", "Error interno del servidor: " + e.getMessage());
+            // Redirigir apropiadamente según el origen
+            if (referer != null && referer.contains("/listarUsuarios")) {
+                response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/detalleUsuario?usuarios=" + 
+                    java.net.URLEncoder.encode(usuarioASeguir, java.nio.charset.StandardCharsets.UTF_8));
+            }
+        }
+    }
     
     private void detalleUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
@@ -162,6 +226,44 @@ public class ServletUsuario extends HttpServlet {
 
         
         request.setAttribute("usuario", usr);
+
+        // Obtener mensajes de seguimiento desde la sesión
+        String mensajeSeguimiento = (String) request.getSession().getAttribute("mensajeSeguimiento");
+        String errorSeguimiento = (String) request.getSession().getAttribute("errorSeguimiento");
+        if (mensajeSeguimiento != null) {
+            request.setAttribute("mensajeSeguimiento", mensajeSeguimiento);
+            request.getSession().removeAttribute("mensajeSeguimiento");
+        }
+        if (errorSeguimiento != null) {
+            request.setAttribute("errorSeguimiento", errorSeguimiento);
+            request.getSession().removeAttribute("errorSeguimiento");
+        }
+
+        // Obtener información de seguidores y seguidos
+        try {
+            int cantidadSeguidores = portUsuario.cantidadSeguidores(usuario);
+            int cantidadSeguidos = portUsuario.cantidadSeguidos(usuario);
+            request.setAttribute("cantidadSeguidores", cantidadSeguidores);
+            request.setAttribute("cantidadSeguidos", cantidadSeguidos);
+            
+            // Verificar si el usuario actual está siguiendo a este usuario
+            boolean yaSigue = false;
+            if (sessionUser != null && sessionUser.getNickname() != null) {
+                try {
+                    yaSigue = portUsuario.esSeguidor(sessionUser.getNickname(), usuario);
+                } catch (UsuarioNoEncontrado_Exception e) {
+                    yaSigue = false;
+                }
+                request.setAttribute("usuarioLogueado", sessionUser.getNickname());
+            }
+            request.setAttribute("yaSigue", yaSigue);
+            
+        } catch (UsuarioNoEncontrado_Exception e) {
+            // Si hay error, ponemos valores por defecto
+            request.setAttribute("cantidadSeguidores", 0);
+            request.setAttribute("cantidadSeguidos", 0);
+            request.setAttribute("yaSigue", false);
+        }
 
         if (usr.getTipo() ==  TipoUsuario.ORGANIZADOR) {
             //DtOrganizador org = this.portUsuario.infoOrganizador(usuario);
@@ -229,6 +331,18 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("usuario", asis);
         }
 
+        // Obtener información de seguidores y seguidos para el perfil
+        try {
+            int cantidadSeguidores = portUsuario.cantidadSeguidores(usuario);
+            int cantidadSeguidos = portUsuario.cantidadSeguidos(usuario);
+            request.setAttribute("cantidadSeguidores", cantidadSeguidores);
+            request.setAttribute("cantidadSeguidos", cantidadSeguidos);
+        } catch (UsuarioNoEncontrado_Exception e) {
+            // Si hay error, ponemos valores por defecto
+            request.setAttribute("cantidadSeguidores", 0);
+            request.setAttribute("cantidadSeguidos", 0);
+        }
+
         // Imagen de usuario usando el nuevo sistema centralizado
         String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
         request.setAttribute("imagenUsuario", imagenUsuario);
@@ -240,6 +354,7 @@ public class ServletUsuario extends HttpServlet {
     private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String q = trimOrNull(request.getParameter("q"));
+        DataUsuario sessionUser = (DataUsuario) request.getSession().getAttribute("usuario");
 
         Set<String> usrs = new HashSet<>();
         List<Object> lista = this.portUsuario.listarUsuarios().getItem();
@@ -251,6 +366,7 @@ public class ServletUsuario extends HttpServlet {
         try {
             Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
             Map<String, String> imgsUsuarios = new java.util.HashMap<>();
+            Map<String, Boolean> estadosSeguimiento = new java.util.HashMap<>();
 
             for (String u : usrs) {
                 
@@ -268,6 +384,18 @@ public class ServletUsuario extends HttpServlet {
                     String imagenUsuario = ManejadorArchivos.buscarArchivo(u.toLowerCase(), "usuarios");
                     imgsUsuarios.put(u, imagenUsuario);
                     
+                    // Verificar si el usuario logueado ya sigue a este usuario
+                    boolean yaSigue = false;
+                    if (sessionUser != null && sessionUser.getNickname() != null 
+                        && !sessionUser.getNickname().equals(u)) {
+                        try {
+                            yaSigue = portUsuario.esSeguidor(sessionUser.getNickname(), u);
+                        } catch (UsuarioNoEncontrado_Exception e) {
+                            yaSigue = false;
+                        }
+                    }
+                    estadosSeguimiento.put(u, yaSigue);
+                    
                 } catch (UsuarioNoEncontrado_Exception e) {
                     e.printStackTrace();
                 }
@@ -275,6 +403,8 @@ public class ServletUsuario extends HttpServlet {
 
             request.setAttribute("usuarios", usuarios);
             request.setAttribute("imgsUsuarios", imgsUsuarios);
+            request.setAttribute("estadosSeguimiento", estadosSeguimiento);
+            request.setAttribute("usuarioLogueado", sessionUser != null ? sessionUser.getNickname() : null);
             request.setAttribute("q", q == null ? "" : q);
             request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
             
@@ -282,6 +412,8 @@ public class ServletUsuario extends HttpServlet {
             e1.printStackTrace();
             request.setAttribute("usuarios", java.util.Collections.emptySet());
             request.setAttribute("imgsUsuarios", java.util.Collections.emptyMap());
+            request.setAttribute("estadosSeguimiento", java.util.Collections.emptyMap());
+            request.setAttribute("usuarioLogueado", sessionUser != null ? sessionUser.getNickname() : null);
             request.setAttribute("q", q == null ? "" : q);
             request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
         }
