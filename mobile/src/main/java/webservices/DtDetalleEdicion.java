@@ -32,6 +32,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *         <element name="estado" type="{http://webservices/}estadoEdicion" minOccurs="0"/>
  *         <element name="nombresTiposRegistros" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         <element name="nombresInstituciones" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         <element name="videourl" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -52,7 +53,8 @@ import jakarta.xml.bind.annotation.XmlType;
     "organizador",
     "estado",
     "nombresTiposRegistros",
-    "nombresInstituciones"
+    "nombresInstituciones",
+    "videourl"
 })
 public class DtDetalleEdicion {
 
@@ -73,6 +75,7 @@ public class DtDetalleEdicion {
     protected List<String> nombresTiposRegistros;
     @XmlElement(nillable = true)
     protected List<String> nombresInstituciones;
+    protected String videourl;
 
     /**
      * Obtiene el valor de la propiedad nombre.
@@ -350,6 +353,30 @@ public class DtDetalleEdicion {
             nombresInstituciones = new ArrayList<>();
         }
         return this.nombresInstituciones;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad videourl.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVideourl() {
+        return videourl;
+    }
+
+    /**
+     * Define el valor de la propiedad videourl.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVideourl(String value) {
+        this.videourl = value;
     }
 
 }

@@ -1,8 +1,11 @@
-
 package webservices;
 
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Properties;
 import javax.xml.namespace.QName;
 import jakarta.xml.ws.Service;
 import jakarta.xml.ws.WebEndpoint;
@@ -17,7 +20,7 @@ import jakarta.xml.ws.WebServiceFeature;
  * Generated source version: 3.0
  * 
  */
-@WebServiceClient(name = "publicadorImagenesService", targetNamespace = "http://webservices/", wsdlLocation = "http://localhost:8080/publicadorImagenes?WSDL")
+@WebServiceClient(name = "publicadorImagenesService", targetNamespace = "http://webservices/")
 public class PublicadorImagenesService
     extends Service
 {
@@ -30,8 +33,17 @@ public class PublicadorImagenesService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://localhost:8080/publicadorImagenes?WSDL");
-        } catch (MalformedURLException ex) {
+            Properties props = new Properties();
+            Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
+            FileInputStream fis = new FileInputStream(userDir + "/application.properties");
+            props.load(fis);
+            fis.close();
+            
+            String serverUrl = props.getProperty("server.url", "http://localhost");
+            String serverPort = props.getProperty("server.port", "8080");
+            String wsdlUrl = serverUrl + ":" + serverPort + "/publicadorImagenes?WSDL";
+            url = new URL(wsdlUrl);
+        } catch (java.lang.Exception ex) {
             e = new WebServiceException(ex);
         }
         PUBLICADORIMAGENESSERVICE_WSDL_LOCATION = url;
