@@ -2,6 +2,7 @@ package logica.models;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import excepciones.EmailRepetido;
@@ -103,11 +104,7 @@ public class ControllerUsuario implements IControllerUsuario {
 		
 	}
 
-	@Override
-	public Usuario obtenerUsuario(String usuario) {
-		ManejadorUsuario mUser = ManejadorUsuario.getInstance();
-		return mUser.obtenerUsuario(usuario);
-	}
+	
 	
 	@Override
 	public Set<String> listarRegistrosAEventos(String nickname) {
@@ -218,6 +215,85 @@ public class ControllerUsuario implements IControllerUsuario {
 		  return null;
 	  }
 
+
+
+}
+  @Override
+  public boolean existeNickname(String nickname) {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  return mUser.existeNickname(nickname);
+  }
+  
+  @Override
+  public boolean existeEmail(String email) {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  return mUser.existeEmail(email);
+  }
+  @Override
+  public void seguirUsuario(String seguidor, String seguido) throws UsuarioNoEncontrado {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario userSeguidor = mUser.obtenerUsuario(seguidor);
+	  Usuario userSeguido = mUser.obtenerUsuario(seguido);
+	  if (userSeguidor == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + seguidor);
+	  }
+	  if (userSeguido == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + seguido);
+	  }
+	  userSeguidor.agregarSeguido(userSeguido);}
+  
+  @Override
+  public int cantidadSeguidores(String nickname) throws UsuarioNoEncontrado {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario user = mUser.obtenerUsuario(nickname);
+	  if (user == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + nickname);
+	  }
+	  if (user.getSeguidores() == null){
+		  return 0;
+	  }else {
+	  return user.getSeguidores().size();}}
+  @Override
+  public int cantidadSeguidos(String nickname) throws UsuarioNoEncontrado {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario user = mUser.obtenerUsuario(nickname);
+	  if (user == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + nickname);
+	  }
+	  if (user.getSeguidos() == null){
+		  return 0;}else {
+	  return user.getSeguidos().size();}}
+  
+  
+  @Override
+  public void dejarDeSeguirUsuario(String seguidor, String seguido) throws UsuarioNoEncontrado {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario userSeguidor = mUser.obtenerUsuario(seguidor);
+	  Usuario userSeguido = mUser.obtenerUsuario(seguido);
+	  if (userSeguidor == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + seguidor);
+	  }
+	  if (userSeguido == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + seguido);
+	  }
+	  userSeguidor.eliminarSeguido(userSeguido);}
+
+  @Override
+  public boolean esSeguidor(String seguidor, String seguido) throws UsuarioNoEncontrado {
+	  ManejadorUsuario mUser = ManejadorUsuario.getInstance();
+	  Usuario userSeguidor = mUser.obtenerUsuario(seguidor);
+	  Usuario userSeguido = mUser.obtenerUsuario(seguido);
+	  if (userSeguidor == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + seguidor);
+	  }
+	  if (userSeguido == null) {
+		  throw new UsuarioNoEncontrado("No existe un usuario con el nickname: " + seguido);
+	  }
+	  List<Usuario> seguidos = userSeguidor.getSeguidos();
+	  if (seguidos == null) {
+		  return false;
+	  }else {
+	  return seguidos.contains(userSeguido);}
 
 
 }}

@@ -52,10 +52,7 @@
 			      <a class="nav-link" href="listarEventos">Consulta Edición</a>
 			    </li>
 			    <li class="nav-item">
-			      <a class="nav-link" href="HomeServlet">Consulta Registro</a>
-			    </li>
-			    <li class="nav-item">
-			      <a class="nav-link" href="HomeServlet">Asistencia</a>
+			      <a class="nav-link" href="listarEdiciones?usuario=<%= user.getNickname() %>">Consulta de Registro/Asistencia</a>
 			    </li>
 			  </ul>
 			</div>

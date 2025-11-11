@@ -6,6 +6,53 @@
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
 <%@ page import="java.time.LocalDate" %>
+
+<%!
+ // Función Java para convertir URL de YouTube a formato embed
+private String convertToEmbedUrl(String youtubeUrl) {
+    if (youtubeUrl == null || youtubeUrl.trim().isEmpty()) {
+        return null;
+    }
+    
+    try {
+        // Patrones comunes de URL de YouTube
+        String videoId = null;
+        
+        // Para URLs como: https://www.youtube.com/watch?v=VIDEO_ID
+        if (youtubeUrl.contains("youtube.com/watch?v=")) {
+            int startIndex = youtubeUrl.indexOf("v=") + 2;
+            int endIndex = youtubeUrl.indexOf("&", startIndex);
+            if (endIndex == -1) {
+                endIndex = youtubeUrl.length();
+            }
+            videoId = youtubeUrl.substring(startIndex, endIndex);
+        }
+        // Para URLs como: https://youtu.be/VIDEO_ID
+        else if (youtubeUrl.contains("youtu.be/")) {
+            int startIndex = youtubeUrl.lastIndexOf("/") + 1;
+            int endIndex = youtubeUrl.indexOf("?", startIndex);
+            if (endIndex == -1) {
+                endIndex = youtubeUrl.length();
+            }
+            videoId = youtubeUrl.substring(startIndex, endIndex);
+        }
+        // Para URLs que ya están en formato embed
+        else if (youtubeUrl.contains("youtube.com/embed/")) {
+            return youtubeUrl;
+        }
+        
+        // Si encontramos el video ID, construir URL embed
+        if (videoId != null && !videoId.isEmpty()) {
+            return "https://www.youtube.com/embed/" + videoId;
+        }
+    } catch (java.lang.Exception e) {
+        // En caso de error, no mostrar video
+        return null;
+    }
+    
+    return null;
+}
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -96,34 +143,78 @@
 				<div class="mb-2">
 					<strong>Ciudad:</strong> <%= edi.getCiudad() %>
 				</div>
+				
+				<!-- Sección de video de YouTube -->
 				<%
-				boolean esOrganizador = false;
-				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
-					esOrganizador = (boolean) request.getAttribute("esOrganizador");
-					if ((boolean) request.getAttribute("esOrganizador") == true) {
+				String videoUrl = edi.getVideourl();
+				if (videoUrl != null && !videoUrl.trim().isEmpty()) {
+					// Convertir URL de YouTube a formato embed
+					String embedUrl = convertToEmbedUrl(videoUrl.trim());
+					if (embedUrl != null) {
 				%>
-				<div class="mt-4">
-					<a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
-						<button class="button2 rounded-3 p-3">
-							<div class="header-button">Ver Registros</div>
-						</button>
-					</a>
-				</div> <% }} else if (user != null) {
-					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
-						LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
-						XMLGregorianCalendar fechaFin = edi.getFechaFin();
-						if (fechaActual.isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {
-					%> 
-					<div class="alert alert-secondary text-center mb-0" role="alert">
-						Esta edición ya finalizó.</div>
-					<% } } else { %>
-				<div class="mt-4">
-					<a href="ver-registro?edicion=<%= edi.getNombre()  %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
-						<button class="button2 rounded-3 p-3">
-							<div class="header-button">Ver detalle del Registro</div>
-						</button>
-					</a>
-				</div> <% }} %>
+					<div class="mt-4 mb-4">
+						<h5 class="mb-3"><i class="bi bi-play-circle"></i> Video de la Edición</h5>
+						<div class="ratio ratio-16x9" style="max-width: 600px;">
+							<iframe src="<%=embedUrl%>" 
+							        title="Video de YouTube para <%=edi.getNombre()%>"
+							        frameborder="0" 
+							        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+							        referrerpolicy="strict-origin-when-cross-origin"
+							        allowfullscreen>
+							</iframe>
+						</div>
+					</div>
+				<%
+					}
+				}
+				%>
+				
+				<%					
+					Boolean esOrgAttr = (Boolean) request.getAttribute("esOrganizador");
+					boolean esOrganizador = (esOrgAttr != null) ? esOrgAttr.booleanValue() : false;
+					
+					Boolean usuRegAttr = (Boolean) request.getAttribute("usuarioRegistrado");
+					boolean usuarioRegistrado = (usuRegAttr != null) ? usuRegAttr.booleanValue() : false;
+					
+					LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
+					XMLGregorianCalendar fechaFinX = edi.getFechaFin();
+					LocalDate fechaFin = (fechaFinX != null)
+					        ? fechaFinX.toGregorianCalendar().toZonedDateTime().toLocalDate()
+					        : null;
+					boolean edicionFinalizada = (fechaActual != null && fechaFin != null && fechaActual.isAfter(fechaFin));
+					%>
+					
+					<!-- solo “Ver Registros” (organizador) o “Ver detalle del Registro” (asistente ya registrado) -->
+					<% if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR && esOrganizador) { %>
+					  <!-- ver lista de registros de org -->
+					  <div class="mt-4">
+					    <a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
+					      <button class="button2 rounded-3 p-3">
+					        <div class="header-button">Ver Registros</div>
+					      </button>
+					    </a>
+					  </div>
+					
+					<% } else if (user != null) { %>
+					  <% if (usuarioRegistrado) { %>
+					    <!-- asistente registrado en esta edición ver detalle -->
+					    <div class="mt-4">
+					      <a href="ver-registro?edicion=<%= edi.getNombre() %>&usuario=<%= user.getNickname() %>" style="text-decoration: none;">
+					        <button class="button2 rounded-3 p-3">
+					          <div class="header-button">Ver detalle del Registro</div>
+					        </button>
+					      </a>
+					    </div>
+					  <% } else { %>
+					    <!-- sin login no se muestra botón de registrarse -->
+					    <% if (edicionFinalizada) { %>
+					      <div class="alert alert-secondary text-center mb-0" role="alert">
+					        Esta edición ya finalizó.
+					      </div>
+					    <% } %>
+					  <% } %>
+					<% } %>
+					
 
 				<!-- Tipos de registros -->
 				<div class="mt-4">

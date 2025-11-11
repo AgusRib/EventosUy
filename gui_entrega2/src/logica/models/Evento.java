@@ -19,6 +19,7 @@ public class Evento{
 	private List<Edicion> colEdicionesRechazadas;
 	private List<Categoria> colCategorias;
 	private boolean finalizado;
+	private String videourl;
 
 	public Evento(String nombre, String sigla,  LocalDate fecha, String descripcion) {
 		this.nombre = nombre;
@@ -30,7 +31,24 @@ public class Evento{
 		this.colEdicionesRechazadas = new ArrayList<>();
 		this.colCategorias = new ArrayList<>();
 		this.finalizado = false;
+		this.videourl = "";
 	}
+	
+	public Evento(String nombre, String sigla,  LocalDate fecha, String descripcion, String videourl) {
+		this.nombre = nombre;
+		this.fechaAlta = fecha;
+		this.sigla = sigla;
+		this.descripcion = descripcion;
+		this.colEdicionesConfirmadas = new ArrayList<>();
+		this.colEdicionesIngresadas = new ArrayList<>();
+		this.colEdicionesRechazadas = new ArrayList<>();
+		this.colCategorias = new ArrayList<>();
+		this.finalizado = false;
+		this.videourl = videourl;
+	}
+	
+	public String getVideourl() {
+		return videourl;}
 
 	public String getNombre() {
 		return nombre;
@@ -101,7 +119,7 @@ public class Evento{
 	}
 
 	public DTDetalleEvento devolverDT() {
-		DTDetalleEvento dtE = new DTDetalleEvento(this.nombre, this.sigla, this.fechaAlta, this.descripcion, this.getCategorias(), this.getCategorias(), this.finalizado);
+		DTDetalleEvento dtE = new DTDetalleEvento(this.nombre, this.sigla, this.fechaAlta, this.descripcion, this.getCategorias(), this.getCategorias(), this.finalizado,this.videourl);
 		return dtE;
 	}
 

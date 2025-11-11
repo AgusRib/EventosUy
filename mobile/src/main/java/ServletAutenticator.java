@@ -207,16 +207,19 @@ public class ServletAutenticator extends HttpServlet {
 		}
 		
 		if (loginExitoso && usuario != null) {
+			// Verificar que el usuario NO sea organizador en la versión mobile
+			if (usuario.getTipo() != null && usuario.getTipo().toString().equals("ORGANIZADOR")) {
+				request.setAttribute("error", "Los organizadores no pueden acceder desde la aplicación móvil. Por favor, utilice la aplicación web.");
+				request.setAttribute("nickname", nicknameomail);
+				request.getRequestDispatcher("/WEB-INF/pages/iniciosesion.jsp").forward(request, response);
+				return;
+			}
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("usuario", usuario);
 			
-			String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), 
-														getServletContext().getRealPath("/uploads/usuarios/"));
-			if (pfp != null) {
-				session.setAttribute("pfp", "uploads/usuarios/" + pfp);
-			} else {
-				session.setAttribute("pfp", "uploads/usuarios/default.jpg");
-			}
+			String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), "usuarios");
+			session.setAttribute("pfp", pfp);
 			
 			response.sendRedirect(request.getContextPath() + "/HomeServlet");
 		} else {

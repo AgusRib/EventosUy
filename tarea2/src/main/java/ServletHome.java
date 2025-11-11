@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +28,7 @@ public class ServletHome extends HttpServlet {
 		
         PublicadorEventoService serviceEvento = new PublicadorEventoService();
         PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
-    
-
+        
         List<DtDetalleEvento> eventosRecientes = new ArrayList<DtDetalleEvento>();
 		List<Object> lista = portEvento.obtenerEventosRecientes().getItem();
 		for (Object obj : lista) {
@@ -45,11 +43,11 @@ public class ServletHome extends HttpServlet {
 		    request.setAttribute("mensaje", mensaje);
 		}
 		
-        // Fetch imagen de edicion
+        // Fetch imagen de eventos usando el nuevo sistema centralizado
 		for (DtDetalleEvento e : eventosRecientes) {
-	        String eventoImg = ManejadorArchivos.buscarArchivo(e.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-	        if (eventoImg != null) {
-	        	request.setAttribute(e.getNombre(), "uploads/eventos/" + eventoImg);
+	        String eventoImg = ManejadorArchivos.buscarArchivo(e.getNombre().toLowerCase(), "eventos");
+	        if (eventoImg != null ) {
+	        	request.setAttribute(e.getNombre(), eventoImg);
 	        } else {
 	        	request.setAttribute(e.getNombre(), "uploads/eventos/default.jpg");
 	        }

@@ -166,9 +166,9 @@ public class ConsultaUsuario extends JInternalFrame {
 						ConsultaRegistro cr = ConsultaRegistro.getInstance(Factory.getInstance().getControllerEvento(), Factory.getInstance().getControllerUsuario());
 					
 						String usuario = listUsuarios.getSelectedValue();
-						Usuario u = controllerUsr.obtenerUsuario(usuario);
 						try {
-							cr.invocacionDesdeConsultaUsuario(u, listAsociaciones.getSelectedValue());
+							DataUsuario dataUser = controllerUsr.infoUsuario(usuario);
+							cr.invocacionDesdeConsultaUsuario(dataUser, listAsociaciones.getSelectedValue());
 						} catch (UsuarioNoEncontrado e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -313,13 +313,13 @@ public class ConsultaUsuario extends JInternalFrame {
 	private void detallesUsuario() throws UsuarioNoEncontrado {
 		String selected = listUsuarios.getSelectedValue();
 		if (selected == null) {
-			
 			return;
 		}
 		panelDetallesUsr.setVisible(true);
 		DataUsuario dataUser = controllerUsr.infoUsuario(selected);
 		txtNombre.setText(dataUser.getNombre());
 		txtEmail.setText(dataUser.getEmail());
+		
 		// Hide all extra fields first
 		lblApellido.setVisible(false);
 		txtApellido.setVisible(false);
@@ -329,33 +329,38 @@ public class ConsultaUsuario extends JInternalFrame {
 		scrollDescripcion.setVisible(false);
 		lblWeb.setVisible(false);
 		txtWeb.setVisible(false);
-		Usuario user = controllerUsr.obtenerUsuario(selected);
+		
 		if (dataUser.getTipo() == TipoUsuario.ASISTENTE) {
 			lblAsociaciones.setText("Registros a ediciones:");
 			listAsociaciones.setListData(controllerUsr.listarRegistrosAEventos(selected).toArray(new String[0]));
-			// Show and set apellido and fecha de nacimiento
-			lblApellido.setVisible(true);
-			txtApellido.setVisible(true);
-			lblFechaNac.setVisible(true);
-			txtFechaNac.setVisible(true);
-			if (user instanceof logica.models.Asistente) {
-				logica.models.Asistente asistente = (logica.models.Asistente) user;
-				txtApellido.setText(asistente.getApellido());
-				java.time.LocalDate fechaNac = asistente.getFechaNacimiento();
-				txtFechaNac.setText(fechaNac != null ? fechaNac.toString() : "");
+			
+			// Get detailed asistente information using DTAsistente
+			logica.data_types.DTAsistente asistenteInfo = controllerUsr.infoAsistente(selected);
+			if (asistenteInfo != null) {
+				// Show and set apellido and fecha de nacimiento
+				lblApellido.setVisible(true);
+				txtApellido.setVisible(true);
+				lblFechaNac.setVisible(true);
+				txtFechaNac.setVisible(true);
+				
+				txtApellido.setText(asistenteInfo.getApellido() != null ? asistenteInfo.getApellido() : "");
+				txtFechaNac.setText(asistenteInfo.getFechaNacimiento() != null ? asistenteInfo.getFechaNacimiento().toString() : "");
 			}
 		} else {
 			lblAsociaciones.setText("Ediciones organizadas:");
 			listAsociaciones.setListData(controllerUsr.listarEdicionesOrganizadas(selected).toArray(new String[0]));
-			// Show and set descripcion and web
-			lblDescripcion.setVisible(true);
-			scrollDescripcion.setVisible(true);
-			lblWeb.setVisible(true);
-			txtWeb.setVisible(true);
-			if (user instanceof logica.models.Organizador) {
-				logica.models.Organizador organizador = (logica.models.Organizador) user;
-				txtDescripcion.setText(organizador.getDescripcion());
-				txtWeb.setText(organizador.getWeb());
+			
+			// Get detailed organizador information using DTOrganizador
+			logica.data_types.DTOrganizador organizadorInfo = controllerUsr.infoOrganizador(selected);
+			if (organizadorInfo != null) {
+				// Show and set descripcion and web
+				lblDescripcion.setVisible(true);
+				scrollDescripcion.setVisible(true);
+				lblWeb.setVisible(true);
+				txtWeb.setVisible(true);
+				
+				txtDescripcion.setText(organizadorInfo.getDescripcion() != null ? organizadorInfo.getDescripcion() : "");
+				txtWeb.setText(organizadorInfo.getWeb() != null ? organizadorInfo.getWeb() : "");
 			}
 		}
 	}

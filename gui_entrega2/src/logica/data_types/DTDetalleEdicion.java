@@ -34,6 +34,7 @@ public class DTDetalleEdicion {
 	
     private final Set<String> nombresTiposRegistros;
 	private final Set<String> nombresInstituciones;
+	private String videourl;
 	
 	public DTDetalleEdicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
 			String ciudad, String pais, String organizador, Set<String> tiposRegistro, Set<String> instituciones, EstadoEdicion estado) {
@@ -49,7 +50,27 @@ public class DTDetalleEdicion {
 		this.nombresTiposRegistros = tiposRegistro;
 		this.nombresInstituciones = instituciones;
 		this.estado = estado;
+		this.videourl = "";
 	}
+	
+	public DTDetalleEdicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
+			String ciudad, String pais, String organizador, Set<String> tiposRegistro, Set<String> instituciones, EstadoEdicion estado, String videourl) {
+		super();
+		this.nombre = nombre;
+		this.sigla = sigla;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.fechaAlta = fechaAlta;
+		this.ciudad = ciudad;
+		this.pais = pais;
+		this.organizador = organizador;
+		this.nombresTiposRegistros = tiposRegistro;
+		this.nombresInstituciones = instituciones;
+		this.estado = estado;
+		this.videourl = videourl;
+	}
+	
+	
 	
 
 	public DTDetalleEdicion() {
@@ -155,6 +176,13 @@ public class DTDetalleEdicion {
 		this.estado = estado;
 	}
 	
+	public String getVideourl() {
+		return videourl;
+	}
+	
+	public void setVideourl(String videourl) {
+		this.videourl = videourl;
+	}
 	
 
 	

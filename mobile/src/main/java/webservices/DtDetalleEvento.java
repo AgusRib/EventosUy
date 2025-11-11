@@ -28,6 +28,7 @@ import jakarta.xml.bind.annotation.XmlType;
  *         <element name="categorias" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         <element name="ediciones" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         <element name="finalizado" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         <element name="videourl" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -44,7 +45,8 @@ import jakarta.xml.bind.annotation.XmlType;
     "descripcion",
     "categorias",
     "ediciones",
-    "finalizado"
+    "finalizado",
+    "videourl"
 })
 public class DtDetalleEvento {
 
@@ -58,6 +60,7 @@ public class DtDetalleEvento {
     @XmlElement(nillable = true)
     protected List<String> ediciones;
     protected boolean finalizado;
+    protected String videourl;
 
     /**
      * Obtiene el valor de la propiedad nombre.
@@ -231,6 +234,30 @@ public class DtDetalleEvento {
      */
     public void setFinalizado(boolean value) {
         this.finalizado = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad videourl.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVideourl() {
+        return videourl;
+    }
+
+    /**
+     * Define el valor de la propiedad videourl.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVideourl(String value) {
+        this.videourl = value;
     }
 
 }

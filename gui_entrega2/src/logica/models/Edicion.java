@@ -1,9 +1,11 @@
 package logica.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,7 +26,7 @@ import logica.data_types.DTTipoRegistro;
 import logica.enumerators.EstadoEdicion;
 
 @Entity
-@Table(name = "Ediciones_Archivadas")
+@Table(name="EDICIONES")
 public class Edicion {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -56,6 +58,8 @@ public class Edicion {
 	private Organizador organizador;
 	@Transient
 	private EstadoEdicion estado;
+	@Transient
+	private String videourl;
     
 	public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
 			String ciudad, String pais, Evento evento, Organizador organizador) {
@@ -70,11 +74,35 @@ public class Edicion {
 		this.registros = new LinkedHashSet<>();
 		this.tiposRegistro = new LinkedHashSet<>();
 		this.evento = evento;
+		this.nombreEvento = (evento != null) ? evento.getNombre() : null;
+		this.organizador = organizador;
+		this.setEstado(EstadoEdicion.Ingresada); //siempre que agregamos una edicion, estado = ingresada.
+		this.videourl = "";
+
+	}
+	
+    public Edicion(String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta,
+			String ciudad, String pais, Evento evento, Organizador organizador, String videourl) {
+		super();
+		this.nombre = nombre;
+		this.sigla = sigla;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.fechaAlta = fechaAlta;
+		this.ciudad = ciudad;
+		this.pais = pais;
+		this.registros = new LinkedHashSet<>();
+		this.tiposRegistro = new LinkedHashSet<>();
+		this.evento = evento;
 		this.nombreEvento = evento.getNombre();
 		this.organizador =organizador;
 		this.setEstado(EstadoEdicion.Ingresada); //siempre que agregamos una edicion, estado = ingresada.
+		this.videourl = videourl;
 
 	}
+	
+	
+	
 	
 	public Edicion() {}
 	
@@ -106,6 +134,9 @@ public class Edicion {
 	public Organizador getOrganizador() {
 		return organizador;
 	}
+	public String getVideourl() {
+		return videourl;
+	}
 	
 	public EstadoEdicion getEstado() {
 		return estado;
@@ -125,8 +156,8 @@ public class Edicion {
 		return setTipoReg;
 	}
 	
-	public Set<DTAsistente> obtenerAsistentes(){
-		Set<DTAsistente> setAsist= new HashSet<>();
+	public List<DTAsistente> obtenerAsistentes(){
+		List<DTAsistente> setAsist= new ArrayList<>();
 		for (Registro reg : this.registros) {
 			Asistente asist = reg.getAsistente();
 			setAsist.add(asist.infoAsist() );
@@ -174,7 +205,7 @@ public class Edicion {
 				organizador.getNickname(),
 				nombresTiposRegistros,
 				nombresInstituciones,
-				this.estado
+				this.estado,this.videourl
 		);
 	}
 	
@@ -205,11 +236,11 @@ public class Edicion {
 		return true;
 	}
 
-	public void crearRegistro(Asistente asis, String tipoReg) {
+	public void crearRegistro(Asistente asis, String tipoReg,boolean esGratis) {
 		
 		TipoRegistro treg = this.getTipoRegistro(tipoReg);
 		treg.restarCupo();
-		Registro nReg = new Registro(asis, treg, this, false);
+		Registro nReg = new Registro(asis, treg, this, false,esGratis);
 		this.registros.add(nReg);
 		asis.addRegistro(nReg);
 		return;
@@ -259,4 +290,25 @@ public class Edicion {
 	public void agregarRegistro(Registro reg) {
 		this.registros.add(reg);
 	}
+	
+	public Registro getRegistroDe(String nickAsistente) {
+	    if (nickAsistente == null || nickAsistente.isBlank()) return null;
+	    for (Registro r : this.registros) {
+	        Asistente a = r.getAsistente();
+	        if (a != null && nickAsistente.equals(a.getNickname())) return r;
+	    }
+	    return null;
+	}
+	
+	public java.util.Set<Registro> getRegistros() {
+		return this.registros;
+	}
+	
+	public void setNombreEvento(String nombreEvento) {
+		this.nombreEvento = nombreEvento;
+	}
+
+
+	
 }
+

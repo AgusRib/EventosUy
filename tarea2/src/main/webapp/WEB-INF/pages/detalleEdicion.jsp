@@ -6,6 +6,53 @@
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
 <%@ page import="java.time.LocalDate" %>
+
+<%!
+	// Función Java para convertir URL de YouTube a formato embed
+	private String convertToEmbedUrl(String youtubeUrl) {
+		if (youtubeUrl == null || youtubeUrl.trim().isEmpty()) {
+			return null;
+		}
+		
+		try {
+			// Patrones comunes de URL de YouTube
+			String videoId = null;
+			
+			// Para URLs como: https://www.youtube.com/watch?v=VIDEO_ID
+			if (youtubeUrl.contains("youtube.com/watch?v=")) {
+				int startIndex = youtubeUrl.indexOf("v=") + 2;
+				int endIndex = youtubeUrl.indexOf("&", startIndex);
+				if (endIndex == -1) {
+					endIndex = youtubeUrl.length();
+				}
+				videoId = youtubeUrl.substring(startIndex, endIndex);
+			}
+			// Para URLs como: https://youtu.be/VIDEO_ID
+			else if (youtubeUrl.contains("youtu.be/")) {
+				int startIndex = youtubeUrl.lastIndexOf("/") + 1;
+				int endIndex = youtubeUrl.indexOf("?", startIndex);
+				if (endIndex == -1) {
+					endIndex = youtubeUrl.length();
+				}
+				videoId = youtubeUrl.substring(startIndex, endIndex);
+			}
+			// Para URLs que ya están en formato embed
+			else if (youtubeUrl.contains("youtube.com/embed/")) {
+				return youtubeUrl;
+			}
+			
+			// Si encontramos el video ID, construir URL embed
+			if (videoId != null && !videoId.isEmpty()) {
+				return "https://www.youtube.com/embed/" + videoId;
+			}
+		} catch (java.lang.Exception e) {
+			// En caso de error, no mostrar video
+			return null;
+		}
+		
+		return null;
+	}
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -30,16 +77,22 @@
 </head>
 
 <body>
-	<% DataUsuario user = (DataUsuario) session.getAttribute("usuario");  %>
+	<% 
+	DtDetalleEdicion edi = (DtDetalleEdicion) request.getAttribute("edicion");
+	DataUsuario user = (DataUsuario) session.getAttribute("usuario");  
+	boolean esOrganizador = (boolean) request.getAttribute("esOrganizador");
+	LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
+	XMLGregorianCalendar fechaFin = edi.getFechaFin();
+	%>
 	<jsp:include page="../templates/header.jsp"></jsp:include>
 
 	<div class="container px-4 ">
-		<jsp:include page="../templates/searchbarevento.jsp"></jsp:include>
+	
 	</div>
 	<div class="container px-4 mt-3">
 		<div class="row pb-4">
 			<!-- Imagen de la edición y categorias-->
-			<% DtDetalleEdicion edi = (DtDetalleEdicion) request.getAttribute("edicion");%>
+
 			<div class="col-md-3 col-lg-3 col-xl-3 ">
 				<img src="<%= request.getAttribute("imagenEdicion") %>"
 					alt="<%= request.getAttribute("nombre") %>" class="img-fluid rounded"
@@ -49,12 +102,13 @@
 			<!-- Información principal de la edición -->
 			<div class="col-md-9 col-lg-9 col-xl-9 mt-3 mt-md-0 info-evento px-5">
 				<div class="row pb-2">
-					<h2 class="fw-bold col-md-10"> <%= edi.getNombre() %></h2>
+					<div class="d-flex align-items-center gap-3 mb-2">
+					<h2 class="fw-bold col-md-10 mb-0"> <%= edi.getNombre() %></h2>
 									<%
 				boolean esOrg = false;
 				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
 					esOrg = (boolean) request.getAttribute("esOrganizador");
-					if (edi.getEstado() == EstadoEdicion.CONFIRMADA) {
+					if (edi.getEstado() == EstadoEdicion.CONFIRMADA && fechaActual.isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate())) {
 				%>
 					<form method="post" class="col-12 col-md-2" action="archivarEdicion" style="text-decoration: none;">
 					<input type="hidden" name="nombreEdicion" value="<%= edi.getNombre() %>">
@@ -67,6 +121,32 @@
 				 }} %>
 				</div>
 				
+					<%
+					// Mostrar tag de estado solo si es organizador de la edición
+					if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
+						if (esOrg) {
+							String estadoClass = "";
+							String estadoTexto = "";
+							EstadoEdicion estado = edi.getEstado();
+							
+							switch(estado) {
+								case CONFIRMADA:
+									estadoClass = "badge bg-success";
+									estadoTexto = "Confirmada";
+									break;
+								case INGRESADA:
+									estadoClass = "badge bg-warning text-dark";
+									estadoTexto = "Pendiente";
+									break;
+								case RECHAZADA:
+									estadoClass = "badge bg-danger";
+									estadoTexto = "Rechazada";
+									break;
+							}
+					%>
+					<span class="<%= estadoClass %> py-2"><%= estadoTexto %></span>
+					<% }} %>
+				</div>
 				<div class="mb-2 d-flex align-items-center">
 					<strong class="me-2">Organizador:</strong> <a
 						href="detalleUsuario?usuarios=<%= edi.getOrganizador() %>"
@@ -115,11 +195,10 @@
 					<strong>Ciudad:</strong> <%= edi.getCiudad() %>
 				</div>
 				<%
-				boolean esOrganizador = false;
 				if (user != null && user.getTipo() == TipoUsuario.ORGANIZADOR) { 
-					esOrganizador = (boolean) request.getAttribute("esOrganizador");
+					
 					if ((boolean) request.getAttribute("esOrganizador") == true 
-						&& edi.getEstado() == EstadoEdicion.CONFIRMADA) {
+						&& edi.getEstado() == EstadoEdicion.CONFIRMADA || edi.getEstado() == EstadoEdicion.ARCHIVADA) {
 				%>
 				<div class="mt-4">
 					<a href="listar-registros?edicion=<%= edi.getNombre() %>" style="text-decoration: none;">
@@ -128,9 +207,8 @@
 						</button>
 					</a>
 				</div> <% }} else if (user != null) {
-					if (!(boolean) request.getAttribute("usuarioRegistrado")) {
-						LocalDate fechaActual = (LocalDate) session.getAttribute("fecha");
-						XMLGregorianCalendar fechaFin = edi.getFechaFin();
+					boolean usuarioRegistrado = (boolean) request.getAttribute("usuarioRegistrado");
+					if (!usuarioRegistrado) {
 						if (fechaActual.isAfter(fechaFin.toGregorianCalendar().toZonedDateTime().toLocalDate()) ) {
 					%> 
 					<div class="alert alert-secondary text-center mb-0" role="alert">
@@ -268,6 +346,30 @@
 						</div> <% }} %>
 					</div>
 				</div>
+				<!-- Sección de video de YouTube -->
+				<%
+				String videoUrl = edi.getVideourl();
+				if (videoUrl != null && !videoUrl.trim().isEmpty()) {
+					// Convertir URL de YouTube a formato embed
+					String embedUrl = convertToEmbedUrl(videoUrl.trim());
+					if (embedUrl != null) {
+				%>
+					<div class="mt-4">
+						<h5 class="mb-3"><i class="bi bi-play-circle"></i> Video de la Edición</h5>
+						<div class="ratio ratio-16x9" style="max-width: 600px;">
+							<iframe src="<%=embedUrl%>" 
+							        title="Video de YouTube para <%=edi.getNombre()%>"
+							        frameborder="0" 
+							        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+							        referrerpolicy="strict-origin-when-cross-origin"
+							        allowfullscreen>
+							</iframe>
+						</div>
+					</div>
+				<%
+					}
+				}
+				%>
 
 			</div>
 		</div>

@@ -1,4 +1,3 @@
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Set;
@@ -32,7 +31,7 @@ import webservices.UsuarioNoEncontrado_Exception;
 import webservices.WrapperHashSet;
 
 @MultipartConfig
-@WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil" })
+@WebServlet({ "/usuarios", "/listarUsuarios", "/detalleUsuario", "/modificarDatos", "/perfil", "/seguirUsuario", "/dejarDeSeguir" })
 public class ServletUsuario extends HttpServlet {
     private static final long serialVersionUID = 1L;
     //private IControllerUsuario portUsuario;
@@ -74,15 +73,9 @@ public class ServletUsuario extends HttpServlet {
                     request.setAttribute("detalleUsuario", asis);
                 }
 
-                // Imagen de perfil
-                String dirUsuarios   = getServletContext().getRealPath("/uploads/usuarios/");
-                //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-                String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-                if (nombreArchivo != null) {
-                    request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
-                } else {
-                    request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-                }
+                // Imagen de perfil usando el nuevo sistema centralizado
+                String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+                request.setAttribute("imagenUsuario", imagenUsuario);
 
                 if ("1".equals(request.getParameter("ok"))) {
                     request.setAttribute("mensaje", "Modificaciones realizadas exitosamente.");
@@ -137,9 +130,73 @@ public class ServletUsuario extends HttpServlet {
             modificarDatos(request, response);
             return;
         }
+        
+        // Manejar acciones de seguimiento
+        if ("/seguirUsuario".equals(path) || "/dejarDeSeguir".equals(path)) {
+            manejarSeguimiento(request, response);
+            return;
+        }
+        
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción no válida");
     }
+    
+    private void manejarSeguimiento(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        DataUsuario sessionUser = (DataUsuario) request.getSession().getAttribute("usuario");
+        if (sessionUser == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
+        String usuarioASeguir = request.getParameter("usuario");
+        String path = request.getServletPath();
+        String referer = request.getHeader("Referer");
+        
+        if (usuarioASeguir == null || usuarioASeguir.isBlank()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parámetro usuario requerido");
+            return;
+        }
+
+        try {
+            if ("/seguirUsuario".equals(path)) {
+                portUsuario.seguirUsuario(sessionUser.getNickname(), usuarioASeguir);
+                request.getSession().setAttribute("mensajeSeguimiento", "Ahora sigues a " + usuarioASeguir);
+            } else if ("/dejarDeSeguir".equals(path)) {
+                portUsuario.dejarDeSeguirUsuario(sessionUser.getNickname(), usuarioASeguir);
+                request.getSession().setAttribute("mensajeSeguimiento", "Ya no sigues a " + usuarioASeguir);
+            }
+            
+            // Determinar a dónde redirigir basándose en el referer
+            if (referer != null && referer.contains("/listarUsuarios")) {
+                // Si viene de la lista de usuarios, regresar ahí
+                response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+            } else {
+                // Si viene del detalle de usuario, regresar ahí
+                response.sendRedirect(request.getContextPath() + "/detalleUsuario?usuarios=" + 
+                    java.net.URLEncoder.encode(usuarioASeguir, java.nio.charset.StandardCharsets.UTF_8));
+            }
+            
+        } catch (UsuarioNoEncontrado_Exception e) {
+            request.getSession().setAttribute("errorSeguimiento", "Usuario no encontrado");
+            // Redirigir apropiadamente según el origen
+            if (referer != null && referer.contains("/listarUsuarios")) {
+                response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/detalleUsuario?usuarios=" + 
+                    java.net.URLEncoder.encode(usuarioASeguir, java.nio.charset.StandardCharsets.UTF_8));
+            }
+        } catch (Exception e) {
+            request.getSession().setAttribute("errorSeguimiento", "Error interno del servidor: " + e.getMessage());
+            // Redirigir apropiadamente según el origen
+            if (referer != null && referer.contains("/listarUsuarios")) {
+                response.sendRedirect(request.getContextPath() + "/listarUsuarios");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/detalleUsuario?usuarios=" + 
+                    java.net.URLEncoder.encode(usuarioASeguir, java.nio.charset.StandardCharsets.UTF_8));
+            }
+        }
+    }
     
     private void detalleUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
@@ -170,6 +227,44 @@ public class ServletUsuario extends HttpServlet {
         
         request.setAttribute("usuario", usr);
 
+        // Obtener mensajes de seguimiento desde la sesión
+        String mensajeSeguimiento = (String) request.getSession().getAttribute("mensajeSeguimiento");
+        String errorSeguimiento = (String) request.getSession().getAttribute("errorSeguimiento");
+        if (mensajeSeguimiento != null) {
+            request.setAttribute("mensajeSeguimiento", mensajeSeguimiento);
+            request.getSession().removeAttribute("mensajeSeguimiento");
+        }
+        if (errorSeguimiento != null) {
+            request.setAttribute("errorSeguimiento", errorSeguimiento);
+            request.getSession().removeAttribute("errorSeguimiento");
+        }
+
+        // Obtener información de seguidores y seguidos
+        try {
+            int cantidadSeguidores = portUsuario.cantidadSeguidores(usuario);
+            int cantidadSeguidos = portUsuario.cantidadSeguidos(usuario);
+            request.setAttribute("cantidadSeguidores", cantidadSeguidores);
+            request.setAttribute("cantidadSeguidos", cantidadSeguidos);
+            
+            // Verificar si el usuario actual está siguiendo a este usuario
+            boolean yaSigue = false;
+            if (sessionUser != null && sessionUser.getNickname() != null) {
+                try {
+                    yaSigue = portUsuario.esSeguidor(sessionUser.getNickname(), usuario);
+                } catch (UsuarioNoEncontrado_Exception e) {
+                    yaSigue = false;
+                }
+                request.setAttribute("usuarioLogueado", sessionUser.getNickname());
+            }
+            request.setAttribute("yaSigue", yaSigue);
+            
+        } catch (UsuarioNoEncontrado_Exception e) {
+            // Si hay error, ponemos valores por defecto
+            request.setAttribute("cantidadSeguidores", 0);
+            request.setAttribute("cantidadSeguidos", 0);
+            request.setAttribute("yaSigue", false);
+        }
+
         if (usr.getTipo() ==  TipoUsuario.ORGANIZADOR) {
             //DtOrganizador org = this.portUsuario.infoOrganizador(usuario);
             DtOrganizador org = portUsuario.infoOrganizador(usuario);
@@ -188,17 +283,9 @@ public class ServletUsuario extends HttpServlet {
                 request.setAttribute("ediciones", ediciones);
 
                 Map<String, String> edicionesMap = new HashMap<>();
-                String dirEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
-                if (ediciones != null) {
-                    for (String ed : ediciones) {
-                        //String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
-                        String nombreArchivo = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), dirEdiciones);
-                        if (nombreArchivo != null) {
-                            edicionesMap.put(ed, "uploads/ediciones/" + nombreArchivo);
-                        } else {
-                            edicionesMap.put(ed, "assets/images/SinFoto.jpg");
-                        }
-                    }
+                for (String ed : ediciones) {
+                    String imagenEdicion = ManejadorArchivos.buscarArchivo(ed.toLowerCase(), "ediciones");
+                    edicionesMap.put(ed, imagenEdicion);
                 }
                 request.setAttribute("edicionesMap", edicionesMap);
 
@@ -212,17 +299,9 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("detalleUsuario", asis);
         }
 
-        // set imagenUsuario attribute
-        try {
-            String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-            //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            if (nombreArchivo != null) {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
-            } else {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-            }
-        } catch (Exception ignore) {}
+        // Imagen de usuario usando el nuevo sistema centralizado
+        String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+        request.setAttribute("imagenUsuario", imagenUsuario);
 
         request.getRequestDispatcher("/WEB-INF/pages/detalleUsuario.jsp").forward(request, response);
     }
@@ -252,17 +331,21 @@ public class ServletUsuario extends HttpServlet {
             request.setAttribute("usuario", asis);
         }
 
-       
+        // Obtener información de seguidores y seguidos para el perfil
         try {
-            String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-            //String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            String nombreArchivo = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), dirUsuarios);
-            if (nombreArchivo != null) {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/" + nombreArchivo);
-            } else {
-                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-            }
-        } catch (Exception ignore) {}
+            int cantidadSeguidores = portUsuario.cantidadSeguidores(usuario);
+            int cantidadSeguidos = portUsuario.cantidadSeguidos(usuario);
+            request.setAttribute("cantidadSeguidores", cantidadSeguidores);
+            request.setAttribute("cantidadSeguidos", cantidadSeguidos);
+        } catch (UsuarioNoEncontrado_Exception e) {
+            // Si hay error, ponemos valores por defecto
+            request.setAttribute("cantidadSeguidores", 0);
+            request.setAttribute("cantidadSeguidos", 0);
+        }
+
+        // Imagen de usuario usando el nuevo sistema centralizado
+        String imagenUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+        request.setAttribute("imagenUsuario", imagenUsuario);
 
         request.getRequestDispatcher("/WEB-INF/pages/perfil.jsp").forward(request, response);
     }
@@ -271,6 +354,7 @@ public class ServletUsuario extends HttpServlet {
     private void listarUsuarios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String q = trimOrNull(request.getParameter("q"));
+        DataUsuario sessionUser = (DataUsuario) request.getSession().getAttribute("usuario");
 
         Set<String> usrs = new HashSet<>();
         List<Object> lista = this.portUsuario.listarUsuarios().getItem();
@@ -280,49 +364,56 @@ public class ServletUsuario extends HttpServlet {
         }
         
         try {
-            if (usrs == null || usrs.isEmpty())
-                throw new Exception("No hay usuarios registrados");
-            else {
-                Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
-                Map<String, String> imgsUsuarios = new java.util.HashMap<>();
-                String dirUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
+            Set<DataUsuario> usuarios = new java.util.HashSet<DataUsuario>();
+            Map<String, String> imgsUsuarios = new java.util.HashMap<>();
+            Map<String, Boolean> estadosSeguimiento = new java.util.HashMap<>();
 
-                for (String u : usrs) {
-                    
-                    if (q != null && !q.isBlank()) {
-                        if (!u.toLowerCase().contains(q.toLowerCase())) {
-                            continue;
-                        }
-                    }
-
-                    try {
-                        //DataUsuario usr = this.portUsuario.infoUsuario(u);
-                        DataUsuario usr = portUsuario.infoUsuario(u);
-                        usuarios.add(usr);
-
-                            //String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
-                            String nombreArchivo = ManejadorArchivos.buscarArchivo(u.toLowerCase(), dirUsuarios);
-                            if (nombreArchivo != null) {
-                                imgsUsuarios.put(u, "uploads/usuarios/" + nombreArchivo);
-                            } else {
-                                imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
-                            }
-                    } catch (UsuarioNoEncontrado_Exception e) {
-                        e.printStackTrace();
-                    } catch (Exception ignore) {
-                        imgsUsuarios.put(u, "uploads/usuarios/default.jpg");
+            for (String u : usrs) {
+                
+                if (q != null && !q.isBlank()) {
+                    if (!u.toLowerCase().contains(q.toLowerCase())) {
+                        continue;
                     }
                 }
 
-                request.setAttribute("usuarios", usuarios);
-                request.setAttribute("imgsUsuarios", imgsUsuarios);
-                request.setAttribute("q", q == null ? "" : q);
-                request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
+                try {
+                    DataUsuario usr = portUsuario.infoUsuario(u);
+                    usuarios.add(usr);
+
+                    // Imagen de usuario usando el nuevo sistema centralizado
+                    String imagenUsuario = ManejadorArchivos.buscarArchivo(u.toLowerCase(), "usuarios");
+                    imgsUsuarios.put(u, imagenUsuario);
+                    
+                    // Verificar si el usuario logueado ya sigue a este usuario
+                    boolean yaSigue = false;
+                    if (sessionUser != null && sessionUser.getNickname() != null 
+                        && !sessionUser.getNickname().equals(u)) {
+                        try {
+                            yaSigue = portUsuario.esSeguidor(sessionUser.getNickname(), u);
+                        } catch (UsuarioNoEncontrado_Exception e) {
+                            yaSigue = false;
+                        }
+                    }
+                    estadosSeguimiento.put(u, yaSigue);
+                    
+                } catch (UsuarioNoEncontrado_Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+            request.setAttribute("usuarios", usuarios);
+            request.setAttribute("imgsUsuarios", imgsUsuarios);
+            request.setAttribute("estadosSeguimiento", estadosSeguimiento);
+            request.setAttribute("usuarioLogueado", sessionUser != null ? sessionUser.getNickname() : null);
+            request.setAttribute("q", q == null ? "" : q);
+            request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
+            
         } catch (Exception e1) {
             e1.printStackTrace();
             request.setAttribute("usuarios", java.util.Collections.emptySet());
             request.setAttribute("imgsUsuarios", java.util.Collections.emptyMap());
+            request.setAttribute("estadosSeguimiento", java.util.Collections.emptyMap());
+            request.setAttribute("usuarioLogueado", sessionUser != null ? sessionUser.getNickname() : null);
             request.setAttribute("q", q == null ? "" : q);
             request.getRequestDispatcher("/WEB-INF/pages/listarUsuarios.jsp").forward(request, response);
         }
@@ -399,14 +490,11 @@ public class ServletUsuario extends HttpServlet {
                 if (avatar != null && avatar.getSize() > 0) {
                 	
                     ManejadorArchivos.guardarArchivo(avatar, nickParam, "usuarios", getServletContext());
-    				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), getServletContext().getRealPath("/uploads/usuarios/"));
+    				String pfp = ManejadorArchivos.buscarArchivo(nickParam.toLowerCase(), "usuarios");
 
     				System.out.println("PFP seteada en sesión: " + pfp);
-    				if (pfp != null) {
-    					request.getSession().setAttribute("pfp", pfp);
-    				} else {
-    					request.getSession().setAttribute("pfp", "default.png");
-    				}
+    				// Actualizar la sesión con la nueva imagen
+    				request.getSession().setAttribute("pfp", pfp);
                 }
             } catch (Exception ignore) {  }
 
@@ -441,14 +529,10 @@ public class ServletUsuario extends HttpServlet {
 
         Object uo = request.getAttribute("usuario");
         if (uo instanceof DataUsuario du) {
-            try {
-                String dirUsuarios   = getServletContext().getRealPath("/uploads/usuarios/");
-                String nombreArchivo = ManejadorArchivos.buscarArchivo(du.getNickname().toLowerCase(), dirUsuarios);
-                request.setAttribute("imagenUsuario",
-                        nombreArchivo != null ? "uploads/usuarios/" + nombreArchivo : "uploads/usuarios/default.jpg");
-            } catch (Exception ignore) {}
+            // Imagen de usuario usando el nuevo sistema centralizado
+            String imagenUsuario = ManejadorArchivos.buscarArchivo(du.getNickname().toLowerCase(), "usuarios");
+            request.setAttribute("imagenUsuario", imagenUsuario);
         }
         request.getRequestDispatcher("/WEB-INF/pages/modificarDatos.jsp").forward(request, response);
     }
 }
-

@@ -1,8 +1,9 @@
-
 package webservices;
 
+import java.io.FileInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 import javax.xml.namespace.QName;
 import jakarta.xml.ws.Service;
 import jakarta.xml.ws.WebEndpoint;
@@ -17,7 +18,7 @@ import jakarta.xml.ws.WebServiceFeature;
  * Generated source version: 3.0
  * 
  */
-@WebServiceClient(name = "publicadorUsuarioService", targetNamespace = "http://webservices/", wsdlLocation = "http://localhost:8080/publicadorUsuario?wsdl")
+@WebServiceClient(name = "publicadorUsuarioService", targetNamespace = "http://webservices/")
 public class PublicadorUsuarioService
     extends Service
 {
@@ -30,8 +31,21 @@ public class PublicadorUsuarioService
         URL url = null;
         WebServiceException e = null;
         try {
-            url = new URL("http://localhost:8080/publicadorUsuario?wsdl");
-        } catch (MalformedURLException ex) {
+            Properties props = new Properties();
+            
+            // Buscar application.properties en el home del usuario (según Sección 7.9)
+            String userHome = System.getProperty("user.home");
+            String configPath = userHome + "/application.properties";
+            
+            FileInputStream fis = new FileInputStream(configPath);
+            props.load(fis);
+            fis.close();
+            
+            String serverUrl = props.getProperty("server.url", "http://localhost");
+            String serverPort = props.getProperty("server.port", "8080");
+            String wsdlUrl = serverUrl + ":" + serverPort + "/publicadorUsuario?WSDL";
+            url = new URL(wsdlUrl);
+        } catch (java.lang.Exception ex) {
             e = new WebServiceException(ex);
         }
         PUBLICADORUSUARIOSERVICE_WSDL_LOCATION = url;

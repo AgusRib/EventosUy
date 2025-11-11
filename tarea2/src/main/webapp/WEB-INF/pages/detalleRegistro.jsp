@@ -70,11 +70,11 @@
       <div class="card-body">
         <div class="dr-avatars row g-3 align-items-center justify-content-center mb-3 mb-md-4">
           <div class="col-12 col-md-auto d-flex justify-content-center">
-            <img src="<%= ctx %>/<%= imgUsuario %>" alt="Foto Usuario"
+            <img src="<%= imgUsuario %>" alt="Foto Usuario"
                  class="img-fluid rounded-circle shadow-sm">
           </div>
           <div class="col-12 col-md-auto d-flex justify-content-center">
-            <img src="<%= ctx %>/<%= imgEdicion %>" alt="Foto Edición"
+            <img src="<%= imgEdicion %>" alt="Foto Edición"
                  class="img-fluid rounded shadow-sm">
           </div>
         </div>
@@ -112,21 +112,18 @@
           <!-- botncito para confirmra la asistencia -->
           <div class="mt-2">
             <div class="d-flex flex-column flex-sm-row align-items-center justify-content-center gap-3">
-              <div>
-                <span class="me-2 fw-bold">Asistencia:</span>
-                <span id="asistenciaEstado"
-                      class="badge badge-xl <%= asistencia ? "bg-success" : "bg-secondary" %>">
-                  <%= asistencia ? "Confirmada" : "Sin confirmar" %>
-                </span>
-              </div>
 
               <div class="w-100 w-sm-auto">
-                <button class="btn <%= asistencia ? "btn-success disabled" : "btn-success" %> btn-lg btn-block"
-                        id="btnConfirmarAsistencia"
-                        <%= asistencia ? "disabled" : "" %>>
-                  <%= asistencia ? "Asistencia confirmada" : "Confirmar asistencia" %>
-                </button>
-              </div>
+				  <% if (asistencia) { %>
+				    <a class="btn btn-outline-primary btn-lg btn-block"
+				       id="btnDescargarAsistencia"
+				       href="<%= ctx %>/descargar-asistencia?usuario=<%= nickUsuario %>&edicion=<%= nombreEdicion %>"
+				       target="_blank" rel="noopener">
+				      Descargar asistencia
+				    </a>
+				  <% } %>
+				</div>
+
             </div>
           </div>
         </div>
@@ -135,40 +132,21 @@
     </div>
   </div>
 
-  <!-- modal para confirmar la confirmación de asistencia -->
-  <div class="modal fade" id="confirmAsistenciaModal" tabindex="-1" aria-labelledby="confirmAsistenciaLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="confirmAsistenciaLabel">Confirmar asistencia</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">¿Querés confirmar tu asistencia a este evento?</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary" id="btnModalConfirmar">Confirmar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-  (function(){
-    const container = document.querySelector('.info-evento');
-    const usuario = container?.dataset?.usuario || '';
-    const edicion = container?.dataset?.edicion || '';
+(function(){
+  const container = document.querySelector('.info-evento');
+  const usuario = container?.dataset?.usuario || '';
+  const edicion = container?.dataset?.edicion || '';
 
-    const btn   = document.getElementById('btnConfirmarAsistencia');
-    const badge = document.getElementById('asistenciaEstado');
-    const modalEl = document.getElementById('confirmAsistenciaModal');
-    const modal   = new bootstrap.Modal(modalEl);
-    const btnOk   = document.getElementById('btnModalConfirmar');
+  const btnDownload = document.getElementById('btnDescargarAsistencia');
+  const badge = document.getElementById('asistenciaEstado');
 
-    if (btn && !btn.disabled) {
-      btn.addEventListener('click', () => modal.show());
-    }
+  const btnOk   = document.getElementById('btnModalConfirmar');
 
+
+  if (btnOk) {
     btnOk.addEventListener('click', async () => {
       try {
         const body = new URLSearchParams({ usuario, edicion });
@@ -181,18 +159,32 @@
         const data = await resp.json();
         if (!resp.ok || !data.ok) throw new Error(data.error || 'Error desconocido');
 
-        badge.textContent = 'Confirmada';
-        badge.className = 'badge badge-xl bg-success';
-        btn.textContent = 'Asistencia confirmada';
-        btn.classList.add('disabled');
-        btn.setAttribute('disabled', 'disabled');
+        if (badge) {
+          badge.textContent = 'Confirmada';
+          badge.className = 'badge badge-xl bg-success';
+        }
+        if (modal) modal.hide();
 
-        modal.hide();
+        if (btnConfirm) {
+        	  const parent = btnConfirm.parentElement;
+        	  const a = document.createElement('a');
+        	  a.id = 'btnDescargarAsistencia';
+        	  a.className = 'btn btn-outline-primary btn-lg btn-block';
+        	  a.textContent = 'Descargar asistencia';
+        	  a.href = '<%= ctx %>/descargar-asistencia?usuario=' + encodeURIComponent(usuario) +
+        	           '&edicion=' + encodeURIComponent(edicion);
+        	  a.target = '_blank';
+        	  a.rel = 'noopener';
+        	  parent.replaceChild(a, btnConfirm);
+        	}
+
       } catch (e) {
         alert('No se pudo confirmar la asistencia: ' + (e.message || e));
       }
     });
-  })();
-  </script>
+  }
+})();
+</script>
+
 </body>
 </html>

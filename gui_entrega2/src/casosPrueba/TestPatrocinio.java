@@ -39,7 +39,7 @@ public class TestPatrocinio {
 		
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
 		try {
-			ICE.altaEvento("Evo1", "E90", java.time.LocalDate.of(2024, 11, 30), "Evento 90 aniversario", cats);
+			ICE.altaEvento("Evo1", "E90", java.time.LocalDate.of(2024, 11, 30), "Evento 90 aniversario", cats,"");
 		} catch (NombreEventoExcepcion e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,7 +48,7 @@ public class TestPatrocinio {
 			e.printStackTrace();
 		}
 		try {
-			ICE.altaEdicionDeEvento("Evo1", "imm", "E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 12, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY");
+			ICE.altaEdicionDeEvento("Evo1", "imm", "E90", "Evo1", java.time.LocalDate.of(2024, 12, 2), java.time.LocalDate.of(2024, 12, 30), java.time.LocalDate.of(2024, 12, 1), "CiudadX", "PaisY","");
 		} catch (NombreEdicionExistenteExcepcion e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

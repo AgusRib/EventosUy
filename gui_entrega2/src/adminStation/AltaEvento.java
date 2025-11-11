@@ -164,7 +164,7 @@ public class AltaEvento extends JInternalFrame{
                 nomscats.add(nombreCategoria);
             }
             try {
-                controllerEvento.altaEvento(NombreEvento.getText(), Sigla.getText(),LocalDate.parse(FechaEvento.getText()), DescripcionEvento.getText() , nomscats);
+                controllerEvento.altaEvento(NombreEvento.getText(), Sigla.getText(),LocalDate.parse(FechaEvento.getText()), DescripcionEvento.getText() , nomscats,"");
                 JOptionPane.showMessageDialog(this, "El evento se ha registrado con éxito", "Alta de Evento",JOptionPane.INFORMATION_MESSAGE);
 				NombreEvento.setText("");
 				Sigla.setText("");

@@ -186,6 +186,16 @@ main
 							<small class="text-muted">Formatos admitidos: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
 						</div>
 
+						<div class="mb-3">
+							<label for="urlYoutube" class="form-label">URL de YouTube (opcional)</label>
+							<input type="url" class="form-control" id="urlYoutube" 
+								name="urlYoutube"
+								placeholder="https://www.youtube.com/watch?v=..." 
+								value="<%= request.getAttribute("urlYoutube") != null ? (String)request.getAttribute("urlYoutube") : "" %>"
+								autocomplete="off">
+							<small class="text-muted">URL completa del video de YouTube relacionado con el evento</small>
+						</div>
+
 						<div class="d-flex gap-2">
 							<button type="submit" class="btn btn-primary">Guardar</button>
 							<a href="perfil" class="btn btn-secondary">Cancelar</a>

@@ -21,7 +21,7 @@ import webservices.UsuarioNoEncontrado_Exception;
 /**
  * Servlet implementation class ServletAutenticator
  */
-@WebServlet({"/registro", "/iniciosesion", "/cerrarsesion"})
+@WebServlet({"/registro", "/iniciosesion", "/cerrarsesion", "/verificar-disponibilidad"})
 @MultipartConfig
 public class ServletAutenticator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -65,6 +65,10 @@ public class ServletAutenticator extends HttpServlet {
 					session.invalidate();
 				}
 				response.sendRedirect(request.getContextPath() + "/HomeServlet");
+				break;
+			}
+			case "/verificar-disponibilidad": {
+				verificarDisponibilidad(request, response);
 				break;
 			}
 			default:
@@ -215,14 +219,9 @@ public class ServletAutenticator extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("usuario", usuario);
 			
-			// Configurar imagen de perfil
-			String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), 
-														getServletContext().getRealPath("/uploads/usuarios/"));
-			if (pfp != null) {
-				session.setAttribute("pfp", "uploads/usuarios/" + pfp);
-			} else {
-				session.setAttribute("pfp", "uploads/usuarios/default.jpg");
-			}
+			// Configurar imagen de perfil usando el sistema centralizado
+			String pfp = ManejadorArchivos.buscarArchivo(usuario.getNickname().toLowerCase(), "usuarios");
+			session.setAttribute("pfp", pfp);
 			
 			response.sendRedirect(request.getContextPath() + "/HomeServlet");
 		} else {
@@ -230,6 +229,39 @@ public class ServletAutenticator extends HttpServlet {
 			request.setAttribute("nickname", nicknameomail);
 			request.getRequestDispatcher("/WEB-INF/pages/iniciosesion.jsp").forward(request, response);
 		}
+	}
+	
+	private void verificarDisponibilidad(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		
+		String tipo = request.getParameter("tipo");
+		String valor = request.getParameter("valor");
+		
+		if (tipo == null || valor == null || valor.trim().isEmpty()) {
+			response.getWriter().write("{\"disponible\": false}");
+			return;
+		}
+		
+		PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+		PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+		
+		boolean disponible = false;
+		
+		try {
+			if ("nickname".equals(tipo)) {
+				// Usar la función específica existeNickname
+				disponible = !portUsuario.existeNickname(valor.trim());
+			} else if ("email".equals(tipo)) {
+				// Usar la función específica existeEmail
+				disponible = !portUsuario.existeEmail(valor.trim());
+			}
+		} catch (Exception e) {
+			// Para cualquier error, asumimos que no está disponible por seguridad
+			disponible = false;
+		}
+		
+		response.getWriter().write("{\"disponible\": " + disponible + "}");
 	}
 	
 	private void preservarDatosFormulario(HttpServletRequest request, String nickname, String nombre, 

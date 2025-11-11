@@ -3,11 +3,13 @@ package webservices;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -44,20 +46,18 @@ public class publicadorEvento {
 
     @WebMethod(exclude = true)
     public void publicar(){
-    	
 	    Properties props = new Properties();
-    	
-        FileInputStream fis;
+	    FileInputStream fis;
 		try {
-			Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
-			fis = new FileInputStream(userDir + "/application.properties");
+			// Buscar application.properties en el home del usuario (según Sección 7.9)
+			String userHome = System.getProperty("user.home");
+			String configPath = userHome + "/application.properties";
+			fis = new FileInputStream(configPath);
 			props.load(fis);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Publicando publicadorEvento...");
-		System.out.println(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento");
-         endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento", this);
+		endpoint = Endpoint.publish(props.getProperty("server.url") + ":" + props.getProperty("server.port") + "/publicadorEvento", this);
     }
     
     @WebMethod(exclude = true)
@@ -75,9 +75,9 @@ public class publicadorEvento {
 		return new WrapperHashSet<String>(ICE.listarEdicionesTodas());
 	}
 	
-	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, WrapperHashSet<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, String fechaAlta, String descripcion, WrapperHashSet<String> categorias,String url)throws NombreEventoExcepcion, Exception {
 		LocalDate fechaA = LocalDate.parse(fechaAlta);
-		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias.toHashSet());
+		ICE.altaEvento(nombre, sigla, fechaA, descripcion, categorias.toHashSet(), url);
 		
 	}
 		
@@ -134,11 +134,11 @@ public class publicadorEvento {
 	}
 
 	@WebMethod
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, String fechaInicio, String fechaFin, String fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, String fechaInicio, String fechaFin, String fechaAlta, String ciudad, String pais,String url)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
 		LocalDate fInicio = LocalDate.parse(fechaInicio);
 		LocalDate fFin = LocalDate.parse(fechaFin);
 		LocalDate fAlta = LocalDate.parse(fechaAlta);
-		ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, fInicio, fFin, fAlta, ciudad, pais);
+		ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, fInicio, fFin, fAlta, ciudad, pais,url);
 		
 	}
 	
@@ -147,19 +147,28 @@ public class publicadorEvento {
 		ICE.ingresarCategoria(string);
 	}
 	
+	
 	@WebMethod
-	public WrapperHashSet<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
-		return new WrapperHashSet<DTAsistente>(ICE.listarAsistentesAEdicionDeEvento(nomEdi));
+	public WrapperHashSet<String> listarAsistentesAEdicionDeEvento(String nomEdi) {
+	    List<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento(nomEdi);
+	    Set<String> nicknames = new HashSet<>();
+	    
+	    for (DTAsistente asistente : asistentes) {
+	        nicknames.add(asistente.getNickname());
+	    }
+	    
+	    return new WrapperHashSet<String>(nicknames);
+	}
+
+	
+	@WebMethod
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi,boolean esGratis) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
+		ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nomEdi, esGratis);
 	}
 	
 	@WebMethod
-	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
-		ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nomEdi);
-	}
-	
-	@WebMethod
-	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi) {
-		ICE.altaRegistro(nickAsistente, tipoReg, nombreEdi);
+	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi,boolean esGratis) throws Exception {
+		ICE.altaRegistro(nickAsistente, tipoReg, nombreEdi, esGratis);
 	}
 	
 	@WebMethod
@@ -226,13 +235,20 @@ public class publicadorEvento {
         }
         return byteArray;
     }
-    
+    @WebMethod
     public void finalizarEvento(String nombreEvento) {
 		ICE.finalizarEvento(nombreEvento);
 		return;
 	}
     
+	@WebMethod
     public void archivarEdicion(String nombreEdicion) throws Exception {
     	ICE.archivarEdicion(nombreEdicion);
     }
+    
+    @WebMethod
+    public void registrarVisitaEvento(@WebParam(name = "nombreEvento") String nombreEvento) {
+        ICE.registrarVisitaEvento(nombreEvento);
+    }
+    
 }

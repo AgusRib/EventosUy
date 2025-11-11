@@ -73,7 +73,7 @@
         <div class="listadoUsuarios_itemUsuario" style="border-radius:1rem; padding:1rem; display:flex; align-items:center; gap:1rem; border:1px solid #ddd; margin-bottom:1rem;">
           <div class="contenedor-foto">
             <img class="foto-usuario"
-                 src="<%= ctx %>/<%= imgRel %>"
+                 src="<%= imgRel %>"
                  alt="<%= nick %>"
                  style="height:127px; width:127px; object-fit:cover; border-radius:50%; border:1px solid #ddd;">
           </div>

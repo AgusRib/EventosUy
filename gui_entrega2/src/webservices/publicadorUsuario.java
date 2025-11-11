@@ -49,8 +49,10 @@ public class publicadorUsuario {
 	    	
 	        FileInputStream fis;
 			try {
-				Path userDir = Paths.get(System.getProperty("user.dir")).getParent();
-				fis = new FileInputStream(userDir + "/application.properties");
+				// Buscar application.properties en el home del usuario (según Sección 7.9)
+				String userHome = System.getProperty("user.home");
+				String configPath = userHome + "/application.properties";
+				fis = new FileInputStream(configPath);
 				props.load(fis);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -127,10 +129,7 @@ public class publicadorUsuario {
 		 }
 		
 		
-		 @WebMethod
-		public Usuario obtenerUsuario(String usuario) {
-			 return ICU.obtenerUsuario(usuario);
-		 }
+	
 		 @WebMethod
 		public void editarAsistente(String nick, String nombre, String apellido, String fechaNac) {
 			 LocalDate fechaNacLD = LocalDate.parse(fechaNac);
@@ -172,25 +171,42 @@ public class publicadorUsuario {
 		public String obtenerInstitucionAsistente(String nickname) {
 			 return ICU.obtenerInstitucionAsistente(nickname);}
 	    
+		 @WebMethod
+		 public boolean existeNickname(String nickname) {
+			 return ICU.existeNickname(nickname);
+		 }
+		 
+		 @WebMethod
+		 public boolean existeEmail(String email) {
+			 return ICU.existeEmail(email);
+		 }
 	    
 	    
 	    
 
-
+        @WebMethod
+        public void seguirUsuario(String followerNickname, String followedNickname) throws UsuarioNoEncontrado {
+			ICU.seguirUsuario(followerNickname, followedNickname);
+		}
 	    
 	    @WebMethod
-	    public byte[] getFile(@WebParam(name = "fileName") String name)
-	                    throws  IOException {
-	        byte[] byteArray = null;
-	        try {
-	                File f = new File("files/" + name);
-	                FileInputStream streamer = new FileInputStream(f);
-	                byteArray = new byte[streamer.available()];
-	                streamer.read(byteArray);
-	        } catch (IOException e) {
-	                throw e;
-	        }
-	        return byteArray;
+	    public int cantidadSeguidores(String nickname) throws UsuarioNoEncontrado {
+	    	return ICU.cantidadSeguidores(nickname);
+	    }
+	    
+	    @WebMethod
+	    public int cantidadSeguidos(String nickname) throws UsuarioNoEncontrado {
+	    	return ICU.cantidadSeguidos(nickname);
+	    }
+	    
+	    @WebMethod
+	    public void dejarDeSeguirUsuario(String followerNickname, String followedNickname) throws UsuarioNoEncontrado {
+	    	ICU.dejarDeSeguirUsuario(followerNickname, followedNickname);
+	    }
+	    
+	    @WebMethod
+	    public boolean esSeguidor(String followerNickname, String followedNickname) throws UsuarioNoEncontrado {
+	    	return ICU.esSeguidor(followerNickname, followedNickname);
 	    }
 	
 	

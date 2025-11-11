@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -35,8 +36,8 @@ public class TestControllerEvento2 {
 			e.printStackTrace();
 		}
 		try {
-			ICE.altaEvento("EventoTest", "ET", LocalDate.of(2025, 8, 31), "DescTest", categorias);
-			ICE.altaEdicionDeEvento("EventoTest", "Jorge", "EdTest", "EDT", LocalDate.of(2025, 9, 1), LocalDate.of(2025, 9, 2), LocalDate.of(2025, 8, 31), "CiudadTest", "PaisTest");
+			ICE.altaEvento("EventoTest", "ET", LocalDate.of(2025, 8, 31), "DescTest", categorias,"");
+			ICE.altaEdicionDeEvento("EventoTest", "Jorge", "EdTest", "EDT", LocalDate.of(2025, 9, 1), LocalDate.of(2025, 9, 2), LocalDate.of(2025, 8, 31), "CiudadTest", "PaisTest","");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,7 +72,7 @@ public class TestControllerEvento2 {
 		}
 
 		// Alta de asistente y registro
-		ICE.altaRegistro("willyrex", "TipoRegTest", "EdTest");
+		ICE.altaRegistro("willyrex", "TipoRegTest", "EdTest",false);
 
 		// Test listarEventos
 		Set<String> eventos = ICE.listarEventos();
@@ -95,7 +96,7 @@ public class TestControllerEvento2 {
 		assertEquals(true, tiposReg.contains("TipoRegTest"));
 
 		// Test listarAsistentesAEdicionDeEvento
-		Set<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento("EdTest");
+		List<DTAsistente> asistentes = ICE.listarAsistentesAEdicionDeEvento("EdTest");
 		boolean found = false;
 		for (DTAsistente a : asistentes) {
 			if (a.getNickname().equals("willyrex")) {

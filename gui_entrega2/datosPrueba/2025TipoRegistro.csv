@@ -26,3 +26,5 @@ TR24;EDEV10;General;Acceso general;650;5
 TR25;EDEV10;Estudiante;Acceso para estudiantes;300;1
 TR26;EDEV11;Full;Acceso a todos los eventos de la semana;450;50
 TR27;EDEV11;Visitante;Acceso parcial a los eventos de la semana;150;25
+TR28;EDEV12;plus50;Viaje para personas con más de 50 años;250;10
+TR29;EDEV12;Mayores;Viaje para personas mayores de 18 años;300;20

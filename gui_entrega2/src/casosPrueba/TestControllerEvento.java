@@ -35,8 +35,8 @@ public class TestControllerEvento {
 		
 		//TEST ALTA DE EVENTO
 		try {
-			ICE.altaEvento("Evento1", "E1", LocalDate.of(2018, 02, 13), "Descripcion del evento 1", categoriasSet);
-			ICE.altaEvento("Evento1", "E1", LocalDate.of(2022, 16, 11), "Descripcion del evento 2", categoriasSet);
+			ICE.altaEvento("Evento1", "E1", LocalDate.of(2018, 02, 13), "Descripcion del evento 1", categoriasSet,"");
+			ICE.altaEvento("Evento1", "E1", LocalDate.of(2022, 16, 11), "Descripcion del evento 2", categoriasSet,"");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -70,8 +70,8 @@ public class TestControllerEvento {
 		}
 		//TEST ALTA DE EDICION
 		try {
-			ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1");
-			ICE.altaEdicionDeEvento("Evento2", "Vegetta", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1");
+			ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1","www.edicion1.com");
+			ICE.altaEdicionDeEvento("Evento2", "Vegetta", "Edicion1", "ED1", LocalDate.of(2023, 05, 20), LocalDate.of(2023, 05, 25), LocalDate.of(2022, 11, 15), "Ciudad1", "Pais1","www.edicion1.com");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

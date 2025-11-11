@@ -10,6 +10,7 @@ import excepciones.NombreEdicionExistenteExcepcion;
 import excepciones.NombreEventoExcepcion;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import logica.data_types.DTAsistente;
 import logica.data_types.DTDetalleEdicion;
@@ -24,7 +25,7 @@ import logica.enumerators.NivelPatrocinio;
  * */
 public interface IControllerEvento {
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception;
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias,String url)throws NombreEventoExcepcion, Exception;
 	public Set<String> listarEventos();
 	public Set<String> listarCategorias();
 	public Set<String> listarEdiciones(String nombreEvento);
@@ -36,12 +37,12 @@ public interface IControllerEvento {
 	public void altaTipoDeRegistro(String nombreEdi, String nombre, String descripcion, Float costo, int cupo) throws excepciones.TipoRegistroExistenteExcepcion, Exception;
 	public DTDetalleEvento verDetalleEvento(String nombreEvento) throws EventoFinalizadoExcepcion;
 	public Set<String> listarTiposDeRegistro( String nombreEdicion);
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais) throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception;
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais,String url) throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception;
 	public void ingresarCategoria(String string);
 	public DTRegistro infoRegistro(String edicion, String usuario);
-	Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi);
-	void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaRegPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception;
-	void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi);
+	List<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi);
+	void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi,boolean esGratis) throws FechaRegPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception;
+	void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi,boolean esGratis);
 	void altaPatrocinio(String nombreEdi, String institucion, NivelPatrocinio nivel, double aporteEconomico, String tipoRegistroGratis, int cantidadGratis, String codigo);
 	public LocalDate getFechaSistema();
 	public LocalDate setFechaSistema(LocalDate fechaNueva);
@@ -54,7 +55,12 @@ public interface IControllerEvento {
 	public void finalizarEvento(String nombreEvento);
     void confirmarAsistencia(String nombreEdi, String nickAsistente);
     void archivarEdicion(String nombreEdi) throws Exception;
+	Set<String> listarEventosConFinalizados();
+    
+    // Métodos para estadísticas de eventos visitados
+    void registrarVisitaEvento(String nombreEvento);
+    List<Map<String, Object>> obtenerTop5EventosMasVisitados();
+    Map<String, Long> obtenerEstadisticasVisitas();
 	
 	
 }
-

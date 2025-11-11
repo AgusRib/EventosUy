@@ -50,6 +50,18 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
+	public Set<String> listarEventosConFinalizados() {
+		ManejadorEvento mEventos = ManejadorEvento.getInstance();
+		Map<String, Evento> eventos = mEventos.obtenerEventos(); 
+		Set<String> nomEventos = new LinkedHashSet<>();
+		for (Evento eve : eventos.values()) {
+			nomEventos.add(eve.getNombre());
+
+		}
+		return nomEventos;
+	}
+	
+	@Override
 	public Set<String> listarEdicionesTodas(){
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Map<String, Edicion> ediciones = mEdi.obtenerEdicionesPendientes();
@@ -62,18 +74,27 @@ public class ControllerEvento implements IControllerEvento{
 		return nomEdiciones;
 	}
 	
-	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias)throws NombreEventoExcepcion, Exception {
+	public void altaEvento(String nombre, String sigla, LocalDate fechaAlta, String descripcion, Set<String> categorias,String url)throws NombreEventoExcepcion, Exception {
 		
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
 		if (mEventos.existeEvento(nombre)) {
 			throw new Exception("El evento ya existe");
 		}else {
+			if(url=="") {
 			Evento nuevoEvento= new Evento(nombre, sigla, fechaAlta, descripcion);
 			ManejadorCategoria mCategoria = ManejadorCategoria.getInstance();
 			for (String cat : categorias) {
 				nuevoEvento.agregarCategoria(mCategoria.obtenerCategoria(cat));
 			}
-			mEventos.agregarEvento(nuevoEvento);
+			mEventos.agregarEvento(nuevoEvento);}
+			else {
+				Evento nuevoEvento= new Evento(nombre, sigla, fechaAlta, descripcion,url);
+				ManejadorCategoria mCategoria = ManejadorCategoria.getInstance();
+				for (String cat : categorias) {
+					nuevoEvento.agregarCategoria(mCategoria.obtenerCategoria(cat));
+				}
+				mEventos.agregarEvento(nuevoEvento);
+			}
 		}
 	}
 		
@@ -170,7 +191,7 @@ public class ControllerEvento implements IControllerEvento{
 		return tiposReg;
 	}
 	
-@Override
+	@Override
 	public DTRegistro infoRegistro(String edicion, String usuario) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(edicion);
@@ -179,12 +200,19 @@ public class ControllerEvento implements IControllerEvento{
 		Asistente usu = mUsuer.obtenerAsistente(usuario);
 		
 		Registro reg = usu.getRegistro(edi);
-		DTRegistro dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg().getNombre(), reg.getAsistencia());
+		DTRegistro dtR;
+		try {
+			dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getTipoReg().getNombre(), reg.getAsistencia());
+		} catch (Exception e) {
+			dtR = new DTRegistro(reg.getFechaRegistro(), edi.getNombre(), usu.getNickname(), reg.getCosto(), reg.getNombreTipoRegistro(), reg.getAsistencia());
+		}
+		
 		return dtR;
 	}
 
+
 	@Override
-	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
+	public void altaEdicionDeEvento(String nombreEvento, String nicknameOrganizador, String nombre, String sigla, LocalDate fechaInicio, LocalDate fechaFin, LocalDate fechaAlta, String ciudad, String pais,String url)throws NombreEdicionExistenteExcepcion, FechaInicioPOSTFINAL, FechaInicioPREALTA, Exception {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		if (mEdi.existeEdicion(nombre)) throw new NombreEdicionExistenteExcepcion("Ya existe una edicion con el nombre: " + nombre);
 		if (fechaInicio.isAfter(fechaFin)) throw new FechaInicioPOSTFINAL("La fecha de inicio no puede ser posterior a la fecha de finalizacion");
@@ -200,10 +228,16 @@ public class ControllerEvento implements IControllerEvento{
 		
 		Organizador org = mUsuer.obtenerOrganizador(nicknameOrganizador);
 		org.agregarEdicion(nombre);
-
+        if (url=="") {
 		Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais, eve, org);
 		eve.agregarEdicion(nueva); 
-		mEdi.agregarEdicionIngresada(nueva);
+		mEdi.agregarEdicionIngresada(nueva);}
+        else {
+			Edicion nueva = new Edicion(nombre, sigla, fechaInicio, fechaFin, fechaAlta, ciudad, pais, eve, org,url);
+			eve.agregarEdicion(nueva); 
+			mEdi.agregarEdicionIngresada(nueva);
+		}
+	
 		
 	}
 	
@@ -226,14 +260,14 @@ public class ControllerEvento implements IControllerEvento{
 	}
 	
 	@Override
-	public Set<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
+	public List<DTAsistente> listarAsistentesAEdicionDeEvento(String nomEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
-		return edi.obtenerAsistentes()	;
+		return edi.obtenerAsistentes();
 	}
 	
 	@Override
-	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
+	public void elegirAsistenteYTipoRegistro(String nickAsistente, String tipoReg, String nomEdi,boolean esGratis) throws FechaInicioPREALTA, CupoLLeno, AsistenteYaRegistrado, Exception { 
 		//asumo que nomEdi viene de la interfaz en memoria
 			
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
@@ -248,13 +282,13 @@ public class ControllerEvento implements IControllerEvento{
 		
 		
 		
-		altaRegistro(nickAsistente, tipoReg, nomEdi);
+		altaRegistro(nickAsistente, tipoReg, nomEdi,esGratis);
 		
 		
 	}
 	
 	@Override
-	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi) {
+	public void altaRegistro(String nickAsistente, String tipoReg, String nombreEdi,boolean esGratis) {
 		
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nombreEdi);
@@ -262,7 +296,7 @@ public class ControllerEvento implements IControllerEvento{
 		ManejadorUsuario mUsuer = ManejadorUsuario.getInstance();
 		Asistente asis = mUsuer.obtenerAsistente(nickAsistente);
 		
-		edi.crearRegistro(asis, tipoReg);
+		edi.crearRegistro(asis, tipoReg,esGratis);
 		return;
 	}
 	
@@ -310,9 +344,17 @@ public class ControllerEvento implements IControllerEvento{
 	public String nomEvPorEd(String nomEdi) {
 		ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
 		Edicion edi = mEdi.encontrarEdicion(nomEdi);
-		Evento eve = edi.getEvento();
-		return eve.getNombre();
+		try {
+			Evento eve = edi.getEvento();
+			return eve.getNombre();			
+		} catch (Exception e) {
+			//Buscamos el nombre del evento en el dao edicion archivada
+			Map<String, EdicionArchivada> edicionesArch = mEdi.getDAOSArchivadas();
+			EdicionArchivada ediArch = edicionesArch.get(nomEdi);
+			return ediArch.getNombreEvento();
+		}
 	}
+
 	@Override
 	public void aceptarEdicion(String nomedi, String nomev) {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
@@ -378,8 +420,9 @@ public class ControllerEvento implements IControllerEvento{
 		//me quedo con las primeras 4, despues hay que ver con cual nos quedamos
 		for (String eve : eventos) {
 		    if (count >= 4) break;
+		    if (!h_evento.obtenerEvento(eve).getFinalizado()) { // saltar eventos finalizados
 		    recientes.add(h_evento.obtenerEvento(eve).devolverDT());
-		    count++;
+		    count++;}
 		}
 		 
 		return recientes;
@@ -387,23 +430,29 @@ public class ControllerEvento implements IControllerEvento{
 
 	@Override
 	public void confirmarAsistencia(String nombreEdi, String nickAsistente) {
-	    if (nombreEdi == null || nombreEdi.isBlank() || nickAsistente == null || nickAsistente.isBlank()) {
+	    if (nombreEdi == null || nombreEdi.isBlank() ||
+	        nickAsistente == null || nickAsistente.isBlank()) {
 	        throw new IllegalArgumentException("Faltan parámetros: nombreEdi y/o nickAsistente");
 	    }
 
-	    ManejadorEdicion mEdi = ManejadorEdicion.getInstance();
-	    Edicion edi = mEdi.encontrarEdicion(nombreEdi);
+	    Edicion edi = ManejadorEdicion.getInstance().encontrarEdicion(nombreEdi);
+	    if (edi == null) throw new IllegalArgumentException("No existe la edición: " + nombreEdi);
 
-	    ManejadorUsuario mUser = ManejadorUsuario.getInstance();
-	    Asistente asis = mUser.obtenerAsistente(nickAsistente);
+	    Asistente asis = ManejadorUsuario.getInstance().obtenerAsistente(nickAsistente);
+	    if (asis == null) throw new IllegalArgumentException("No existe el asistente: " + nickAsistente);
 
 	    Registro reg = asis.getRegistro(edi);
+	    if (reg == null) reg = edi.getRegistroDe(nickAsistente);
 
+	    if (reg == null) {
+	        throw new IllegalStateException("El asistente " + nickAsistente + " no tiene registro en " + nombreEdi);
+	    }
 
-	    if (!reg.getAsistencia()) {
+	    if (!Boolean.TRUE.equals(reg.getAsistencia())) {
 	        reg.confirmarAsistencia();
 	    }
 	}
+
 	
 	public void finalizarEvento(String nombreEvento) {
 		ManejadorEvento mEventos = ManejadorEvento.getInstance();
@@ -411,6 +460,23 @@ public class ControllerEvento implements IControllerEvento{
 		eve.setFinalizado(true);
 		return;
 	}
+	
+	// Métodos para estadísticas de eventos visitados
+	@Override
+	public void registrarVisitaEvento(String nombreEvento) {
+		RastreadorVisitasEvento.obtenerInstancia().registrarVisita(nombreEvento);
+	}
+	
+	@Override
+	public List<Map<String, Object>> obtenerTop5EventosMasVisitados() {
+		return RastreadorVisitasEvento.obtenerInstancia().obtenerTop5Eventos();
+	}
+	
+	@Override
+	public Map<String, Long> obtenerEstadisticasVisitas() {
+		return RastreadorVisitasEvento.obtenerInstancia().obtenerTodosLosContadores();
+	}
+	
 
 	@Override
 	public void archivarEdicion(String nombreEdi) throws Exception {
@@ -429,23 +495,83 @@ public class ControllerEvento implements IControllerEvento{
 	    System.out.println("Archivar Edicion: " + nombreEdi);
 	    System.out.println("Estado actual: " + edi.getEstado());
 	    
-	    mEdi.archivarEdicion(edi);
-	    EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
-	    EntityManager em = emf.createEntityManager();
+		// Actualizo colecciones en memoria
+		mEdi.archivarEdicion(edi);
 
-	    try {
-	        em.getTransaction().begin();
-	        em.merge(edi); //se guarda la edi en la db y todas sus cosas asociadas que le metimos el CASCADE
-	        em.getTransaction().commit();
-	    } catch (Exception e) {
-	        if (em.getTransaction().isActive()) {
-	            em.getTransaction().rollback();
-	        }
-	        e.printStackTrace();
-	    } finally {
-	        em.close();
-	        emf.close();
-	    }
+		// Persistir solo una representación específica para ediciones archivadas
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("EventosDB");
+		EntityManager em = emf.createEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			// Creamos una entidad EdicionArchivada y le agregamos los registros asociados
+			logica.models.EdicionArchivada eArch = new logica.models.EdicionArchivada(edi);
+			// Persistir Organizador si está relacionado con la edición y no existe en la BD
+			if (edi.getOrganizador() != null && edi.getOrganizador().getNickname() != null) {
+				String onick = edi.getOrganizador().getNickname();
+				java.util.List<Organizador> orgs = em.createQuery("SELECT o FROM Organizador o WHERE o.nickname = :nick", Organizador.class)
+						.setParameter("nick", onick)
+						.getResultList();
+				if (orgs.isEmpty()) {
+					Organizador orgMem = edi.getOrganizador();
+					Organizador newOrg = new Organizador(orgMem.getNickname(), orgMem.getNombre(), orgMem.getEmail(), orgMem.getPassword(), orgMem.getDescripcion(), orgMem.getWeb());
+					em.persist(newOrg);
+				}
+			}
+
+			// Agregar registros asociados: persistir asistentes (y su institución) si no existen, y luego crear RegistroArchivado referenciando al Asistente gestionado
+			if (edi.getRegistros() != null) {
+				for (Registro reg : edi.getRegistros()) {
+					Asistente managedAsis = null;
+					if (reg.getAsistente() != null && reg.getAsistente().getNickname() != null) {
+						String nickA = reg.getAsistente().getNickname();
+						java.util.List<Asistente> as = em.createQuery("SELECT a FROM Asistente a WHERE a.nickname = :nick", Asistente.class)
+								.setParameter("nick", nickA)
+								.getResultList();
+						if (!as.isEmpty()) {
+							managedAsis = as.get(0);
+						} else {
+							// Persistir institucion si existe y no está en BD
+							Institucion managedInst = null;
+							if (reg.getAsistente().getInstitucion() != null) {
+								String nomInst = reg.getAsistente().getInstitucion().getNombre();
+								java.util.List<Institucion> insts = em.createQuery("SELECT i FROM Institucion i WHERE i.nombre = :nom", Institucion.class)
+										.setParameter("nom", nomInst)
+										.getResultList();
+								if (!insts.isEmpty()) {
+									managedInst = insts.get(0);
+								} else {
+									Institucion iMem = reg.getAsistente().getInstitucion();
+									Institucion newInst = new Institucion(iMem.getNombre(), iMem.getDescripcion(), iMem.getWeb());
+									em.persist(newInst);
+									managedInst = newInst;
+								}
+							}
+							// Persistir Asistente con datos reales (no ficticios)
+							Asistente aMem = reg.getAsistente();
+							Asistente newAs = new Asistente(aMem.getNickname(), aMem.getNombre(), aMem.getEmail(), aMem.getPassword(), aMem.getApellido(), aMem.getFechaNacimiento());
+							if (managedInst != null) newAs.setInstitucion(managedInst);
+							em.persist(newAs);
+							managedAsis = newAs;
+						}
+					}
+					RegistroArchivado rArch = new logica.models.RegistroArchivado(reg.getFechaRegistro(), reg.getCosto(), reg.getNombreTipoRegistro(), managedAsis, eArch);
+					eArch.addRegistro(rArch);
+				}
+			}
+			// Persistir sólo la entidad EdicionArchivada (y sus RegistroArchivado). No usar merge para evitar propagar el merge al grafo en memoria.
+			em.persist(eArch);
+			em.getTransaction().commit();
+		} catch (Exception e) {
+			if (em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			em.close();
+			emf.close();
+		}
 	}
+
 
 }

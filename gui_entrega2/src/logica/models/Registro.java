@@ -51,15 +51,33 @@ public class Registro {
 	public void setFechaRegistro(LocalDate fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
+	
+	
+	// Constructor para reconstrucción desde registros archivados
+	public Registro(Asistente asis, String nombreTipoRegistro, float costo, java.time.LocalDate fechaRegistro, Edicion edi, boolean asistencia) {
+		super();
+		this.asistente = asis;
+		this.edicion = edi;
+		this.nombreTipoRegistro = nombreTipoRegistro;
+		this.costo = costo;
+		this.fechaRegistro = fechaRegistro;
+		this.asistencia = asistencia;
+	}
+
 
 	//TODO: implementar caso en el que el costo sea 0 (ej: asistente de una institucion que patrocina)
-	public Registro(Asistente asis, TipoRegistro tipoReg, Edicion edi, boolean asistencia) {
+	public Registro(Asistente asis, TipoRegistro tipoReg, Edicion edi, boolean asistencia,boolean esGratis) {
 		super();
 		this.asistente=asis;
 		this.edicion=edi;
 		this.setTipoReg(tipoReg);
 		this.nombreTipoRegistro = tipoReg.getNombre();
-		this.costo = tipoReg.getCosto();
+		if (esGratis) {
+			this.costo = 0;
+		} else {
+			this.costo = tipoReg.getCosto();
+		}
+		
 		IControllerEvento cEve = new ControllerEvento();
 		this.fechaRegistro = cEve.getFechaSistema();
 		this.asistencia = asistencia;
@@ -120,5 +138,9 @@ public class Registro {
 			//TODO: generar pdf ...	
 		}
 		
+	}
+
+	public String getNombreTipoRegistro() {
+		return nombreTipoRegistro;
 	}
 }

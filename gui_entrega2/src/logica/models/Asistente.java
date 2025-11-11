@@ -17,7 +17,8 @@ public class Asistente extends Usuario {
 	
 	@ManyToOne(cascade = CascadeType.PERSIST) @JoinColumn(name = "id_institucion") private Institucion institucion = null;
 	
-	@OneToMany(mappedBy = "asistente") private Set<Registro> registros = new HashSet<Registro>();
+	@OneToMany
+	private Set<Registro> registros = new HashSet<Registro>();
 	
 	public String getApellido() {
 		return apellido;

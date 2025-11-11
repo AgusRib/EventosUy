@@ -52,8 +52,16 @@ public class ManejadorUsuario {
 	}
 	
 	public Asistente obtenerAsistente(String nickname) {
-		return (Asistente) usuarios.get(nickname);
+	    Usuario u = usuarios.get(nickname);
+	    if (u == null) {
+	        throw new IllegalArgumentException("No existe usuario: " + nickname);
+	    }
+	    if (!(u instanceof Asistente)) {
+	        throw new IllegalStateException("El usuario " + nickname + " no es Asistente.");
+	    }
+	    return (Asistente) u;
 	}
+
 
 	public Organizador obtenerOrganizador(String nickname) {
 		return (Organizador) usuarios.get(nickname);
@@ -107,21 +115,7 @@ public class ManejadorUsuario {
 	    for (Asistente user : lista) {
 			usuarios.put(user.getNickname(), user);
 			emails.add(user.getEmail());
-		}
-	    
-	    // Inicializar registros desde la db y asignarlos a los asistentes correspondientes
-	    List<Registro> listaReg = em.createQuery("SELECT r FROM Registro r", Registro.class).getResultList();
-	    for (Registro reg : listaReg) {
-	    	Asistente asistente = reg.getAsistente();
-	    	if (asistente != null) {
-	    		asistente.addRegistro(reg);
-	    	}
-	    	Edicion edicion = reg.getEdicion();
-	    	if (edicion != null) {
-	    		edicion.agregarRegistro(reg);
-	    	}
-	    }
-	    
+		}	    
 	    
 	    
 	 	// Inicializar organizadores desde la db
@@ -133,4 +127,5 @@ public class ManejadorUsuario {
 	    }
 	    em.close();
    }
+
 }

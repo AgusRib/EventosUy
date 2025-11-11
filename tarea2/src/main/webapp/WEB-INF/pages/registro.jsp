@@ -20,6 +20,19 @@
     <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Estilos simples para mensajes de disponibilidad -->
+    <style>
+        .availability-available {
+            color: #198754 !important;
+            font-weight: bold;
+        }
+        
+        .availability-unavailable {
+            color: #dc3545 !important;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <jsp:include page="../templates/header.jsp"></jsp:include>
@@ -54,10 +67,11 @@
                            value="<%= request.getAttribute("nickname") != null ? request.getAttribute("nickname") : "" %>" 
                            required autocomplete="off"
                            oninvalid="this.setCustomValidity('Por favor ingrese un apodo.')"
-                           oninput="this.setCustomValidity('')">
+                           oninput="this.setCustomValidity(''); verificarNickname()">
                     <div class="invalid-feedback">
                         Por favor ingrese un apodo.
                     </div>
+                    <small id="nicknameStatus" class="text-muted"></small>
                 </div>
                 
                 <div class="mb-3">
@@ -78,10 +92,11 @@
                            value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" 
                            required autocomplete="off"
                            oninvalid="if(this.validity.valueMissing) this.setCustomValidity('Por favor ingrese un correo electrónico.'); else if(this.validity.typeMismatch) this.setCustomValidity('Por favor ingrese un correo electrónico válido.');"
-                           oninput="this.setCustomValidity('')">
+                           oninput="this.setCustomValidity(''); verificarEmail()">
                     <div class="invalid-feedback">
                         Por favor ingrese un correo electrónico válido.
                     </div>
+                    <small id="emailStatus" class="text-muted"></small>
                 </div>
                 
                 <div class="mb-3">
@@ -333,9 +348,74 @@
             
             toggleUserFields();
         });
-
-
         
+        function verificarNickname() {
+            const nickname = document.getElementById('nickname').value;
+            const status = document.getElementById('nicknameStatus');
+            
+        
+            
+            // Llamada AJAX real
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '<%=request.getContextPath()%>/verificar-disponibilidad?tipo=nickname&valor=' + encodeURIComponent(nickname), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.disponible) {
+                            status.textContent = 'Apodo disponible.';
+                            status.className = 'availability-available';
+                        } else {
+                            status.textContent = 'Apodo no disponible.';
+                            status.className = 'availability-unavailable';
+                        }
+                    } catch (e) {
+                        status.textContent = 'Error al verificar disponibilidad.';
+                        status.className = 'availability-unavailable';
+                    }
+                }
+            };
+            xhr.send();
+        }
+        
+        function verificarEmail() {
+            const email = document.getElementById('email').value;
+            const status = document.getElementById('emailStatus');
+            
+            if (!validateEmail(email)) {
+                status.textContent = 'Ingrese un correo electrónico válido.';
+                status.className = 'text-danger availability-unavailable';
+                return;
+            }
+            
+            // Llamada AJAX real
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '<%=request.getContextPath()%>/verificar-disponibilidad?tipo=email&valor=' + encodeURIComponent(email), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.disponible) {
+                            status.textContent = 'Correo electrónico disponible.';
+                            status.className = 'availability-available';
+                        } else {
+                            status.textContent = 'Correo electrónico no disponible.';
+                            status.className = 'availability-unavailable';
+                        }
+                    } catch (e) {
+                        status.textContent = 'Error al verificar disponibilidad.';
+                        status.className = 'availability-unavailable';
+                    }
+                }
+            };
+            xhr.send();
+        }
+        
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+		
     </script>
 </body>
 </html>

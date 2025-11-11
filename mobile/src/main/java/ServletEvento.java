@@ -138,12 +138,8 @@ public class ServletEvento extends HttpServlet {
                     eventoInfo.put("nombre", detalleEvento.getNombre());
                     eventoInfo.put("descripcion", detalleEvento.getDescripcion());
                     
-                    String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-                    if (eventoImg != null) {
-                        eventoInfo.put("imagenEvento", "uploads/eventos/" + eventoImg);
-                    } else {
-                        eventoInfo.put("imagenEvento", "uploads/eventos/default.jpg");
-                    }
+                    String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
+                    eventoInfo.put("imagenEvento", eventoImg);
                     
                     eventosInfo.add(eventoInfo);
                 }
@@ -167,15 +163,21 @@ public class ServletEvento extends HttpServlet {
 
         System.out.println("Nombre del evento recibido: " + nombreEvento);
         
+        // Registrar la visita al evento 
+        if (nombreEvento != null && !nombreEvento.trim().isEmpty()) {
+            try {
+                portEvento.registrarVisitaEvento(nombreEvento);
+            } catch (Exception e) {
+                
+                System.err.println("Error al registrar visita: " + e.getMessage());
+            }
+        }
+        
         try {
             DtDetalleEvento detalleEvento = portEvento.verDetalleEvento(nombreEvento);
             
-            String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), getServletContext().getRealPath("/uploads/eventos/"));
-            if (eventoImg != null) {
-                request.setAttribute("imagenEvento", "uploads/eventos/" + eventoImg);
-            } else {
-                request.setAttribute("imagenEvento", "uploads/eventos/default.jpg");
-            }
+            String eventoImg = ManejadorArchivos.buscarArchivo(nombreEvento.toLowerCase(), "eventos");
+            request.setAttribute("imagenEvento", eventoImg);
             
             // Verificar el tipo de usuario para listar ediciones
             DataUsuario usuario = (DataUsuario) request.getSession().getAttribute("usuario");
@@ -231,12 +233,8 @@ public class ServletEvento extends HttpServlet {
                     edicionMinima.put("fechaInicio", fechaInicio);
                     edicionMinima.put("fechaFin", fechaFin);
                     
-                    String edicionImg = ManejadorArchivos.buscarArchivo(detalleEdicion.getNombre().toLowerCase(), getServletContext().getRealPath("/uploads/ediciones/"));
-                    if (edicionImg != null) {
-                        edicionMinima.put("imagenEdicion", "uploads/ediciones/" + edicionImg);
-                    } else {
-                        edicionMinima.put("imagenEdicion", "uploads/ediciones/default.jpg");
-                    }
+                    String edicionImg = ManejadorArchivos.buscarArchivo(detalleEdicion.getNombre().toLowerCase(), "ediciones");
+                    edicionMinima.put("imagenEdicion", edicionImg);
                     
                     if (esOrganizadorDeEstaEdicion) {
                         edicionMinima.put("estado", detalleEdicion.getEstado());
@@ -285,7 +283,7 @@ public class ServletEvento extends HttpServlet {
                                 sigla != null ? sigla.trim() : "", 
                                 fechaEvento.toString(), 
                                 descripcion != null ? descripcion.trim() : "", 
-                                categorias);
+                                categorias,"");
             
             WrapperHashSet todasLasCategoriasWrapper = portEvento.listarCategorias();
             List<Object> todasLasCategoriasObj = todasLasCategoriasWrapper.getItem();

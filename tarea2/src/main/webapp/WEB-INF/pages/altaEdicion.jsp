@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+  pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -188,6 +188,16 @@ main.contUser {
 							<input class="form-control" type="file"
 								id="imagenEdicion" name="imagen" accept="image/*">
 							<small class="text-muted">Formatos admitidos: JPG, PNG, GIF. Tamaño máximo: 5MB</small>
+						</div>
+
+						<div class="mb-3">
+							<label for="urlYoutube" class="form-label">URL de YouTube (opcional)</label>
+							<input type="url" class="form-control" id="urlYoutube" 
+								name="urlYoutube"
+								placeholder="https://www.youtube.com/watch?v=..." 
+								value="<%= request.getAttribute("urlYoutube") != null ? (String)request.getAttribute("urlYoutube") : "" %>"
+								autocomplete="off">
+							<small class="text-muted">URL completa del video de YouTube relacionado con la edición</small>
 						</div>
 						
 						<div class="d-flex gap-2">

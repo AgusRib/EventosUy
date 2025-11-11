@@ -1,5 +1,7 @@
 package logica.data_types;
 
+import java.util.List;
+
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 
@@ -12,10 +14,13 @@ public class DataUsuario {
 	private String nombre;
 	private String email;
 	private TipoUsuario tipo;
+	private List<String> seguidores;
+	private List<String> seguidos;
 	
 	public String getNickname() {
 		return nickname;
 	}
+	
 
 	public String getNombre() {
 		return nombre;
@@ -54,6 +59,26 @@ public class DataUsuario {
 
 	public void setTipo(TipoUsuario tipo) {
 		this.tipo = tipo;
+	}
+
+
+	public List<String> getSeguidores() {
+		return seguidores;
+	}
+
+
+	public void setSeguidores(List<String> seguidores) {
+		this.seguidores = seguidores;
+	}
+
+
+	public List<String> getSeguidos() {
+		return seguidos;
+	}
+
+
+	public void setSeguidos(List<String> seguidos) {
+		this.seguidos = seguidos;
 	}
 	
 	

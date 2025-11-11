@@ -94,7 +94,7 @@ public class RegistroEdicion extends JInternalFrame {
 			ICE.elegirAsistenteYTipoRegistro(
 				(String) comboBoxAsistente.getSelectedItem(),
 				(String) comboBoxTipoReg.getSelectedItem(),
-				(String) comboBoxEdicion.getSelectedItem()
+				(String) comboBoxEdicion.getSelectedItem(),false
 
 			);
 			

@@ -42,7 +42,7 @@ public class TestEstadoEdiciones {
 		Categoria cat = new Categoria("cat1");
 		ManejadorCategoria.getInstance().agregarCategoria(cat);
 		
-		ICE.altaEvento("test", "T", LocalDate.of(1999, 1, 1), "habemus testing", categorias);
+		ICE.altaEvento("test", "T", LocalDate.of(1999, 1, 1), "habemus testing", categorias,"");
 		Evento evento = ManejadorEvento.getInstance().obtenerEvento("test");
 		assertTrue(evento != null); //checkeo por las dudas que se haya creado bien el evento
 		
@@ -92,11 +92,11 @@ public class TestEstadoEdiciones {
 		
 		
 		ICE.altaEdicionDeEvento("test", "Vegetta", "EdTest", "ET", LocalDate.of(2024, 10, 1), LocalDate.of(2024, 10, 10), 
-				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest");
+				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest","");
 		ICE.altaEdicionDeEvento("test", "Vegetta", "EdTest2", "ET2", LocalDate.of(2024, 10, 1), LocalDate.of(2024, 10, 10), 
-				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest");
+				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest","");
 		ICE.altaEdicionDeEvento("test", "Vegetta", "EdTest3", "ET3", LocalDate.of(2024, 10, 1), LocalDate.of(2024, 10, 10), 
-				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest"); //estado = ingresada
+				LocalDate.of(2024, 6, 15), "ciudadTest", "paisTest",""); //estado = ingresada
 		
 		//checkeamos que se obtenga correctamente el evento a partir de la edicion
 		assertEquals("test", ICE.nomEvPorEd("EdTest"));
@@ -118,13 +118,13 @@ public class TestEstadoEdiciones {
 		assertTrue(rechazadas.contains("EdTest3"));
 		
 		//ahora probamos que se obtengan las ultimas 3 ediciones
-		ICE.altaEvento("evento1", "E1", LocalDate.of(2023, 1, 1), "Descripción del evento 1", categorias);
-		ICE.altaEvento("evento2", "E2", LocalDate.of(2023, 2, 1), "Descripción del evento 2", categorias);
-		ICE.altaEvento("evento3", "E3", LocalDate.of(2023, 3, 1), "Descripción del evento 3", categorias);
-		ICE.altaEvento("evento4", "E4", LocalDate.of(2023, 4, 1), "Descripción del evento 4", categorias);
+		ICE.altaEvento("evento1", "E1", LocalDate.of(2023, 1, 1), "Descripción del evento 1", categorias,"");
+		ICE.altaEvento("evento2", "E2", LocalDate.of(2023, 2, 1), "Descripción del evento 2", categorias,"");
+		ICE.altaEvento("evento3", "E3", LocalDate.of(2023, 3, 1), "Descripción del evento 3", categorias,"");
+		ICE.altaEvento("evento4", "E4", LocalDate.of(2023, 4, 1), "Descripción del evento 4", categorias,"");
 
 		List<DTDetalleEvento> recientes = ICE.obtenerEventosRecientes();
-		assertEquals(3, recientes.size());
+		assertEquals(4, recientes.size());
 
 		
 		Set<String> nombresEventos = new HashSet<>();
@@ -132,7 +132,7 @@ public class TestEstadoEdiciones {
 		    nombresEventos.add(ev.getNombre());
 		}
 
-		assertTrue(nombresEventos.size() == 3);
+		assertTrue(nombresEventos.size() == 4);
 		
 	}
    

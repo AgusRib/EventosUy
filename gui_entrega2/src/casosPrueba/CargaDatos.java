@@ -25,6 +25,7 @@ import logica.models.Asistente;
 import logica.models.Evento;
 import logica.models.Factory;
 import logica.models.Organizador;
+import logica.models.RastreadorVisitasEvento;
 import logica.models.Usuario;
 
 public class CargaDatos {
@@ -38,6 +39,7 @@ public class CargaDatos {
 		cargarTiposRegistro();
 		cargarPatrocinios();
 		cargarRegistros();
+		cargarSeguidores();
 		
 		System.out.println("Carga de datos finalizada");
 	    imprimirDatosCargados();
@@ -147,6 +149,7 @@ public class CargaDatos {
 		BufferedReader brEventos = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025Eventos.csv"));
 
 		IControllerEvento ICE = Factory.getInstance().getControllerEvento();
+		RastreadorVisitasEvento rastreador = RastreadorVisitasEvento.obtenerInstancia();
 		
 		String linea;
 		brEventos.readLine(); // Saltear la primer linea (headers)
@@ -171,8 +174,34 @@ public class CargaDatos {
 				categorias.add(buscarLinea(cat.stripLeading(), "/datosPrueba/2025Categorias.csv")[1]);
 			}
 			
-			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias);
+			ICE.altaEvento(nombre, sigla, LocalDate.parse(fechaAlta), descripcion, categorias,"");
+			
+			// Manejar el estado finalizado (campos[7])
+			String finalizado = campos[7];
+			if (finalizado.equals("Si")) {
+				// Acceder al manejador para establecer el estado finalizado del evento
+				ManejadorEvento mE = ManejadorEvento.getInstance();
+				Evento evento = mE.obtenerEvento(nombre);
+				if (evento != null) {
+					evento.setFinalizado(true);
+				}
+			}
+			
+			// Cargar contador de visitas desde la última columna (campos[8])
+			if (campos.length > 8 && !campos[8].trim().isEmpty()) {
+				try {
+					int visitas = Integer.parseInt(campos[8].trim());
+					// Registrar las visitas en el rastreador
+					for (int i = 0; i < visitas; i++) {
+						rastreador.registrarVisita(nombre);
+					}
+				} catch (NumberFormatException e) {
+					System.out.println("Error al parsear visitas para evento " + nombre + ": " + campos[8]);
+				}
+			}
 		}
+		System.out.println("Eventos cargados");
+		brEventos.close();
 	}
 	
 	
@@ -205,6 +234,8 @@ public class CargaDatos {
 				String fechaIni = campos[7];
 				String fechaFin = campos[8];
 				String fechaAlta = campos[9];
+				// campos[11] es Imagen - lo ignoramos
+				String videoUrl = campos.length > 12 ? campos[12] : ""; // Video URL
 				
 				String nombreEvento = buscarLinea(idEve, "/datosPrueba/2025Eventos.csv")[1];
 				String nicknameOrganizador = buscarLinea(idOrg, "/datosPrueba/2025Usuarios.csv")[2];
@@ -218,7 +249,7 @@ public class CargaDatos {
 				String[] fechaAltaParts = fechaAlta.split("/");
 				fechaAlta = new String(fechaAltaParts[2] + "-" + fechaAltaParts[1] + "-" + fechaAltaParts[0]);
 				
-				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais);
+				ICE.altaEdicionDeEvento(nombreEvento, nicknameOrganizador, nombre, sigla, LocalDate.parse(fechaIni), LocalDate.parse(fechaFin), LocalDate.parse(fechaAlta), ciudad, pais, videoUrl);
 			
 				if (campos[10].equals("Aceptada")) {
 					ICE.aceptarEdicion(nombre,nombreEvento);
@@ -247,7 +278,7 @@ public class CargaDatos {
 			}
 		
 	
-		System.out.println("Ediciones cargadas");};
+		System.out.println("Ediciones cargadas");}
 			
 	
 		
@@ -393,7 +424,7 @@ public class CargaDatos {
 				fechaAlta = fechaAlta.split("/")[2] + "-" + fechaAlta.split("/")[1] + "-" + fechaAlta.split("/")[0];
 				
 				ICE.setFechaSistema(LocalDate.parse(fechaAlta));
-				ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nombreEdi);
+				ICE.elegirAsistenteYTipoRegistro(nickAsistente, tipoReg, nombreEdi,false);
 				
 				
 			} } catch (FileNotFoundException e) {
@@ -409,14 +440,45 @@ public class CargaDatos {
 	
 		System.out.println("Registros cargados");
 	}
+	
+	private static void cargarSeguidores() {
+		BufferedReader brSeguidores;
+		try {
+			brSeguidores = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/datosPrueba/2025SeguidoresSeguidos.csv"));
 
+			IControllerUsuario ICU = Factory.getInstance().getControllerUsuario();
+			
+			String linea;
+			brSeguidores.readLine(); // Saltear la primer linea (headers)
+			while ((linea = brSeguidores.readLine()) != null) {
+				if (linea.isBlank())
+					continue;
+				
+				String[] campos = linea.split(";");
+							
+				String ref = campos[0];
+				String refSeguidor = campos[1];
+				String nicknameSeguidor = campos[2];
+				String refSeguido = campos[3];
+				String nicknameSeguido = campos[4];
+				
+				ICU.seguirUsuario(nicknameSeguidor, nicknameSeguido);
+				
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
+		System.out.println("Seguidores cargados");
+	}
 	
-	
-	
-	
-	
-		
 	//UTILS
 	private static String[] buscarLinea(String id, String path) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + path));
@@ -490,7 +552,7 @@ public class CargaDatos {
 	}
 
 	private static void imprimirCategorias() {
-	    // Si tenés ManejadorCategoria con Set<String> o Map<String,Categoria>
+	    // Si tenés ManejadorCategoria with Set<String> o Map<String,Categoria>
 	    ManejadorCategoria mC = ManejadorCategoria.getInstance();
 	    java.util.Set<String> nombres = mC.obtenernombresCategorias(); // o adaptá según tu API
 	    System.out.println("\n[Categorias] total = " + (nombres == null ? 0 : nombres.size()));

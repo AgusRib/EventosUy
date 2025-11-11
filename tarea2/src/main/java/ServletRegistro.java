@@ -22,6 +22,7 @@ import webservices.PublicadorEventoService;
 import webservices.PublicadorUsuario;
 import webservices.PublicadorUsuarioService;
 
+
 /**
  * Servlet registrossss
  */
@@ -64,19 +65,15 @@ public class ServletRegistro extends HttpServlet {
                     request.setAttribute("usuario", usuario);
 
                     // img usr
-                    String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-                    String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), baseUsuarios);
-                    request.setAttribute("imagenUsuario",
-                            imgUsuario != null ? ("uploads/usuarios/" + imgUsuario) : "uploads/usuarios/default.jpg");
+                    String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+                    request.setAttribute("imagenUsuario", imgUsuario);
 
                     // nombre de ediciòn 
                     String nombreEdicion = (edicion != null && !edicion.isBlank()) ? edicion : registro.getNombreEdicion();
 
                     // imagen de la ediciòn
-                    String baseEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
-                    String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), baseEdiciones);
-                    request.setAttribute("imagenEdicion",
-                            imgEdicion != null ? ("uploads/ediciones/" + imgEdicion) : "uploads/ediciones/default.jpg");
+                    String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), "ediciones");
+                    request.setAttribute("imagenEdicion", imgEdicion);
 
                     request.getRequestDispatcher("/WEB-INF/pages/detalleRegistro.jsp").forward(request, response);
                     return;
@@ -103,19 +100,18 @@ public class ServletRegistro extends HttpServlet {
 
                     List<Map.Entry<String, DtRegistro>> regs = new ArrayList<>();
                     if (asistObj != null) {
-                        for (Object o : asistObj) {
-                            DtAsistente a = (DtAsistente) o;
-                            String nick = a.getNickname();
-                            if (nick == null || nick.isBlank()) continue;
+                        for (Object nick : asistObj) {
+                        	
+                            if (nick == null || ((String)nick).isBlank()) continue;
 
                             // filtro de bùsqueda
-                            if (!qNorm.isEmpty() && (nick == null || !nick.toLowerCase().contains(qNorm))) {
+                            if (!qNorm.isEmpty() && (nick == null || !((String)nick).toLowerCase().contains(qNorm))) {
                                 continue;
                             }
 
-                            DtRegistro r = portEvento.infoRegistro(edicion, nick);
+                            DtRegistro r = portEvento.infoRegistro(edicion, ( (String) nick) );
                             if (r != null) {
-                                regs.add(new AbstractMap.SimpleEntry<>(nick, r));
+                                regs.add(new AbstractMap.SimpleEntry<>( ( (String) nick) , r));
                             }
                         }
                     }
@@ -128,11 +124,10 @@ public class ServletRegistro extends HttpServlet {
 
                     // imàgenes por usuario
                     Map<String, String> imgsUsuarios = new HashMap<>();
-                    String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
                     for (var e : regs) {
                         String nick = e.getKey();
-                        String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), baseUsuarios);
-                        imgsUsuarios.put(nick, (img != null) ? ("uploads/usuarios/" + img) : "uploads/usuarios/default.jpg");
+                        String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), "usuarios");
+                        imgsUsuarios.put(nick, img);
                     }
 
                     request.setAttribute("edicion", edicion);
@@ -215,34 +210,5 @@ public class ServletRegistro extends HttpServlet {
             }
         }
 
-        if ("/confirmar-asistencia".equals(path)) {
-			PublicadorEventoService serviceEvento = new PublicadorEventoService();
-            PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
-			String edicion = request.getParameter("edicion");
-            String usuario = request.getParameter("usuario");
-
-            if (usuario == null || usuario.isBlank() || edicion == null || edicion.isBlank()) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"ok\":false,\"error\":\"Faltan parámetros 'edicion' y/o 'usuario'\"}");
-                return;
-            }
-
-            try {
-            	portEvento.confirmarAsistencia(edicion, usuario);
-
-                DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
-
-                boolean asistencia = (reg != null) && reg.isAsistencia();
-
-
-                response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
-            } catch (Exception e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                String msg = e.getMessage() == null ? "Error al confirmar asistencia" : e.getMessage().replace("\"", "\\\"");
-                response.getWriter().write("{\"ok\":false,\"error\":\"" + msg + "\"}");
-            }
-            return;
-
-	    }
     }
 }

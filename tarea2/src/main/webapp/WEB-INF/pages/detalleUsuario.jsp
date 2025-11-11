@@ -198,10 +198,10 @@ body.with-collapsed {
 					<section class="card mb-3 bg-light ">
 						<!-- make card-body a centered flex container so inner row is centered horizontally and vertically -->
                         <div class="card-body align-items-center d-flex justify-content-between gap-4 " style="min-height:180px;">
-							<div class="d-flex align-items-center d-flex justify-content-between gap-4">
+							<div class="d-flex align-items-center justify-content-between gap-4 w-100">
                                 <div class="d-flex align-items-center gap-3 flex-wrap col-4" id="fotoCarnet">
                                     <div class="contenedor-fotoPerfil mb-0">
-                                        <img class="foto-usuario avatar" src="<%= request.getContextPath() %>/<%= imagenUsuario != null ? imagenUsuario : "uploads/usuarios/default.jpg" %>"
+                                        <img class="foto-usuario avatar" src="<%= imagenUsuario %>"
                                             alt="<%= usuario.getNickname() %>" style="height: 127px; width:127px;">
                                     </div>
                                     <div class="contenedor-NickRolUser text-start">
@@ -218,6 +218,16 @@ body.with-collapsed {
                                         </div>
                                         <div class="email">
                                             <u>Email:</u> <%= usuario.getEmail() %>
+                                        </div>
+                                        
+                                        <!-- Contador de seguidores y seguidos -->
+                                        <div class="seguidores-info mt-2">
+                                            <div class="seguidores">
+                                                <u>Seguidores:</u> <span id="cantidadSeguidores"><%= request.getAttribute("cantidadSeguidores") != null ? request.getAttribute("cantidadSeguidores") : 0 %></span>
+                                            </div>
+                                            <div class="seguidos">
+                                                <u>Siguiendo:</u> <span id="cantidadSeguidos"><%= request.getAttribute("cantidadSeguidos") != null ? request.getAttribute("cantidadSeguidos") : 0 %></span>
+                                            </div>
                                         </div>
                                         
                                         <% if (org != null) { %>
@@ -243,6 +253,49 @@ body.with-collapsed {
                                         <% } %>
                                     </div>
                                 </div>
+                                
+                                <!-- Botón de seguir/dejar de seguir -->
+                                <% 
+                                String usuarioLogueado = (String) request.getAttribute("usuarioLogueado");
+                                Boolean yaSigue = (Boolean) request.getAttribute("yaSigue");
+                                if (usuarioLogueado != null && !usuarioLogueado.equals(usuario.getNickname())) { 
+                                %>
+                                <div class="d-flex flex-column justify-content-center col-3" id="accionesSeguimiento">
+                                    <% if (yaSigue != null && yaSigue) { %>
+                                        <!-- Botón para dejar de seguir (cuando ya sigue) -->
+                                        <form method="post" action="<%= request.getContextPath() %>/dejarDeSeguir">
+                                            <input type="hidden" name="usuario" value="<%= usuario.getNickname() %>">
+                                            <button type="submit" class="btn btn-outline-secondary w-100">
+                                                <i class="bi bi-person-dash"></i> Dejar de seguir
+                                            </button>
+                                        </form>
+                                    <% } else { %>
+                                        <!-- Botón para seguir (cuando no sigue) -->
+                                        <form method="post" action="<%= request.getContextPath() %>/seguirUsuario">
+                                            <input type="hidden" name="usuario" value="<%= usuario.getNickname() %>">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                <i class="bi bi-person-plus"></i> Seguir
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                    
+                                    <!-- Mostrar mensajes de seguimiento -->
+                                    <% 
+                                    String mensajeSeguimiento = (String) request.getAttribute("mensajeSeguimiento");
+                                    String errorSeguimiento = (String) request.getAttribute("errorSeguimiento");
+                                    if (mensajeSeguimiento != null) { 
+                                    %>
+                                        <div class="alert alert-success mt-2" role="alert">
+                                            <%= mensajeSeguimiento %>
+                                        </div>
+                                    <% } %>
+                                    <% if (errorSeguimiento != null) { %>
+                                        <div class="alert alert-danger mt-2" role="alert">
+                                            <%= errorSeguimiento %>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <% } %>
                             </div>
                         </div>
                     </section>
@@ -263,7 +316,7 @@ body.with-collapsed {
                         %>
                                 <div class="contenedor-edicion d-flex align-items-center gap-2 mb-2">
                                     <a href="<%= request.getContextPath() %>/detalleEdicion?nombre=<%= URLEncoder.encode(ed, "UTF-8") %>" style="display:inline-block;width:64px;height:64px;">
-                                        <img class="foto-edicion" src="<%= request.getContextPath() %>/<%= imgEd != null ? imgEd : "assets/images/SinFoto.jpg" %>" alt="edicion" style="width:64px;height:64px;object-fit:cover;display:inline-block;vertical-align:middle;">
+                                        <img class="foto-edicion" src="<%=imgEd%>" alt="edicion" style="width:64px;height:64px;object-fit:cover;display:inline-block;vertical-align:middle;">
                                     </a>
                                     <div class="nombreEdicion" style="margin-left:6px;">
                                         <a href="<%= request.getContextPath() %>/detalleEdicion?nombre=<%= URLEncoder.encode(ed, "UTF-8") %>" class="text-decoration-none"><b><%= ed %></b></a>

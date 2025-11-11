@@ -1,206 +1,242 @@
 import java.io.IOException;
+
+
+import java.lang.reflect.Method;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import webservices.DataUsuario;
+
 import webservices.DtAsistente;
-import webservices.DtPatrocinio;
 import webservices.DtRegistro;
 import webservices.PublicadorEvento;
 import webservices.PublicadorEventoService;
-
+import webservices.PublicadorUsuario;
+import webservices.PublicadorUsuarioService;
 
 /**
- * Servlet implementation class ServletEdicion
+ * Servlet registrossss
  */
-@WebServlet({ "/ver-registro", "/listar-registros", "/alta-tipo-registro" })
+@WebServlet({ "/ver-registro", "/listar-registros", "/alta-tipo-registro", "/confirmar-asistencia" })
 public class ServletRegistro extends HttpServlet {
     private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletRegistro() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ServletRegistro() { super(); }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         String path = request.getServletPath();
-    	PublicadorEventoService serviceEvento = new PublicadorEventoService();
+        // publicadres y soap
+        PublicadorEventoService serviceEvento = new PublicadorEventoService();
         PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
-        
-        switch (path) {
-	        case "/ver-registro": {
-	            String edicion = request.getParameter("edicion");
-	            String usuario = request.getParameter("usuario");
-	            if (usuario == null || usuario.isBlank()) {
-	                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'usuario'");
-	                return;
-	            }
-	
-	            DtRegistro registro = portEvento.infoRegistro(edicion, usuario);
-	            if (registro == null) {
-	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Registro no encontrado");
-	                return;
-	            }
-	
-	            request.setAttribute("registro", registro);
-	            request.setAttribute("usuario", usuario);
-	
-	            String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-	            String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), baseUsuarios);
-	            if (imgUsuario != null) {
-	                request.setAttribute("imagenUsuario", "uploads/usuarios/" + imgUsuario);
-	            } else {
-	                request.setAttribute("imagenUsuario", "uploads/usuarios/default.jpg");
-	            }
-	
-	            String nombreEdicion = (edicion != null && !edicion.isBlank()) ? edicion : registro.getNombreEdicion();
-	            String baseEdiciones = getServletContext().getRealPath("/uploads/ediciones/");
-	            String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), baseEdiciones);
-	            if (imgEdicion != null) {
-	                request.setAttribute("imagenEdicion", "uploads/ediciones/" + imgEdicion);
-	            } else {
-	                request.setAttribute("imagenEdicion", "uploads/ediciones/default.jpg");
-	            }
-	
-	            request.getRequestDispatcher("/WEB-INF/pages/detalleRegistro.jsp").forward(request, response);
-	            return;
-	        }
-	
-	        case "/listar-registros": {
-	            String edicion = request.getParameter("edicion");
-	            if (edicion == null || edicion.isBlank()) {
-	                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Falta parámetro 'edicion");
-	                return;
-	            }
-	
-	            String q = request.getParameter("q");
-	            String qNorm = q == null ? "" : q.trim().toLowerCase();
-	
-	            var asistentes = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
-	            
-	            List<Map.Entry<String, DtRegistro>> regs = new ArrayList<>();
-	            for (Object a : asistentes) {
-	                DtRegistro r = portEvento.infoRegistro(edicion, ((DtAsistente) a).getNickname());
-	                if (r != null) {
-	                    String nick = ((DtAsistente) a).getNickname();
-	                    if (qNorm.isEmpty() || (nick != null && nick.toLowerCase().contains(qNorm))) {
-	                        regs.add(new AbstractMap.SimpleEntry<>(nick, r));
-	                    }
-	                }
-	            }
-	            
-	            /*
-	             	                Set<DtPatrocinio> setPatrocinios = new HashSet<>();
-	                List<Object> listaPatrocinios = portEvento.listarPatrocinios(nombre).getItem();
-	                for (Object patrocinio : listaPatrocinios) {
-	                	setPatrocinios.add(portEvento.obtenerPatrocinio(nombre, (String) patrocinio));
-	                } 
-	             */
-	
-	            if (regs.isEmpty()) {
-	                request.setAttribute("mensaje", (qNorm.isEmpty() ?
-	                    "No hay registros para la edición" :
-	                    "No hubo coincidencias para la búsqueda"));
-	            }
-	
-	            Map<String, String> imgsUsuarios = new HashMap<>();
-	            String baseUsuarios = getServletContext().getRealPath("/uploads/usuarios/");
-	            for (var e : regs) {
-	                String nick = e.getKey();
-	                String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), baseUsuarios);
-	                imgsUsuarios.put(nick, (img != null) ? ("uploads/usuarios/" + img) : "uploads/usuarios/default.jpg");
-	            }
-	
-	            request.setAttribute("edicion", edicion);
-	            request.setAttribute("registros", regs);
-	            request.setAttribute("q", q == null ? "" : q);
-	            request.setAttribute("imgsUsuarios", imgsUsuarios);
-	
-	            request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
-	            return;
-	        }
-            case "/alta-tipo-registro": {    			
 
-    			String edicion = request.getParameter("edicion");
-		        request.setAttribute("edicion", edicion);
-    			
-    		    request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
-    		    return;
+        PublicadorUsuarioService serviceUsuario = new PublicadorUsuarioService();
+        PublicadorUsuario portUsuario = serviceUsuario.getPublicadorUsuarioPort();
+
+        switch (path) {
+            case "/ver-registro": {
+                String edicion = request.getParameter("edicion");
+                String usuario = request.getParameter("usuario");
+
+                if (usuario == null || usuario.isBlank()) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'usuario'");
+                    return;
+                }
+
+                try {
+                    DtRegistro registro = portEvento.infoRegistro(edicion, usuario);
+                    if (registro == null) {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Registro no encontrado");
+                        return;
+                    }
+
+                    request.setAttribute("registro", registro);
+                    request.setAttribute("usuario", usuario);
+
+                    // img usr
+                    String imgUsuario = ManejadorArchivos.buscarArchivo(usuario.toLowerCase(), "usuarios");
+                    request.setAttribute("imagenUsuario", imgUsuario);
+
+                    // nombre de ediciòn 
+                    String nombreEdicion = (edicion != null && !edicion.isBlank()) ? edicion : registro.getNombreEdicion();
+
+                    // imagen de la ediciòn
+                    String imgEdicion = ManejadorArchivos.buscarArchivo(nombreEdicion.toLowerCase(), "ediciones");
+                    request.setAttribute("imagenEdicion", imgEdicion);
+
+                    request.getRequestDispatcher("/WEB-INF/pages/detalleRegistro.jsp").forward(request, response);
+                    return;
+                } catch (Exception ex) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            "No se pudo obtener el registro: " + ex.getMessage());
+                    return;
+                }
             }
+
+            case "/listar-registros": {
+                String edicion = request.getParameter("edicion");
+                if (edicion == null || edicion.isBlank()) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro 'edicion'");
+                    return;
+                }
+
+                String q = request.getParameter("q");
+                String qNorm = q == null ? "" : q.trim().toLowerCase();
+
+                try {
+                    // asistentes por la ediciòn 
+                    List<Object> asistObj = portEvento.listarAsistentesAEdicionDeEvento(edicion).getItem();
+
+                    List<Map.Entry<String, DtRegistro>> regs = new ArrayList<>();
+                    if (asistObj != null) {
+                        for (Object nick : asistObj) {
+                        	
+                            if (nick == null || ((String)nick).isBlank()) continue;
+
+                            // filtro de bùsqueda
+                            if (!qNorm.isEmpty() && (nick == null || !((String)nick).toLowerCase().contains(qNorm))) {
+                                continue;
+                            }
+
+                            DtRegistro r = portEvento.infoRegistro(edicion, ( (String) nick) );
+                            if (r != null) {
+                                regs.add(new AbstractMap.SimpleEntry<>( ( (String) nick) , r));
+                            }
+                        }
+                    }
+
+                    if (regs.isEmpty()) {
+                        request.setAttribute("mensaje",
+                                (qNorm.isEmpty() ? "No hay registros para la edición" :
+                                                   "No hubo coincidencias para la búsqueda"));
+                    }
+
+                    // imàgenes por usuario
+                    Map<String, String> imgsUsuarios = new HashMap<>();
+                    for (var e : regs) {
+                        String nick = e.getKey();
+                        String img = ManejadorArchivos.buscarArchivo(nick.toLowerCase(), "usuarios");
+                        imgsUsuarios.put(nick, img);
+                    }
+
+                    request.setAttribute("edicion", edicion);
+                    request.setAttribute("registros", regs);
+                    request.setAttribute("q", q == null ? "" : q);
+                    request.setAttribute("imgsUsuarios", imgsUsuarios);
+
+                    request.getRequestDispatcher("/WEB-INF/pages/listarRegistros.jsp").forward(request, response);
+                    return;
+                } catch (Exception ex) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                            "No se pudo listar registros: " + ex.getMessage());
+                    return;
+                }
+            }
+
+            case "/alta-tipo-registro": {
+                String edicion = request.getParameter("edicion");
+                request.setAttribute("edicion", edicion);
+                request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+                return;
+            }
+
             default:
                 break;
         }
 
-        response.getWriter().append("Served at: ").append(request.getContextPath());
+        response.getWriter().append("Served at: ").append(getServletContext().getContextPath());
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String path = request.getServletPath();
-	    	
-	    if ("/alta-tipo-registro".equals(path)) {
-	    	PublicadorEventoService serviceEvento = new PublicadorEventoService();
-	        PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
-			
-			String edicion = request.getParameter("edicion");
-			String nombre  = request.getParameter("nombre");
-			String desc    = request.getParameter("descripcion");
-		    String costoS  = request.getParameter("costo");
-		    String cupoS   = request.getParameter("cupo");
-		    
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		    try {
-		    	Float costo = Float.parseFloat(costoS.replace(",", "."));
-		    	int cupo = Integer.parseInt(cupoS);
-		    	if (costo < 0 || cupo <= 0) {
-		    		throw new IllegalArgumentException("Costo y cupo deben ser positivos");
-		    	}
-		    	portEvento.altaTipoDeRegistro(edicion, nombre, desc, costo, cupo);
-		    	
-		    	String url = request.getContextPath() + "/detalleEdicion?nombre=" + edicion;
-		    	response.sendRedirect(url);
-		    	return;
-		    } catch (NumberFormatException nfe) {
-		    	request.setAttribute("error", "Formato numérico inválido en costo o cupo.");
-		        request.setAttribute("edicion", edicion);
-		        request.setAttribute("nombre", nombre);
-		        request.setAttribute("descripcion", desc);
-		        request.setAttribute("costo", costoS);
-		        request.setAttribute("cupo", cupoS);
-		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
-		        return;
-		    } catch (Exception e) {
-		    	request.setAttribute("error", e.getMessage());
-		        request.setAttribute("edicion", edicion);
-		        request.setAttribute("nombre", nombre);
-		        request.setAttribute("descripcion", desc);
-		        request.setAttribute("costo", costoS);
-		        request.setAttribute("cupo", cupoS);
-		        request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
-		        return;
-			} 
-				
-			
-		}
-        
-   }
-    
+        String path = request.getServletPath();
+
+        if ("/alta-tipo-registro".equals(path)) {
+            PublicadorEventoService serviceEvento = new PublicadorEventoService();
+            PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+
+            String edicion = request.getParameter("edicion");
+            String nombre  = request.getParameter("nombre");
+            String desc    = request.getParameter("descripcion");
+            String costoS  = request.getParameter("costo");
+            String cupoS   = request.getParameter("cupo");
+
+            try {
+                Float costo = Float.parseFloat(costoS.replace(",", "."));
+                int cupo = Integer.parseInt(cupoS);
+
+                if (costo < 0 || cupo <= 0) {
+                    throw new IllegalArgumentException("Costo y cupo deben ser positivos");
+                }
+
+                portEvento.altaTipoDeRegistro(edicion, nombre, desc, costo, cupo);
+
+                String url = request.getContextPath() + "/detalleEdicion?nombre=" + edicion;
+                response.sendRedirect(url);
+                return;
+
+            } catch (NumberFormatException nfe) {
+                request.setAttribute("error", "Formato numérico inválido en costo o cupo.");
+                request.setAttribute("edicion", edicion);
+                request.setAttribute("nombre", nombre);
+                request.setAttribute("descripcion", desc);
+                request.setAttribute("costo", costoS);
+                request.setAttribute("cupo", cupoS);
+                request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+                return;
+
+            } catch (Exception e) {
+                request.setAttribute("error", "Error al dar de alta el tipo de registro: " + e.getMessage());
+                request.setAttribute("edicion", edicion);
+                request.setAttribute("nombre", nombre);
+                request.setAttribute("descripcion", desc);
+                request.setAttribute("costo", costoS);
+                request.setAttribute("cupo", cupoS);
+                request.getRequestDispatcher("/WEB-INF/pages/altaTipoRegistro.jsp").forward(request, response);
+                return;
+            }
+        }
+
+        if ("/confirmar-asistencia".equals(path)) {
+			PublicadorEventoService serviceEvento = new PublicadorEventoService();
+            PublicadorEvento portEvento = serviceEvento.getPublicadorEventoPort();
+			String edicion = request.getParameter("edicion");
+            String usuario = request.getParameter("usuario");
+
+            if (usuario == null || usuario.isBlank() || edicion == null || edicion.isBlank()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"ok\":false,\"error\":\"Faltan parámetros 'edicion' y/o 'usuario'\"}");
+                return;
+            }
+
+            try {
+            	portEvento.confirmarAsistencia(usuario, edicion);
+
+                DtRegistro reg = portEvento.infoRegistro(edicion, usuario);
+
+                boolean asistencia = (reg != null) && reg.isAsistencia();
+
+
+                response.getWriter().write("{\"ok\":true,\"asistencia\":" + asistencia + "}");
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                String msg = e.getMessage() == null ? "Error al confirmar asistencia" : e.getMessage().replace("\"", "\\\"");
+                response.getWriter().write("{\"ok\":false,\"error\":\"" + msg + "\"}");
+            }
+            return;
+
+	    }
+    }
 }

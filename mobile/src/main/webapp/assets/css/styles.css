@@ -201,7 +201,7 @@ button {
 	justify-content: flex-start;
 	gap: 24px;
 	font-size: large;
-	height: 161px;
+	height: 222px !important;
 }
 
 .carta:hover {
@@ -272,3 +272,4 @@ button {
 	position: relative;
 	line-height: 140%;
 }
+

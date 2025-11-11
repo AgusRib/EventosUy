@@ -54,11 +54,11 @@ public class TestVerDetalles {
 		Set<String> categoriasSet = new java.util.HashSet<String>();
 		categoriasSet.add("Categoria1");
 		ICE.ingresarCategoria("Categoria1");
-		ICE.altaEvento("Evento1", "ev1", ICE.getFechaSistema(), "descripcion 1", categoriasSet); 
-		ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ed1", LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), LocalDate.of(2027, 1,1), "Montevideo", "Uruguay");
+		ICE.altaEvento("Evento1", "ev1", ICE.getFechaSistema(), "descripcion 1", categoriasSet,""); 
+		ICE.altaEdicionDeEvento("Evento1", "Vegetta", "Edicion1", "ed1", LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), LocalDate.of(2027, 1,1), "Montevideo", "Uruguay","");
 		DTEdicion dtEdicion = new DTEdicion("Edicion1", "ed1",LocalDate.of(2027, 1,2), LocalDate.of(2027, 1,8), "Montevideo", "Uruguay");
 		DTDetalleEdicion detalleEdicion = ICE.mostrarDetallesEdicion("Edicion1");
-		Organizador org = (Organizador) ICU.obtenerUsuario("Vegetta");
+
 		
 		// Checkeo si coinciden los datos de la edicion
 		assertEquals(detalleEdicion.getNombre(), dtEdicion.getNombre());
@@ -67,8 +67,8 @@ public class TestVerDetalles {
 		assertEquals(detalleEdicion.getFechaFin(), dtEdicion.getFechaFin());
 		assertEquals(detalleEdicion.getCiudad(), dtEdicion.getCiudad());
 		assertEquals(detalleEdicion.getPais(), dtEdicion.getPais());
-		assertEquals(true, org.organizaEdicion(detalleEdicion.getNombre()));
-		
+		assertEquals(detalleEdicion.getOrganizador()
+				, "Vegetta");
 		// Checkeo que funcione DTDetalleEdicion creandola a mano
 		HashSet<String> categorias = new HashSet<String>();
 		categorias.add("Categoria1");
@@ -94,14 +94,14 @@ public class TestVerDetalles {
 		assertEquals(tRegis.getCupo(), detalleTRegis.getCupo());
 		
 		ICE.altaTipoDeRegistro("Edicion1", "Tipo2", "Descripcion de Tipo2",(float) 100, 1);
-		ICE.altaRegistro("Willyrex", "Tipo2", "Edicion1");
+		ICE.altaRegistro("Willyrex", "Tipo2", "Edicion1",false);
 		//ahora se supone que tiene que tener 0 cupos
 		assertEquals(0, edicionTest.getTipoRegistro("Tipo2").getCupo());
 		
 		//ahora deberia no funcionar porque no hay cupos en Tipo2
 		ICU.ingresarAsistente("Willyrex2", "Guillermo2", "willy2@gmail.com","a", "Diaz", LocalDate.of(2004, 1,1));
 		assertThrows(Exception.class, () -> {
-		    ICE.elegirAsistenteYTipoRegistro("Willyrex2", "Tipo2", "Edicion1");
+		    ICE.elegirAsistenteYTipoRegistro("Willyrex2", "Tipo2", "Edicion1",false);
 		});
 		
 		
