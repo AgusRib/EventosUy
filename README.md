@@ -35,7 +35,7 @@ El proyecto está dividido en tres módulos principales:
 * **Servidor:** Apache Tomcat 11.0.13
 * **Descripción:** Interfaz responsiva enfocada en la experiencia de uso desde dispositivos móviles.
 
-## 🛠️ Requisitos Previos
+## Requisitos Previos
 * **Java:** JDK 21 o superior
 * **Maven:** 3.8.x o superior
 * **Git:** Para clonar el repositorio
