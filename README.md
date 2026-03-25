@@ -11,7 +11,7 @@ EventosUY es una plataforma para la gestión y organización de eventos en Urugu
 * **Patrocinios:** Sistema de gestión de patrocinadores.
 * **Aplicación Móvil:** Acceso optimizado para dispositivos móviles.
 
-## 🏗️ Arquitectura del Proyecto
+##  Arquitectura del Proyecto
 El proyecto está dividido en tres módulos principales:
 
 ### 1. Servidor Central (Backend)
@@ -46,7 +46,7 @@ java -version
 mvn -version
 ```
 
-## 📦 Build (Compilación)
+##  Build (Compilación)
 El proyecto incluye scripts en el directorio raíz para compilar todos los módulos automáticamente:
 
 **En Windows:**
@@ -65,7 +65,7 @@ build.bat
 3. Compila el módulo `mobile` y genera el archivo WAR.
 4. Mueve los archivos estáticos y configuraciones necesarias.
 
-## 🚀 Deploy (Despliegue)
+##  Deploy (Despliegue)
 Para desplegar las aplicaciones web y móvil, sus empaquetados (`.war`) deben ir al servidor de aplicaciones incluido:
 
 1. Inicia el Servidor Central (ejecutando la clase principal desde tu IDE en `/serv central` o su empaquetado).
@@ -74,12 +74,12 @@ Para desplegar las aplicaciones web y móvil, sus empaquetados (`.war`) deben ir
    * **Windows:** `apache-tomcat-11.0.13/bin/startup.bat`
    * **Linux/macOS:** `apache-tomcat-11.0.13/bin/startup.sh`
 
-## 🔧 Configuración
+##  Configuración
 Archivo principal: `application.properties` (ubicado en la raíz y/o módulos).
 Allí se definen las propiedades del sistema como URLs, puertos y credenciales de base de datos.
 Ten en cuenta también las reglas de calidad métrica configuradas de forma global en checkstyle.xml y `pmd-rules.xml`.
 
-## 🧪 Datos de Prueba
+##  Datos de Prueba
 Los datos de prueba precargados del sistema se encuentran bajo `/serv central/datosPrueba/`:
 * `2025Usuarios.csv`
 * `2025Eventos.csv`
@@ -88,5 +88,5 @@ Los datos de prueba precargados del sistema se encuentran bajo `/serv central/da
 * `2025Patrocinios.csv`
 * `2025Registros.csv`
 
-## 📁 Carga de Datos
+##  Carga de Datos
 Se pueden cargar los masivamente los datos de prueba desde la interfaz Swing de la API del Servidor Central accionando el caso de uso correspondiente para ello.
